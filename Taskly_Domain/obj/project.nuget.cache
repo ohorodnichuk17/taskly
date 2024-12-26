@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "oHJutZ/szHsl4aaVhFwhcytiAjithadqEm3uQjt4ymW5AHTypzrWaXAMTmlgMdzZj0m7et71kgPL1+5W79YYxQ==",
+  "success": true,
+  "projectFilePath": "/Users/PC10/taskly/Taskly_Server/Taskly_Domain/Taskly_Domain.csproj",
+  "expectedPackageFiles": [
+    "/Users/PC10/.nuget/packages/erroror/2.0.1/erroror.2.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}

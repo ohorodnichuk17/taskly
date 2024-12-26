@@ -1,0 +1,13 @@
+/Users/PC10/RiderProjects/BuyTime/BuyTime_Server/BuyTime_Contracts/bin/Debug/net8.0/BuyTime_Contracts.deps.json
+/Users/PC10/RiderProjects/BuyTime/BuyTime_Server/BuyTime_Contracts/bin/Debug/net8.0/BuyTime_Contracts.dll
+/Users/PC10/RiderProjects/BuyTime/BuyTime_Server/BuyTime_Contracts/bin/Debug/net8.0/BuyTime_Contracts.pdb
+/Users/PC10/RiderProjects/BuyTime/BuyTime_Server/BuyTime_Contracts/obj/Debug/net8.0/BuyTime_Contracts.csproj.AssemblyReference.cache
+/Users/PC10/RiderProjects/BuyTime/BuyTime_Server/BuyTime_Contracts/obj/Debug/net8.0/BuyTime_Contracts.GeneratedMSBuildEditorConfig.editorconfig
+/Users/PC10/RiderProjects/BuyTime/BuyTime_Server/BuyTime_Contracts/obj/Debug/net8.0/BuyTime_Contracts.AssemblyInfoInputs.cache
+/Users/PC10/RiderProjects/BuyTime/BuyTime_Server/BuyTime_Contracts/obj/Debug/net8.0/BuyTime_Contracts.AssemblyInfo.cs
+/Users/PC10/RiderProjects/BuyTime/BuyTime_Server/BuyTime_Contracts/obj/Debug/net8.0/BuyTime_Contracts.csproj.CoreCompileInputs.cache
+/Users/PC10/RiderProjects/BuyTime/BuyTime_Server/BuyTime_Contracts/obj/Debug/net8.0/BuyTime_Contracts.sourcelink.json
+/Users/PC10/RiderProjects/BuyTime/BuyTime_Server/BuyTime_Contracts/obj/Debug/net8.0/BuyTime_Contracts.dll
+/Users/PC10/RiderProjects/BuyTime/BuyTime_Server/BuyTime_Contracts/obj/Debug/net8.0/refint/BuyTime_Contracts.dll
+/Users/PC10/RiderProjects/BuyTime/BuyTime_Server/BuyTime_Contracts/obj/Debug/net8.0/BuyTime_Contracts.pdb
+/Users/PC10/RiderProjects/BuyTime/BuyTime_Server/BuyTime_Contracts/obj/Debug/net8.0/ref/BuyTime_Contracts.dll

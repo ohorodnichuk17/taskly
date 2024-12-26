@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="../build/Taskly_Api.props" />
+</Project>
