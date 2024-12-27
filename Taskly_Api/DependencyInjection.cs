@@ -11,8 +11,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Taskly_Api.Common.Errors;
+using Taskly_Application.Interfaces;
 using Taskly_Domain.Entities;
+using Taskly_Domain.Other;
 using Taskly_Infrastructure.Common.Persistence;
+using Taskly_Infrastructure.Services;
 
 namespace Taskly_Api;
 
@@ -22,6 +25,8 @@ public static class DependencyInjection
     {
         services.AddControllers();
         services.AddSingleton<ProblemDetailsFactory, TasklyProblemDetailsFactory>();
+        services.AddScoped<IJwtService, JwtService>();
+        services.Configure<AuthanticationSettings>(configuration.GetSection("AuthanticationSettings"));
         services.AddSwagger();
         services.AddMappings();
         services.AddJWT(configuration);
