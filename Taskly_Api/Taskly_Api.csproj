@@ -24,4 +24,8 @@
       <ProjectReference Include="..\Taskly_Infrastructure\Taskly_Infrastructure.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="images\" />
+    </ItemGroup>
+
 </Project>
