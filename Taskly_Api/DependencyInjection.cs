@@ -26,7 +26,7 @@ public static class DependencyInjection
         services.AddControllers();
         services.AddSingleton<ProblemDetailsFactory, TasklyProblemDetailsFactory>();
         services.AddScoped<IJwtService, JwtService>();
-        services.Configure<AuthanticationSettings>(configuration.GetSection("AuthanticationSettings"));
+        services.Configure<AuthanticationSettings>(configuration.GetSection("AuthenticationSettings"));
         services.AddSwagger();
         services.AddMappings();
         services.AddJWT(configuration);
