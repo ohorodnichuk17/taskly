@@ -1,9 +1,13 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Taskly_Domain.Entities;
 
 namespace Taskly_Infrastructure.Common.Persistence;
 
-public class TasklyDbContext : DbContext
+public class TasklyDbContext : IdentityDbContext<User,IdentityRole<Guid>,Guid>
 {
+    public DbSet<VerificationEmail> verificationEmails { get; set; }
     public TasklyDbContext() : base()
     {
     }
