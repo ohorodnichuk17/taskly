@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Taskly_Api.Common;
 using Taskly_Api.Common.Errors;
 using Taskly_Application.Interfaces;
 using Taskly_Domain.Entities;
@@ -27,6 +28,7 @@ public static class DependencyInjection
         services.AddSingleton<ProblemDetailsFactory, TasklyProblemDetailsFactory>();
         services.AddScoped<IJwtService, JwtService>();
         services.Configure<AuthanticationSettings>(configuration.GetSection("AuthenticationSettings"));
+        services.AddHostedService<VerificationEmailCleaner>();
         services.AddSwagger();
         services.AddMappings();
         services.AddJWT(configuration);

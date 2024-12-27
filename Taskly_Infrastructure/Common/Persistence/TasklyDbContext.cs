@@ -7,7 +7,7 @@ namespace Taskly_Infrastructure.Common.Persistence;
 
 public class TasklyDbContext : IdentityDbContext<User,IdentityRole<Guid>,Guid>
 {
-    public DbSet<VerificationEmail> verificationEmails { get; set; }
+    public DbSet<VerificationEmail> EmailVerifications { get; set; }
     public TasklyDbContext() : base()
     {
     }

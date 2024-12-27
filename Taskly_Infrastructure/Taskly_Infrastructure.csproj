@@ -2,6 +2,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Taskly_Application\Taskly_Application.csproj" />
+      <ProjectReference Include="..\Taskly_Domain\Taskly_Domain.csproj" />
     </ItemGroup>
 
     <ItemGroup>
@@ -12,7 +13,6 @@
 
     <ItemGroup>
       <Folder Include="Repositories\" />
-      <Folder Include="Services\" />
     </ItemGroup>
 
     <PropertyGroup>
