@@ -23,7 +23,7 @@ public class VerificationEmailCleaner(IServiceScopeFactory serviceScopeFactory) 
 
                 }
 
-                var delay = TimeSpan.FromMinutes(1);
+                var delay = TimeSpan.FromMinutes(5);
                 var oldersVerificationEmail = await dbContext.EmailVerifications.OrderBy(ve => ve.EndTime).FirstOrDefaultAsync(stoppingToken);
                 if (oldersVerificationEmail != null)
                 {

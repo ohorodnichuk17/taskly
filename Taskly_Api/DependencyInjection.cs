@@ -26,14 +26,14 @@ public static class DependencyInjection
     {
         services.AddControllers();
         services.AddSingleton<ProblemDetailsFactory, TasklyProblemDetailsFactory>();
-        services.AddScoped<IJwtService, JwtService>();
-        services.Configure<AuthanticationSettings>(configuration.GetSection("AuthenticationSettings"));
+        services.AddScoped<IJwtService, JwtService>();   
         services.AddHostedService<VerificationEmailCleaner>();
         services.AddSwagger();
         services.AddMappings();
         services.AddJWT(configuration);
         services.AddJWTToSwagger();
         services.AddIdentity();
+        services.Configuring(configuration);
 
         return services;
     }
@@ -133,6 +133,13 @@ public static class DependencyInjection
         })
         .AddEntityFrameworkStores<TasklyDbContext>()
         .AddDefaultTokenProviders();
+
+        return services;
+    }
+    private static IServiceCollection Configuring(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.Configure<AuthanticationSettings>(configuration.GetSection("AuthenticationSettings"));
+        services.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
 
         return services;
     }

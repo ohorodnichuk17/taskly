@@ -11,3 +11,16 @@
 /Users/PC10/taskly/Taskly_Server/Taskly_Contracts/obj/Debug/net8.0/refint/Taskly_Contracts.dll
 /Users/PC10/taskly/Taskly_Server/Taskly_Contracts/obj/Debug/net8.0/Taskly_Contracts.pdb
 /Users/PC10/taskly/Taskly_Server/Taskly_Contracts/obj/Debug/net8.0/ref/Taskly_Contracts.dll
+D:\PetProject\taskly-backend\Taskly_Contracts\bin\Debug\net8.0\Taskly_Contracts.deps.json
+D:\PetProject\taskly-backend\Taskly_Contracts\bin\Debug\net8.0\Taskly_Contracts.dll
+D:\PetProject\taskly-backend\Taskly_Contracts\bin\Debug\net8.0\Taskly_Contracts.pdb
+D:\PetProject\taskly-backend\Taskly_Contracts\obj\Debug\net8.0\Taskly_Contracts.csproj.AssemblyReference.cache
+D:\PetProject\taskly-backend\Taskly_Contracts\obj\Debug\net8.0\Taskly_Contracts.GeneratedMSBuildEditorConfig.editorconfig
+D:\PetProject\taskly-backend\Taskly_Contracts\obj\Debug\net8.0\Taskly_Contracts.AssemblyInfoInputs.cache
+D:\PetProject\taskly-backend\Taskly_Contracts\obj\Debug\net8.0\Taskly_Contracts.AssemblyInfo.cs
+D:\PetProject\taskly-backend\Taskly_Contracts\obj\Debug\net8.0\Taskly_Contracts.csproj.CoreCompileInputs.cache
+D:\PetProject\taskly-backend\Taskly_Contracts\obj\Debug\net8.0\Taskly_Contracts.sourcelink.json
+D:\PetProject\taskly-backend\Taskly_Contracts\obj\Debug\net8.0\Taskly_Contracts.dll
+D:\PetProject\taskly-backend\Taskly_Contracts\obj\Debug\net8.0\refint\Taskly_Contracts.dll
+D:\PetProject\taskly-backend\Taskly_Contracts\obj\Debug\net8.0\Taskly_Contracts.pdb
+D:\PetProject\taskly-backend\Taskly_Contracts\obj\Debug\net8.0\ref\Taskly_Contracts.dll

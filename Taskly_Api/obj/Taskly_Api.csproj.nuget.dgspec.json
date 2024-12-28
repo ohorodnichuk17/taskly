@@ -1,39 +1,41 @@
 {
   "format": 1,
   "restore": {
-    "/Users/PC10/taskly/Taskly_Server/Taskly_Api/Taskly_Api.csproj": {}
+    "D:\\PetProject\\taskly-backend\\Taskly_Api\\Taskly_Api.csproj": {}
   },
   "projects": {
-    "/Users/PC10/taskly/Taskly_Server/Taskly_Api/Taskly_Api.csproj": {
+    "D:\\PetProject\\taskly-backend\\Taskly_Api\\Taskly_Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/PC10/taskly/Taskly_Server/Taskly_Api/Taskly_Api.csproj",
+        "projectUniqueName": "D:\\PetProject\\taskly-backend\\Taskly_Api\\Taskly_Api.csproj",
         "projectName": "Taskly_Api",
-        "projectPath": "/Users/PC10/taskly/Taskly_Server/Taskly_Api/Taskly_Api.csproj",
-        "packagesPath": "/Users/PC10/.nuget/packages/",
-        "outputPath": "/Users/PC10/taskly/Taskly_Server/Taskly_Api/obj/",
+        "projectPath": "D:\\PetProject\\taskly-backend\\Taskly_Api\\Taskly_Api.csproj",
+        "packagesPath": "C:\\Users\\Назар\\.nuget\\packages\\",
+        "outputPath": "D:\\PetProject\\taskly-backend\\Taskly_Api\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/PC10/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\Назар\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "/Users/PC10/taskly/Taskly_Server/Taskly_Application/Taskly_Application.csproj": {
-                "projectPath": "/Users/PC10/taskly/Taskly_Server/Taskly_Application/Taskly_Application.csproj"
+              "D:\\PetProject\\taskly-backend\\Taskly_Application\\Taskly_Application.csproj": {
+                "projectPath": "D:\\PetProject\\taskly-backend\\Taskly_Application\\Taskly_Application.csproj"
               },
-              "/Users/PC10/taskly/Taskly_Server/Taskly_Contracts/Taskly_Contracts.csproj": {
-                "projectPath": "/Users/PC10/taskly/Taskly_Server/Taskly_Contracts/Taskly_Contracts.csproj"
+              "D:\\PetProject\\taskly-backend\\Taskly_Contracts\\Taskly_Contracts.csproj": {
+                "projectPath": "D:\\PetProject\\taskly-backend\\Taskly_Contracts\\Taskly_Contracts.csproj"
               },
-              "/Users/PC10/taskly/Taskly_Server/Taskly_Infrastructure/Taskly_Infrastructure.csproj": {
-                "projectPath": "/Users/PC10/taskly/Taskly_Server/Taskly_Infrastructure/Taskly_Infrastructure.csproj"
+              "D:\\PetProject\\taskly-backend\\Taskly_Infrastructure\\Taskly_Infrastructure.csproj": {
+                "projectPath": "D:\\PetProject\\taskly-backend\\Taskly_Infrastructure\\Taskly_Infrastructure.csproj"
               }
             }
           }
@@ -106,34 +108,36 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.203/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "/Users/PC10/taskly/Taskly_Server/Taskly_Application/Taskly_Application.csproj": {
+    "D:\\PetProject\\taskly-backend\\Taskly_Application\\Taskly_Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/PC10/taskly/Taskly_Server/Taskly_Application/Taskly_Application.csproj",
+        "projectUniqueName": "D:\\PetProject\\taskly-backend\\Taskly_Application\\Taskly_Application.csproj",
         "projectName": "Taskly_Application",
-        "projectPath": "/Users/PC10/taskly/Taskly_Server/Taskly_Application/Taskly_Application.csproj",
-        "packagesPath": "/Users/PC10/.nuget/packages/",
-        "outputPath": "/Users/PC10/taskly/Taskly_Server/Taskly_Application/obj/",
+        "projectPath": "D:\\PetProject\\taskly-backend\\Taskly_Application\\Taskly_Application.csproj",
+        "packagesPath": "C:\\Users\\Назар\\.nuget\\packages\\",
+        "outputPath": "D:\\PetProject\\taskly-backend\\Taskly_Application\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/PC10/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\Назар\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "/Users/PC10/taskly/Taskly_Server/Taskly_Domain/Taskly_Domain.csproj": {
-                "projectPath": "/Users/PC10/taskly/Taskly_Server/Taskly_Domain/Taskly_Domain.csproj"
+              "D:\\PetProject\\taskly-backend\\Taskly_Domain\\Taskly_Domain.csproj": {
+                "projectPath": "D:\\PetProject\\taskly-backend\\Taskly_Domain\\Taskly_Domain.csproj"
               }
             }
           }
@@ -193,26 +197,28 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.203/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "/Users/PC10/taskly/Taskly_Server/Taskly_Contracts/Taskly_Contracts.csproj": {
+    "D:\\PetProject\\taskly-backend\\Taskly_Contracts\\Taskly_Contracts.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/PC10/taskly/Taskly_Server/Taskly_Contracts/Taskly_Contracts.csproj",
+        "projectUniqueName": "D:\\PetProject\\taskly-backend\\Taskly_Contracts\\Taskly_Contracts.csproj",
         "projectName": "Taskly_Contracts",
-        "projectPath": "/Users/PC10/taskly/Taskly_Server/Taskly_Contracts/Taskly_Contracts.csproj",
-        "packagesPath": "/Users/PC10/.nuget/packages/",
-        "outputPath": "/Users/PC10/taskly/Taskly_Server/Taskly_Contracts/obj/",
+        "projectPath": "D:\\PetProject\\taskly-backend\\Taskly_Contracts\\Taskly_Contracts.csproj",
+        "packagesPath": "C:\\Users\\Назар\\.nuget\\packages\\",
+        "outputPath": "D:\\PetProject\\taskly-backend\\Taskly_Contracts\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/PC10/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\Назар\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -256,26 +262,28 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.203/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "/Users/PC10/taskly/Taskly_Server/Taskly_Domain/Taskly_Domain.csproj": {
+    "D:\\PetProject\\taskly-backend\\Taskly_Domain\\Taskly_Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/PC10/taskly/Taskly_Server/Taskly_Domain/Taskly_Domain.csproj",
+        "projectUniqueName": "D:\\PetProject\\taskly-backend\\Taskly_Domain\\Taskly_Domain.csproj",
         "projectName": "Taskly_Domain",
-        "projectPath": "/Users/PC10/taskly/Taskly_Server/Taskly_Domain/Taskly_Domain.csproj",
-        "packagesPath": "/Users/PC10/.nuget/packages/",
-        "outputPath": "/Users/PC10/taskly/Taskly_Server/Taskly_Domain/obj/",
+        "projectPath": "D:\\PetProject\\taskly-backend\\Taskly_Domain\\Taskly_Domain.csproj",
+        "packagesPath": "C:\\Users\\Назар\\.nuget\\packages\\",
+        "outputPath": "D:\\PetProject\\taskly-backend\\Taskly_Domain\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/PC10/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\Назар\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -323,37 +331,39 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.203/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "/Users/PC10/taskly/Taskly_Server/Taskly_Infrastructure/Taskly_Infrastructure.csproj": {
+    "D:\\PetProject\\taskly-backend\\Taskly_Infrastructure\\Taskly_Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/PC10/taskly/Taskly_Server/Taskly_Infrastructure/Taskly_Infrastructure.csproj",
+        "projectUniqueName": "D:\\PetProject\\taskly-backend\\Taskly_Infrastructure\\Taskly_Infrastructure.csproj",
         "projectName": "Taskly_Infrastructure",
-        "projectPath": "/Users/PC10/taskly/Taskly_Server/Taskly_Infrastructure/Taskly_Infrastructure.csproj",
-        "packagesPath": "/Users/PC10/.nuget/packages/",
-        "outputPath": "/Users/PC10/taskly/Taskly_Server/Taskly_Infrastructure/obj/",
+        "projectPath": "D:\\PetProject\\taskly-backend\\Taskly_Infrastructure\\Taskly_Infrastructure.csproj",
+        "packagesPath": "C:\\Users\\Назар\\.nuget\\packages\\",
+        "outputPath": "D:\\PetProject\\taskly-backend\\Taskly_Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/PC10/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\Назар\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "/Users/PC10/taskly/Taskly_Server/Taskly_Application/Taskly_Application.csproj": {
-                "projectPath": "/Users/PC10/taskly/Taskly_Server/Taskly_Application/Taskly_Application.csproj"
+              "D:\\PetProject\\taskly-backend\\Taskly_Application\\Taskly_Application.csproj": {
+                "projectPath": "D:\\PetProject\\taskly-backend\\Taskly_Application\\Taskly_Application.csproj"
               },
-              "/Users/PC10/taskly/Taskly_Server/Taskly_Domain/Taskly_Domain.csproj": {
-                "projectPath": "/Users/PC10/taskly/Taskly_Server/Taskly_Domain/Taskly_Domain.csproj"
+              "D:\\PetProject\\taskly-backend\\Taskly_Domain\\Taskly_Domain.csproj": {
+                "projectPath": "D:\\PetProject\\taskly-backend\\Taskly_Domain\\Taskly_Domain.csproj"
               }
             }
           }
@@ -401,7 +411,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.203/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
