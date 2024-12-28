@@ -116,7 +116,7 @@ public static class DependencyInjection
 
     public static IServiceCollection AddIdentity(this IServiceCollection services)
     {
-        services.AddIdentity<User, IdentityRole<Guid>>(conf =>
+        services.AddIdentity<UserEntity, IdentityRole<Guid>>(conf =>
         {
             conf.Password.RequiredLength = 10;
             conf.Password.RequireDigit = false;

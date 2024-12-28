@@ -1,6 +1,6 @@
 ﻿namespace Taskly_Domain.Entities;
 
-public class VerificationEmail
+public class VerificationEmailEntity
 {
     public Guid Id { get; set; }
     public required string Email { get; init; }
