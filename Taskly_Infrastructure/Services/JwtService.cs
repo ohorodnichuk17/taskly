@@ -12,11 +12,11 @@ namespace Taskly_Infrastructure.Services;
 public class JwtService(IOptions<AuthanticationSettings> options) : IJwtService
 {
     private readonly string JwtKey = options.Value.JwtKey;
-    public string GetJwtToken(User user)
+    public string GetJwtToken(UserEntity userEntity)
     {
         var claimes = new Claim[] {
-        new Claim(type:"Id",value:user.Id.ToString()),
-        new Claim(type:ClaimTypes.Name,value:user.Email!)
+        new Claim(type:"Id",value:userEntity.Id.ToString()),
+        new Claim(type:ClaimTypes.Name,value:userEntity.Email!)
         };
 
         var token = new JwtSecurityToken(

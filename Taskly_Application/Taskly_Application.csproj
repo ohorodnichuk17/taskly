@@ -16,6 +16,7 @@
 
     <ItemGroup>
       <Folder Include="Common\Interfaces\" />
+      <Folder Include="Requests\Authentication\Query\" />
     </ItemGroup>
 
     <PropertyGroup>

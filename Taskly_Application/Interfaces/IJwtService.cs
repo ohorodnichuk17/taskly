@@ -4,5 +4,5 @@ namespace Taskly_Application.Interfaces;
 
 public interface IJwtService
 {
-   string GetJwtToken(User user);
+   string GetJwtToken(UserEntity userEntity);
 }
