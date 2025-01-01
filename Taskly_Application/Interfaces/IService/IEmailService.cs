@@ -1,4 +1,4 @@
-﻿namespace Taskly_Application.Interfaces;
+﻿namespace Taskly_Application.Interfaces.IService;
 
 public interface IEmailService
 {

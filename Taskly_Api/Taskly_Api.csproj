@@ -8,6 +8,13 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Compile Remove="Requests\**" />
+      <Content Remove="Requests\**" />
+      <EmbeddedResource Remove="Requests\**" />
+      <None Remove="Requests\**" />
+    </ItemGroup>
+
+    <ItemGroup>
         <PackageReference Include="Mapster" Version="7.4.0" />
         <PackageReference Include="Mapster.DependencyInjection" Version="1.0.1" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.11" />
@@ -23,13 +30,13 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Taskly_Contracts\Taskly_Contracts.csproj" />
       <ProjectReference Include="..\Taskly_Application\Taskly_Application.csproj" />
       <ProjectReference Include="..\Taskly_Infrastructure\Taskly_Infrastructure.csproj" />
     </ItemGroup>
 
     <ItemGroup>
       <Folder Include="images\" />
+      <Folder Include="Response\Authenticate\" />
     </ItemGroup>
 
 </Project>

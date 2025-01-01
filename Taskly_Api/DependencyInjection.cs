@@ -12,10 +12,14 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Taskly_Api.Common;
 using Taskly_Api.Common.Errors;
+using Taskly_Api.MapsterConfigs;
 using Taskly_Application.Interfaces;
+using Taskly_Application.Interfaces.IRepository;
+using Taskly_Application.Interfaces.IService;
 using Taskly_Domain.Entities;
 using Taskly_Domain.Other;
 using Taskly_Infrastructure.Common.Persistence;
+using Taskly_Infrastructure.Repositories;
 using Taskly_Infrastructure.Services;
 
 namespace Taskly_Api;
@@ -26,7 +30,9 @@ public static class DependencyInjection
     {
         services.AddControllers();
         services.AddSingleton<ProblemDetailsFactory, TasklyProblemDetailsFactory>();
-        services.AddScoped<IJwtService, JwtService>();   
+        services.AddScoped<IJwtService, JwtService>();
+        services.AddScoped<IEmailService, EmailService>();
+        services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
         services.AddHostedService<VerificationEmailCleaner>();
         services.AddSwagger();
         services.AddMappings();
@@ -57,6 +63,8 @@ public static class DependencyInjection
 
         services.AddSingleton(config);
         services.AddScoped<IMapper, ServiceMapper>();
+
+        AuthenticateMapsterConfig.Config();
 
         return services;
     }
