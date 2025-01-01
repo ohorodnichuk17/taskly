@@ -135,6 +135,18 @@ protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         entity.HasKey(v => v.Id);
     });
-}
+    
+    // BoardTeamEntity
+    modelBuilder.Entity<BoardTeamEntity>(entity =>
+    {
+        entity.HasKey(bt => bt.Id);
 
+        entity.HasMany(bt => bt.Members)
+              .WithMany();
+
+        entity.HasOne(bt => bt.Board)
+              .WithOne()
+              .HasForeignKey<BoardTeamEntity>(bt => bt.Id);
+    });
+}
 }
