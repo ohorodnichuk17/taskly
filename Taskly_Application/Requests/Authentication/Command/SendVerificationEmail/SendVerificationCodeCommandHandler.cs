@@ -13,7 +13,7 @@ public class SendVerificationCodeCommandHandler(
     {
         var isUserExist = await authenticationRepository.IsUserExist(request.Email);
 
-        if (isUserExist) return Error.Conflict("User with this email already existі");
+        if (isUserExist) return Error.Conflict("User with this email already exist");
 
         var code = CodeGenerator.GenerateCode();
 

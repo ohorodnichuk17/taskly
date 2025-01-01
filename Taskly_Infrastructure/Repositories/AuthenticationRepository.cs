@@ -40,4 +40,19 @@ public class AuthenticationRepository(UserManager<UserEntity> userManager, Taskl
             await tasklyDbContext.SaveChangesAsync();
         }
     }
+
+    public async Task CreateNewUser(UserEntity NewUser,string Password)
+    {
+        await userManager.AddPasswordAsync(NewUser, Password);
+        await tasklyDbContext.Users.AddAsync(NewUser);
+        await tasklyDbContext.SaveChangesAsync();
+    }
+    public async Task<UserEntity?> GetUserByEmail(string Email)
+    {
+        return await userManager.FindByEmailAsync(Email);
+    }
+    public async Task<bool> IsPasswordValid(UserEntity User, string Password)
+    {
+        return await userManager.CheckPasswordAsync(User, Password);
+    }
 }

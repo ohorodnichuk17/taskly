@@ -26,6 +26,7 @@
 // app.Run();
 
 using Taskly_Api;
+using Taskly_Api.Common;
 using Taskly_Application;
 using Taskly_Infrastructure;
 
@@ -61,6 +62,7 @@ app.UseCors(options => options.SetIsOriginAllowed(origin => true)
     .AllowAnyHeader()
 );
 
+DataInitializer.Initialize(app);
 app.UseRouting();
 
 app.UseAuthentication();

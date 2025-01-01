@@ -31,6 +31,7 @@ public static class DependencyInjection
         services.AddScoped<IJwtService, JwtService>();
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
+        services.AddScoped<IAvatarRepository, AvatarRepository>();
         services.AddHostedService<VerificationEmailCleaner>();
         services.AddSwagger();
         services.AddMappings();
