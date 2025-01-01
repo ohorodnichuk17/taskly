@@ -16,7 +16,6 @@ public class TasklyDbContext : IdentityDbContext<UserEntity,IdentityRole<Guid>,G
     public DbSet<CommentEntity> Comments { get; set; }
     public DbSet<ToDoTableEntity> ToDoTables { get; set; }
     public DbSet<ToDoItemEntity> ToDoItems { get; set; }
-    public DbSet<BoardTeamEntity> BoardTeams { get; set; }
     public DbSet<VerificationEmailEntity> EmailVerifications { get; set; }
     
     public TasklyDbContext() : base()
@@ -26,129 +25,126 @@ public class TasklyDbContext : IdentityDbContext<UserEntity,IdentityRole<Guid>,G
     public TasklyDbContext(DbContextOptions<TasklyDbContext> options) : base(options)
     {
     }
-
-protected override void OnModelCreating(ModelBuilder modelBuilder)
-{
-    base.OnModelCreating(modelBuilder);
-
-    // UserEntity
-    modelBuilder.Entity<UserEntity>(entity =>
-    {
-        entity.HasOne(u => u.Avatar)
-              .WithOne()
-              .HasForeignKey<UserEntity>(u => u.Id);
-
-        entity.HasMany(u => u.Boards)
-              .WithMany();
-
-        entity.HasMany(u => u.ToDoTables)
-              .WithMany();
-    });
-
-    // AvatarEntity
-    modelBuilder.Entity<AvatarEntity>(entity =>
-    {
-        entity.HasKey(a => a.Id);
-    });
-
-    // BoardEntity
-    modelBuilder.Entity<BoardEntity>(entity =>
-    {
-        entity.HasKey(b => b.Id);
-
-        entity.HasMany(b => b.BoardTemplates)
-              .WithOne()
-              .OnDelete(DeleteBehavior.Cascade);
-
-        entity.HasMany(b => b.CardLists)
-              .WithOne()
-              .OnDelete(DeleteBehavior.Cascade);
-    });
-
-    // BoardTemplateEntity
-    modelBuilder.Entity<BoardTemplateEntity>(entity =>
-    {
-        entity.HasKey(bt => bt.Id);
-    });
-
-    // CardEntity
-    modelBuilder.Entity<CardEntity>(entity =>
-    {
-        entity.HasKey(c => c.Id);
-
-        entity.HasMany(c => c.Comments)
-              .WithOne()
-              .OnDelete(DeleteBehavior.Cascade);
-
-        entity.HasOne(c => c.TimeRangeEntity)
-              .WithOne()
-              .HasForeignKey<CardEntity>(c => c.Id);
-    });
-
-    // CardListEntity
-    modelBuilder.Entity<CardListEntity>(entity =>
-    {
-        entity.HasKey(cl => cl.Id);
-
-        entity.HasMany(cl => cl.Cards)
-              .WithOne()
-              .OnDelete(DeleteBehavior.Cascade);
-    });
-
-    // CommentEntity
-    modelBuilder.Entity<CommentEntity>(entity =>
-    {
-        entity.HasKey(c => c.Id);
-    });
-
-    // TimeRangeEntity
-    modelBuilder.Entity<TimeRangeEntity>(entity =>
-    {
-        entity.HasKey(tr => tr.Id);
-    });
-
-    // ToDoItemEntity
-    modelBuilder.Entity<ToDoItemEntity>(entity =>
-    {
-        entity.HasKey(td => td.Id);
-
-        entity.HasOne(td => td.ToDoTable)
-              .WithMany(tt => tt.ToDoItems)
-              .HasForeignKey(td => td.ToDoTableId);
-
-        entity.HasOne(td => td.TimeRange)
-              .WithOne()
-              .HasForeignKey<ToDoItemEntity>(td => td.Id);
-    });
-
-    // ToDoTableEntity
-    modelBuilder.Entity<ToDoTableEntity>(entity =>
-    {
-        entity.HasKey(tt => tt.Id);
-
-        entity.HasMany(tt => tt.ToDoItems)
-              .WithOne(td => td.ToDoTable)
-              .OnDelete(DeleteBehavior.Cascade);
-    });
-
-    // VerificationEmailEntity
-    modelBuilder.Entity<VerificationEmailEntity>(entity =>
-    {
-        entity.HasKey(v => v.Id);
-    });
     
-    // BoardTeamEntity
-    modelBuilder.Entity<BoardTeamEntity>(entity =>
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        entity.HasKey(bt => bt.Id);
+        base.OnModelCreating(modelBuilder);
+        
+        // UserEntity
+        modelBuilder.Entity<UserEntity>(entity =>
+        {
+            entity.HasMany(u => u.Boards)
+                .WithMany(b => b.Members)
+                .UsingEntity<Dictionary<string, object>>(
+                    "UserBoard",
+                    j => j.HasOne<BoardEntity>().WithMany().HasForeignKey("BoardId"),
+                    j => j.HasOne<UserEntity>().WithMany().HasForeignKey("UserId")
+                );
 
-        entity.HasOne(bt => bt.Board)
-              .WithOne()
-              .OnDelete(DeleteBehavior.Cascade);
+            entity.HasMany(u => u.ToDoTables)
+                .WithMany();
 
-        entity.HasMany(bt => bt.Members);
-    });
+            entity.HasOne(u => u.Avatar)
+                .WithMany(a => a.Users)
+                .HasForeignKey(u => u.AvatarId)
+                .OnDelete(DeleteBehavior.SetNull);
+        });
 
+        // AvatarEntity
+        modelBuilder.Entity<AvatarEntity>(entity =>
+        {
+            entity.HasKey(a => a.Id);
 
-}
+            entity.HasMany(a => a.Users)
+                .WithOne(u => u.Avatar)  
+                .HasForeignKey(u => u.AvatarId)  
+                .OnDelete(DeleteBehavior.SetNull);  
+        });
+        
+        // BoardEntity
+        modelBuilder.Entity<BoardEntity>(entity =>
+        {
+            entity.HasKey(b => b.Id);
+
+            entity.HasMany(b => b.BoardTemplates)
+                .WithOne()
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasMany(b => b.CardLists)
+                .WithOne()
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // BoardTemplateEntity
+        modelBuilder.Entity<BoardTemplateEntity>(entity =>
+        {
+            entity.HasKey(bt => bt.Id);
+        });
+
+        // CardEntity
+        modelBuilder.Entity<CardEntity>(entity =>
+        {
+            entity.HasKey(c => c.Id);
+
+            entity.HasMany(c => c.Comments)
+                  .WithOne()
+                  .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(c => c.TimeRangeEntity)
+                  .WithOne()
+                  .HasForeignKey<CardEntity>(c => c.Id);
+        });
+
+        // CardListEntity
+        modelBuilder.Entity<CardListEntity>(entity =>
+        {
+            entity.HasKey(cl => cl.Id);
+
+            entity.HasMany(cl => cl.Cards)
+                  .WithOne()
+                  .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // CommentEntity
+        modelBuilder.Entity<CommentEntity>(entity =>
+        {
+            entity.HasKey(c => c.Id);
+        });
+
+        // TimeRangeEntity
+        modelBuilder.Entity<TimeRangeEntity>(entity =>
+        {
+            entity.HasKey(tr => tr.Id);
+        });
+
+        // ToDoItemEntity
+        modelBuilder.Entity<ToDoItemEntity>(entity =>
+        {
+            entity.HasKey(td => td.Id);
+
+            entity.HasOne(td => td.ToDoTable)
+                  .WithMany(tt => tt.ToDoItems)
+                  .HasForeignKey(td => td.ToDoTableId);
+
+            entity.HasOne(td => td.TimeRange)
+                  .WithOne()
+                  .HasForeignKey<ToDoItemEntity>(td => td.Id);
+        });
+
+        // ToDoTableEntity
+        modelBuilder.Entity<ToDoTableEntity>(entity =>
+        {
+            entity.HasKey(tt => tt.Id);
+
+            entity.HasMany(tt => tt.ToDoItems)
+                  .WithOne(td => td.ToDoTable)
+                  .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // VerificationEmailEntity
+        modelBuilder.Entity<VerificationEmailEntity>(entity =>
+        {
+            entity.HasKey(v => v.Id);
+        });
+    }
 }

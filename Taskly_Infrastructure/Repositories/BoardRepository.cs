@@ -11,12 +11,11 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
     {
         if (boardId == Guid.Empty || userId == Guid.Empty)
             throw new ArgumentException("BoardId and UserId must not be empty");
-
+        
         var board = await context.Boards
-            .Include(b => b.BoardTeam)  
-            .ThenInclude(bt => bt.Members)  
+            .Include(bt => bt.Members)  
             .FirstOrDefaultAsync(b => b.Id == boardId);
-
+        
         if (board == null)
             throw new KeyNotFoundException("Board not found");
 
@@ -24,12 +23,20 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
         if (user == null)
             throw new KeyNotFoundException("User not found");
 
-        if (board.BoardTeam == null)
+        if (board.Members == null)
             throw new InvalidOperationException("Board team is not initialized");
 
-        board.BoardTeam.Members.Add(user);
+        board.IsTeamBoard = true;
+        board.Members.Add(user);
     
-        await context.SaveChangesAsync();
+        try
+        {
+            await context.SaveChangesAsync();
+        }
+        catch (DbUpdateException ex)
+        {
+            throw new InvalidOperationException("Error updating the database.", ex);
+        }
     }
 
     public Task RemoveMemberFromBoard(Guid boardId, Guid userId)
