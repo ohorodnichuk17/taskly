@@ -188,6 +188,9 @@ namespace Taskly_Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<Guid>("BoardTeamId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
@@ -198,7 +201,33 @@ namespace Taskly_Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BoardTeamId");
+
                     b.ToTable("Boards");
+                });
+
+            modelBuilder.Entity("Taskly_Domain.Entities.BoardTeamEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("BoardId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("IdOfBoardLeader")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BoardId")
+                        .IsUnique();
+
+                    b.ToTable("BoardTeams");
                 });
 
             modelBuilder.Entity("Taskly_Domain.Entities.BoardTemplateEntity", b =>
@@ -353,6 +382,9 @@ namespace Taskly_Infrastructure.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("integer");
 
+                    b.Property<Guid?>("BoardTeamEntityId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("text");
@@ -401,6 +433,8 @@ namespace Taskly_Infrastructure.Migrations
                         .HasColumnType("character varying(256)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BoardTeamEntityId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -517,6 +551,28 @@ namespace Taskly_Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Taskly_Domain.Entities.BoardEntity", b =>
+                {
+                    b.HasOne("Taskly_Domain.Entities.BoardTeamEntity", "BoardTeam")
+                        .WithMany()
+                        .HasForeignKey("BoardTeamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BoardTeam");
+                });
+
+            modelBuilder.Entity("Taskly_Domain.Entities.BoardTeamEntity", b =>
+                {
+                    b.HasOne("Taskly_Domain.Entities.BoardEntity", "Board")
+                        .WithOne()
+                        .HasForeignKey("Taskly_Domain.Entities.BoardTeamEntity", "BoardId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Board");
+                });
+
             modelBuilder.Entity("Taskly_Domain.Entities.BoardTemplateEntity", b =>
                 {
                     b.HasOne("Taskly_Domain.Entities.BoardEntity", null)
@@ -578,6 +634,10 @@ namespace Taskly_Infrastructure.Migrations
 
             modelBuilder.Entity("Taskly_Domain.Entities.UserEntity", b =>
                 {
+                    b.HasOne("Taskly_Domain.Entities.BoardTeamEntity", null)
+                        .WithMany("Members")
+                        .HasForeignKey("BoardTeamEntityId");
+
                     b.HasOne("Taskly_Domain.Entities.AvatarEntity", "Avatar")
                         .WithOne()
                         .HasForeignKey("Taskly_Domain.Entities.UserEntity", "Id")
@@ -611,6 +671,11 @@ namespace Taskly_Infrastructure.Migrations
                     b.Navigation("BoardTemplates");
 
                     b.Navigation("CardLists");
+                });
+
+            modelBuilder.Entity("Taskly_Domain.Entities.BoardTeamEntity", b =>
+                {
+                    b.Navigation("Members");
                 });
 
             modelBuilder.Entity("Taskly_Domain.Entities.CardEntity", b =>

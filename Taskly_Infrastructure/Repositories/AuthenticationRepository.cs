@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Taskly_Application.Interfaces;
+using Taskly_Application.Interfaces.IRepository;
 using Taskly_Domain.Entities;
 using Taskly_Infrastructure.Common.Persistence;
 

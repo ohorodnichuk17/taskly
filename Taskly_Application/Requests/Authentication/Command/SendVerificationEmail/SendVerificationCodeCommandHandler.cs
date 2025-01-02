@@ -2,6 +2,8 @@
 using MediatR;
 using Taskly_Application.Common.Helpers;
 using Taskly_Application.Interfaces;
+using Taskly_Application.Interfaces.IRepository;
+using Taskly_Application.Interfaces.IService;
 
 namespace Taskly_Application.Requests.Authentication.Command.SendVerificationEmail;
 

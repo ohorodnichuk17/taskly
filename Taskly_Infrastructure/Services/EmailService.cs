@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Mail;
 using Taskly_Application.Interfaces;
+using Taskly_Application.Interfaces.IService;
 using Taskly_Domain.Other;
 
 namespace Taskly_Infrastructure.Services;

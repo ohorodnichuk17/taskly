@@ -30,7 +30,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Taskly_Contracts\Taskly_Contracts.csproj" />
       <ProjectReference Include="..\Taskly_Application\Taskly_Application.csproj" />
       <ProjectReference Include="..\Taskly_Infrastructure\Taskly_Infrastructure.csproj" />
     </ItemGroup>

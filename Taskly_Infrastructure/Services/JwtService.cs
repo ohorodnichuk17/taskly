@@ -4,6 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Taskly_Application.Interfaces;
+using Taskly_Application.Interfaces.IService;
 using Taskly_Domain.Entities;
 using Taskly_Domain.Other;
 

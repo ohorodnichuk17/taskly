@@ -14,6 +14,8 @@ using Taskly_Api.Common;
 using Taskly_Api.Common.Errors;
 using Taskly_Api.MapsterConfigs;
 using Taskly_Application.Interfaces;
+using Taskly_Application.Interfaces.IRepository;
+using Taskly_Application.Interfaces.IService;
 using Taskly_Domain.Entities;
 using Taskly_Domain.Other;
 using Taskly_Infrastructure.Common.Persistence;

@@ -16,6 +16,7 @@ public class TasklyDbContext : IdentityDbContext<UserEntity,IdentityRole<Guid>,G
     public DbSet<CommentEntity> Comments { get; set; }
     public DbSet<ToDoTableEntity> ToDoTables { get; set; }
     public DbSet<ToDoItemEntity> ToDoItems { get; set; }
+    public DbSet<BoardTeamEntity> BoardTeams { get; set; }
     public DbSet<VerificationEmailEntity> EmailVerifications { get; set; }
     
     public TasklyDbContext() : base()
@@ -135,6 +136,19 @@ protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         entity.HasKey(v => v.Id);
     });
-}
+    
+    // BoardTeamEntity
+    modelBuilder.Entity<BoardTeamEntity>(entity =>
+    {
+        entity.HasKey(bt => bt.Id);
 
+        entity.HasOne(bt => bt.Board)
+              .WithOne()
+              .OnDelete(DeleteBehavior.Cascade);
+
+        entity.HasMany(bt => bt.Members);
+    });
+
+
+}
 }
