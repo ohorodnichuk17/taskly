@@ -44,7 +44,7 @@ namespace Taskly_Api.Controllers
         }
 
         [HttpGet("login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
+        public async Task<IActionResult> Login([FromQuery] LoginRequest loginRequest)
         {
             var result = await _sender.Send(_mapper.Map<LoginQuery>(loginRequest));
 

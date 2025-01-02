@@ -1,6 +1,8 @@
 ﻿using ErrorOr;
 using MediatR;
 using Taskly_Application.Interfaces;
+using Taskly_Application.Interfaces.IRepository;
+using Taskly_Application.Interfaces.IService;
 
 namespace Taskly_Application.Requests.Authentication.Query.Login;
 

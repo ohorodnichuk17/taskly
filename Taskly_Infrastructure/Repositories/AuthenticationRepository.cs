@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using ErrorOr;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Taskly_Application.Interfaces;
 using Taskly_Application.Interfaces.IRepository;
@@ -42,11 +43,14 @@ public class AuthenticationRepository(UserManager<UserEntity> userManager, Taskl
         }
     }
 
-    public async Task CreateNewUser(UserEntity NewUser,string Password)
+    public async Task<ErrorOr<UserEntity>> CreateNewUser(UserEntity NewUser,string Password)
     {
-        await userManager.AddPasswordAsync(NewUser, Password);
-        await tasklyDbContext.Users.AddAsync(NewUser);
-        await tasklyDbContext.SaveChangesAsync();
+        var result = await userManager.CreateAsync(NewUser,Password);
+
+        if(!result.Succeeded && result.Errors.Any())
+            return Error.Conflict(result.Errors.FirstOrDefault()!.Description);
+
+        return NewUser;
     }
     public async Task<UserEntity?> GetUserByEmail(string Email)
     {

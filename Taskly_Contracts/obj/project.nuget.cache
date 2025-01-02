@@ -1,6 +1,14 @@
 {
   "version": 2,
+<<<<<<< HEAD
   "dgSpecHash": "nswhaqp+MztpJw0JfZNhzYLgQJlKpmpio7r6OzHg6BzAWMRuD+LUhh4YjXxpU1eZ1yhfQBax91N7ldztwJcE3w==",
+=======
+<<<<<<< HEAD
+  "dgSpecHash": "UnIQYVyIa1TRgG+MK86Bkm/l8AYHhRDfIuqg8l46YBT3HIwgreiXMR87Gc5uM9JlxYc+tRHgO0bHkijVgLbWrg==",
+=======
+  "dgSpecHash": "nswhaqp+MztpJw0JfZNhzYLgQJlKpmpio7r6OzHg6BzAWMRuD+LUhh4YjXxpU1eZ1yhfQBax91N7ldztwJcE3w==",
+>>>>>>> friend/main
+>>>>>>> friend/main
   "success": true,
   "projectFilePath": "D:\\PetProject\\taskly-backend\\Taskly_Contracts\\Taskly_Contracts.csproj",
   "expectedPackageFiles": [

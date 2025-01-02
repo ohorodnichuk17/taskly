@@ -1,6 +1,8 @@
 ﻿using ErrorOr;
 using MediatR;
 using Taskly_Application.Interfaces;
+using Taskly_Application.Interfaces.IRepository;
+using Taskly_Application.Interfaces.IService;
 using Taskly_Domain.Entities;
 
 namespace Taskly_Application.Requests.Authentication.Command.Register;
@@ -22,12 +24,15 @@ public class RegisterCommandHandler(
             Id = Guid.NewGuid(),
             Email = request.Email,
             UserName = request.Email,
-            Avatar = avatar
+            AvatarId = avatar.Id
         };
 
-        await authenticationRepository.CreateNewUser(newUser, request.Password);
+        var result = await authenticationRepository.CreateNewUser(newUser, request.Password);
 
-        var token = jwtService.GetJwtToken(newUser);
+        if (result.IsError)
+            return result.FirstError;
+
+        var token = jwtService.GetJwtToken(result.Value);
 
         return token;
     }
