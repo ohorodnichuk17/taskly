@@ -484,3 +484,9 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+
+./Taskly_Infrastructure/obj
+./Taskly_Domain/obj
+./Taskly_Application/obj
+./Taskly_Api/obj
