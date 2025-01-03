@@ -8,8 +8,6 @@ public interface IBoardRepository : IRepository<BoardEntity>
     Task RemoveMemberFromBoard(Guid boardId, Guid userId);
     Task<IEnumerable<UserEntity>> GetMembersOfBoard(Guid boardId);
     
-    Task AddCardToBoard(Guid boardId, CardEntity card);
-    Task RemoveCardFromBoard(Guid boardId, Guid cardId);
-    
-    Task UpdateBoardTemplate(Guid boardId, string template);
+    Task AddCardListToBoard(Guid boardId, CardListEntity cardList);
+    Task RemoveCardListFromBoard(Guid boardId, Guid cardListId);
 }

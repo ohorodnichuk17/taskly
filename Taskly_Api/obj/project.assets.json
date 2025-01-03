@@ -4245,37 +4245,35 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Назар\\.nuget\\packages\\": {}
+    "/Users/PC10/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\PetProject\\taskly-backend\\Taskly_Api\\Taskly_Api.csproj",
+      "projectUniqueName": "/Users/PC10/taskly/Taskly_Server/Taskly_Api/Taskly_Api.csproj",
       "projectName": "Taskly_Api",
-      "projectPath": "D:\\PetProject\\taskly-backend\\Taskly_Api\\Taskly_Api.csproj",
-      "packagesPath": "C:\\Users\\Назар\\.nuget\\packages\\",
-      "outputPath": "D:\\PetProject\\taskly-backend\\Taskly_Api\\obj\\",
+      "projectPath": "/Users/PC10/taskly/Taskly_Server/Taskly_Api/Taskly_Api.csproj",
+      "packagesPath": "/Users/PC10/.nuget/packages/",
+      "outputPath": "/Users/PC10/taskly/Taskly_Server/Taskly_Api/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Назар\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "/Users/PC10/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "D:\\PetProject\\taskly-backend\\Taskly_Application\\Taskly_Application.csproj": {
-              "projectPath": "D:\\PetProject\\taskly-backend\\Taskly_Application\\Taskly_Application.csproj"
+            "/Users/PC10/taskly/Taskly_Server/Taskly_Application/Taskly_Application.csproj": {
+              "projectPath": "/Users/PC10/taskly/Taskly_Server/Taskly_Application/Taskly_Application.csproj"
             },
-            "D:\\PetProject\\taskly-backend\\Taskly_Infrastructure\\Taskly_Infrastructure.csproj": {
-              "projectPath": "D:\\PetProject\\taskly-backend\\Taskly_Infrastructure\\Taskly_Infrastructure.csproj"
+            "/Users/PC10/taskly/Taskly_Server/Taskly_Infrastructure/Taskly_Infrastructure.csproj": {
+              "projectPath": "/Users/PC10/taskly/Taskly_Server/Taskly_Infrastructure/Taskly_Infrastructure.csproj"
             }
           }
         }
@@ -4348,17 +4346,11 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.203/PortableRuntimeIdentifierGraph.json"
       }
     }
   },
   "logs": [
-    {
-      "code": "Undefined",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Problem reading the cache file D:\\PetProject\\taskly-backend\\Taskly_Api\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
-    },
     {
       "code": "NU1608",
       "level": "Warning",
