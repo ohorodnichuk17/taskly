@@ -8,13 +8,12 @@ using Taskly_Domain.Entities;
 namespace Taskly_Application.Requests.Authentication.Command.Register;
 
 public class RegisterCommandHandler(
-    IAuthenticationRepository authenticationRepository,
-    IAvatarRepository avatarRepository,
+    IUnitOfWork unitOfWork,
     IJwtService jwtService) : IRequestHandler<RegisterCommand, ErrorOr<string>>
 {
     public async Task<ErrorOr<string>> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
-        var avatar = await avatarRepository.GetAvatarById(request.AvatarId);
+        var avatar = await unitOfWork.Avatar.GetAvatarById(request.AvatarId);
 
         if (avatar == null)
             return Error.NotFound("Avatar not found");
@@ -27,7 +26,7 @@ public class RegisterCommandHandler(
             AvatarId = avatar.Id
         };
 
-        var result = await authenticationRepository.CreateNewUser(newUser, request.Password);
+        var result = await unitOfWork.Authentication.CreateNewUser(newUser, request.Password);
 
         if (result.IsError)
             return result.FirstError;

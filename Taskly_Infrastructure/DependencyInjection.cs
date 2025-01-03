@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,9 +11,7 @@ public static class DependencyInjection
        this IServiceCollection services,
        ConfigurationManager configuration)
     {
-        services
-            .AddPersistence(configuration)
-            .AddRepositories();
+        services.AddPersistence(configuration);
 
         return services;
     }
@@ -33,11 +30,6 @@ public static class DependencyInjection
         });
 
 
-        return services;
-    }
-
-    private static IServiceCollection AddRepositories(this IServiceCollection services)
-    {
         return services;
     }
 }
