@@ -2,12 +2,22 @@ using Microsoft.EntityFrameworkCore;
 using Taskly_Application.Interfaces.IRepository;
 using Taskly_Domain.Entities;
 using Taskly_Infrastructure.Common.Persistence;
+using Taskly_Infrastructure.Common.Seeder;
 
 namespace Taskly_Infrastructure.Repositories;
 
 public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(context), IBoardRepository
 {
-    public async Task AddMemberToBoard(Guid boardId, Guid userId)
+    // public Task<BoardEntity> CreateDefaultBoardAsync(BoardEntity board)
+    // {
+    //     if (board.Members != null)
+    //         board.IsTeamBoard = true;
+    //     
+    //     board.CardLists = DataInitializer.GetDefaultCardLists();
+    //     return Task.FromResult(board);
+    // }
+
+    public async Task AddMemberToBoardAsync(Guid boardId, Guid userId)
     {
         var (board, user) = await GetBoardAndUserAsync(boardId, userId);
         ValidateBoardMembers(board);
@@ -17,7 +27,7 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
         await SaveChangesAsync("Error adding member to the board.");
     }
 
-    public async Task RemoveMemberFromBoard(Guid boardId, Guid userId)
+    public async Task RemoveMemberFromBoardAsync(Guid boardId, Guid userId)
     {
         var (board, user) = await GetBoardAndUserAsync(boardId, userId);
         ValidateBoardMembers(board);
@@ -29,25 +39,25 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
         await SaveChangesAsync("Error removing member from the board.");
     }
 
-    public async Task<IEnumerable<UserEntity>> GetMembersOfBoard(Guid boardId)
+    public async Task<IEnumerable<UserEntity>> GetMembersOfBoardAsync(Guid boardId)
     {
-        var board = await GetBoard(boardId);
+        var board = await GetBoardAsync(boardId);
         ValidateBoardMembers(board);
         return board.Members ?? Enumerable.Empty<UserEntity>();
     }
 
-    public async Task AddCardListToBoard(Guid boardId, CardListEntity cardList)
+    public async Task AddCardListToBoardAsync(Guid boardId, CardListEntity cardList)
     {
         if(cardList == null)
             throw new ArgumentNullException(nameof(cardList), "CardList must not be null");
-        var board = await GetBoard(boardId);
+        var board = await GetBoardAsync(boardId);
         board.CardLists.Add(cardList);
         await SaveChangesAsync("Error adding CardList to the board.");
     }
 
-    public async Task RemoveCardListFromBoard(Guid boardId, Guid cardListId)
+    public async Task RemoveCardListFromBoardAsync(Guid boardId, Guid cardListId)
     {
-        var board = await GetBoard(boardId);
+        var board = await GetBoardAsync(boardId);
         if(cardListId == Guid.Empty)
             throw new ArgumentException("CardListId must not be empty");
         var cardList = board.CardLists.FirstOrDefault(c => c.Id == cardListId);
@@ -61,7 +71,7 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
     {
         if (userId == Guid.Empty)
             throw new ArgumentException("BoardId and UserId must not be empty");
-        var board = await GetBoard(boardId);
+        var board = await GetBoardAsync(boardId);
         var user = await context.Users.FindAsync(userId);
         if (user == null)
             throw new KeyNotFoundException("User not found");
@@ -86,7 +96,7 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
             throw new InvalidOperationException("Board team is not initialized");
     }
 
-    private async Task<BoardEntity> GetBoard(Guid boardId)
+    private async Task<BoardEntity> GetBoardAsync(Guid boardId)
     {
         if (boardId == Guid.Empty)
             throw new ArgumentException("BoardId must not be empty");

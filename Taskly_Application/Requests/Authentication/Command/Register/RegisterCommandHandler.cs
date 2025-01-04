@@ -13,7 +13,7 @@ public class RegisterCommandHandler(
 {
     public async Task<ErrorOr<string>> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
-        var avatar = await unitOfWork.Avatar.GetAvatarById(request.AvatarId);
+        var avatar = await unitOfWork.Avatar.GetByIdAsync(request.AvatarId);
 
         if (avatar == null)
             return Error.NotFound("Avatar not found");

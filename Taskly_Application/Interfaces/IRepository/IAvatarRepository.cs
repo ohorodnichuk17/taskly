@@ -2,7 +2,6 @@
 
 namespace Taskly_Application.Interfaces.IRepository;
 
-public interface IAvatarRepository
+public interface IAvatarRepository : IRepository<AvatarEntity>
 {
-    Task<AvatarEntity?> GetAvatarById(Guid AvatarId);
 }

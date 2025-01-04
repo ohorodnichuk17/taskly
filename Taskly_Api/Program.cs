@@ -29,6 +29,7 @@ using Taskly_Api;
 using Taskly_Api.Common;
 using Taskly_Application;
 using Taskly_Infrastructure;
+using Taskly_Infrastructure.Common.Seeder;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -62,7 +63,7 @@ app.UseCors(options => options.SetIsOriginAllowed(origin => true)
     .AllowAnyHeader()
 );
 
-DataInitializer.Initialize(app);
+DataInitializer.InitializeData(app);
 app.UseRouting();
 
 app.UseAuthentication();
