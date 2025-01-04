@@ -36,6 +36,7 @@
 
     <ItemGroup>
       <Folder Include="images\" />
+      <Folder Include="Request\Table\" />
       <Folder Include="Response\Authenticate\" />
     </ItemGroup>
 

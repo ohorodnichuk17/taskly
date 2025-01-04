@@ -66,6 +66,7 @@ public static class DependencyInjection
         services.AddScoped<IMapper, ServiceMapper>();
 
         AuthenticateMapsterConfig.Config();
+        TableMapsterConfig.Config();
 
         return services;
     }
