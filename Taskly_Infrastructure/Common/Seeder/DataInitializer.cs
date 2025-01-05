@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Taskly_Domain.Entities;
 using Taskly_Infrastructure.Common.Persistence;
+using Constants = Taskly_Domain.Constants;
 
 namespace Taskly_Infrastructure.Common.Seeder;
 
@@ -115,23 +116,23 @@ private static List<CardListEntity> GetDefaultCardLists(TimeRangeEntity timeRang
         new CardListEntity
         {
             Id = Guid.NewGuid(),
-            Title = "To-Do",
+            Title = Constants.Todo,
             Cards = new List<CardEntity>
             {
                 new CardEntity
                 {
                     Id = Guid.NewGuid(), Description = "This is a card! 👋 Select it to see its card back.",
-                    Status = "ToDo"
+                    Status = Constants.Todo
                 },
                 new CardEntity
                 {
                     Id = Guid.NewGuid(), Description = "Hold and drag to move this card to another list 👉",
-                    Status = "ToDo"
+                    Status = Constants.Todo
                 },
                 new CardEntity
                 {
                     Id = Guid.NewGuid(), Description = "Invite collaborators to this board to work together! 👥",
-                    Status = "ToDo"
+                    Status = Constants.Todo
                 }
             }
         },
@@ -139,7 +140,7 @@ private static List<CardListEntity> GetDefaultCardLists(TimeRangeEntity timeRang
         new CardListEntity
         {
             Id = Guid.NewGuid(),
-            Title = "Doing",
+            Title = Constants.Inprogress,
             Cards = new List<CardEntity>
             {
                 new CardEntity
@@ -160,7 +161,7 @@ private static List<CardListEntity> GetDefaultCardLists(TimeRangeEntity timeRang
         new CardListEntity
         {
             Id = Guid.NewGuid(),
-            Title = "Done",
+            Title = Constants.Done,
             Cards = new List<CardEntity>
             {
                 new CardEntity { Id = Guid.NewGuid(), Description = "Signed up for Taskly! ��", Status = "Done" }
