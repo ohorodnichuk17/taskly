@@ -13,8 +13,8 @@ public class UnitOfWork : IUnitOfWork
     public IAuthenticationRepository Authentication { get; private set; }
     public IBoardRepository Board { get; private set; }
     public IAvatarRepository Avatar { get; private set; }
-    public IToDoItemRepository ToDoItem { get; private set; }
     public IToDoTableRepository ToDoTable { get; private set; }
+    public IToDoTableItemsRepository ToDoTableItems { get; private set; }
 
     public UnitOfWork(TasklyDbContext context, UserManager<UserEntity> userManager)
     {
@@ -23,7 +23,7 @@ public class UnitOfWork : IUnitOfWork
         Authentication = new AuthenticationRepository(_userManager, _context);
         Board = new BoardRepository(_context);
         Avatar = new AvatarRepository(_context);
-        ToDoItem = new ToDoItemRepository(_context);
         ToDoTable = new ToDoTableRepository(_context);
+        ToDoTableItems = new ToDoTableItemsRepository(_context);
     }
 }

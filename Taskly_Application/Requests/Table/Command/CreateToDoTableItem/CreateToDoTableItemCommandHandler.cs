@@ -8,8 +8,7 @@ using Taskly_Domain.Entities;
 
 namespace Taskly_Application.Requests.Table.Command.CreateToDoTableItem;
 
-public class CreateToDoTableItemCommandHandler(IUnitOfWork unitOfWork, 
-                                               ICurrentUserService currentUserService) : IRequestHandler<CreateToDoTableItemCommand, ErrorOr<string>>
+public class CreateToDoTableItemCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<CreateToDoTableItemCommand, ErrorOr<string>>
 {
     public async Task<ErrorOr<string>> Handle(CreateToDoTableItemCommand request, CancellationToken cancellationToken)
     {
@@ -18,7 +17,7 @@ public class CreateToDoTableItemCommandHandler(IUnitOfWork unitOfWork,
             var users = new List<UserEntity>();
             foreach (var userId in request.Members)
             {
-                users.Add(await currentUserService.GetUserById(userId));
+                users.Add(await unitOfWork.Authentication.GetByIdAsync(userId));
             }
 
             var newTableItem = new ToDoItemEntity()
@@ -31,7 +30,8 @@ public class CreateToDoTableItemCommandHandler(IUnitOfWork unitOfWork,
                 Members = users,
                 ToDoTableId = request.ToDoTableId
             };
-            await unitOfWork.ToDoItem.CreateAsync(newTableItem);
+
+            await unitOfWork.ToDoTableItems.CreateAsync(newTableItem);
 
             return newTableItem.Id.ToString();
         }

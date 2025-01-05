@@ -4,7 +4,6 @@ using Taskly_Infrastructure.Common.Persistence;
 
 namespace Taskly_Infrastructure.Repositories;
 
-public class ToDoTableRepository(TasklyDbContext tasklyDbContext) 
-    : Repository<ToDoTableEntity>(tasklyDbContext), IToDoTableRepository
+public class ToDoTableRepository(TasklyDbContext tasklyDbContext) : Repository<ToDoTableEntity>(tasklyDbContext), IToDoTableRepository
 {
 }

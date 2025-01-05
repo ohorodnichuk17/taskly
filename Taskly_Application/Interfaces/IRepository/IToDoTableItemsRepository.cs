@@ -2,6 +2,6 @@
 
 namespace Taskly_Application.Interfaces.IRepository;
 
-public interface IToDoItemRepository : IRepository<ToDoItemEntity>
+public interface IToDoTableItemsRepository : IRepository<ToDoItemEntity>
 {
 }

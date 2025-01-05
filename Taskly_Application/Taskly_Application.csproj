@@ -19,6 +19,7 @@
       <Folder Include="Requests\Board\Query\" />
       <Folder Include="Common\Interfaces\" />
       <Folder Include="Requests\General\Command\" />
+      <Folder Include="Common\Interfaces\" />
     </ItemGroup>
 
     <PropertyGroup>
