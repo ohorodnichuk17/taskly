@@ -4,6 +4,7 @@ using Taskly_Application.Requests.Authentication.Command.Register;
 using Taskly_Application.Requests.Authentication.Command.SendVerificationEmail;
 using Taskly_Application.Requests.Authentication.Command.VerificateEmail;
 using Taskly_Application.Requests.Authentication.Query.Login;
+using Taskly_Domain.Entities;
 
 namespace Taskly_Api.MapsterConfigs;
 
@@ -27,5 +28,10 @@ public static class AuthenticateMapsterConfig
         TypeAdapterConfig<LoginRequest, LoginQuery>.NewConfig()
             .Map(src => src.Email, desp => desp.Email)
             .Map(src => src.Password, desp => desp.Password);
+
+        TypeAdapterConfig<UserForTableItemResponse, UserEntity>.NewConfig()
+            .Map(src => src.Id, desp => desp.Id)
+            .Map(src => src.Email, desp => desp.Email)
+            .Map(src => src.Avatar.ImagePath, desp => desp.Avatar);
     }
 }

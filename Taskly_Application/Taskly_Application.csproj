@@ -17,6 +17,8 @@
     <ItemGroup>
       <Folder Include="Requests\Board\Command\Delete\" />
       <Folder Include="Requests\Board\Query\" />
+      <Folder Include="Common\Interfaces\" />
+      <Folder Include="Requests\General\Command\" />
     </ItemGroup>
 
     <PropertyGroup>
