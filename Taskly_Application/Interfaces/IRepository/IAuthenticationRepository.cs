@@ -3,7 +3,7 @@ using Taskly_Domain.Entities;
 
 namespace Taskly_Application.Interfaces.IRepository;
 
-public interface IAuthenticationRepository
+public interface IAuthenticationRepository : IRepository<UserEntity>
 {
     Task<bool> IsUserExist(string Email);
     Task<string> AddVerificationEmail(string Email, string Code);

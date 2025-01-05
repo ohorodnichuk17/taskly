@@ -1,13 +1,13 @@
 ﻿using ErrorOr;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Taskly_Application.Interfaces;
 using Taskly_Application.Interfaces.IRepository;
 using Taskly_Domain.Entities;
 
 namespace Taskly_Application.Requests.Table.Command.CreateToDoTableItem;
 
-public class CreateToDoTableItemCommandHandler(IRepository<ToDoItemEntity> repositoryToDoItemEntity, 
-                                               IRepository<UserEntity> repositoryUserEntity) : IRequestHandler<CreateToDoTableItemCommand, ErrorOr<string>>
+public class CreateToDoTableItemCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<CreateToDoTableItemCommand, ErrorOr<string>>
 {
     public async Task<ErrorOr<string>> Handle(CreateToDoTableItemCommand request, CancellationToken cancellationToken)
     {
@@ -16,7 +16,7 @@ public class CreateToDoTableItemCommandHandler(IRepository<ToDoItemEntity> repos
             var users = new List<UserEntity>();
             foreach (var userId in request.Members)
             {
-                users.Add(await repositoryUserEntity.GetByIdAsync(userId));
+                users.Add(await unitOfWork.Authentication.GetByIdAsync(userId));
             }
 
             var newTableItem = new ToDoItemEntity()
@@ -29,7 +29,7 @@ public class CreateToDoTableItemCommandHandler(IRepository<ToDoItemEntity> repos
                 Members = users,
                 ToDoTableId = request.ToDoTableId
             };
-            await repositoryToDoItemEntity.CreateAsync(newTableItem);
+            await unitOfWork.ToDoTableItems.CreateAsync(newTableItem);
 
             return newTableItem.Id.ToString();
         }

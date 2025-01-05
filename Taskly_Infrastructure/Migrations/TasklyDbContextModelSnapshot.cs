@@ -216,12 +216,13 @@ namespace Taskly_Infrastructure.Migrations
             modelBuilder.Entity("Taskly_Domain.Entities.CardEntity", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("AttachmentUrl")
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("CardListEntityId")
+                    b.Property<Guid>("CardListId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Description")
@@ -231,9 +232,15 @@ namespace Taskly_Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<Guid?>("TimeRangeEntityId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("CardListEntityId");
+                    b.HasIndex("CardListId");
+
+                    b.HasIndex("TimeRangeEntityId")
+                        .IsUnique();
 
                     b.ToTable("Cards");
                 });
@@ -244,7 +251,7 @@ namespace Taskly_Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("BoardEntityId")
+                    b.Property<Guid>("BoardId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Title")
@@ -253,7 +260,7 @@ namespace Taskly_Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BoardEntityId");
+                    b.HasIndex("BoardId");
 
                     b.ToTable("CardLists");
                 });
@@ -294,7 +301,7 @@ namespace Taskly_Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TimeRangeEntity");
+                    b.ToTable("TimeRanges");
                 });
 
             modelBuilder.Entity("Taskly_Domain.Entities.ToDoItemEntity", b =>
@@ -521,26 +528,30 @@ namespace Taskly_Infrastructure.Migrations
 
             modelBuilder.Entity("Taskly_Domain.Entities.CardEntity", b =>
                 {
-                    b.HasOne("Taskly_Domain.Entities.CardListEntity", null)
+                    b.HasOne("Taskly_Domain.Entities.CardListEntity", "CardList")
                         .WithMany("Cards")
-                        .HasForeignKey("CardListEntityId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("CardListId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Taskly_Domain.Entities.TimeRangeEntity", "TimeRangeEntity")
                         .WithOne()
-                        .HasForeignKey("Taskly_Domain.Entities.CardEntity", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("Taskly_Domain.Entities.CardEntity", "TimeRangeEntityId");
+
+                    b.Navigation("CardList");
 
                     b.Navigation("TimeRangeEntity");
                 });
 
             modelBuilder.Entity("Taskly_Domain.Entities.CardListEntity", b =>
                 {
-                    b.HasOne("Taskly_Domain.Entities.BoardEntity", null)
+                    b.HasOne("Taskly_Domain.Entities.BoardEntity", "Board")
                         .WithMany("CardLists")
-                        .HasForeignKey("BoardEntityId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("BoardId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Board");
                 });
 
             modelBuilder.Entity("Taskly_Domain.Entities.CommentEntity", b =>

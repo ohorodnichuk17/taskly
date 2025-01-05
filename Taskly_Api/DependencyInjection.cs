@@ -34,6 +34,10 @@ public static class DependencyInjection
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
         services.AddScoped<IAvatarRepository, AvatarRepository>();
+        services.AddScoped<IBoardRepository, BoardRepository>();
+        services.AddScoped<IToDoTableRepository, ToDoTableRepository>();
+        services.AddScoped<IToDoTableItemsRepository, ToDoTableItemsRepository>();
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddHostedService<VerificationEmailCleaner>();
         services.AddSwagger();
         services.AddMappings();

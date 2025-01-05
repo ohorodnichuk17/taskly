@@ -8,9 +8,11 @@ using Taskly_Infrastructure.Common.Persistence;
 
 namespace Taskly_Infrastructure.Repositories;
 
-public class AuthenticationRepository(UserManager<UserEntity> userManager, TasklyDbContext tasklyDbContext) : IAuthenticationRepository
+public class AuthenticationRepository(UserManager<UserEntity> userManager, TasklyDbContext tasklyDbContext) : Repository<UserEntity>(tasklyDbContext),IAuthenticationRepository 
 {
+
     readonly private DbSet<VerificationEmailEntity> _verificationEmailEntities = tasklyDbContext.Set<VerificationEmailEntity>();
+    
     public async Task<bool> IsUserExist(string Email)
     {
         return await userManager.FindByEmailAsync(Email) != null;

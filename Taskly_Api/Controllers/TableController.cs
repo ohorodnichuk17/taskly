@@ -18,14 +18,14 @@ namespace Taskly_Api.Controllers
         private readonly IMapper _mapper = mapper;
 
         [HttpGet("get-all-table-items")]
-        public async  Task<IActionResult> GetAllTableItems([FromQuery] Guid ToDoTableId)
+        public async Task<IActionResult> GetAllToDoTableItems([FromQuery] Guid ToDoTableId)
         {
             var result = await _sender.Send(new GetAllToDoTableItemsByTableIdQuery(ToDoTableId));
             return result.Match(result => Ok(_mapper.Map<ICollection<TableItemResponse>>(result)),
                 errors => Problem(errors)); 
         }
         [HttpPost("create-table-item")]
-        public async Task<IActionResult> CreateTableItem([FromBody] CreateToDoTableItemRequest createTableItemRequest)
+        public async Task<IActionResult> CreateToDoTableItem([FromBody] CreateToDoTableItemRequest createTableItemRequest)
         {
             var result = await _sender.Send(_mapper.Map<CreateToDoTableItemCommand>(createTableItemRequest));
             return result.Match(result => Ok(result),
