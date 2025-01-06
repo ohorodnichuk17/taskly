@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Taskly_Domain.Entities;
 using Taskly_Infrastructure.Common.Persistence;
 using Constants = Taskly_Domain.Constants;
@@ -65,7 +67,7 @@ public static class DataInitializer
     }
     
     private static async Task InitializeBoardsAsync(TasklyDbContext dbContext)
-{
+    {
     if (!dbContext.Boards.Any())
     {
         var timeRange1 = new TimeRangeEntity
@@ -86,12 +88,14 @@ public static class DataInitializer
                 Name = "Sample Board",
                 IsTeamBoard = false,
                 Tag = "Template",
+                BoardTemplates = dbContext.BoardTemplates.ToList(),
                 CardLists = GetDefaultCardLists(timeRange1)
             }
         };
 
         await dbContext.Boards.AddRangeAsync(boards);
         await dbContext.SaveChangesAsync();
+
 
         foreach (var board in boards)
         {
