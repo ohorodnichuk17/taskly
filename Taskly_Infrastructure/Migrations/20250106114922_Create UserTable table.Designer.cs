@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Taskly_Infrastructure.Common.Persistence;
@@ -11,9 +12,11 @@ using Taskly_Infrastructure.Common.Persistence;
 namespace Taskly_Infrastructure.Migrations
 {
     [DbContext(typeof(TasklyDbContext))]
-    partial class TasklyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250106114922_Create UserTable table")]
+    partial class CreateUserTabletable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -389,6 +392,9 @@ namespace Taskly_Infrastructure.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
 
+                    b.Property<Guid?>("ToDoItemEntityId")
+                        .HasColumnType("uuid");
+
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("boolean");
 
@@ -406,6 +412,8 @@ namespace Taskly_Infrastructure.Migrations
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex");
+
+                    b.HasIndex("ToDoItemEntityId");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -460,21 +468,6 @@ namespace Taskly_Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("UserTable");
-                });
-
-            modelBuilder.Entity("UserTableItem", b =>
-                {
-                    b.Property<Guid>("ToDoItemId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("ToDoItemId", "UserId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserTableItem");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -599,6 +592,10 @@ namespace Taskly_Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.SetNull)
                         .IsRequired();
 
+                    b.HasOne("Taskly_Domain.Entities.ToDoItemEntity", null)
+                        .WithMany("Members")
+                        .HasForeignKey("ToDoItemEntityId");
+
                     b.Navigation("Avatar");
                 });
 
@@ -632,21 +629,6 @@ namespace Taskly_Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("UserTableItem", b =>
-                {
-                    b.HasOne("Taskly_Domain.Entities.ToDoItemEntity", null)
-                        .WithMany()
-                        .HasForeignKey("ToDoItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Taskly_Domain.Entities.UserEntity", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Taskly_Domain.Entities.AvatarEntity", b =>
                 {
                     b.Navigation("Users");
@@ -667,6 +649,11 @@ namespace Taskly_Infrastructure.Migrations
             modelBuilder.Entity("Taskly_Domain.Entities.CardListEntity", b =>
                 {
                     b.Navigation("Cards");
+                });
+
+            modelBuilder.Entity("Taskly_Domain.Entities.ToDoItemEntity", b =>
+                {
+                    b.Navigation("Members");
                 });
 
             modelBuilder.Entity("Taskly_Domain.Entities.ToDoTableEntity", b =>

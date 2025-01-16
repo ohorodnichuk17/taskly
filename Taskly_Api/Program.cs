@@ -25,6 +25,7 @@
 //
 // app.Run();
 
+using Microsoft.Extensions.FileProviders;
 using Taskly_Api;
 using Taskly_Api.Common;
 using Taskly_Application;
@@ -56,6 +57,13 @@ else
     app.UseExceptionHandler("/error");
     app.UseHsts();
 }
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(Directory.GetCurrentDirectory(), "images")),
+    RequestPath = "/images"
+});
 
 app.UseCors(options => options.SetIsOriginAllowed(origin => true)
     .AllowCredentials()

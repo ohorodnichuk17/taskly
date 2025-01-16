@@ -10,15 +10,11 @@ public class GetAllToDoTableItemsByTableIdQueryHandler(IUnitOfWork unitOfWork) :
 {
     public async Task<ErrorOr<ICollection<ToDoItemEntity>>> Handle(GetAllToDoTableItemsByTableIdQuery request, CancellationToken cancellationToken)
     {
-		try
-		{
-            var result = await unitOfWork.ToDoTable.GetByIdAsync(request.ToDoTableId);
+            var result = await unitOfWork.ToDoTable.GetToDoTableIncludeById(request.ToDoTableId);
+
+           if(result == null)
+                return Error.Conflict("Table not found");
 
             return result.ToDoItems.ToErrorOr();
-		}
-        catch (Exception ex)
-        {
-            return Error.Conflict(ex.Message);
-        }
     }
 }

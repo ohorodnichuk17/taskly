@@ -29,9 +29,9 @@ public static class AuthenticateMapsterConfig
             .Map(src => src.Email, desp => desp.Email)
             .Map(src => src.Password, desp => desp.Password);
 
-        TypeAdapterConfig<UserForTableItemResponse, UserEntity>.NewConfig()
+        TypeAdapterConfig<UserEntity,UserForTableItemResponse>.NewConfig()
             .Map(src => src.Id, desp => desp.Id)
             .Map(src => src.Email, desp => desp.Email)
-            .Map(src => src.Avatar.ImagePath, desp => desp.Avatar);
+            .Map(src => src.Avatar, desp => desp.Avatar.ImagePath);
     }
 }

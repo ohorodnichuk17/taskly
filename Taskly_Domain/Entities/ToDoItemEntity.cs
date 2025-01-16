@@ -8,7 +8,6 @@ public class ToDoItemEntity
     public TimeRangeEntity? TimeRange { get; set; }
     public string? Label { get; init; } // На фронтенд буде відображатись як колір (зелений червоний і тд)
     public ICollection<UserEntity> Members { get; set; } = new List<UserEntity>();
-    
     public Guid ToDoTableId { get; set; }
     public ToDoTableEntity ToDoTable { get; set; }
 }
