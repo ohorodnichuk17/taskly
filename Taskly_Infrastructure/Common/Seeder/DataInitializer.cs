@@ -63,6 +63,7 @@ public static class DataInitializer
             };
 
             await dbContext.BoardTemplates.AddRangeAsync(boardTemplates);
+            await dbContext.SaveChangesAsync();
         }
     }
     
