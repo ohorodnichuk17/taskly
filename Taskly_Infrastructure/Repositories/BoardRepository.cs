@@ -16,6 +16,28 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
     //     board.CardLists = DataInitializer.GetDefaultCardLists();
     //     return Task.FromResult(board);
     // }
+    
+    public async Task<BoardEntity> GetTemplateBoardAsync(Guid boardId)
+    {
+        if (boardId == Guid.Empty)
+            throw new ArgumentException("BoardId must not be empty");
+        var board = await context.Boards
+            .Include(b => b.Members)
+            .Include(b => b.BoardTemplates)
+            .Include(b => b.CardLists)
+            .ThenInclude(cl => cl.Cards)
+            .ThenInclude(c => c.Comments)
+            .Include(b => b.CardLists)
+            .ThenInclude(cl => cl.Cards)
+            .ThenInclude(c => c.TimeRangeEntity)
+            .FirstOrDefaultAsync(b => b.Id == boardId);
+
+        
+        if (board == null)
+            throw new KeyNotFoundException("Board not found");
+        return board;
+    }
+
 
     public async Task AddMemberToBoardAsync(Guid boardId, Guid userId)
     {
@@ -96,15 +118,19 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
             throw new InvalidOperationException("Board team is not initialized");
     }
 
-    private async Task<BoardEntity> GetBoardAsync(Guid boardId)
+    public async Task<BoardEntity> GetBoardAsync(Guid boardId)
     {
         if (boardId == Guid.Empty)
             throw new ArgumentException("BoardId must not be empty");
         var board = await context.Boards
             .Include(m => m.Members)
+            .Include(bt => bt.BoardTemplates)
+            .IgnoreAutoIncludes()
             .FirstOrDefaultAsync(b => b.Id == boardId);
         if (board == null)
             throw new KeyNotFoundException("Board not found");
         return board;
     }
+
+
 }

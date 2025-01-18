@@ -45,7 +45,7 @@ public static class DependencyInjection
         services.AddJWTToSwagger();
         services.AddIdentity();
         services.Configuring(configuration);
-
+        services.AddInfrastructureServices();
         return services;
     }
 
@@ -150,6 +150,16 @@ public static class DependencyInjection
 
         return services;
     }
+    
+    private static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
+    {
+        services.AddScoped<ICurrentUserService, CurrentUserService>();
+        services.AddTransient<CurrentUserService>();
+
+        return services;
+    }
+
+    
     private static IServiceCollection Configuring(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<AuthanticationSettings>(configuration.GetSection("AuthenticationSettings"));

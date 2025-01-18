@@ -80,21 +80,35 @@ public class TasklyDbContext : IdentityDbContext<UserEntity,IdentityRole<Guid>,G
     {
         entity.HasKey(b => b.Id);
 
+        // entity.HasMany(b => b.BoardTemplates)
+        //     .WithOne(bt => bt.Board)
+        //     .HasForeignKey(bt => bt.BoardEntityId)
+        //     .OnDelete(DeleteBehavior.Cascade);
+        
         entity.HasMany(b => b.BoardTemplates)
-            .WithOne()
-            .OnDelete(DeleteBehavior.Cascade);
+            .WithMany(bt => bt.Boards)
+            .UsingEntity<Dictionary<string, object>>(
+                "BoardBoardTemplate",
+                j => j.HasOne<BoardTemplateEntity>().WithMany().HasForeignKey("BoardTemplateId"),
+                j => j.HasOne<BoardEntity>().WithMany().HasForeignKey("BoardId")
+            );
 
         entity.HasMany(b => b.CardLists)
             .WithOne(cl => cl.Board)
             .HasForeignKey(cl => cl.BoardId)
             .OnDelete(DeleteBehavior.Cascade);
+
     });
 
     // BoardTemplateEntity
-    modelBuilder.Entity<BoardTemplateEntity>(entity =>
-    {
-        entity.HasKey(bt => bt.Id);
-    });
+    // modelBuilder.Entity<BoardTemplateEntity>(entity =>
+    // {
+    //     entity.HasKey(bt => bt.Id);
+    //     entity.HasOne(bt => bt.Board)
+    //         .WithMany(b => b.BoardTemplates)
+    //         .HasForeignKey(bt => bt.BoardEntityId)
+    //         .OnDelete(DeleteBehavior.Cascade);
+    // });
 
     // CardEntity
     modelBuilder.Entity<CardEntity>(entity =>

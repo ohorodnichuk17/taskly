@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Taskly_Application.Interfaces;
 using Taskly_Application.Interfaces.IRepository;
+using Taskly_Application.Interfaces.IService;
 using Taskly_Domain.Entities;
 
 namespace Taskly_Application.Requests.Table.Command.CreateToDoTableItem;
@@ -23,6 +24,7 @@ public class CreateToDoTableItemCommandHandler(IUnitOfWork unitOfWork) : IReques
                 Label = request.Label,
                 ToDoTableId = request.ToDoTableId
             };
+
             await unitOfWork.ToDoTableItems.CreateAsync(newTableItem);
             var users = new List<UserEntity>();
             foreach (var userId in request.Members)
