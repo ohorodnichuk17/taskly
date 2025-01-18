@@ -1,0 +1,76 @@
+.avatar-background-container {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(3px);
+    padding: 30px;
+    box-sizing: border-box;
+
+    .avatar-conteiner {
+        width: auto;
+        min-width: 200px;
+        max-width: 400px;
+        height: 300px;
+        display: flex;
+        flex-direction: column;
+        row-gap: 15px;
+        background-color: #e2e2e2;
+        padding: 30px;
+        box-sizing: border-box;
+        overflow: hidden;
+
+
+        .exit {
+            width: 100%;
+            height: 10%;
+            display: flex;
+            justify-content: flex-end;
+
+            img {
+                width: 30px;
+                height: 30px;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: #dbdbdb;
+                }
+            }
+        }
+
+        .avatar-list {
+            min-width: 100px;
+            height: 90%;
+            display: flex;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+            row-gap: 10px;
+            column-gap: 10px;
+            box-sizing: border-box;
+            overflow-y: scroll;
+            scrollbar-width: 7px;
+            margin-top: auto;
+            /*&::-webkit-scrollbar {
+                width: 7px;
+            }
+
+            &::-webkit-scrollbar-thumb {
+                border-radius: 10px;
+                background: #cecece;
+            }*/
+
+            img {
+                width: 70px;
+                height: 70px;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: #dbdbdb;
+                }
+            }
+        }
+    }
+}

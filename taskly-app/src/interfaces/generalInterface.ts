@@ -1,3 +1,10 @@
 export interface IValidationErrors {
-    message: string
+    errors: {
+        code: string
+    }[]
+}
+
+export interface IAvatarForSelect {
+    id: string,
+    name: string
 }

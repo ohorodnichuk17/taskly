@@ -1,0 +1,28 @@
+.register-page {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+
+
+    box-sizing: border-box;
+
+    .register-conatainer {
+        display: flex;
+        flex-direction: column;
+        width: 300px;
+        height: auto;
+        border-radius: 3px;
+        box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+        padding: 15px;
+
+        .register-conatainer-name {
+            display: flex;
+            justify-content: center;
+            font-size: 27px;
+        }
+
+    }
+}

@@ -1,0 +1,23 @@
+@mixin defaultButton($buttonWidth, $font_size) {
+    width: $buttonWidth;
+    font-size: $font_size;
+    border: none;
+    border-radius: 3px;
+    outline: none;
+    padding: 5px 10px;
+    background-color: #0052CC;
+    color: white;
+    margin-top: auto;
+    align-self: center;
+    box-sizing: border-box;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #004ab9;
+    }
+
+
+
+
+
+}

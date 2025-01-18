@@ -1,15 +1,15 @@
 import './App.css'
 import { Route, Routes } from 'react-router-dom'
-import { Test1Comp } from './components/Test1Comp'
-import { Test2Comp } from './components/Test2Comp'
+import { RegisterPage } from './components/authentication/RegisterPage'
 
 function App() {
 
   return (
 
     <Routes>
-      <Route path='/hello' element={<Test1Comp />}></Route>
-      <Route path='/world' element={<Test2Comp />}></Route>
+      <Route path='/authentication/'>
+        <Route path='register' element={<RegisterPage />}></Route>
+      </Route>
     </Routes>
 
   )

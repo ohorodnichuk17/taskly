@@ -1,0 +1,119 @@
+@use '../general/general-style.scss' as *;
+
+.final-register-page-container {
+    width: 100%;
+    height: auto;
+    min-height: 200px;
+    position: relative;
+    padding: 10px;
+    box-sizing: border-box;
+
+    p {
+        font-size: 17px;
+        font-weight: bold;
+    }
+
+    form {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+        row-gap: 15px;
+
+        .password-container {
+            display: flex;
+            column-gap: 10px;
+
+            position: relative;
+
+            input {
+                width: 80%;
+                font-size: 21px;
+                border: 1px solid black;
+                border-radius: 3px;
+                outline: none;
+                padding: 5px 35px 5px 10px;
+                margin-bottom: 5px;
+                box-sizing: border-box;
+
+
+                &:focus {
+                    border: 2px solid #0052CC;
+                    padding: 4px 34px 4px 9px;
+                }
+            }
+
+            .password-button {
+                width: 29px;
+                height: 29px;
+                position: absolute;
+                padding: 5px;
+                right: 65px;
+                top: 4px;
+                box-sizing: border-box;
+                background-color: #ffffff;
+                outline: none;
+                border: none;
+                cursor: pointer;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                }
+
+                &:hover {
+                    background-color: #f0eded;
+                }
+            }
+
+            .password-strength {
+                width: 15%;
+                height: 100%;
+                padding: 5px 10px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                box-sizing: border-box;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+        }
+
+        .select-avatar-container {
+            width: 100%;
+
+            .selected-avatar {
+                display: flex;
+                justify-content: flex-start;
+                column-gap: 25px;
+                box-sizing: border-box;
+
+                img {
+                    width: 50px;
+                    height: 50px;
+                    padding: 5px;
+                    border: 1px solid black;
+                    border-radius: 3px;
+                    box-sizing: border-box;
+                }
+
+                button {
+                    @include defaultButton($buttonWidth : 50%, $font_size: 17px);
+                    margin-top: 0;
+                    align-self: center;
+                }
+            }
+
+
+        }
+
+
+
+        button {
+            @include defaultButton($buttonWidth : 50%, $font_size: 21px);
+        }
+    }
+}
