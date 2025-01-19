@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/PC10/taskly/Taskly_Server/Taskly_Domain/Taskly_Domain.csproj": {}
+    "/Users/PC10/taskly/taskly-backend/Taskly_Domain/Taskly_Domain.csproj": {}
   },
   "projects": {
-    "/Users/PC10/taskly/Taskly_Server/Taskly_Domain/Taskly_Domain.csproj": {
+    "/Users/PC10/taskly/taskly-backend/Taskly_Domain/Taskly_Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/PC10/taskly/Taskly_Server/Taskly_Domain/Taskly_Domain.csproj",
+        "projectUniqueName": "/Users/PC10/taskly/taskly-backend/Taskly_Domain/Taskly_Domain.csproj",
         "projectName": "Taskly_Domain",
-        "projectPath": "/Users/PC10/taskly/Taskly_Server/Taskly_Domain/Taskly_Domain.csproj",
+        "projectPath": "/Users/PC10/taskly/taskly-backend/Taskly_Domain/Taskly_Domain.csproj",
         "packagesPath": "/Users/PC10/.nuget/packages/",
-        "outputPath": "/Users/PC10/taskly/Taskly_Server/Taskly_Domain/obj/",
+        "outputPath": "/Users/PC10/taskly/taskly-backend/Taskly_Domain/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/PC10/.nuget/NuGet/NuGet.Config"

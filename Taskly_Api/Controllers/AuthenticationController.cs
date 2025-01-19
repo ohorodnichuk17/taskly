@@ -7,6 +7,8 @@ using Taskly_Application.Requests.Authentication.Command.SendVerificationEmail;
 using Taskly_Application.Requests.Authentication.Command.VerificateEmail;
 using Taskly_Application.Requests.Authentication.Command.Register;
 using Taskly_Application.Requests.Authentication.Query.Login;
+using Taskly_Application.Requests.Authentication.Query.GetAllAvatars;
+using Taskly_Api.Response.Authenticate;
 
 namespace Taskly_Api.Controllers
 {
@@ -49,6 +51,15 @@ namespace Taskly_Api.Controllers
             var result = await _sender.Send(_mapper.Map<LoginQuery>(loginRequest));
 
             return result.Match(result => Ok(result),
+                errors => Problem(errors));
+        }
+
+        [HttpGet("get-all-avatars")]
+        public async Task<IActionResult> GetAllAvatars()
+        {
+            var result = await _sender.Send(new GetAllAvatarsQuery());
+
+            return result.Match(result => Ok(_mapper.Map<List<AvatarResponse>>(result)),
                 errors => Problem(errors));
         }
     }

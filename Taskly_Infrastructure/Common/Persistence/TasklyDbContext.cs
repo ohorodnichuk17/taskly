@@ -43,7 +43,20 @@ public class TasklyDbContext : IdentityDbContext<UserEntity,IdentityRole<Guid>,G
             );
 
         entity.HasMany(u => u.ToDoTables)
-            .WithMany();
+            .WithMany(t => t.Members)
+            .UsingEntity<Dictionary<string, object>>(
+                "UserTable",
+                j => j.HasOne<ToDoTableEntity>().WithMany().HasForeignKey("ToDoTableId"),
+                j => j.HasOne<UserEntity>().WithMany().HasForeignKey("UserId")
+            );
+
+        entity.HasMany(u => u.ToDoTableItems)
+        .WithMany(td => td.Members)
+        .UsingEntity<Dictionary<string, object>>(
+                "UserTableItem",
+                j => j.HasOne<ToDoItemEntity>().WithMany().HasForeignKey("ToDoItemId"),
+                j => j.HasOne<UserEntity>().WithMany().HasForeignKey("UserId")
+            );
 
         entity.HasOne(u => u.Avatar)
             .WithMany(a => a.Users)
@@ -84,6 +97,7 @@ public class TasklyDbContext : IdentityDbContext<UserEntity,IdentityRole<Guid>,G
             .WithOne(cl => cl.Board)
             .HasForeignKey(cl => cl.BoardId)
             .OnDelete(DeleteBehavior.Cascade);
+
     });
 
     // BoardTemplateEntity
@@ -156,6 +170,9 @@ public class TasklyDbContext : IdentityDbContext<UserEntity,IdentityRole<Guid>,G
         entity.HasOne(td => td.TimeRange)
             .WithOne()
             .HasForeignKey<ToDoItemEntity>(td => td.Id);
+
+        
+
     });
 
     // ToDoTableEntity

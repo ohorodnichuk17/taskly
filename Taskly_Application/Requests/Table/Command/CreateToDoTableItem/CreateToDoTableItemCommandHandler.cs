@@ -1,6 +1,7 @@
 ﻿using ErrorOr;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Taskly_Application.Interfaces;
 using Taskly_Application.Interfaces.IRepository;
 using Taskly_Application.Interfaces.IService;
@@ -14,24 +15,26 @@ public class CreateToDoTableItemCommandHandler(IUnitOfWork unitOfWork) : IReques
     {
         try
         {
-            var users = new List<UserEntity>();
-            foreach (var userId in request.Members)
-            {
-                users.Add(await unitOfWork.Authentication.GetByIdAsync(userId));
-            }
-
             var newTableItem = new ToDoItemEntity()
             {
                 Id = Guid.NewGuid(),
                 Text = request.Task,
-                TimeRange = new TimeRangeEntity() { EndTime = request.EndTime },
+                TimeRange = new TimeRangeEntity() { StartTime = DateTime.UtcNow, EndTime = request.EndTime },
                 Status = request.Status,
                 Label = request.Label,
-                Members = users,
                 ToDoTableId = request.ToDoTableId
             };
 
             await unitOfWork.ToDoTableItems.CreateAsync(newTableItem);
+            var users = new List<UserEntity>();
+            foreach (var userId in request.Members)
+            {
+                var user = await unitOfWork.Authentication.GetByIdAsync(userId);
+                
+                user.ToDoTableItems.Add(newTableItem);
+                await unitOfWork.Authentication.SaveAsync(user);
+                users.Add(user);
+            }
 
             return newTableItem.Id.ToString();
         }

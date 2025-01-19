@@ -63,6 +63,7 @@ public static class DataInitializer
             };
 
             await dbContext.BoardTemplates.AddRangeAsync(boardTemplates);
+            await dbContext.SaveChangesAsync();
         }
     }
     
@@ -70,7 +71,7 @@ public static class DataInitializer
     {
     if (!dbContext.Boards.Any())
     {
-        var timeRange1 = new TimeRangeEntity
+        /*var timeRange1 = new TimeRangeEntity
         {
             Id = Guid.NewGuid(),
             StartTime = DateTime.UtcNow,
@@ -78,26 +79,35 @@ public static class DataInitializer
         };
 
         await dbContext.TimeRanges.AddAsync(timeRange1);
-        await dbContext.SaveChangesAsync();
+        await dbContext.SaveChangesAsync();*/
+        
+        var boardTemplates = await dbContext.BoardTemplates.ToListAsync();
 
-        var boards = new List<BoardEntity>
-        {
-            new BoardEntity
+            var board =
+                new BoardEntity
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Sample Board",
+                    IsTeamBoard = false,
+                    Tag = "Template",
+                    BoardTemplates = new List<BoardTemplateEntity>(),
+                    //CardLists = GetDefaultCardLists(timeRange1)
+                };
+
+          await dbContext.Boards.AddAsync(board);
+
+            foreach (var boardTemplate in boardTemplates)
             {
-                Id = Guid.NewGuid(),
-                Name = "Sample Board",
-                IsTeamBoard = false,
-                Tag = "Template",
-                BoardTemplates = dbContext.BoardTemplates.ToList(),
-                CardLists = GetDefaultCardLists(timeRange1)
+                boardTemplate.Boards.Add(board);
             }
-        };
-
-        await dbContext.Boards.AddRangeAsync(boards);
+           
+        
+        dbContext.BoardTemplates.UpdateRange(boardTemplates);
+        //await dbContext.Boards.AddRangeAsync(boards);
         await dbContext.SaveChangesAsync();
 
 
-        foreach (var board in boards)
+        /*foreach (var board in boards)
         {
             foreach (var cardList in board.CardLists)
             {
@@ -109,7 +119,7 @@ public static class DataInitializer
             }
         }
 
-        await dbContext.SaveChangesAsync();
+        await dbContext.SaveChangesAsync();*/
     }
 }
 

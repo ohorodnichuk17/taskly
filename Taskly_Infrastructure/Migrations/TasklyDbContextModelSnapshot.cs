@@ -399,9 +399,6 @@ namespace Taskly_Infrastructure.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("ToDoItemEntityId")
-                        .HasColumnType("uuid");
-
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("boolean");
 
@@ -419,8 +416,6 @@ namespace Taskly_Infrastructure.Migrations
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex");
-
-                    b.HasIndex("ToDoItemEntityId");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -447,21 +442,6 @@ namespace Taskly_Infrastructure.Migrations
                     b.ToTable("EmailVerifications");
                 });
 
-            modelBuilder.Entity("ToDoTableEntityUserEntity", b =>
-                {
-                    b.Property<Guid>("ToDoTablesId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("UserEntityId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("ToDoTablesId", "UserEntityId");
-
-                    b.HasIndex("UserEntityId");
-
-                    b.ToTable("ToDoTableEntityUserEntity");
-                });
-
             modelBuilder.Entity("UserBoard", b =>
                 {
                     b.Property<Guid>("BoardId")
@@ -475,6 +455,36 @@ namespace Taskly_Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("UserBoard");
+                });
+
+            modelBuilder.Entity("UserTable", b =>
+                {
+                    b.Property<Guid>("ToDoTableId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("ToDoTableId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserTable");
+                });
+
+            modelBuilder.Entity("UserTableItem", b =>
+                {
+                    b.Property<Guid>("ToDoItemId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("ToDoItemId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserTableItem");
                 });
 
             modelBuilder.Entity("BoardBoardTemplate", b =>
@@ -606,26 +616,7 @@ namespace Taskly_Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.SetNull)
                         .IsRequired();
 
-                    b.HasOne("Taskly_Domain.Entities.ToDoItemEntity", null)
-                        .WithMany("Members")
-                        .HasForeignKey("ToDoItemEntityId");
-
                     b.Navigation("Avatar");
-                });
-
-            modelBuilder.Entity("ToDoTableEntityUserEntity", b =>
-                {
-                    b.HasOne("Taskly_Domain.Entities.ToDoTableEntity", null)
-                        .WithMany()
-                        .HasForeignKey("ToDoTablesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Taskly_Domain.Entities.UserEntity", null)
-                        .WithMany()
-                        .HasForeignKey("UserEntityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("UserBoard", b =>
@@ -633,6 +624,36 @@ namespace Taskly_Infrastructure.Migrations
                     b.HasOne("Taskly_Domain.Entities.BoardEntity", null)
                         .WithMany()
                         .HasForeignKey("BoardId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Taskly_Domain.Entities.UserEntity", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("UserTable", b =>
+                {
+                    b.HasOne("Taskly_Domain.Entities.ToDoTableEntity", null)
+                        .WithMany()
+                        .HasForeignKey("ToDoTableId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Taskly_Domain.Entities.UserEntity", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("UserTableItem", b =>
+                {
+                    b.HasOne("Taskly_Domain.Entities.ToDoItemEntity", null)
+                        .WithMany()
+                        .HasForeignKey("ToDoItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -661,11 +682,6 @@ namespace Taskly_Infrastructure.Migrations
             modelBuilder.Entity("Taskly_Domain.Entities.CardListEntity", b =>
                 {
                     b.Navigation("Cards");
-                });
-
-            modelBuilder.Entity("Taskly_Domain.Entities.ToDoItemEntity", b =>
-                {
-                    b.Navigation("Members");
                 });
 
             modelBuilder.Entity("Taskly_Domain.Entities.ToDoTableEntity", b =>

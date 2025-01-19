@@ -118,15 +118,19 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
             throw new InvalidOperationException("Board team is not initialized");
     }
 
-    private async Task<BoardEntity> GetBoardAsync(Guid boardId)
+    public async Task<BoardEntity> GetBoardAsync(Guid boardId)
     {
         if (boardId == Guid.Empty)
             throw new ArgumentException("BoardId must not be empty");
         var board = await context.Boards
             .Include(m => m.Members)
+            .Include(bt => bt.BoardTemplates)
+            .IgnoreAutoIncludes()
             .FirstOrDefaultAsync(b => b.Id == boardId);
         if (board == null)
             throw new KeyNotFoundException("Board not found");
         return board;
     }
+
+
 }

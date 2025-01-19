@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ROKFDv7x5HBCe/ERy5R9nIngx+gUdFrPhzitj7jLDIX+wb1aq5RL97Em+sLnKZyw/F+dPj2dF6xo1o9VJEAucg==",
+  "dgSpecHash": "VKqsPZrzFPbWX0XgEi1/QVegF/cx1MapoTz8oX+AIK8GaMSW0RtKGLZaRvAahgHYsVvJXWSGEMvOI80V8jHuqw==",
   "success": true,
-  "projectFilePath": "/Users/PC10/taskly/Taskly_Server/Taskly_Api/Taskly_Api.csproj",
+  "projectFilePath": "/Users/PC10/taskly/taskly-backend/Taskly_Api/Taskly_Api.csproj",
   "expectedPackageFiles": [
     "/Users/PC10/.nuget/packages/erroror/2.0.1/erroror.2.0.1.nupkg.sha512",
     "/Users/PC10/.nuget/packages/fluentvalidation/11.11.0/fluentvalidation.11.11.0.nupkg.sha512",

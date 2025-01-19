@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Taskly_Api.Request.Table;
 using Taskly_Api.Response.Table;
+using Taskly_Application.Requests.Table.Command.CreateToDoTable;
 using Taskly_Application.Requests.Table.Command.CreateToDoTableItem;
 using Taskly_Application.Requests.Table.Query.GetAllToDoTableItemsByTableId;
 using Taskly_Domain.Entities;
@@ -17,6 +18,13 @@ namespace Taskly_Api.Controllers
         private readonly ISender _sender = sender;
         private readonly IMapper _mapper = mapper;
 
+        [HttpPost("create-table")]
+        public async Task<IActionResult> CreateToDoTable([FromBody] CreateToDoTableRuquest createTableRequest)
+        {
+            var result = await _sender.Send(_mapper.Map<CreateToDoTableCommand>(createTableRequest));
+            return result.Match(result => Ok(result),
+                errors => Problem(errors));
+        }
         [HttpGet("get-all-table-items")]
         public async Task<IActionResult> GetAllToDoTableItems([FromQuery] Guid ToDoTableId)
         {

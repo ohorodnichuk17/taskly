@@ -4,4 +4,5 @@ namespace Taskly_Application.Interfaces.IRepository;
 
 public interface IToDoTableRepository : IRepository<ToDoTableEntity>
 {
+    Task<ToDoTableEntity?> GetToDoTableIncludeById(Guid TableId);
 }

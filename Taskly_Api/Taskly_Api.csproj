@@ -36,7 +36,6 @@
 
     <ItemGroup>
       <Folder Include="images\" />
-      <Folder Include="Response\Authenticate\" />
     </ItemGroup>
 
 </Project>
