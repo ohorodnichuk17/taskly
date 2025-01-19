@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Taskly_Api.Request.Authenticate;
 using MapsterMapper;
@@ -12,16 +11,14 @@ using Taskly_Api.Response.Authenticate;
 
 namespace Taskly_Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/authentication")]
     [ApiController]
     public class AuthenticationController(ISender sender, IMapper mapper) : ApiController
     {
-        private readonly ISender _sender = sender;
-        private readonly IMapper _mapper = mapper;
         [HttpPost("send-verification-code")]
         public async Task<IActionResult> SendVerificationCode([FromBody] SendVerificationCodeRequest sendVerificationCodeRequest)
         {
-            var result = await _sender.Send(_mapper.Map<SendVerificationCodeCommand>(sendVerificationCodeRequest));
+            var result = await sender.Send(mapper.Map<SendVerificationCodeCommand>(sendVerificationCodeRequest));
 
             return result.Match(result => Ok(result),
                 errors => Problem(errors));
@@ -30,7 +27,7 @@ namespace Taskly_Api.Controllers
         [HttpPost("verificate-email")]
         public async Task<IActionResult> VerificateEmail([FromBody] VerificateEmailRequest verificateEmailRequest)
         {
-            var result = await _sender.Send(_mapper.Map<VerificateEmailCommand>(verificateEmailRequest));
+            var result = await sender.Send(mapper.Map<VerificateEmailCommand>(verificateEmailRequest));
 
             return result.Match(result => Ok(result),
                 errors => Problem(errors));
@@ -39,7 +36,7 @@ namespace Taskly_Api.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequest registerRequest)
         {
-            var result = await _sender.Send(_mapper.Map<RegisterCommand>(registerRequest));
+            var result = await sender.Send(mapper.Map<RegisterCommand>(registerRequest));
 
             return result.Match(result => Ok(result),
                 errors => Problem(errors));
@@ -48,7 +45,7 @@ namespace Taskly_Api.Controllers
         [HttpGet("login")]
         public async Task<IActionResult> Login([FromQuery] LoginRequest loginRequest)
         {
-            var result = await _sender.Send(_mapper.Map<LoginQuery>(loginRequest));
+            var result = await sender.Send(mapper.Map<LoginQuery>(loginRequest));
 
             return result.Match(result => Ok(result),
                 errors => Problem(errors));
@@ -57,9 +54,9 @@ namespace Taskly_Api.Controllers
         [HttpGet("get-all-avatars")]
         public async Task<IActionResult> GetAllAvatars()
         {
-            var result = await _sender.Send(new GetAllAvatarsQuery());
+            var result = await sender.Send(new GetAllAvatarsQuery());
 
-            return result.Match(result => Ok(_mapper.Map<List<AvatarResponse>>(result)),
+            return result.Match(result => Ok(mapper.Map<List<AvatarResponse>>(result)),
                 errors => Problem(errors));
         }
     }

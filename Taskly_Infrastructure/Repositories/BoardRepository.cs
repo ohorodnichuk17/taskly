@@ -2,25 +2,13 @@ using Microsoft.EntityFrameworkCore;
 using Taskly_Application.Interfaces.IRepository;
 using Taskly_Domain.Entities;
 using Taskly_Infrastructure.Common.Persistence;
-using Taskly_Infrastructure.Common.Seeder;
 
 namespace Taskly_Infrastructure.Repositories;
 
 public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(context), IBoardRepository
 {
-    // public Task<BoardEntity> CreateDefaultBoardAsync(BoardEntity board)
-    // {
-    //     if (board.Members != null)
-    //         board.IsTeamBoard = true;
-    //     
-    //     board.CardLists = DataInitializer.GetDefaultCardLists();
-    //     return Task.FromResult(board);
-    // }
-    
     public async Task<BoardEntity> GetTemplateBoardAsync()
     {
-        // if (boardId == Guid.Empty)
-        //     throw new ArgumentException("BoardId must not be empty");
         var board = await context.Boards
             .Include(b => b.Members)
             .Include(b => b.BoardTemplates)
@@ -37,7 +25,6 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
             throw new KeyNotFoundException("Board not found");
         return board;
     }
-
 
     public async Task AddMemberToBoardAsync(Guid boardId, Guid userId)
     {
@@ -131,6 +118,4 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
             throw new KeyNotFoundException("Board not found");
         return board;
     }
-
-
 }
