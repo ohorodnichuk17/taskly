@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Taskly_Application.DTO;
 
 public class TemplateBoardDto

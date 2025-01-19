@@ -17,10 +17,10 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
     //     return Task.FromResult(board);
     // }
     
-    public async Task<BoardEntity> GetTemplateBoardAsync(Guid boardId)
+    public async Task<BoardEntity> GetTemplateBoardAsync()
     {
-        if (boardId == Guid.Empty)
-            throw new ArgumentException("BoardId must not be empty");
+        // if (boardId == Guid.Empty)
+        //     throw new ArgumentException("BoardId must not be empty");
         var board = await context.Boards
             .Include(b => b.Members)
             .Include(b => b.BoardTemplates)
@@ -30,7 +30,7 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
             .Include(b => b.CardLists)
             .ThenInclude(cl => cl.Cards)
             .ThenInclude(c => c.TimeRangeEntity)
-            .FirstOrDefaultAsync(b => b.Id == boardId);
+            .FirstOrDefaultAsync(b => b.Tag == "Template");
 
         
         if (board == null)
