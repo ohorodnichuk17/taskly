@@ -12,7 +12,7 @@ public class GetBoardByIdQueryHandler(IUnitOfWork unitOfWork)
     {
         try
         {
-            var result = await unitOfWork.Board.GetBoardAsync(request.Id);
+            var result = await unitOfWork.Board.GetBoardByIdAsync(request.Id);
             return result.ToErrorOr();
         }
         catch (Exception ex)
