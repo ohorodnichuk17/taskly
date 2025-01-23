@@ -102,7 +102,7 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
     {
         var board = await context.Boards
             .Include(b => b.Members)
-            .Include(b => b.BoardTemplates)
+            .Include(b => b.BoardTemplate)
             .Include(b => b.CardLists)
             .ThenInclude(cl => cl.Cards)
             .ThenInclude(c => c.Comments)

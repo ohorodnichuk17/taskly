@@ -22,21 +22,6 @@ namespace Taskly_Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("BoardBoardTemplate", b =>
-                {
-                    b.Property<Guid>("BoardId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("BoardTemplateId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("BoardId", "BoardTemplateId");
-
-                    b.HasIndex("BoardTemplateId");
-
-                    b.ToTable("BoardBoardTemplate");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
                 {
                     b.Property<Guid>("Id")
@@ -188,6 +173,9 @@ namespace Taskly_Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("BoardTemplateId")
+                        .HasColumnType("uuid");
+
                     b.Property<bool>("IsTeamBoard")
                         .HasColumnType("boolean");
 
@@ -200,6 +188,8 @@ namespace Taskly_Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BoardTemplateId");
 
                     b.ToTable("Boards");
                 });
@@ -487,21 +477,6 @@ namespace Taskly_Infrastructure.Migrations
                     b.ToTable("UserTableItem");
                 });
 
-            modelBuilder.Entity("BoardBoardTemplate", b =>
-                {
-                    b.HasOne("Taskly_Domain.Entities.BoardEntity", null)
-                        .WithMany()
-                        .HasForeignKey("BoardId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Taskly_Domain.Entities.BoardTemplateEntity", null)
-                        .WithMany()
-                        .HasForeignKey("BoardTemplateId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
@@ -551,6 +526,16 @@ namespace Taskly_Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Taskly_Domain.Entities.BoardEntity", b =>
+                {
+                    b.HasOne("Taskly_Domain.Entities.BoardTemplateEntity", "BoardTemplate")
+                        .WithMany("Boards")
+                        .HasForeignKey("BoardTemplateId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("BoardTemplate");
                 });
 
             modelBuilder.Entity("Taskly_Domain.Entities.CardEntity", b =>
@@ -672,6 +657,11 @@ namespace Taskly_Infrastructure.Migrations
             modelBuilder.Entity("Taskly_Domain.Entities.BoardEntity", b =>
                 {
                     b.Navigation("CardLists");
+                });
+
+            modelBuilder.Entity("Taskly_Domain.Entities.BoardTemplateEntity", b =>
+                {
+                    b.Navigation("Boards");
                 });
 
             modelBuilder.Entity("Taskly_Domain.Entities.CardEntity", b =>

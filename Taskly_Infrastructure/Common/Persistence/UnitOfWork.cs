@@ -15,6 +15,7 @@ public class UnitOfWork : IUnitOfWork
     public IAvatarRepository Avatar { get; private set; }
     public IToDoTableRepository ToDoTable { get; private set; }
     public IToDoTableItemsRepository ToDoTableItems { get; private set; }
+    public IBoardTemplateRepository BoardTemplates { get; private set; }
 
     public UnitOfWork(TasklyDbContext context, UserManager<UserEntity> userManager)
     {
@@ -25,5 +26,6 @@ public class UnitOfWork : IUnitOfWork
         Avatar = new AvatarRepository(_context);
         ToDoTable = new ToDoTableRepository(_context);
         ToDoTableItems = new ToDoTableItemsRepository(_context);
+        BoardTemplates = new BoardTemplateRepository(_context);
     }
 }

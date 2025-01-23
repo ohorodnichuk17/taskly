@@ -9,4 +9,5 @@ public interface IUnitOfWork
     IAvatarRepository Avatar { get; }
     IToDoTableRepository ToDoTable { get; }
     IToDoTableItemsRepository ToDoTableItems { get; }
+    IBoardTemplateRepository BoardTemplates { get; }
 }
