@@ -16,8 +16,8 @@ public class JwtService(IOptions<AuthanticationSettings> options) : IJwtService
     public string GetJwtToken(UserEntity userEntity)
     {
         var claimes = new Claim[] {
-        new Claim(type:"Id",value:userEntity.Id.ToString()),
-        new Claim(type:ClaimTypes.Name,value:userEntity.Email!)
+        new Claim(type:"id",value:userEntity.Id.ToString()),
+        new Claim(type:"email",value:userEntity.Email!)
         };
 
         var token = new JwtSecurityToken(

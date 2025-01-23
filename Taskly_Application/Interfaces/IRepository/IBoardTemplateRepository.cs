@@ -1,4 +1,4 @@
-using Taskly_Domain.Entities;
+﻿using Taskly_Domain.Entities;
 
 namespace Taskly_Application.Interfaces.IRepository;
 

@@ -1,8 +1,10 @@
 using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Taskly_Api.Request.Board;
+using Taskly_Application.Requests.Board.Command.Create;
 using Taskly_Application.Requests.Board.Query.GetBoardById;
-using Taskly_Application.Requests.Board.Query.GetTemplateBoardById;
+using Taskly_Application.Requests.Board.Query.GetTemplateBoard;
 
 namespace Taskly_Api.Controllers;
 
@@ -20,11 +22,20 @@ public class BoardController(ISender sender, IMapper mapper) : ApiController
     }
     
     [HttpGet("getTemplateBoard")]
-    public async Task<IActionResult> GetTemplateBoard(Guid id)
+    public async Task<IActionResult> GetTemplateBoard()
     {
-        var result = await sender.Send(new GetTemplateBoardByIdQuery(id));
+        var result = await sender.Send(new GetTemplateBoardQuery());
 
         return result.Match(r => Ok(r),
+            errors => Problem(errors));
+    }
+    
+    [HttpPost("create")]
+    public async Task<IActionResult> CreateBoard([FromBody] CreateBoardRequest request)
+    {
+        var res = await sender.Send(
+            mapper.Map<CreateBoardCommand>(request));
+        return res.Match(result => Ok(result),
             errors => Problem(errors));
     }
 }

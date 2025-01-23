@@ -1,5 +1,4 @@
-﻿using ErrorOr;
-using MapsterMapper;
+﻿using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Taskly_Api.Request.Table;
@@ -7,35 +6,31 @@ using Taskly_Api.Response.Table;
 using Taskly_Application.Requests.Table.Command.CreateToDoTable;
 using Taskly_Application.Requests.Table.Command.CreateToDoTableItem;
 using Taskly_Application.Requests.Table.Query.GetAllToDoTableItemsByTableId;
-using Taskly_Domain.Entities;
 
 namespace Taskly_Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/table")]
     [ApiController]
     public class TableController(ISender sender, IMapper mapper) : ApiController
     {
-        private readonly ISender _sender = sender;
-        private readonly IMapper _mapper = mapper;
-
         [HttpPost("create-table")]
         public async Task<IActionResult> CreateToDoTable([FromBody] CreateToDoTableRuquest createTableRequest)
         {
-            var result = await _sender.Send(_mapper.Map<CreateToDoTableCommand>(createTableRequest));
+            var result = await sender.Send(mapper.Map<CreateToDoTableCommand>(createTableRequest));
             return result.Match(result => Ok(result),
                 errors => Problem(errors));
         }
         [HttpGet("get-all-table-items")]
-        public async Task<IActionResult> GetAllToDoTableItems([FromQuery] Guid ToDoTableId)
+        public async Task<IActionResult> GetAllToDoTableItems([FromQuery] Guid toDoTableId)
         {
-            var result = await _sender.Send(new GetAllToDoTableItemsByTableIdQuery(ToDoTableId));
-            return result.Match(result => Ok(_mapper.Map<ICollection<TableItemResponse>>(result)),
+            var result = await sender.Send(new GetAllToDoTableItemsByTableIdQuery(toDoTableId));
+            return result.Match(result => Ok(mapper.Map<ICollection<TableItemResponse>>(result)),
                 errors => Problem(errors)); 
         }
         [HttpPost("create-table-item")]
         public async Task<IActionResult> CreateToDoTableItem([FromBody] CreateToDoTableItemRequest createTableItemRequest)
         {
-            var result = await _sender.Send(_mapper.Map<CreateToDoTableItemCommand>(createTableItemRequest));
+            var result = await sender.Send(mapper.Map<CreateToDoTableItemCommand>(createTableItemRequest));
             return result.Match(result => Ok(result),
                 errors => Problem(errors));
         }

@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Taskly_Domain.Entities;
 using Taskly_Infrastructure.Common.Persistence;
 using Constants = Taskly_Domain.Constants;
@@ -10,22 +9,22 @@ namespace Taskly_Infrastructure.Common.Seeder;
 
 public static class DataInitializer
 {
-    public static async Task InitializeData(this IApplicationBuilder applicationBuilder)
-    {
-        using var scope = applicationBuilder.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
-        var dbContext = scope.ServiceProvider.GetRequiredService<TasklyDbContext>();
+   public static async Task InitializeData(this IApplicationBuilder applicationBuilder)
+   {
+      using var scope = applicationBuilder.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
+      var dbContext = scope.ServiceProvider.GetRequiredService<TasklyDbContext>();
 
-        await InitializeAvatarsAsync(dbContext);
-        await InitializeDashboardTemplatesAsync(dbContext);
-        await InitializeBoardsAsync(dbContext);
-        await dbContext.SaveChangesAsync();
-    }
+      await InitializeBoardsAsync(dbContext);
+      await InitializeDashboardTemplatesAsync(dbContext);
+      await InitializeAvatarsAsync(dbContext);
+      await dbContext.SaveChangesAsync();
+   }
 
-    private static async Task InitializeAvatarsAsync(TasklyDbContext dbContext)
-    {
-        if (!dbContext.Avatars.Any())
-        {
-            var avatars = new List<AvatarEntity>
+   private static async Task InitializeAvatarsAsync(TasklyDbContext dbContext)
+   {
+      if (!dbContext.Avatars.Any())
+      {
+         var avatars = new List<AvatarEntity>
             {
                 new() { Id = Guid.NewGuid(), ImagePath = "corn" },
                 new() { Id = Guid.NewGuid(), ImagePath = "crab" },
@@ -39,15 +38,15 @@ public static class DataInitializer
                 new() { Id = Guid.NewGuid(), ImagePath = "watermelon" }
             };
 
-            await dbContext.Avatars.AddRangeAsync(avatars);
-        }
-    }
+         await dbContext.Avatars.AddRangeAsync(avatars);
+      }
+   }
 
-    private static async Task InitializeDashboardTemplatesAsync(TasklyDbContext dbContext)
-    {
-        if (!dbContext.BoardTemplates.Any())
-        {
-            var boardTemplates = new List<BoardTemplateEntity>
+   private static async Task InitializeDashboardTemplatesAsync(TasklyDbContext dbContext)
+   {
+      if (!dbContext.BoardTemplates.Any())
+      {
+         var boardTemplates = new List<BoardTemplateEntity>
             {
                 new() { Id = Guid.NewGuid(), ImagePath = "black_default", Name = "Black default" },
                 new() { Id = Guid.NewGuid(), ImagePath = "white_default", Name = "White default" },
@@ -62,74 +61,65 @@ public static class DataInitializer
                 new() { Id = Guid.NewGuid(), ImagePath = "vibrant_gradient", Name = "Vibrant gradient" }
             };
 
-            await dbContext.BoardTemplates.AddRangeAsync(boardTemplates);
-            await dbContext.SaveChangesAsync();
-        }
-    }
-    
-    private static async Task InitializeBoardsAsync(TasklyDbContext dbContext)
-    {
-    if (!dbContext.Boards.Any())
-    {
-        /*var timeRange1 = new TimeRangeEntity
-        {
-            Id = Guid.NewGuid(),
-            StartTime = DateTime.UtcNow,
-            EndTime = DateTime.UtcNow.AddHours(2)
-        };
+         await dbContext.BoardTemplates.AddRangeAsync(boardTemplates);
+         await dbContext.SaveChangesAsync();
+      }
+   }
 
-        await dbContext.TimeRanges.AddAsync(timeRange1);
-        await dbContext.SaveChangesAsync();*/
-        
-        var boardTemplates = await dbContext.BoardTemplates.ToListAsync();
+   private static async Task InitializeBoardsAsync(TasklyDbContext dbContext)
+   {
+       if (!dbContext.Boards.Any())
+       {
+           var timeRange1 = new TimeRangeEntity
+           {
+               Id = Guid.NewGuid(),
+               StartTime = DateTime.UtcNow,
+               EndTime = DateTime.UtcNow.AddHours(2)
+           };
 
-            var board =
-                new BoardEntity
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "Sample Board",
-                    IsTeamBoard = false,
-                    Tag = "Template",
-                    BoardTemplates = new List<BoardTemplateEntity>(),
-                    //CardLists = GetDefaultCardLists(timeRange1)
-                };
+           await dbContext.TimeRanges.AddAsync(timeRange1);
+           await dbContext.SaveChangesAsync();
 
-          await dbContext.Boards.AddAsync(board);
+           var board = new BoardEntity
+           {
+               Id = Guid.NewGuid(),
+               Name = "Sample Board",
+               IsTeamBoard = false,
+               Tag = "Template"
+           };
 
-            foreach (var boardTemplate in boardTemplates)
-            {
-                boardTemplate.Boards.Add(board);
-            }
-           
-        
-        dbContext.BoardTemplates.UpdateRange(boardTemplates);
-        //await dbContext.Boards.AddRangeAsync(boards);
-        await dbContext.SaveChangesAsync();
+           await dbContext.Boards.AddAsync(board);
+           await dbContext.SaveChangesAsync();
 
+           var cardLists = await GetDefaultCardLists(dbContext, timeRange1, board.Id);
 
-        /*foreach (var board in boards)
-        {
-            foreach (var cardList in board.CardLists)
-            {
-                cardList.BoardId = board.Id; 
-                foreach (var card in cardList.Cards)
-                {
-                    card.CardListId = cardList.Id;
-                }
-            }
-        }
+           foreach (var cardList in cardLists)
+           {
+               cardList.BoardId = board.Id;
+               await dbContext.CardLists.AddAsync(cardList);
+           }
 
-        await dbContext.SaveChangesAsync();*/
-    }
-}
+           await dbContext.SaveChangesAsync();
 
-private static List<CardListEntity> GetDefaultCardLists(TimeRangeEntity timeRange1)
-{
-    return new List<CardListEntity>
+           // var boardTemplates = await dbContext.BoardTemplates.ToListAsync();
+           // foreach (var boardTemplate in boardTemplates)
+           // {
+           //     boardTemplate.BoardEntityId = board.Id;
+           // }
+
+           // dbContext.BoardTemplates.UpdateRange(boardTemplates);
+           // await dbContext.SaveChangesAsync();
+       }
+   }
+
+   private static async Task<List<CardListEntity>> GetDefaultCardLists(TasklyDbContext dbContext, TimeRangeEntity timeRange1, Guid boardId)
+   {
+      var cardLists = new List<CardListEntity>
     {
         new CardListEntity
         {
             Id = Guid.NewGuid(),
+            BoardId = boardId,
             Title = Constants.Todo,
             Cards = new List<CardEntity>
             {
@@ -150,10 +140,10 @@ private static List<CardListEntity> GetDefaultCardLists(TimeRangeEntity timeRang
                 }
             }
         },
-
         new CardListEntity
         {
             Id = Guid.NewGuid(),
+            BoardId = boardId,
             Title = Constants.Inprogress,
             Cards = new List<CardEntity>
             {
@@ -164,23 +154,25 @@ private static List<CardListEntity> GetDefaultCardLists(TimeRangeEntity timeRang
                 },
                 new CardEntity
                 {
-                    Id = Guid.NewGuid(), 
-                    Description = "This card has a time range.", 
-                    Status = "InProgress", 
+                    Id = Guid.NewGuid(),
+                    Description = "This card has a time range.",
+                    Status = "InProgress",
                     TimeRangeEntity = timeRange1
                 }
             }
         },
-
         new CardListEntity
         {
             Id = Guid.NewGuid(),
+            BoardId = boardId,
             Title = Constants.Done,
             Cards = new List<CardEntity>
             {
-                new CardEntity { Id = Guid.NewGuid(), Description = "Signed up for Taskly! ��", Status = "Done" }
+                new CardEntity { Id = Guid.NewGuid(), Description = "Signed up for Taskly! 👏", Status = "Done" }
             }
         }
     };
-}
+
+      return cardLists;
+   }
 }
