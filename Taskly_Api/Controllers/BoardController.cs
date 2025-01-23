@@ -2,7 +2,7 @@ using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Taskly_Api.Request.Board;
-using Taskly_Application.Requests.Board.Command.Create;
+using Taskly_Application.Requests.Board.Command.CreateBoard;
 using Taskly_Application.Requests.Board.Query.GetBoardById;
 using Taskly_Application.Requests.Board.Query.GetTemplateBoard;
 

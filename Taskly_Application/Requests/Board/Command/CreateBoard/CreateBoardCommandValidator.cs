@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace Taskly_Application.Requests.Board.Command.Create;
+namespace Taskly_Application.Requests.Board.Command.CreateBoard;
 
 public class CreateBoardCommandValidator : AbstractValidator<CreateBoardCommand>
 {

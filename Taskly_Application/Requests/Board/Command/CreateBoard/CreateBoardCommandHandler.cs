@@ -4,7 +4,7 @@ using Taskly_Application.Interfaces;
 using Taskly_Application.Interfaces.IService;
 using Taskly_Domain.Entities;
 
-namespace Taskly_Application.Requests.Board.Command.Create;
+namespace Taskly_Application.Requests.Board.Command.CreateBoard;
 
 public class CreateBoardCommandHandler(IUnitOfWork unitOfWork, 
     ICurrentUserService currentUserService) 

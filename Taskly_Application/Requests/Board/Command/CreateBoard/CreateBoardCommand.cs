@@ -2,7 +2,7 @@ using ErrorOr;
 using MediatR;
 using Taskly_Domain.Entities;
 
-namespace Taskly_Application.Requests.Board.Command.Create;
+namespace Taskly_Application.Requests.Board.Command.CreateBoard;
 
 public record CreateBoardCommand(
     string Name,
