@@ -1,14 +1,8 @@
 {
   "version": 2,
-<<<<<<< HEAD
   "dgSpecHash": "IpHlxfRbG4KltqcEWqgdkMUj0uGgn5/iNNVwDNxIpUGugD1AWb9eGVanbiEDYdDrIRTu8uCZjIXWSO986WBumg==",
   "success": true,
   "projectFilePath": "D:\\PetProject\\taskly-backend\\Taskly_Infrastructure\\Taskly_Infrastructure.csproj",
-=======
-  "dgSpecHash": "zAOeZU04FEWLb7m51S9MOEeD+FVvVdft8iV1ShM0Ec5yq8Dz4JKbvyR/eJIYaTXD92CGfzHNGGpFI09hEpiuoQ==",
-  "success": true,
-  "projectFilePath": "/Users/PC10/taskly/taskly-backend copy/Taskly_Infrastructure/Taskly_Infrastructure.csproj",
->>>>>>> friend/main
   "expectedPackageFiles": [
     "C:\\Users\\Назар\\.nuget\\packages\\erroror\\2.0.1\\erroror.2.0.1.nupkg.sha512",
     "C:\\Users\\Назар\\.nuget\\packages\\fluentvalidation\\11.11.0\\fluentvalidation.11.11.0.nupkg.sha512",
@@ -48,6 +42,12 @@
     "C:\\Users\\Назар\\.nuget\\packages\\system.identitymodel.tokens.jwt\\8.3.0\\system.identitymodel.tokens.jwt.8.3.0.nupkg.sha512"
   ],
   "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Problem reading the cache file D:\\PetProject\\taskly-backend\\Taskly_Infrastructure\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
+    },
     {
       "code": "NU1608",
       "level": "Warning",

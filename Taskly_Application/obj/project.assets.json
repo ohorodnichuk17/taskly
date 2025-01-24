@@ -1147,19 +1147,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-<<<<<<< HEAD
       "projectUniqueName": "D:\\PetProject\\taskly-backend\\Taskly_Application\\Taskly_Application.csproj",
       "projectName": "Taskly_Application",
       "projectPath": "D:\\PetProject\\taskly-backend\\Taskly_Application\\Taskly_Application.csproj",
       "packagesPath": "C:\\Users\\Назар\\.nuget\\packages\\",
       "outputPath": "D:\\PetProject\\taskly-backend\\Taskly_Application\\obj\\",
-=======
-      "projectUniqueName": "/Users/PC10/taskly/taskly-backend copy/Taskly_Application/Taskly_Application.csproj",
-      "projectName": "Taskly_Application",
-      "projectPath": "/Users/PC10/taskly/taskly-backend copy/Taskly_Application/Taskly_Application.csproj",
-      "packagesPath": "/Users/PC10/.nuget/packages/",
-      "outputPath": "/Users/PC10/taskly/taskly-backend copy/Taskly_Application/obj/",
->>>>>>> friend/main
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Назар\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -1176,13 +1168,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-<<<<<<< HEAD
             "D:\\PetProject\\taskly-backend\\Taskly_Domain\\Taskly_Domain.csproj": {
               "projectPath": "D:\\PetProject\\taskly-backend\\Taskly_Domain\\Taskly_Domain.csproj"
-=======
-            "/Users/PC10/taskly/taskly-backend copy/Taskly_Domain/Taskly_Domain.csproj": {
-              "projectPath": "/Users/PC10/taskly/taskly-backend copy/Taskly_Domain/Taskly_Domain.csproj"
->>>>>>> friend/main
             }
           }
         }
@@ -1247,6 +1234,12 @@
     }
   },
   "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Problem reading the cache file D:\\PetProject\\taskly-backend\\Taskly_Application\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
+    },
     {
       "code": "NU1608",
       "level": "Warning",

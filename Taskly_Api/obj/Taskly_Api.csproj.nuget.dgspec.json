@@ -1,7 +1,6 @@
 {
   "format": 1,
   "restore": {
-<<<<<<< HEAD
     "D:\\PetProject\\taskly-backend\\Taskly_Api\\Taskly_Api.csproj": {}
   },
   "projects": {
@@ -13,19 +12,6 @@
         "projectPath": "D:\\PetProject\\taskly-backend\\Taskly_Api\\Taskly_Api.csproj",
         "packagesPath": "C:\\Users\\Назар\\.nuget\\packages\\",
         "outputPath": "D:\\PetProject\\taskly-backend\\Taskly_Api\\obj\\",
-=======
-    "/Users/PC10/taskly/taskly-backend copy/Taskly_Api/Taskly_Api.csproj": {}
-  },
-  "projects": {
-    "/Users/PC10/taskly/taskly-backend copy/Taskly_Api/Taskly_Api.csproj": {
-      "version": "1.0.0",
-      "restore": {
-        "projectUniqueName": "/Users/PC10/taskly/taskly-backend copy/Taskly_Api/Taskly_Api.csproj",
-        "projectName": "Taskly_Api",
-        "projectPath": "/Users/PC10/taskly/taskly-backend copy/Taskly_Api/Taskly_Api.csproj",
-        "packagesPath": "/Users/PC10/.nuget/packages/",
-        "outputPath": "/Users/PC10/taskly/taskly-backend copy/Taskly_Api/obj/",
->>>>>>> friend/main
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Назар\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -42,19 +28,11 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-<<<<<<< HEAD
               "D:\\PetProject\\taskly-backend\\Taskly_Application\\Taskly_Application.csproj": {
                 "projectPath": "D:\\PetProject\\taskly-backend\\Taskly_Application\\Taskly_Application.csproj"
               },
               "D:\\PetProject\\taskly-backend\\Taskly_Infrastructure\\Taskly_Infrastructure.csproj": {
                 "projectPath": "D:\\PetProject\\taskly-backend\\Taskly_Infrastructure\\Taskly_Infrastructure.csproj"
-=======
-              "/Users/PC10/taskly/taskly-backend copy/Taskly_Application/Taskly_Application.csproj": {
-                "projectPath": "/Users/PC10/taskly/taskly-backend copy/Taskly_Application/Taskly_Application.csproj"
-              },
-              "/Users/PC10/taskly/taskly-backend copy/Taskly_Infrastructure/Taskly_Infrastructure.csproj": {
-                "projectPath": "/Users/PC10/taskly/taskly-backend copy/Taskly_Infrastructure/Taskly_Infrastructure.csproj"
->>>>>>> friend/main
               }
             }
           }
@@ -131,7 +109,6 @@
         }
       }
     },
-<<<<<<< HEAD
     "D:\\PetProject\\taskly-backend\\Taskly_Application\\Taskly_Application.csproj": {
       "version": "1.0.0",
       "restore": {
@@ -140,16 +117,6 @@
         "projectPath": "D:\\PetProject\\taskly-backend\\Taskly_Application\\Taskly_Application.csproj",
         "packagesPath": "C:\\Users\\Назар\\.nuget\\packages\\",
         "outputPath": "D:\\PetProject\\taskly-backend\\Taskly_Application\\obj\\",
-=======
-    "/Users/PC10/taskly/taskly-backend copy/Taskly_Application/Taskly_Application.csproj": {
-      "version": "1.0.0",
-      "restore": {
-        "projectUniqueName": "/Users/PC10/taskly/taskly-backend copy/Taskly_Application/Taskly_Application.csproj",
-        "projectName": "Taskly_Application",
-        "projectPath": "/Users/PC10/taskly/taskly-backend copy/Taskly_Application/Taskly_Application.csproj",
-        "packagesPath": "/Users/PC10/.nuget/packages/",
-        "outputPath": "/Users/PC10/taskly/taskly-backend copy/Taskly_Application/obj/",
->>>>>>> friend/main
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Назар\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -166,13 +133,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-<<<<<<< HEAD
               "D:\\PetProject\\taskly-backend\\Taskly_Domain\\Taskly_Domain.csproj": {
                 "projectPath": "D:\\PetProject\\taskly-backend\\Taskly_Domain\\Taskly_Domain.csproj"
-=======
-              "/Users/PC10/taskly/taskly-backend copy/Taskly_Domain/Taskly_Domain.csproj": {
-                "projectPath": "/Users/PC10/taskly/taskly-backend copy/Taskly_Domain/Taskly_Domain.csproj"
->>>>>>> friend/main
               }
             }
           }
@@ -236,7 +198,6 @@
         }
       }
     },
-<<<<<<< HEAD
     "D:\\PetProject\\taskly-backend\\Taskly_Domain\\Taskly_Domain.csproj": {
       "version": "1.0.0",
       "restore": {
@@ -245,16 +206,6 @@
         "projectPath": "D:\\PetProject\\taskly-backend\\Taskly_Domain\\Taskly_Domain.csproj",
         "packagesPath": "C:\\Users\\Назар\\.nuget\\packages\\",
         "outputPath": "D:\\PetProject\\taskly-backend\\Taskly_Domain\\obj\\",
-=======
-    "/Users/PC10/taskly/taskly-backend copy/Taskly_Domain/Taskly_Domain.csproj": {
-      "version": "1.0.0",
-      "restore": {
-        "projectUniqueName": "/Users/PC10/taskly/taskly-backend copy/Taskly_Domain/Taskly_Domain.csproj",
-        "projectName": "Taskly_Domain",
-        "projectPath": "/Users/PC10/taskly/taskly-backend copy/Taskly_Domain/Taskly_Domain.csproj",
-        "packagesPath": "/Users/PC10/.nuget/packages/",
-        "outputPath": "/Users/PC10/taskly/taskly-backend copy/Taskly_Domain/obj/",
->>>>>>> friend/main
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Назар\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -316,7 +267,6 @@
         }
       }
     },
-<<<<<<< HEAD
     "D:\\PetProject\\taskly-backend\\Taskly_Infrastructure\\Taskly_Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
@@ -325,16 +275,6 @@
         "projectPath": "D:\\PetProject\\taskly-backend\\Taskly_Infrastructure\\Taskly_Infrastructure.csproj",
         "packagesPath": "C:\\Users\\Назар\\.nuget\\packages\\",
         "outputPath": "D:\\PetProject\\taskly-backend\\Taskly_Infrastructure\\obj\\",
-=======
-    "/Users/PC10/taskly/taskly-backend copy/Taskly_Infrastructure/Taskly_Infrastructure.csproj": {
-      "version": "1.0.0",
-      "restore": {
-        "projectUniqueName": "/Users/PC10/taskly/taskly-backend copy/Taskly_Infrastructure/Taskly_Infrastructure.csproj",
-        "projectName": "Taskly_Infrastructure",
-        "projectPath": "/Users/PC10/taskly/taskly-backend copy/Taskly_Infrastructure/Taskly_Infrastructure.csproj",
-        "packagesPath": "/Users/PC10/.nuget/packages/",
-        "outputPath": "/Users/PC10/taskly/taskly-backend copy/Taskly_Infrastructure/obj/",
->>>>>>> friend/main
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Назар\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -351,19 +291,11 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-<<<<<<< HEAD
               "D:\\PetProject\\taskly-backend\\Taskly_Application\\Taskly_Application.csproj": {
                 "projectPath": "D:\\PetProject\\taskly-backend\\Taskly_Application\\Taskly_Application.csproj"
               },
               "D:\\PetProject\\taskly-backend\\Taskly_Domain\\Taskly_Domain.csproj": {
                 "projectPath": "D:\\PetProject\\taskly-backend\\Taskly_Domain\\Taskly_Domain.csproj"
-=======
-              "/Users/PC10/taskly/taskly-backend copy/Taskly_Application/Taskly_Application.csproj": {
-                "projectPath": "/Users/PC10/taskly/taskly-backend copy/Taskly_Application/Taskly_Application.csproj"
-              },
-              "/Users/PC10/taskly/taskly-backend copy/Taskly_Domain/Taskly_Domain.csproj": {
-                "projectPath": "/Users/PC10/taskly/taskly-backend copy/Taskly_Domain/Taskly_Domain.csproj"
->>>>>>> friend/main
               }
             }
           }

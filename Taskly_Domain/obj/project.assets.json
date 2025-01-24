@@ -852,19 +852,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-<<<<<<< HEAD
       "projectUniqueName": "D:\\PetProject\\taskly-backend\\Taskly_Domain\\Taskly_Domain.csproj",
       "projectName": "Taskly_Domain",
       "projectPath": "D:\\PetProject\\taskly-backend\\Taskly_Domain\\Taskly_Domain.csproj",
       "packagesPath": "C:\\Users\\Назар\\.nuget\\packages\\",
       "outputPath": "D:\\PetProject\\taskly-backend\\Taskly_Domain\\obj\\",
-=======
-      "projectUniqueName": "/Users/PC10/taskly/taskly-backend copy/Taskly_Domain/Taskly_Domain.csproj",
-      "projectName": "Taskly_Domain",
-      "projectPath": "/Users/PC10/taskly/taskly-backend copy/Taskly_Domain/Taskly_Domain.csproj",
-      "packagesPath": "/Users/PC10/.nuget/packages/",
-      "outputPath": "/Users/PC10/taskly/taskly-backend copy/Taskly_Domain/obj/",
->>>>>>> friend/main
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Назар\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -925,5 +917,13 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Problem reading the cache file D:\\PetProject\\taskly-backend\\Taskly_Domain\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
+    }
+  ]
 }
