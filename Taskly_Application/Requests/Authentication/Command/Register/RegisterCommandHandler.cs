@@ -31,7 +31,7 @@ public class RegisterCommandHandler(
         if (result.IsError)
             return result.FirstError;
 
-        var token = jwtService.GetJwtToken(result.Value);
+        var token = jwtService.GetJwtToken(result.Value, false);
 
         return token;
     }

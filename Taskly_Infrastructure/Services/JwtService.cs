@@ -13,7 +13,7 @@ namespace Taskly_Infrastructure.Services;
 public class JwtService(IOptions<AuthanticationSettings> options) : IJwtService
 {
     private readonly string JwtKey = options.Value.JwtKey;
-    public string GetJwtToken(UserEntity userEntity)
+    public string GetJwtToken(UserEntity userEntity, bool RememberMe)
     {
         var claimes = new Claim[] {
         new Claim(type:"id",value:userEntity.Id.ToString()),
@@ -23,7 +23,7 @@ public class JwtService(IOptions<AuthanticationSettings> options) : IJwtService
         var token = new JwtSecurityToken(
             claims: claimes,
             notBefore: DateTime.UtcNow,
-            expires: DateTime.UtcNow.AddDays(1),
+            expires: RememberMe == true ? DateTime.UtcNow.AddDays(30) : DateTime.UtcNow.AddDays(1),
             signingCredentials: new SigningCredentials(
             new SymmetricSecurityKey(
                Encoding.UTF8.GetBytes(JwtKey)

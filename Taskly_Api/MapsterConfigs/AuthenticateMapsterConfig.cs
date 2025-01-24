@@ -28,7 +28,8 @@ public static class AuthenticateMapsterConfig
 
         TypeAdapterConfig<LoginRequest, LoginQuery>.NewConfig()
             .Map(src => src.Email, desp => desp.Email)
-            .Map(src => src.Password, desp => desp.Password);
+            .Map(src => src.Password, desp => desp.Password)
+            .Map(src => src.RememberMe, desp => desp.RememberMe);
 
         TypeAdapterConfig<UserEntity,UserForTableItemResponse>.NewConfig()
             .Map(src => src.Id, desp => desp.Id)
