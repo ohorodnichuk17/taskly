@@ -79,7 +79,6 @@ public static class DependencyInjection
 
         AuthenticateMapsterConfig.Config();
         TableMapsterConfig.Config();
-        BoardMapsterConfig.Config();
 
         return services;
     }
