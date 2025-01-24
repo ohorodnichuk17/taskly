@@ -3,7 +3,8 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Taskly_Api.Request.Board;
-using Taskly_Application.Requests.Board.Command.Create;
+using Taskly_Application.Requests.Board.Command.AddMemberToBoard;
+using Taskly_Application.Requests.Board.Command.CreateBoard;
 using Taskly_Application.Requests.Board.Query.GetBoardById;
 using Taskly_Application.Requests.Board.Query.GetTemplateBoard;
 
@@ -36,6 +37,14 @@ public class BoardController(ISender sender, IMapper mapper) : ApiController
     {
         var res = await sender.Send(
             mapper.Map<CreateBoardCommand>(request));
+        return res.Match(result => Ok(result),
+            errors => Problem(errors));
+    }
+
+    [HttpPost("add-member")]
+    public async Task<IActionResult> AddMemberToBoard([FromBody] AddMemberToBoardRequest request)
+    {
+        var res = await sender.Send(mapper.Map<AddMemberToBoardCommand>(request));
         return res.Match(result => Ok(result),
             errors => Problem(errors));
     }

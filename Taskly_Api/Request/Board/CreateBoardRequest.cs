@@ -2,6 +2,6 @@ namespace Taskly_Api.Request.Board;
 
 public record CreateBoardRequest(
     string Name,
-    string Tag,
+    string? Tag,
     bool IsTeamBoard,
     Guid BoardTemplateId);

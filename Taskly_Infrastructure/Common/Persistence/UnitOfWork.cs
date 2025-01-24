@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Taskly_Application.Interfaces;
 using Taskly_Application.Interfaces.IRepository;
 using Taskly_Domain.Entities;
@@ -27,5 +28,17 @@ public class UnitOfWork : IUnitOfWork
         ToDoTable = new ToDoTableRepository(_context);
         ToDoTableItems = new ToDoTableItemsRepository(_context);
         BoardTemplates = new BoardTemplateRepository(_context);
+    }
+    
+    public async Task SaveChangesAsync(string errorMessage)
+    {
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateException ex)
+        {
+            throw new InvalidOperationException(errorMessage, ex);
+        }
     }
 }

@@ -26,7 +26,8 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
         board.IsTeamBoard = true;
         board.Members ??= new List<UserEntity>();
         board.Members.Add(user);
-        await SaveChangesAsync("Error adding member to the board.");
+        user.Boards.Add(board);
+        await context.SaveChangesAsync();
     }
 
     public async Task RemoveMemberFromBoardAsync(Guid boardId, Guid userId)
@@ -38,7 +39,7 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
         if (!board.Members.Contains(user))
             throw new InvalidOperationException($"User {userId} is not a member of the board.");
         board.Members.Remove(user);
-        await SaveChangesAsync("Error removing member from the board.");
+        await context.SaveChangesAsync();
     }
 
     public async Task<IEnumerable<UserEntity>> GetMembersOfBoardAsync(Guid boardId)
@@ -54,7 +55,7 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
             throw new ArgumentNullException(nameof(cardList), "CardList must not be null");
         var board = await GetBoardByIdAsync(boardId);
         board.CardLists.Add(cardList);
-        await SaveChangesAsync("Error adding CardList to the board.");
+        await context.SaveChangesAsync();
     }
 
     public async Task RemoveCardListFromBoardAsync(Guid boardId, Guid cardListId)
@@ -66,7 +67,7 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
         if(cardList == null)
             throw new KeyNotFoundException("CardList not found");
         board.CardLists.Remove(cardList);
-        await SaveChangesAsync("Error removing card list from the board.");
+        await context.SaveChangesAsync();
     }
     
     private async Task<(BoardEntity board, UserEntity user)> GetBoardAndUserAsync(Guid boardId, Guid userId)
@@ -78,18 +79,6 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
         if (user == null)
             throw new KeyNotFoundException("User not found");
         return (board, user);
-    }
-    
-    private async Task SaveChangesAsync(string errorMessage)
-    {
-        try
-        {
-            await context.SaveChangesAsync();
-        }
-        catch (DbUpdateException ex)
-        {
-            throw new InvalidOperationException(errorMessage, ex);
-        }
     }
     
     private void ValidateBoardMembers(BoardEntity board)
