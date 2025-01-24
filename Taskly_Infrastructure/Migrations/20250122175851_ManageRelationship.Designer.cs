@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Taskly_Infrastructure.Common.Persistence;
@@ -11,9 +12,11 @@ using Taskly_Infrastructure.Common.Persistence;
 namespace Taskly_Infrastructure.Migrations
 {
     [DbContext(typeof(TasklyDbContext))]
-    partial class TasklyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250122175851_ManageRelationship")]
+    partial class ManageRelationship
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -173,9 +176,6 @@ namespace Taskly_Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("BoardTemplateId")
-                        .HasColumnType("uuid");
-
                     b.Property<bool>("IsTeamBoard")
                         .HasColumnType("boolean");
 
@@ -189,8 +189,6 @@ namespace Taskly_Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BoardTemplateId");
-
                     b.ToTable("Boards");
                 });
 
@@ -198,6 +196,9 @@ namespace Taskly_Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("BoardEntityId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("ImagePath")
@@ -209,6 +210,8 @@ namespace Taskly_Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BoardEntityId");
 
                     b.ToTable("BoardTemplates");
                 });
@@ -528,14 +531,14 @@ namespace Taskly_Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Taskly_Domain.Entities.BoardEntity", b =>
+            modelBuilder.Entity("Taskly_Domain.Entities.BoardTemplateEntity", b =>
                 {
-                    b.HasOne("Taskly_Domain.Entities.BoardTemplateEntity", "BoardTemplate")
-                        .WithMany("Boards")
-                        .HasForeignKey("BoardTemplateId")
+                    b.HasOne("Taskly_Domain.Entities.BoardEntity", "Board")
+                        .WithMany("BoardTemplates")
+                        .HasForeignKey("BoardEntityId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.Navigation("BoardTemplate");
+                    b.Navigation("Board");
                 });
 
             modelBuilder.Entity("Taskly_Domain.Entities.CardEntity", b =>
@@ -656,12 +659,9 @@ namespace Taskly_Infrastructure.Migrations
 
             modelBuilder.Entity("Taskly_Domain.Entities.BoardEntity", b =>
                 {
-                    b.Navigation("CardLists");
-                });
+                    b.Navigation("BoardTemplates");
 
-            modelBuilder.Entity("Taskly_Domain.Entities.BoardTemplateEntity", b =>
-                {
-                    b.Navigation("Boards");
+                    b.Navigation("CardLists");
                 });
 
             modelBuilder.Entity("Taskly_Domain.Entities.CardEntity", b =>

@@ -68,49 +68,48 @@ public static class DataInitializer
 
    private static async Task InitializeBoardsAsync(TasklyDbContext dbContext)
    {
-      if (!dbContext.Boards.Any())
-      {
-         var timeRange1 = new TimeRangeEntity
-         {
-            Id = Guid.NewGuid(),
-            StartTime = DateTime.UtcNow,
-            EndTime = DateTime.UtcNow.AddHours(2)
-         };
+       if (!dbContext.Boards.Any())
+       {
+           var timeRange1 = new TimeRangeEntity
+           {
+               Id = Guid.NewGuid(),
+               StartTime = DateTime.UtcNow,
+               EndTime = DateTime.UtcNow.AddHours(2)
+           };
 
-         await dbContext.TimeRanges.AddAsync(timeRange1);
-         await dbContext.SaveChangesAsync();
+           await dbContext.TimeRanges.AddAsync(timeRange1);
+           await dbContext.SaveChangesAsync();
 
-         var boardTemplates = await dbContext.BoardTemplates.ToListAsync();
-         var board = new BoardEntity
-         {
-            Id = Guid.NewGuid(),
-            Name = "Sample Board",
-            IsTeamBoard = false,
-            Tag = "Template",
-            BoardTemplates = new List<BoardTemplateEntity>(),
-         };
+           var board = new BoardEntity
+           {
+               Id = Guid.NewGuid(),
+               Name = "Sample Board",
+               IsTeamBoard = false,
+               Tag = "Template"
+           };
 
-         await dbContext.Boards.AddAsync(board);
-         await dbContext.SaveChangesAsync(); 
+           await dbContext.Boards.AddAsync(board);
+           await dbContext.SaveChangesAsync();
 
-         var cardLists = await GetDefaultCardLists(dbContext, timeRange1, board.Id);
+           var cardLists = await GetDefaultCardLists(dbContext, timeRange1, board.Id);
 
-         foreach (var cardList in cardLists)
-         {
-            cardList.BoardId = board.Id;
-            await dbContext.CardLists.AddAsync(cardList);
-         }
+           foreach (var cardList in cardLists)
+           {
+               cardList.BoardId = board.Id;
+               await dbContext.CardLists.AddAsync(cardList);
+           }
 
-         await dbContext.SaveChangesAsync();
+           await dbContext.SaveChangesAsync();
 
-         foreach (var boardTemplate in boardTemplates)
-         {
-            boardTemplate.Boards.Add(board);
-         }
+           // var boardTemplates = await dbContext.BoardTemplates.ToListAsync();
+           // foreach (var boardTemplate in boardTemplates)
+           // {
+           //     boardTemplate.BoardEntityId = board.Id;
+           // }
 
-         dbContext.BoardTemplates.UpdateRange(boardTemplates);
-         await dbContext.SaveChangesAsync();
-      }
+           // dbContext.BoardTemplates.UpdateRange(boardTemplates);
+           // await dbContext.SaveChangesAsync();
+       }
    }
 
    private static async Task<List<CardListEntity>> GetDefaultCardLists(TasklyDbContext dbContext, TimeRangeEntity timeRange1, Guid boardId)

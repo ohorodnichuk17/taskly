@@ -52,6 +52,7 @@ D:/PetProject/taskly-backend/Taskly_Infrastructure/obj/Debug/net8.0/ref/Taskly_I
 /Users/PC10/taskly/taskly-backend/Taskly_Infrastructure/obj/Debug/net8.0/refint/Taskly_Infrastructure.dll
 /Users/PC10/taskly/taskly-backend/Taskly_Infrastructure/obj/Debug/net8.0/Taskly_Infrastructure.pdb
 /Users/PC10/taskly/taskly-backend/Taskly_Infrastructure/obj/Debug/net8.0/ref/Taskly_Infrastructure.dll
+<<<<<<< HEAD
 D:\PetProject\taskly-backend\Taskly_Infrastructure\bin\Debug\net8.0\Taskly_Infrastructure.deps.json
 D:\PetProject\taskly-backend\Taskly_Infrastructure\bin\Debug\net8.0\Taskly_Infrastructure.dll
 D:\PetProject\taskly-backend\Taskly_Infrastructure\bin\Debug\net8.0\Taskly_Infrastructure.pdb
@@ -70,3 +71,23 @@ D:\PetProject\taskly-backend\Taskly_Infrastructure\obj\Debug\net8.0\Taskly_Infra
 D:\PetProject\taskly-backend\Taskly_Infrastructure\obj\Debug\net8.0\refint\Taskly_Infrastructure.dll
 D:\PetProject\taskly-backend\Taskly_Infrastructure\obj\Debug\net8.0\Taskly_Infrastructure.pdb
 D:\PetProject\taskly-backend\Taskly_Infrastructure\obj\Debug\net8.0\ref\Taskly_Infrastructure.dll
+=======
+/Users/PC10/taskly/taskly-backend copy/Taskly_Infrastructure/bin/Debug/net8.0/Taskly_Infrastructure.deps.json
+/Users/PC10/taskly/taskly-backend copy/Taskly_Infrastructure/bin/Debug/net8.0/Taskly_Infrastructure.dll
+/Users/PC10/taskly/taskly-backend copy/Taskly_Infrastructure/bin/Debug/net8.0/Taskly_Infrastructure.pdb
+/Users/PC10/taskly/taskly-backend copy/Taskly_Infrastructure/bin/Debug/net8.0/Taskly_Application.dll
+/Users/PC10/taskly/taskly-backend copy/Taskly_Infrastructure/bin/Debug/net8.0/Taskly_Domain.dll
+/Users/PC10/taskly/taskly-backend copy/Taskly_Infrastructure/bin/Debug/net8.0/Taskly_Application.pdb
+/Users/PC10/taskly/taskly-backend copy/Taskly_Infrastructure/bin/Debug/net8.0/Taskly_Domain.pdb
+/Users/PC10/taskly/taskly-backend copy/Taskly_Infrastructure/obj/Debug/net8.0/Taskly_Infrastructure.csproj.AssemblyReference.cache
+/Users/PC10/taskly/taskly-backend copy/Taskly_Infrastructure/obj/Debug/net8.0/Taskly_Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+/Users/PC10/taskly/taskly-backend copy/Taskly_Infrastructure/obj/Debug/net8.0/Taskly_Infrastructure.AssemblyInfoInputs.cache
+/Users/PC10/taskly/taskly-backend copy/Taskly_Infrastructure/obj/Debug/net8.0/Taskly_Infrastructure.AssemblyInfo.cs
+/Users/PC10/taskly/taskly-backend copy/Taskly_Infrastructure/obj/Debug/net8.0/Taskly_Infrastructure.csproj.CoreCompileInputs.cache
+/Users/PC10/taskly/taskly-backend copy/Taskly_Infrastructure/obj/Debug/net8.0/Taskly_Infrastructure.sourcelink.json
+/Users/PC10/taskly/taskly-backend copy/Taskly_Infrastructure/obj/Debug/net8.0/Taskly_I.51FF8543.Up2Date
+/Users/PC10/taskly/taskly-backend copy/Taskly_Infrastructure/obj/Debug/net8.0/Taskly_Infrastructure.dll
+/Users/PC10/taskly/taskly-backend copy/Taskly_Infrastructure/obj/Debug/net8.0/refint/Taskly_Infrastructure.dll
+/Users/PC10/taskly/taskly-backend copy/Taskly_Infrastructure/obj/Debug/net8.0/Taskly_Infrastructure.pdb
+/Users/PC10/taskly/taskly-backend copy/Taskly_Infrastructure/obj/Debug/net8.0/ref/Taskly_Infrastructure.dll
+>>>>>>> friend/main

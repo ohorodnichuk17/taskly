@@ -37,6 +37,7 @@ D:/PetProject/taskly-backend/Taskly_Domain/obj/Debug/net8.0/ref/Taskly_Domain.dl
 /Users/PC10/taskly/taskly-backend/Taskly_Domain/obj/Debug/net8.0/refint/Taskly_Domain.dll
 /Users/PC10/taskly/taskly-backend/Taskly_Domain/obj/Debug/net8.0/Taskly_Domain.pdb
 /Users/PC10/taskly/taskly-backend/Taskly_Domain/obj/Debug/net8.0/ref/Taskly_Domain.dll
+<<<<<<< HEAD
 D:\PetProject\taskly-backend\Taskly_Domain\bin\Debug\net8.0\Taskly_Domain.deps.json
 D:\PetProject\taskly-backend\Taskly_Domain\bin\Debug\net8.0\Taskly_Domain.dll
 D:\PetProject\taskly-backend\Taskly_Domain\bin\Debug\net8.0\Taskly_Domain.pdb
@@ -50,3 +51,18 @@ D:\PetProject\taskly-backend\Taskly_Domain\obj\Debug\net8.0\Taskly_Domain.dll
 D:\PetProject\taskly-backend\Taskly_Domain\obj\Debug\net8.0\refint\Taskly_Domain.dll
 D:\PetProject\taskly-backend\Taskly_Domain\obj\Debug\net8.0\Taskly_Domain.pdb
 D:\PetProject\taskly-backend\Taskly_Domain\obj\Debug\net8.0\ref\Taskly_Domain.dll
+=======
+/Users/PC10/taskly/taskly-backend copy/Taskly_Domain/bin/Debug/net8.0/Taskly_Domain.deps.json
+/Users/PC10/taskly/taskly-backend copy/Taskly_Domain/bin/Debug/net8.0/Taskly_Domain.dll
+/Users/PC10/taskly/taskly-backend copy/Taskly_Domain/bin/Debug/net8.0/Taskly_Domain.pdb
+/Users/PC10/taskly/taskly-backend copy/Taskly_Domain/obj/Debug/net8.0/Taskly_Domain.csproj.AssemblyReference.cache
+/Users/PC10/taskly/taskly-backend copy/Taskly_Domain/obj/Debug/net8.0/Taskly_Domain.GeneratedMSBuildEditorConfig.editorconfig
+/Users/PC10/taskly/taskly-backend copy/Taskly_Domain/obj/Debug/net8.0/Taskly_Domain.AssemblyInfoInputs.cache
+/Users/PC10/taskly/taskly-backend copy/Taskly_Domain/obj/Debug/net8.0/Taskly_Domain.AssemblyInfo.cs
+/Users/PC10/taskly/taskly-backend copy/Taskly_Domain/obj/Debug/net8.0/Taskly_Domain.csproj.CoreCompileInputs.cache
+/Users/PC10/taskly/taskly-backend copy/Taskly_Domain/obj/Debug/net8.0/Taskly_Domain.sourcelink.json
+/Users/PC10/taskly/taskly-backend copy/Taskly_Domain/obj/Debug/net8.0/Taskly_Domain.dll
+/Users/PC10/taskly/taskly-backend copy/Taskly_Domain/obj/Debug/net8.0/refint/Taskly_Domain.dll
+/Users/PC10/taskly/taskly-backend copy/Taskly_Domain/obj/Debug/net8.0/Taskly_Domain.pdb
+/Users/PC10/taskly/taskly-backend copy/Taskly_Domain/obj/Debug/net8.0/ref/Taskly_Domain.dll
+>>>>>>> friend/main

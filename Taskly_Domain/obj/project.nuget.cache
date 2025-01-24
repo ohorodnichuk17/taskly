@@ -1,8 +1,14 @@
 {
   "version": 2,
+<<<<<<< HEAD
   "dgSpecHash": "c8P785DGTUsyyE2AwWOH0U8c+qnjbmBDjnHNqrfdLZP0+2fI6aMmk9qL3GUsTiaRuu38axB125ZU4R/UqyKb5Q==",
   "success": true,
   "projectFilePath": "D:\\PetProject\\taskly-backend\\Taskly_Domain\\Taskly_Domain.csproj",
+=======
+  "dgSpecHash": "qLJ1hcQtzw3gn1afH55klxDZ52RLp/T2/9mS6umGGIlf1F4t3AJYV5RpI+aX8gz89e2wtc49YHdJVlSJ74h3EQ==",
+  "success": true,
+  "projectFilePath": "/Users/PC10/taskly/taskly-backend copy/Taskly_Domain/Taskly_Domain.csproj",
+>>>>>>> friend/main
   "expectedPackageFiles": [
     "C:\\Users\\Назар\\.nuget\\packages\\erroror\\2.0.1\\erroror.2.0.1.nupkg.sha512",
     "C:\\Users\\Назар\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\8.0.11\\microsoft.aspnetcore.cryptography.internal.8.0.11.nupkg.sha512",

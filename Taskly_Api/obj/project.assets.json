@@ -4250,11 +4250,19 @@
   "project": {
     "version": "1.0.0",
     "restore": {
+<<<<<<< HEAD
       "projectUniqueName": "D:\\PetProject\\taskly-backend\\Taskly_Api\\Taskly_Api.csproj",
       "projectName": "Taskly_Api",
       "projectPath": "D:\\PetProject\\taskly-backend\\Taskly_Api\\Taskly_Api.csproj",
       "packagesPath": "C:\\Users\\Назар\\.nuget\\packages\\",
       "outputPath": "D:\\PetProject\\taskly-backend\\Taskly_Api\\obj\\",
+=======
+      "projectUniqueName": "/Users/PC10/taskly/taskly-backend copy/Taskly_Api/Taskly_Api.csproj",
+      "projectName": "Taskly_Api",
+      "projectPath": "/Users/PC10/taskly/taskly-backend copy/Taskly_Api/Taskly_Api.csproj",
+      "packagesPath": "/Users/PC10/.nuget/packages/",
+      "outputPath": "/Users/PC10/taskly/taskly-backend copy/Taskly_Api/obj/",
+>>>>>>> friend/main
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Назар\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -4271,11 +4279,19 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
+<<<<<<< HEAD
             "D:\\PetProject\\taskly-backend\\Taskly_Application\\Taskly_Application.csproj": {
               "projectPath": "D:\\PetProject\\taskly-backend\\Taskly_Application\\Taskly_Application.csproj"
             },
             "D:\\PetProject\\taskly-backend\\Taskly_Infrastructure\\Taskly_Infrastructure.csproj": {
               "projectPath": "D:\\PetProject\\taskly-backend\\Taskly_Infrastructure\\Taskly_Infrastructure.csproj"
+=======
+            "/Users/PC10/taskly/taskly-backend copy/Taskly_Application/Taskly_Application.csproj": {
+              "projectPath": "/Users/PC10/taskly/taskly-backend copy/Taskly_Application/Taskly_Application.csproj"
+            },
+            "/Users/PC10/taskly/taskly-backend copy/Taskly_Infrastructure/Taskly_Infrastructure.csproj": {
+              "projectPath": "/Users/PC10/taskly/taskly-backend copy/Taskly_Infrastructure/Taskly_Infrastructure.csproj"
+>>>>>>> friend/main
             }
           }
         }
