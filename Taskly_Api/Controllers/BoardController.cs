@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Taskly_Api.Request.Board;
 using Taskly_Application.Requests.Board.Command.AddMemberToBoard;
 using Taskly_Application.Requests.Board.Command.CreateBoard;
+using Taskly_Application.Requests.Board.Command.Delete;
 using Taskly_Application.Requests.Board.Query.GetBoardById;
 using Taskly_Application.Requests.Board.Query.GetTemplateBoard;
 
@@ -40,6 +41,14 @@ public class BoardController(ISender sender, IMapper mapper) : ApiController
         return res.Match(result => Ok(result),
             errors => Problem(errors));
     }
+    
+    [HttpDelete("delete/{id}")]
+    public async Task<IActionResult> DeleteBoard(Guid id)
+    {
+        var res = await sender.Send(new DeleteBoardCommand(id));
+        return res.Match(result => Ok(result),
+            errors => Problem(errors));
+    }
 
     [HttpPost("add-member")]
     public async Task<IActionResult> AddMemberToBoard([FromBody] AddMemberToBoardRequest request)
@@ -48,4 +57,6 @@ public class BoardController(ISender sender, IMapper mapper) : ApiController
         return res.Match(result => Ok(result),
             errors => Problem(errors));
     }
+    
+    
 }
