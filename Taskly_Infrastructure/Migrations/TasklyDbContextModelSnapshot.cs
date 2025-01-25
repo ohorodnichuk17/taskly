@@ -164,7 +164,7 @@ namespace Taskly_Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Avatars");
+                    b.ToTable("Avatars", (string)null);
                 });
 
             modelBuilder.Entity("Taskly_Domain.Entities.BoardEntity", b =>
@@ -190,7 +190,7 @@ namespace Taskly_Infrastructure.Migrations
 
                     b.HasIndex("BoardTemplateId");
 
-                    b.ToTable("Boards");
+                    b.ToTable("Boards", (string)null);
                 });
 
             modelBuilder.Entity("Taskly_Domain.Entities.BoardTemplateEntity", b =>
@@ -209,7 +209,7 @@ namespace Taskly_Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BoardTemplates");
+                    b.ToTable("BoardTemplates", (string)null);
                 });
 
             modelBuilder.Entity("Taskly_Domain.Entities.CardEntity", b =>
@@ -241,7 +241,7 @@ namespace Taskly_Infrastructure.Migrations
                     b.HasIndex("TimeRangeEntityId")
                         .IsUnique();
 
-                    b.ToTable("Cards");
+                    b.ToTable("Cards", (string)null);
                 });
 
             modelBuilder.Entity("Taskly_Domain.Entities.CardListEntity", b =>
@@ -261,7 +261,7 @@ namespace Taskly_Infrastructure.Migrations
 
                     b.HasIndex("BoardId");
 
-                    b.ToTable("CardLists");
+                    b.ToTable("CardLists", (string)null);
                 });
 
             modelBuilder.Entity("Taskly_Domain.Entities.CommentEntity", b =>
@@ -283,7 +283,7 @@ namespace Taskly_Infrastructure.Migrations
 
                     b.HasIndex("CardEntityId");
 
-                    b.ToTable("Comments");
+                    b.ToTable("Comments", (string)null);
                 });
 
             modelBuilder.Entity("Taskly_Domain.Entities.TimeRangeEntity", b =>
@@ -300,7 +300,7 @@ namespace Taskly_Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TimeRanges");
+                    b.ToTable("TimeRanges", (string)null);
                 });
 
             modelBuilder.Entity("Taskly_Domain.Entities.ToDoItemEntity", b =>
@@ -325,7 +325,7 @@ namespace Taskly_Infrastructure.Migrations
 
                     b.HasIndex("ToDoTableId");
 
-                    b.ToTable("ToDoItems");
+                    b.ToTable("ToDoItems", (string)null);
                 });
 
             modelBuilder.Entity("Taskly_Domain.Entities.ToDoTableEntity", b =>
@@ -336,7 +336,7 @@ namespace Taskly_Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ToDoTables");
+                    b.ToTable("ToDoTables", (string)null);
                 });
 
             modelBuilder.Entity("Taskly_Domain.Entities.UserEntity", b =>
@@ -428,7 +428,7 @@ namespace Taskly_Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("EmailVerifications");
+                    b.ToTable("EmailVerifications", (string)null);
                 });
 
             modelBuilder.Entity("UserBoard", b =>
@@ -443,7 +443,7 @@ namespace Taskly_Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserBoard");
+                    b.ToTable("UserBoard", (string)null);
                 });
 
             modelBuilder.Entity("UserTable", b =>
@@ -458,7 +458,7 @@ namespace Taskly_Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserTable");
+                    b.ToTable("UserTable", (string)null);
                 });
 
             modelBuilder.Entity("UserTableItem", b =>
@@ -473,7 +473,7 @@ namespace Taskly_Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserTableItem");
+                    b.ToTable("UserTableItem", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
