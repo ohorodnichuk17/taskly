@@ -24,8 +24,10 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
         var (board, user) = await GetBoardAndUserAsync(boardId, userId);
         ValidateBoardMembers(board);
         board.IsTeamBoard = true;
+        
         board.Members ??= new List<UserEntity>();
         board.Members.Add(user);
+        await SaveAsync(board);
         user.Boards.Add(board);
         await context.SaveChangesAsync();
     }

@@ -26,14 +26,12 @@ public class CreateToDoTableItemCommandHandler(IUnitOfWork unitOfWork) : IReques
             };
 
             await unitOfWork.ToDoTableItems.CreateAsync(newTableItem);
-            var users = new List<UserEntity>();
             foreach (var userId in request.Members)
             {
                 var user = await unitOfWork.Authentication.GetByIdAsync(userId);
                 
                 user.ToDoTableItems.Add(newTableItem);
                 await unitOfWork.Authentication.SaveAsync(user);
-                users.Add(user);
             }
 
             return newTableItem.Id.ToString();

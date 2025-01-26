@@ -15,19 +15,11 @@ public class CreateToDoTableCommandHandler(IUnitOfWork unitOfWork) : IRequestHan
             if (user == null)
                 return Error.Conflict("User isn't exist");
 
-            var newTable = new ToDoTableEntity() { Id = Guid.NewGuid() };
-            await unitOfWork.ToDoTable.CreateAsync(newTable);
+            var newTable = await unitOfWork.ToDoTable.CreateNewToDoTableAsync();
 
-            if (newTable.Members == null)
-                newTable.Members = new List<UserEntity>();
-            newTable.Members.Add(user);
-            await unitOfWork.ToDoTable.SaveAsync(newTable);
-            if (user.ToDoTables == null)
-                user.ToDoTables = new List<ToDoTableEntity>();
-            user.ToDoTables.Add(newTable);
-
+            var userFromToDoTable = await unitOfWork.ToDoTable.AddNewUserToToDoTableAsync(newTable,user);
             
-            await unitOfWork.Authentication.SaveAsync(user);
+            await unitOfWork.Authentication.SaveAsync(userFromToDoTable);
             
             return newTable.Id;
         }
