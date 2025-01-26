@@ -37,9 +37,11 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
         ValidateBoardMembers(board);
         if (board.Members == null)
             throw new InvalidOperationException("Board members list is not initialized.");
-        if (!board.Members.Contains(user))
-            throw new InvalidOperationException($"User {userId} is not a member of the board.");
+        // if (!board.Members.Contains(user))
+        //     throw new InvalidOperationException($"User {userId} is not a member of the board.");
         board.Members.Remove(user);
+        await SaveAsync(board);
+        user.Boards.Remove(board);
         await context.SaveChangesAsync();
     }
 
