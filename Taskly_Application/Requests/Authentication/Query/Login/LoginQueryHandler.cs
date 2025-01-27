@@ -20,7 +20,7 @@ public class LoginQueryHandler(
 
         if(!isPasswordValid) return Error.Conflict("Invalid email or password");
 
-        var token = jwtService.GetJwtToken(user);
+        var token = jwtService.GetJwtToken(user, request.RememberMe);
 
         return token;
     }

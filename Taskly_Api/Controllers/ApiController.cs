@@ -8,7 +8,7 @@ public abstract class ApiController : ControllerBase
 {
     protected IActionResult Problem(List<Error> errors)
     {
-        HttpContext.Items["errors"] = errors;
+        HttpContext.Items["errors"] = errors.ToArray();
 
         var firstError = errors.FirstOrDefault();
 
@@ -28,7 +28,7 @@ public abstract class ApiController : ControllerBase
             Detail = "Multiple errors occurred",
         };
 
-        problemDetails.Extensions["errors"] = errors;
+        problemDetails.Extensions["errors"] = errors.ToArray();
 
         return new ObjectResult(problemDetails)
         {

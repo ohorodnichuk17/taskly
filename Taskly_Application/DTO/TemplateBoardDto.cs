@@ -1,8 +1,6 @@
-using System.Text.Json.Serialization;
-
 namespace Taskly_Application.DTO;
 
-public class TemplateBoardDto
+public record TemplateBoardDto
 {
     public required string Name { get; set; }
     public string Tag { get; init; }

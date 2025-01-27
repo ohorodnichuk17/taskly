@@ -65,11 +65,13 @@ app.UseStaticFiles(new StaticFileOptions
     RequestPath = "/images"
 });
 
-app.UseCors(options => options.SetIsOriginAllowed(origin => true)
+/*app.UseCors(options => options.SetIsOriginAllowed(origin => true)
     .AllowCredentials()
     .AllowAnyMethod()
     .AllowAnyHeader()
-);
+);*/
+app.UseCors("AllowPolicy");
+
 
 DataInitializer.InitializeData(app);
 app.UseRouting();

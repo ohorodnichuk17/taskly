@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="../build/BuyTime_Api.props" />
-</Project>

@@ -8,6 +8,8 @@ using Taskly_Application.Requests.Authentication.Command.Register;
 using Taskly_Application.Requests.Authentication.Query.Login;
 using Taskly_Application.Requests.Authentication.Query.GetAllAvatars;
 using Taskly_Api.Response.Authenticate;
+using Microsoft.AspNetCore.Authorization;
+using System.Linq;
 
 namespace Taskly_Api.Controllers
 {
@@ -23,7 +25,6 @@ namespace Taskly_Api.Controllers
             return result.Match(result => Ok(result),
                 errors => Problem(errors));
         }
-
         [HttpPost("verificate-email")]
         public async Task<IActionResult> VerificateEmail([FromBody] VerificateEmailRequest verificateEmailRequest)
         {
@@ -32,32 +33,50 @@ namespace Taskly_Api.Controllers
             return result.Match(result => Ok(result),
                 errors => Problem(errors));
         }
-
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequest registerRequest)
         {
             var result = await sender.Send(mapper.Map<RegisterCommand>(registerRequest));
 
-            return result.Match(result => Ok(result),
+            return result.Match(result => {
+                Response.Cookies.Append("X-JWT-Token", result, new CookieOptions()
+                {
+                    HttpOnly = true,
+                    SameSite = SameSiteMode.Strict
+                });
+                return Ok();
+            },
                 errors => Problem(errors));
         }
-
-        [HttpGet("login")]
-        public async Task<IActionResult> Login([FromQuery] LoginRequest loginRequest)
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
         {
             var result = await sender.Send(mapper.Map<LoginQuery>(loginRequest));
-
-            return result.Match(result => Ok(result),
-                errors => Problem(errors));
+            
+            return result.Match(result => {
+                Response.Cookies.Append("X-JWT-Token", result, new CookieOptions()
+                {
+                    HttpOnly = true, // Забороняє взаємодіяти з кукі через JS
+                    SameSite = SameSiteMode.Strict, //Кукі передаються тільки в межах того ж сайту (тільки для запитів з цього ж домену).
+                }); 
+                return Ok();
+            },errors => Problem(errors));
         }
-
         [HttpGet("get-all-avatars")]
         public async Task<IActionResult> GetAllAvatars()
         {
             var result = await sender.Send(new GetAllAvatarsQuery());
 
-            return result.Match(result => Ok(mapper.Map<List<AvatarResponse>>(result)),
+            return result.Match(result => Ok(mapper.Map<AvatarResponse[]>(result.ToArray())),
                 errors => Problem(errors));
+        }
+
+        
+        [HttpGet("check-token")]
+        [Authorize]
+        public IActionResult CheckToken()
+        {
+            return Ok();
         }
     }
 }

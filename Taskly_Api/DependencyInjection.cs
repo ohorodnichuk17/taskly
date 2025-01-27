@@ -5,9 +5,11 @@ using System.Text.Unicode;
 using Mapster;
 using MapsterMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Taskly_Api.Common;
@@ -50,6 +52,8 @@ public static class DependencyInjection
         services.AddIdentity();
         services.Configuring(configuration);
         services.AddInfrastructureServices();
+        services.AddCustomCors();
+
         return services;
     }
 
@@ -80,16 +84,16 @@ public static class DependencyInjection
     }
     public static IServiceCollection AddJWT(this IServiceCollection services,IConfiguration configuration)
     {
-        services.AddAuthentication(conf =>
+        services.AddAuthentication(options =>
         {
-            conf.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            conf.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            conf.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-        }).AddJwtBearer(conf =>
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+        }).AddJwtBearer(options =>
         {
-            conf.RequireHttpsMetadata = true;
-            conf.SaveToken = true;
-            conf.TokenValidationParameters = new TokenValidationParameters()
+            options.RequireHttpsMetadata = true;
+            options.SaveToken = true;
+            options.TokenValidationParameters = new TokenValidationParameters()
             {
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(
@@ -99,7 +103,29 @@ public static class DependencyInjection
                 ValidateAudience = false,
                 ClockSkew = TimeSpan.Zero
             };
+            options.Events = new JwtBearerEvents()
+            {
+                OnMessageReceived = context => // Подія обробляє запит на отримання токена
+                {               
+                    if (context.Request.Cookies.ContainsKey("X-JWT-Token"))
+                    {
+                        context.Token = context.Request.Cookies["X-JWT-Token"];
+                    }
+
+                    return Task.CompletedTask;
+                }
+        };
+            
+
         });
+
+        services.AddAuthorization(conf =>
+        {
+            conf.DefaultPolicy = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
+            .RequireAuthenticatedUser()
+            .Build();
+        });
+
         return services;
     }
     public static IServiceCollection AddJWTToSwagger(this IServiceCollection services)
@@ -171,4 +197,22 @@ public static class DependencyInjection
 
         return services;
     }
+
+    private static IServiceCollection AddCustomCors(this IServiceCollection services)
+    {
+        services.AddCors(options =>
+        {
+            options.AddPolicy("AllowPolicy", policy =>
+            {
+
+                policy.WithOrigins("http://localhost:5173")
+                    .AllowCredentials() // Дозвіл на будь-які облікові дані
+                    .AllowAnyMethod() // Дозвіл на будь-які методи
+                    .AllowAnyHeader(); //Дозвіл на будь-які додаткові дані
+                //policy.AllowAnyOrigin() // Дозвіл на будь-які домени
+            });
+        });
+        return services;
+    }
+   
 }

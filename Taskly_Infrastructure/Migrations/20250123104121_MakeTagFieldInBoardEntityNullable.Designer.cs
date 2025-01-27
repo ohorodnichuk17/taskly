@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Taskly_Infrastructure.Common.Persistence;
@@ -11,9 +12,11 @@ using Taskly_Infrastructure.Common.Persistence;
 namespace Taskly_Infrastructure.Migrations
 {
     [DbContext(typeof(TasklyDbContext))]
-    partial class TasklyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250123104121_MakeTagFieldInBoardEntityNullable")]
+    partial class MakeTagFieldInBoardEntityNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -164,7 +167,7 @@ namespace Taskly_Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Avatars", (string)null);
+                    b.ToTable("Avatars");
                 });
 
             modelBuilder.Entity("Taskly_Domain.Entities.BoardEntity", b =>
@@ -190,7 +193,7 @@ namespace Taskly_Infrastructure.Migrations
 
                     b.HasIndex("BoardTemplateId");
 
-                    b.ToTable("Boards", (string)null);
+                    b.ToTable("Boards");
                 });
 
             modelBuilder.Entity("Taskly_Domain.Entities.BoardTemplateEntity", b =>
@@ -209,7 +212,7 @@ namespace Taskly_Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BoardTemplates", (string)null);
+                    b.ToTable("BoardTemplates");
                 });
 
             modelBuilder.Entity("Taskly_Domain.Entities.CardEntity", b =>
@@ -241,7 +244,7 @@ namespace Taskly_Infrastructure.Migrations
                     b.HasIndex("TimeRangeEntityId")
                         .IsUnique();
 
-                    b.ToTable("Cards", (string)null);
+                    b.ToTable("Cards");
                 });
 
             modelBuilder.Entity("Taskly_Domain.Entities.CardListEntity", b =>
@@ -261,7 +264,7 @@ namespace Taskly_Infrastructure.Migrations
 
                     b.HasIndex("BoardId");
 
-                    b.ToTable("CardLists", (string)null);
+                    b.ToTable("CardLists");
                 });
 
             modelBuilder.Entity("Taskly_Domain.Entities.CommentEntity", b =>
@@ -283,7 +286,7 @@ namespace Taskly_Infrastructure.Migrations
 
                     b.HasIndex("CardEntityId");
 
-                    b.ToTable("Comments", (string)null);
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("Taskly_Domain.Entities.TimeRangeEntity", b =>
@@ -300,7 +303,7 @@ namespace Taskly_Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TimeRanges", (string)null);
+                    b.ToTable("TimeRanges");
                 });
 
             modelBuilder.Entity("Taskly_Domain.Entities.ToDoItemEntity", b =>
@@ -325,7 +328,7 @@ namespace Taskly_Infrastructure.Migrations
 
                     b.HasIndex("ToDoTableId");
 
-                    b.ToTable("ToDoItems", (string)null);
+                    b.ToTable("ToDoItems");
                 });
 
             modelBuilder.Entity("Taskly_Domain.Entities.ToDoTableEntity", b =>
@@ -336,7 +339,7 @@ namespace Taskly_Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ToDoTables", (string)null);
+                    b.ToTable("ToDoTables");
                 });
 
             modelBuilder.Entity("Taskly_Domain.Entities.UserEntity", b =>
@@ -428,7 +431,7 @@ namespace Taskly_Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("EmailVerifications", (string)null);
+                    b.ToTable("EmailVerifications");
                 });
 
             modelBuilder.Entity("UserBoard", b =>
@@ -443,7 +446,7 @@ namespace Taskly_Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserBoard", (string)null);
+                    b.ToTable("UserBoard");
                 });
 
             modelBuilder.Entity("UserTable", b =>
@@ -458,7 +461,7 @@ namespace Taskly_Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserTable", (string)null);
+                    b.ToTable("UserTable");
                 });
 
             modelBuilder.Entity("UserTableItem", b =>
@@ -473,7 +476,7 @@ namespace Taskly_Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserTableItem", (string)null);
+                    b.ToTable("UserTableItem");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
