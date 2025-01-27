@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Taskly_Api.Request.Board;
 using Taskly_Application.Requests.Board.Command.AddMemberToBoard;
 using Taskly_Application.Requests.Board.Command.CreateBoard;
-using Taskly_Application.Requests.Board.Command.Delete;
+using Taskly_Application.Requests.Board.Command.DeleteBoard;
 using Taskly_Application.Requests.Board.Command.RemoveMemberFromBoard;
 using Taskly_Application.Requests.Board.Query.GetAllBoards;
 using Taskly_Application.Requests.Board.Query.GetBoardById;
