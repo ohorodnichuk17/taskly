@@ -2,7 +2,7 @@
 using Taskly_Api.Request.Authenticate;
 using Taskly_Api.Response.Authenticate;
 using Taskly_Application.Requests.Authentication.Command.Register;
-using Taskly_Application.Requests.Authentication.Command.SendVerificationEmail;
+using Taskly_Application.Requests.Authentication.Command.SendVerificationCode;
 using Taskly_Application.Requests.Authentication.Command.VerificateEmail;
 using Taskly_Application.Requests.Authentication.Query.Login;
 using Taskly_Domain.Entities;

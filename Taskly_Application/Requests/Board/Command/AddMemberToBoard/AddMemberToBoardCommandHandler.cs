@@ -12,15 +12,11 @@ public class AddMemberToBoardCommandHandler(IUnitOfWork unitOfWork, ICurrentUser
     {
         try
         {
-            var board = await unitOfWork.Board.GetBoardByIdAsync(request.BoardId);
             var user = await currentUserService.GetUserByEmailAsync(request.MemberEmail);
-            // if(board.IsTeamBoard && !board.Members.Any(m => m.Email == request.MemberEmail))
-            //     return Error.Unauthorized("You are not a member of this board");
-            //if (board.IsTeamBoard)
-            //{
-                await unitOfWork.Board.AddMemberToBoardAsync(request.BoardId, user.Id);
-                //await unitOfWork.SaveChangesAsync("Error adding member to the board.");
-            //}
+
+           await unitOfWork.Board.AddMemberToBoardAsync(request.BoardId, user.Id);
+
+
             return Unit.Value;
         }
         catch (Exception ex)

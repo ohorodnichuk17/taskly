@@ -1,7 +1,7 @@
 ﻿
 using FluentValidation;
 
-namespace Taskly_Application.Requests.Authentication.Command.SendVerificationEmail;
+namespace Taskly_Application.Requests.Authentication.Command.SendVerificationCode;
 
 public class SendVerificationCodeCommandValidation : AbstractValidator<SendVerificationCodeCommand>
 {

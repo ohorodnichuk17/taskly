@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 using Taskly_Api.Request.Board;
 using Taskly_Application.Requests.Board.Command.AddMemberToBoard;
 using Taskly_Application.Requests.Board.Command.CreateBoard;
+using Taskly_Application.Requests.Board.Command.Delete;
+using Taskly_Application.Requests.Board.Command.RemoveMemberFromBoard;
+using Taskly_Application.Requests.Board.Query.GetAllBoards;
 using Taskly_Application.Requests.Board.Query.GetBoardById;
 using Taskly_Application.Requests.Board.Query.GetTemplateBoard;
 
@@ -18,6 +21,15 @@ public class BoardController(ISender sender, IMapper mapper) : ApiController
     public async Task<IActionResult> GetBoardById(Guid id)
     {
         var result = await sender.Send(new GetBoardByIdQuery(id));
+
+        return result.Match(r => Ok(r),
+            errors => Problem(errors));
+    }
+    
+    [HttpGet("getAll")]
+    public async Task<IActionResult> GetAllBoards()
+    {
+        var result = await sender.Send(new GetAllBoardsQuery());
 
         return result.Match(r => Ok(r),
             errors => Problem(errors));
@@ -40,11 +52,27 @@ public class BoardController(ISender sender, IMapper mapper) : ApiController
         return res.Match(result => Ok(result),
             errors => Problem(errors));
     }
+    
+    [HttpDelete("delete/{id}")]
+    public async Task<IActionResult> DeleteBoard(Guid id)
+    {
+        var res = await sender.Send(new DeleteBoardCommand(id));
+        return res.Match(result => Ok(result),
+            errors => Problem(errors));
+    }
 
     [HttpPost("add-member")]
-    public async Task<IActionResult> AddMemberToBoard([FromBody] AddMemberToBoardRequest request)
+    public async Task<IActionResult> AddMemberToBoard([FromBody] MemberToBoardRequest request)
     {
         var res = await sender.Send(mapper.Map<AddMemberToBoardCommand>(request));
+        return res.Match(result => Ok(result),
+            errors => Problem(errors));
+    }
+
+    [HttpDelete("remove-member")]
+    public async Task<IActionResult> RemoveMemberFromBoard([FromBody] MemberToBoardRequest request)
+    {
+        var res = await sender.Send(mapper.Map<RemoveMemberFromBoardCommand>(request));
         return res.Match(result => Ok(result),
             errors => Problem(errors));
     }

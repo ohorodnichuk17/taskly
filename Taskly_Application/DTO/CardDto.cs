@@ -1,6 +1,6 @@
 namespace Taskly_Application.DTO;
 
-public class CardDto
+public record CardDto
 {
     public string? Description { get; set; }
     public string? AttachmentUrl { get; set; }

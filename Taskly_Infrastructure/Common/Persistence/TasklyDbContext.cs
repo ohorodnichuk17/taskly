@@ -38,30 +38,32 @@ public class TasklyDbContext : IdentityDbContext<UserEntity,IdentityRole<Guid>,G
             .WithMany(b => b.Members)
             .UsingEntity<Dictionary<string, object>>(
                 "UserBoard",
-                j => j.HasOne<BoardEntity>().WithMany().HasForeignKey("BoardId"),
-                j => j.HasOne<UserEntity>().WithMany().HasForeignKey("UserId")
+                j => j.HasOne<BoardEntity>().WithMany().HasForeignKey("BoardId").OnDelete(DeleteBehavior.Cascade),
+                j => j.HasOne<UserEntity>().WithMany().HasForeignKey("UserId").OnDelete(DeleteBehavior.Cascade)
             );
 
         entity.HasMany(u => u.ToDoTables)
             .WithMany(t => t.Members)
             .UsingEntity<Dictionary<string, object>>(
                 "UserTable",
-                j => j.HasOne<ToDoTableEntity>().WithMany().HasForeignKey("ToDoTableId"),
-                j => j.HasOne<UserEntity>().WithMany().HasForeignKey("UserId")
+                j => j.HasOne<ToDoTableEntity>().WithMany().HasForeignKey("ToDoTableId").OnDelete(DeleteBehavior.Cascade),
+                j => j.HasOne<UserEntity>().WithMany().HasForeignKey("UserId").OnDelete(DeleteBehavior.Cascade)
             );
 
         entity.HasMany(u => u.ToDoTableItems)
         .WithMany(td => td.Members)
         .UsingEntity<Dictionary<string, object>>(
                 "UserTableItem",
-                j => j.HasOne<ToDoItemEntity>().WithMany().HasForeignKey("ToDoItemId"),
-                j => j.HasOne<UserEntity>().WithMany().HasForeignKey("UserId")
+                j => j.HasOne<ToDoItemEntity>().WithMany().HasForeignKey("ToDoItemId").OnDelete(DeleteBehavior.Cascade),
+                j => j.HasOne<UserEntity>().WithMany().HasForeignKey("UserId").OnDelete(DeleteBehavior.Cascade)
             );
 
         entity.HasOne(u => u.Avatar)
             .WithMany(a => a.Users)
             .HasForeignKey(u => u.AvatarId)
             .OnDelete(DeleteBehavior.SetNull);
+
+       
     });
 
     // AvatarEntity

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Taskly_Api.Request.Authenticate;
 using MapsterMapper;
-using Taskly_Application.Requests.Authentication.Command.SendVerificationEmail;
+using Taskly_Application.Requests.Authentication.Command.SendVerificationCode;
 using Taskly_Application.Requests.Authentication.Command.VerificateEmail;
 using Taskly_Application.Requests.Authentication.Command.Register;
 using Taskly_Application.Requests.Authentication.Query.Login;
@@ -10,6 +10,7 @@ using Taskly_Application.Requests.Authentication.Query.GetAllAvatars;
 using Taskly_Api.Response.Authenticate;
 using Microsoft.AspNetCore.Authorization;
 using System.Linq;
+using Taskly_Application.Requests.Authentication.Query.SendRequestToChangePassword;
 
 namespace Taskly_Api.Controllers
 {
@@ -77,6 +78,14 @@ namespace Taskly_Api.Controllers
         public IActionResult CheckToken()
         {
             return Ok();
+        }
+
+        [HttpPost("send-request-to-change-password")]
+        public async Task<IActionResult> SendRequestToChangePassword([FromBody] string Email)
+        {
+            var result = await sender.Send(new SendRequestToChangePasswordQuery(Email));
+            return result.Match(result => Ok(result),
+                errors => Problem(errors));
         }
     }
 }
