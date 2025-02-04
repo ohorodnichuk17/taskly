@@ -2,6 +2,7 @@ using ErrorOr;
 using Mapster;
 using MediatR;
 using Taskly_Application.DTO;
+using Taskly_Application.DTO.TemplateBoardDTOs;
 using Taskly_Application.Interfaces;
 
 namespace Taskly_Application.Requests.Board.Query.GetTemplateBoard;

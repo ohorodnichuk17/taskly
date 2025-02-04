@@ -2,7 +2,7 @@ using ErrorOr;
 using MediatR;
 using Taskly_Application.Interfaces;
 
-namespace Taskly_Application.Requests.Board.Command.Delete;
+namespace Taskly_Application.Requests.Board.Command.DeleteBoard;
 
 public class DeleteBoardCommandHandler(IUnitOfWork unitOfWork) : IRequestHandler<DeleteBoardCommand, ErrorOr<bool>>
 {
