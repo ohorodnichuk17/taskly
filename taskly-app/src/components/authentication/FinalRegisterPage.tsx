@@ -3,7 +3,7 @@ import password_hide from '../../../public/icon/password_hide.png';
 import password_view from '../../../public/icon/password_view.png';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { FinalRegisterShema, FinalRegisterType } from '../../validation_types/types';
+import { PasswordValidationShema, PasswordValidationType } from '../../validation_types/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { InputMessage, typeOfMessage } from '../general/InputMessage';
 import too_weak_password from '../../../public/icon/too_weak_icon.png';
@@ -21,8 +21,8 @@ import { Loading } from '../general/Loading';
 
 export const FinalRegisterPage = () => {
 
-    const verificatedEmail = useRootState(s => s.authenticateReducer.verificatedEmail);
-    const avatars = useRootState(s => s.authenticateReducer.avatars);
+    const verificatedEmail = useRootState(s => s.authenticate.verificatedEmail);
+    const avatars = useRootState(s => s.authenticate.avatars);
     const [passwordIsView, setPasswordIsView] = useState<boolean>(false);
     const [confirmPasswordIsView, setConfirmPasswordIsView] = useState<boolean>(false);
     const [password, setPassword] = useState<string>("");
@@ -53,8 +53,8 @@ export const FinalRegisterPage = () => {
             isSubmitting,
             errors
         }
-    } = useForm<FinalRegisterType>({
-        resolver: zodResolver(FinalRegisterShema),
+    } = useForm<PasswordValidationType>({
+        resolver: zodResolver(PasswordValidationShema),
         mode: "onChange"
     })
 
@@ -66,7 +66,6 @@ export const FinalRegisterPage = () => {
         await dispatch(getAllAvatarsAsync())
     }
     useEffect(() => {
-
         getAvatars();
 
     }, [])
@@ -74,8 +73,8 @@ export const FinalRegisterPage = () => {
         if (avatars && selectedAvatar == null) {
             setAvatar(avatars[0].name);
             selectAvatar(avatars[0].id);
-        }
 
+        }
     }, [avatars])
     useEffect(() => {
         if (avatars && selectedAvatar != null) {
@@ -85,7 +84,7 @@ export const FinalRegisterPage = () => {
         }
 
     }, [selectedAvatar])
-    const registerSubmit = async (obj: FinalRegisterType) => {
+    const registerSubmit = async (obj: PasswordValidationType) => {
         if (!selectedAvatar) return;
         const request: IRegisterRequest = {
             email: verificatedEmail || "",
@@ -157,7 +156,7 @@ export const FinalRegisterPage = () => {
             {errors.confirmPassword?.message && <InputMessage message={errors.confirmPassword.message} typeOfMessage={typeOfMessage.error} />}
             <div className='select-avatar-container'>
                 <div className='selected-avatar'>
-                    <img src={baseUrl + "/images/avatars/" + avatar + ".png"} alt="" />
+                    {avatar != "" && <img src={baseUrl + "/images/avatars/" + avatar + ".png"} alt="" />}
                     <button
                         onClick={(e) => {
                             e.preventDefault()

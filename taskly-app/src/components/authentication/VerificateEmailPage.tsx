@@ -12,7 +12,7 @@ import { Loading } from '../general/Loading';
 
 
 export const VerificateEmailPage = () => {
-    const emailVerification = useRootState(s => s.authenticateReducer.verificationEmail);
+    const emailVerification = useRootState(s => s.authenticate.verificationEmail);
     const [lastInput, setLastInput] = useState<HTMLInputElement | null>(null);
     const dispatch = useAppDispatch();
     const { register,

@@ -1,0 +1,118 @@
+@use '../general/general-style.scss' as *;
+
+
+.login-conatainer {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    height: auto;
+    box-sizing: border-box;
+
+
+    .login-conatainer-name {
+        display: flex;
+        justify-content: center;
+        font-size: 27px;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: auto;
+        min-height: 250px;
+        row-gap: 10px;
+        padding: 10px;
+        box-sizing: border-box;
+        position: relative;
+
+        .buttons {
+            width: 100%;
+            height: 50%;
+            display: flex;
+            flex-direction: column;
+            margin-top: auto;
+            row-gap: 15px;
+            padding-top: 10px;
+
+            button {
+                @include defaultButton($buttonWidth : 70%, $font_size: 21px);
+            }
+        }
+
+        input {
+            @include defaultInput();
+            width: 100%;
+            padding: 5px 10px;
+
+            &:focus {
+                padding: 4px 9px;
+            }
+        }
+
+        .password-container {
+            display: flex;
+            column-gap: 10px;
+
+            position: relative;
+
+            input {
+                padding: 5px 37px 5px 10px;
+
+                &:focus {
+                    padding: 4px 36px 4px 9px;
+                }
+            }
+
+            .password-button {
+                width: 29px;
+                height: 29px;
+                position: absolute;
+                padding: 5px;
+                right: 5px;
+                top: 4px;
+                box-sizing: border-box;
+                background-color: #ffffff;
+                outline: none;
+                border: none;
+                cursor: pointer;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                }
+
+                &:hover {
+                    background-color: #f0eded;
+                }
+            }
+        }
+
+        a {
+            font-size: 17px;
+            color: #120efa;
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+
+        .remember-me-conteiner {
+            display: flex;
+            align-items: center;
+            column-gap: 10px;
+            box-sizing: border-box;
+
+            #remember-me {
+                width: 20px;
+            }
+
+            label {
+                font-weight: 600;
+            }
+        }
+
+    }
+
+}

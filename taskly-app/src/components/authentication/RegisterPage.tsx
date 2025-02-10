@@ -8,8 +8,8 @@ import { FinalRegisterPage } from './FinalRegisterPage';
 
 
 export const RegisterPage = () => {
-    const emailVerification = useRootState(s => s.authenticateReducer.verificationEmail);
-    const emailVerificated = useRootState(s => s.authenticateReducer.verificatedEmail);
+    const emailVerification = useRootState(s => s.authenticate.verificationEmail);
+    const emailVerificated = useRootState(s => s.authenticate.verificatedEmail);
 
     const renderRegister = () => {
         if (emailVerification == null) {
@@ -20,10 +20,16 @@ export const RegisterPage = () => {
         }
         return <FinalRegisterPage />;
     }
-    return (<div className='register-page'>
+    return (<>
+        {renderRegister()}
+    </>
+    )
+}
+/*
+ return (<div className='register-page'>
         <div className='register-conatainer'>
             <div className='register-conatainer-name'>Taskly ToDo</div>
             {renderRegister()}
         </div>
     </div>)
-}
+*/

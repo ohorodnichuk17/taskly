@@ -14,7 +14,7 @@ interface IAvatarContainer {
 
 export const AvatarConatiner = (props: IAvatarContainer) => {
 
-    const avatars = useRootState(s => s.authenticateReducer.avatars);
+    const avatars = useRootState(s => s.authenticate.avatars);
     const dispatch = useAppDispatch();
     const refAvatarList = useRef<HTMLDivElement | null>(null);
     //const [avatarContainerIsOpened, setAvatarContainerIsOpened] = useState<boolean>(true);
@@ -35,7 +35,7 @@ export const AvatarConatiner = (props: IAvatarContainer) => {
                     style={{ overflowY: refAvatarList.current && (refAvatarList.current.scrollHeight > refAvatarList.current.clientHeight) ? "scroll" : "auto" }}
                 >
                     {avatars && avatars.map((element) => (
-                        <img /*key={`${element.id}`}*/ src={baseUrl + "/images/avatars/" + element.name + ".png"} onClick={(e) => {
+                        <img key={`${element.id}`} src={baseUrl + "/images/avatars/" + element.name + ".png"} onClick={(e) => {
                             e.preventDefault();
                             props.selectAvatar(element.id)
                             props.close()

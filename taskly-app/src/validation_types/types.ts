@@ -14,8 +14,8 @@ export const EmailVerificationShema = z.object({
     ).length(7)
 });
 
-export type FinalRegisterType = z.infer<typeof FinalRegisterShema>;
-export const FinalRegisterShema = z.object({
+export type PasswordValidationType = z.infer<typeof PasswordValidationShema>;
+export const PasswordValidationShema = z.object({
     password: z.string().min(10, "Password must contain at least 10 character(s)"),
     confirmPassword: z.string()
 }).superRefine((obj, ctx) => {
@@ -26,4 +26,11 @@ export const FinalRegisterShema = z.object({
             path: ["confirmPassword"]
         });
     }
+})
+
+export type LoginType = z.infer<typeof LoginShema>;
+export const LoginShema = z.object({
+    email: z.string().email(),
+    password: z.string().min(10, "Password must contain at least 10 character(s)"),
+    rememberMe: z.boolean().default(false)
 })

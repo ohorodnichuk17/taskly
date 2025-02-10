@@ -1,0 +1,55 @@
+.information-container {
+    width: 400px;
+    display: grid;
+    position: fixed;
+    top: -100px;
+    grid-template-columns: 10% 80% 10%;
+    grid-template-rows: 100%;
+    border-radius: 15px;
+    column-gap: 10px;
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: rgb(255, 255, 255);
+    z-index: 100;
+    align-self: center;
+    animation: showInformationAlert 0.3s linear 0s forwards, closeInformationAlert 0.3s linear 4s forwards;
+    //animation: showInformationAlert 0.3s linear 0s forwards, closeInformationAlert 0.3s linear 300s forwards;
+    transition: all 0.7s;
+
+    img {
+        width: 30px;
+        height: 30px;
+        align-self: flex-start;
+    }
+
+    .information-container-message {
+        height: 100%;
+        font-size: 17px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-align: left;
+    }
+
+
+
+}
+
+@keyframes showInformationAlert {
+    from {
+        top: -100px;
+    }
+
+    to {
+        top: 10px;
+    }
+}
+
+@keyframes closeInformationAlert {
+    from {
+        top: 10px;
+    }
+
+    to {
+        top: -100px;
+    }
+}
