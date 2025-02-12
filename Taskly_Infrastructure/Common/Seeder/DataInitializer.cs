@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Taskly_Domain;
 using Taskly_Domain.Entities;
 using Taskly_Infrastructure.Common.Persistence;
-using Constants = Taskly_Domain.Constants;
 
 namespace Taskly_Infrastructure.Common.Seeder;
 
@@ -85,37 +85,27 @@ public static class DataInitializer
                Id = Guid.NewGuid(),
                Name = "Sample Board",
                IsTeamBoard = false,
-               Tag = "Template"
+               Tag = "Template",
            };
 
            await dbContext.Boards.AddAsync(board);
            await dbContext.SaveChangesAsync();
 
            var cardLists = await GetDefaultCardLists(dbContext, timeRange1, board.Id);
-
            foreach (var cardList in cardLists)
            {
                cardList.BoardId = board.Id;
                await dbContext.CardLists.AddAsync(cardList);
            }
-
+       
            await dbContext.SaveChangesAsync();
-
-           // var boardTemplates = await dbContext.BoardTemplates.ToListAsync();
-           // foreach (var boardTemplate in boardTemplates)
-           // {
-           //     boardTemplate.BoardEntityId = board.Id;
-           // }
-
-           // dbContext.BoardTemplates.UpdateRange(boardTemplates);
-           // await dbContext.SaveChangesAsync();
        }
    }
 
    private static async Task<List<CardListEntity>> GetDefaultCardLists(TasklyDbContext dbContext, TimeRangeEntity timeRange1, Guid boardId)
    {
       var cardLists = new List<CardListEntity>
-    {
+      {
         new CardListEntity
         {
             Id = Guid.NewGuid(),
@@ -175,4 +165,40 @@ public static class DataInitializer
 
       return cardLists;
    }
+
+   // private static async Task<List<UserEntity>> GetDefaultUsers(TasklyDbContext dbContext)
+   // {
+   //     var users = new List<UserEntity>
+   //     {
+   //          new UserEntity
+   //          {
+   //              Id = Guid.NewGuid(),
+   //              UserName = "andrii",
+   //              Email = "andrii@gmail.com",
+   //              AvatarId = Guid.Parse("44cbb6cc-15ae-4d6c-b02e-c889374c9086")
+   //          },
+   //          new UserEntity
+   //          {
+   //              Id = Guid.NewGuid(),
+   //              UserName = "ivan",
+   //              Email = "ivan@gmail.com",
+   //              AvatarId = Guid.Parse("8d529912-d8d8-41bc-9326-2424e746d461")
+   //          },
+   //          new UserEntity
+   //          {
+   //              Id = Guid.NewGuid(),
+   //              UserName = "vova",
+   //              Email = "vova@gmail.com",
+   //              AvatarId = Guid.Parse("9ef340f4-725b-443a-a022-66c2e4114d2a")
+   //          },
+   //          new UserEntity
+   //          {
+   //              Id = Guid.NewGuid(),
+   //              UserName = "oleg",
+   //              Email = "oleg@gmail.com",
+   //              AvatarId = Guid.Parse("a69851d4-fcca-4f10-939b-c9b5a4372671")
+   //          }
+   //     };
+   //     return users;
+   // }
 }
