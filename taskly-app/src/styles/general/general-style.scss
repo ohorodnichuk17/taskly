@@ -2,15 +2,17 @@
     width: $buttonWidth;
     font-size: $font_size;
     border: none;
-    border-radius: 3px;
+    border-radius: 5px;
     outline: none;
     padding: 5px 10px;
-    background-color: #0052CC;
+    background-color: #007bff;
     color: white;
     margin-top: auto;
     align-self: center;
     box-sizing: border-box;
     cursor: pointer;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
 
     &:hover {
         background-color: #004ab9;
@@ -19,13 +21,16 @@
 
 @mixin defaultInput() {
     font-size: 21px;
-    border: 1px solid black;
-    border-radius: 3px;
+    padding: 10px;
+    border: 1.5px solid #ccc;
+    border-radius: 6px;
     outline: none;
     box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
     margin-bottom: 5px;
 
     &:focus {
-        border: 2px solid #0052CC;
+        border-color: #0052CC;
+        box-shadow: 0 0 4px rgba(0, 82, 204, 0.5);
     }
 }
