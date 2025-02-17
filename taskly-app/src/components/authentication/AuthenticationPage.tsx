@@ -22,9 +22,6 @@ export const AuthenticationPage = () => {
                     <h1 className="authentication-title">Taskly ToDo</h1>
                 </div>
                 <Outlet />
-                <footer className="authentication-footer">
-                    <p>© 2025 Taskly. All rights reserved.</p>
-                </footer>
             </div>
         </div>
     );

@@ -11,6 +11,7 @@ import { DashboardPage } from './components/user/DashboardPage'
 import { ForgotPasswordPage } from './components/authentication/ForgotPasswordPage'
 import { AuthenticationPage } from './components/authentication/AuthenticationPage'
 import { ChangePasswordPage } from './components/authentication/ChangePasswordPage'
+import MainContainer from "./components/general/MainContainer.tsx";
 
 
 function App() {
@@ -33,24 +34,25 @@ function App() {
 
   return (
 
-    <Routes>
-      <Route path='/authentication/' element={<AuthenticationPage />}>
-        <Route path='register' element={<RegisterPage />}></Route>
-        <Route path='login' element={<LoginPage />}></Route>
-        <Route path="forgot-password" element={<ForgotPasswordPage />}></Route>
-        <Route path={`change-password/:key`} element={<ChangePasswordPage />}></Route>
+  <MainContainer>
+      <Routes>
+          <Route path='/authentication/' element={<AuthenticationPage />}>
+              <Route path='register' element={<RegisterPage />}></Route>
+              <Route path='login' element={<LoginPage />}></Route>
+              <Route path="forgot-password" element={<ForgotPasswordPage />}></Route>
+              <Route path={`change-password/:key`} element={<ChangePasswordPage />}></Route>
 
-      </Route>
+          </Route>
 
-      {isLogin &&
-        <Route path='/dashboard' element={<DashboardPage />}>
-        </Route>
-      }
-      <Route path='/dashboard' element={<Navigate to={"/authentication/login"} />}>
-      </Route>
-      <Route path='*' element={<PageNotFound />} />
-    </Routes>
-
+          {isLogin &&
+              <Route path='/dashboard' element={<DashboardPage />}>
+              </Route>
+          }
+          <Route path='/dashboard' element={<Navigate to={"/authentication/login"} />}>
+          </Route>
+          <Route path='*' element={<PageNotFound />} />
+      </Routes>
+  </MainContainer>
   )
 }
 

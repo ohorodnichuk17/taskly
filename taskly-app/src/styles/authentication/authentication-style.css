@@ -4,8 +4,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #8e2de2, #4a00e0);
-  color: white;
 }
 .authentication-page .authentication-container {
   display: flex;
@@ -35,12 +33,6 @@
   text-transform: uppercase;
   letter-spacing: 1px;
   color: white;
-}
-.authentication-page .authentication-container .authentication-footer {
-  margin-top: 20px;
-  text-align: center;
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.7);
 }
 
 /*# sourceMappingURL=authentication-style.css.map */
