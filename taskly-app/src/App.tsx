@@ -11,6 +11,7 @@ import { DashboardPage } from './components/user/DashboardPage'
 import { ForgotPasswordPage } from './components/authentication/ForgotPasswordPage'
 import { AuthenticationPage } from './components/authentication/AuthenticationPage'
 import { ChangePasswordPage } from './components/authentication/ChangePasswordPage'
+import { ProfilePage } from './components/user/ProfilePage'
 
 
 function App() {
@@ -41,17 +42,21 @@ function App() {
         <Route path={`change-password/:key`} element={<ChangePasswordPage />}></Route>
 
       </Route>
-
-      {isLogin &&
-        <Route path='/dashboard' element={<DashboardPage />}>
-        </Route>
-      }
-      <Route path='/dashboard' element={<Navigate to={"/authentication/login"} />}>
+      <Route path='/dashboard/' element={<DashboardPage />}>
+        {isLogin &&
+          <Route path='profile' element={<ProfilePage />}></Route>
+        }
+        <Route path='*' element={<PageNotFound />} />
       </Route>
-      <Route path='*' element={<PageNotFound />} />
+
     </Routes>
 
   )
 }
 
 export default App
+/*
+<Route path='/dashboard' element={<Navigate to={"/authentication/login"} />}>
+      </Route>
+      <Route path='/profile' element={<ProfilePage />}></Route>
+*/

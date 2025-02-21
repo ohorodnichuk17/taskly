@@ -3,6 +3,7 @@ import { IInformationAlert } from "./generalInterface"
 export enum StatusEnums { Loading, None }
 export interface IAuthenticateInitialState {
     user: IUser | null,
+    userProfile: IUserProfile | null,
     verificationEmail: string | null,
     verificatedEmail: string | null,
     isLogin: boolean,
@@ -12,6 +13,11 @@ export interface IAuthenticateInitialState {
     emailOfUserWhoWantToChangePassword: string | null,
 
     //jwtInformation: IJwtInformation | null
+}
+export interface IUserProfile {
+    id: string
+    email: string,
+    avatarName: string
 }
 export interface IUser {
     id: string

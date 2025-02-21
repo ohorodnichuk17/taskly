@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import { IValidationErrors } from '../../interfaces/generalInterface'
 import { api } from '../../axios/api'
 import { AxiosError } from "axios";
-import { IAvatar, IChangePasswordRequest, ICheckHasUserSentRequestToChangePassword, ILoginRequest, IRegisterRequest, IVerificateEmailRequest } from '../../interfaces/authenticateInterfaces';
+import { IAvatar, IChangePasswordRequest, ICheckHasUserSentRequestToChangePassword, ILoginRequest, IRegisterRequest, IUserProfile, IVerificateEmailRequest } from '../../interfaces/authenticateInterfaces';
 
 export const sendVerificationCodeAsync = createAsyncThunk<
     string, // Тип який повертається
@@ -92,7 +92,7 @@ export const registerAsync = createAsyncThunk<
 );
 
 export const loginAsync = createAsyncThunk<
-    void,
+    IUserProfile,
     ILoginRequest,
     { rejectValue: IValidationErrors }
 >(
@@ -121,15 +121,16 @@ export const loginAsync = createAsyncThunk<
 );
 
 export const checkTokenAsync = createAsyncThunk<
-    void,
+    IUserProfile,
     void,
     { rejectValue: IValidationErrors }>(
         "authentication/check-token",
         async (_, { rejectWithValue }) => {
             try {
-                await api.get("api/authentication/check-token", {
+                var result = await api.get("api/authentication/check-token", {
                     withCredentials: true // Дозволяє надсилати кукі разом з запитом
                 });
+                return result.data;
             } catch (err: any) {
                 let error: AxiosError<IValidationErrors> = err;
                 if (!error.response)

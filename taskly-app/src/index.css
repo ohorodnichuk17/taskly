@@ -12,15 +12,30 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+@media screen and (max-width: 500px) {
+  body {
+    min-width: 430px;
+  }
+}
+
+@media screen and (min-width: 500px) {
+  body {
+    min-width: 485px;
+  }
+}
+
 body {
   width: 100vw;
-  min-width: 355px;
+
   height: 100vh;
   overflow-x: hidden;
   margin: 0;
   padding: 0;
   display: flex;
   place-items: center;
-
   background-color: #ffffff;
+}
+
+body button {
+  cursor: pointer;
 }
