@@ -1,0 +1,38 @@
+.authentication-page {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.authentication-page .authentication-container {
+  display: flex;
+  flex-direction: column;
+  width: 350px;
+  padding: 25px;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+  position: relative;
+}
+.authentication-page .authentication-container .authentication-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.authentication-page .authentication-container .authentication-header .authentication-logo {
+  width: 70px;
+  height: auto;
+  margin-bottom: 10px;
+}
+.authentication-page .authentication-container .authentication-header .authentication-title {
+  font-size: 24px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: white;
+}
+
+/*# sourceMappingURL=authentication-style.css.map */
