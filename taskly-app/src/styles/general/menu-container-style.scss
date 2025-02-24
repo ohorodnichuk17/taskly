@@ -49,12 +49,11 @@
         width: 30px;
         height: 30px;
     }
-
 }
 
 .menu-container {
     width: 100%;
-    height: 100px;
+    height: 70px;
     display: flex;
     align-items: center;
     background-color: rgba(255, 255, 255, 0.1);
@@ -74,7 +73,7 @@
         align-items: center;
 
         img {
-            width: 70px;
+            width: 100%;
             height: 100%;
             cursor: pointer;
         }
@@ -94,11 +93,6 @@
         .menu-item {
             @include menuItem();
         }
-
-
-
-
-
     }
 
     .menu-authentication-buttons {
@@ -109,12 +103,8 @@
 
         button {
             @include defaultButton(100px, 21px);
-
-
         }
-
     }
-
 
     .hiden-menu-icon {
         width: 50px;
@@ -130,11 +120,5 @@
             width: 100%;
             height: 100%;
         }
-
-
-
-
     }
-
-
 }
