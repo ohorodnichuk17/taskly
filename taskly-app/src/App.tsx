@@ -3,7 +3,7 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import { RegisterPage } from './components/authentication/RegisterPage'
 import { PageNotFound } from './components/general/PageNotFound'
 
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { LoginPage } from './components/authentication/LoginPage'
 import { useAppDispatch, useRootState } from './redux/hooks'
 import { checkTokenAsync } from './redux/actions/authenticateAction'
@@ -11,11 +11,7 @@ import { DashboardPage } from './components/user/DashboardPage'
 import { ForgotPasswordPage } from './components/authentication/ForgotPasswordPage'
 import { AuthenticationPage } from './components/authentication/AuthenticationPage'
 import { ChangePasswordPage } from './components/authentication/ChangePasswordPage'
-<<<<<<< HEAD
-import { ProfilePage } from './components/user/ProfilePage'
-=======
 import MainContainer from "./components/general/MainContainer.tsx";
->>>>>>> 961184718f5adf4c989118eff31f73c3094e4b3c
 
 
 function App() {
@@ -45,20 +41,7 @@ function App() {
               <Route path='login' element={<LoginPage />}></Route>
               <Route path="forgot-password" element={<ForgotPasswordPage />}></Route>
               <Route path={`change-password/:key`} element={<ChangePasswordPage />}></Route>
-
-<<<<<<< HEAD
-      </Route>
-      <Route path='/dashboard/' element={<DashboardPage />}>
-        {isLogin &&
-          <Route path='profile' element={<ProfilePage />}></Route>
-        }
-        <Route path='*' element={<PageNotFound />} />
-      </Route>
-
-    </Routes>
-=======
           </Route>
->>>>>>> 961184718f5adf4c989118eff31f73c3094e4b3c
 
           {isLogin &&
               <Route path='/dashboard' element={<DashboardPage />}>
