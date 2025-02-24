@@ -11,7 +11,7 @@ export const AuthenticationPage = () => {
         <div className="authentication-page">
             <div className="authentication-container">
                 {information && (
-                    <InformationAlert message={information.message} type={information.type}/>
+                    <InformationAlert message={information.message} type={information.type} />
                 )}
                 <div className="authentication-header">
                     <img
@@ -21,7 +21,7 @@ export const AuthenticationPage = () => {
                     />
                     <h1 className="authentication-title">Taskly ToDo</h1>
                 </div>
-                <Outlet/>
+                <Outlet />
             </div>
         </div>
     );

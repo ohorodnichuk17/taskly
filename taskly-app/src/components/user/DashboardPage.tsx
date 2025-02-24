@@ -1,20 +1,23 @@
 import { Outlet } from 'react-router-dom';
 import '../../styles/user/dashboard-style.scss';
 import { MenuContainer } from '../general/MenuContainer';
-import taskly_todo_icon from '../../../public/icon/taskly_todo_icon.png';
+import Logo from '../../assets/white_logo.png';
 
 export const DashboardPage = () => {
     return (<div className="dashboard-container">
-        <MenuContainer icon={taskly_todo_icon} items={[{
+        <MenuContainer icon={Logo} items={[{
             name: "Home",
+            path: "/",
             sub_items: []
         },
         {
             name: "Boards",
+            path: "/boards",
             sub_items: []
         },
         {
             name: "Tables",
+            path: "/tables",
             sub_items: []
         }
         ]} />

@@ -1,11 +1,15 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import '../../styles/general/menu-container-style.scss';
 import menu_icon from '../../../public/icon/menu_icon.png';
+import menu_icon_opened from '../../../public/icon/menu_icon_opened.png';
+import { Link, Navigate } from 'react-router-dom';
+import { HideMenuContainer } from './HideMenuContainer';
 
 export interface IMenuContainer {
     icon: string;
     items: {
-        name: string
+        name: string,
+        path: string,
         sub_items: {
             name: string,
             path: string
@@ -37,9 +41,14 @@ export const MenuContainer = (props: IMenuContainer) => {
     const itemsRef = useRef<(HTMLAnchorElement | null)[]>([]);
 
     const [hideMenu, setHideMenu] = useState<boolean>(false);
+    const [isMenuOpened, setIsMenuOpened] = useState<boolean>(false);
 
 
 
+    useEffect(() => {
+        if (hideMenu === false && isMenuOpened === true)
+            setIsMenuOpened(false);
+    }, [hideMenu]);
 
     useEffect(() => {
         checkMenuWidth();
@@ -98,7 +107,7 @@ export const MenuContainer = (props: IMenuContainer) => {
 
     >
         <div className="menu-container-icon">
-            <img src={props.icon} />
+            <img src={props.icon} onClick={() => <Navigate to={"/"} />} />
         </div>
 
         {hideMenu === false && <nav
@@ -108,22 +117,34 @@ export const MenuContainer = (props: IMenuContainer) => {
             className="menu-container-items"
         >
             {props.items.map((item, index) => (
-                <a className="menu-item"
+                <Link
+                    key={index}
+                    className="menu-item"
                     ref={(ref) => {
                         itemsRef.current[index] = ref;
                     }}
+                    to={item.path}
                 >
                     {item.name}
-                </a>
+                </Link>
             ))}
         </nav>}
 
         <div className='menu-authentication-buttons'>
-            <button>Sign in</button>
-            <button>Sing up</button>
+            <button>
+                <Link to="/authentication/register">
+                    Sign in
+                </Link>
+            </button>
+            <button>
+                <Link to="/authentication/login">
+                    Sing up
+                </Link>
+            </button>
         </div>
         {hideMenu === true && <div className='hiden-menu-icon'>
-            <img src={menu_icon} alt="Menu Icon" />
+            <img src={isMenuOpened === true ? menu_icon_opened : menu_icon} alt="Menu Icon" onClick={() => setIsMenuOpened(!isMenuOpened)} />
         </div>}
+        {isMenuOpened === true && <HideMenuContainer items={props.items} closeHideMenu={setIsMenuOpened} />}
     </div>)
 }

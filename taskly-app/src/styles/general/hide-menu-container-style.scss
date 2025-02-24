@@ -1,0 +1,71 @@
+@use "./general-style.scss" as *;
+
+.hide-menu-container {
+    width: 100%;
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 15px;
+    position: fixed;
+    background-color: #822CE3;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    padding: 15px;
+    box-sizing: border-box;
+
+
+    .close-button {
+        width: 40px;
+        height: 40px;
+        background-color: #822CE3;
+        border: none;
+        outline: none;
+        margin-left: auto;
+
+        img {
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    .hide-menu-items {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        row-gap: 15px;
+
+        .menu-item {
+            @include menuItem();
+        }
+
+    }
+}
+
+.open-hide-menu {
+    animation: 1s openHideMenu forwards;
+}
+
+.close-hide-menu {
+    animation: 1s closeHideMenu forwards;
+}
+
+@keyframes openHideMenu {
+    0% {
+        width: 0%;
+    }
+
+    100% {
+        width: 100%;
+    }
+}
+
+@keyframes closeHideMenu {
+
+    100% {
+        right: -300px;
+    }
+}
