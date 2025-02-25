@@ -7,22 +7,13 @@ using Part = Taskly_Application.Gemini.ContentRequest.Part;
 
 namespace Taskly_Infrastructure.Services;
 
-public class GeminiApiClient
+public class GeminiApiClient(string apiKey, string url)
 {
-    private readonly HttpClient _httpClient;
-    private readonly string _apiKey;
-    private readonly string _url;
-    
-    public GeminiApiClient(string apiKey, string url)
-    {
-        _httpClient = new HttpClient();
-        _apiKey = apiKey;
-        _url = url;
-    }
-    
+    private readonly HttpClient _httpClient = new();
+
     public async Task<string> GenerateContentAsync(string prompt)
     {
-        string url = $"{_url}?key={_apiKey}";
+        string url1 = $"{url}?key={apiKey}";
         var request = new ContentRequest
         {
             contents = new[]
@@ -42,7 +33,7 @@ public class GeminiApiClient
         string jsonRequest = JsonConvert.SerializeObject(request);
         var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
 
-        HttpResponseMessage response = await _httpClient.PostAsync(url, content);
+        HttpResponseMessage response = await _httpClient.PostAsync(url1, content);
 
         if (response.IsSuccessStatusCode)
         {
