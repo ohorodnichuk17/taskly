@@ -220,7 +220,7 @@ public static class DependencyInjection
 
     private static IServiceCollection AddGeminiClient(this IServiceCollection services)
     {
-        services.AddSingleton<GeminiApiClient>(serviceProvider =>
+        services.AddSingleton<IGeminiApiClient, GeminiApiClient>(serviceProvider =>
         {
             var settings = serviceProvider.GetRequiredService<IOptions<GeminiSettings>>().Value;
             return new GeminiApiClient(settings.ApiKey, settings.Url);
