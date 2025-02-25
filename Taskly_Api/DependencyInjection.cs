@@ -20,6 +20,7 @@ using Taskly_Application.Interfaces.IRepository;
 using Taskly_Application.Interfaces.IService;
 using Taskly_Domain.Entities;
 using Taskly_Domain.Other;
+using Taskly_Infrastructure;
 using Taskly_Infrastructure.Common.Persistence;
 using Taskly_Infrastructure.Repositories;
 using Taskly_Infrastructure.Services;
@@ -53,6 +54,7 @@ public static class DependencyInjection
         services.Configuring(configuration);
         services.AddInfrastructureServices();
         services.AddCustomCors();
+        services.AddGeminiClient();
 
         return services;
     }
@@ -105,7 +107,7 @@ public static class DependencyInjection
             };
             options.Events = new JwtBearerEvents()
             {
-                OnMessageReceived = context => // Подія обробляє запит на отримання токена
+                OnMessageReceived = context => // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
                 {               
                     if (context.Request.Cookies.ContainsKey("X-JWT-Token"))
                     {
@@ -194,6 +196,7 @@ public static class DependencyInjection
     {
         services.Configure<AuthanticationSettings>(configuration.GetSection("AuthenticationSettings"));
         services.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
+        services.Configure<GeminiSettings>(configuration.GetSection("Gemini"));
 
         return services;
     }
@@ -206,13 +209,22 @@ public static class DependencyInjection
             {
 
                 policy.WithOrigins("http://localhost:5173")
-                    .AllowCredentials() // Дозвіл на будь-які облікові дані
-                    .AllowAnyMethod() // Дозвіл на будь-які методи
-                    .AllowAnyHeader(); //Дозвіл на будь-які додаткові дані
-                //policy.AllowAnyOrigin() // Дозвіл на будь-які домени
+                    .AllowCredentials() // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ-пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ
+                    .AllowAnyMethod() // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ-пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+                    .AllowAnyHeader(); //пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ-пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ
+                //policy.AllowAnyOrigin() // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ-пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
             });
         });
         return services;
     }
-   
+
+    private static IServiceCollection AddGeminiClient(this IServiceCollection services)
+    {
+        services.AddSingleton<GeminiApiClient>(serviceProvider =>
+        {
+            var settings = serviceProvider.GetRequiredService<IOptions<GeminiSettings>>().Value;
+            return new GeminiApiClient(settings.ApiKey, settings.Url);
+        });
+        return services;
+    }
 }
