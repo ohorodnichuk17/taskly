@@ -44,7 +44,8 @@ public static class DependencyInjection
         services.AddScoped<IToDoTableRepository, ToDoTableRepository>();
         services.AddScoped<IToDoTableItemsRepository, ToDoTableItemsRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
-        services.AddHostedService<VerificationEmailCleaner>();
+        services.AddHostedService<CustomCleaner<VerificationEmailEntity>>();
+        services.AddHostedService<CustomCleaner<ChangePasswordKeyEntity>>();
         services.AddSwagger();
         services.AddMappings();
         services.AddJWT(configuration);
@@ -72,13 +73,13 @@ public static class DependencyInjection
     public static IServiceCollection AddMappings(this IServiceCollection services)
     {
         var config = TypeAdapterConfig.GlobalSettings;
-        config.Scan(Assembly.GetExecutingAssembly()); 
+        config.Scan(Assembly.GetExecutingAssembly());
 
         services.AddSingleton(config);
         services.AddScoped<IMapper, ServiceMapper>();
 
-        AuthenticateMapsterConfig.Config();
-        TableMapsterConfig.Config();
+        /*AuthenticateMapsterConfig.Config();
+        TableMapsterConfig.Config();*/
 
         return services;
     }

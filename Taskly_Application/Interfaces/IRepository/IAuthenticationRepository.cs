@@ -13,4 +13,8 @@ public interface IAuthenticationRepository : IRepository<UserEntity>
     Task<UserEntity?> GetUserByEmail(string Email);
     Task<bool> IsPasswordValid(UserEntity User, string Password);
     Task<ErrorOr<UserEntity>> CreateNewUser(UserEntity NewUser, string Password);
+    Task AddChangePasswordKey(string Email, Guid Key);
+    Task<bool> HasUserSentRequestToChangePassword(string Email, Guid Key);
+    Task<string?> GetUserEmailByChangePasswordKeyAsync(Guid Key);
+    Task<ErrorOr<Guid>> ChangePasswordAsync(UserEntity user, string Password);
 }

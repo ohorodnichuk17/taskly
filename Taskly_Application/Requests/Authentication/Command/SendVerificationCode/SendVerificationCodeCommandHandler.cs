@@ -21,7 +21,10 @@ public class SendVerificationCodeCommandHandler(
         var code = CodeGenerator.GenerateCode();
 
         var verificationEmail = await unitOfWork.Authentication.AddVerificationEmail(request.Email, code);
-        await emailService.SendHTMLPage(verificationEmail, Constants.VerificateEmail, code);
+        var props = new Dictionary<string, string>();
+        props.Add("[VERIFICATION_CODE]", code);
+
+        await emailService.SendHTMLPage(verificationEmail, Constants.VerificateEmail, props);
 
         return verificationEmail;
     }

@@ -29,9 +29,37 @@ public class EmailService(IOptions<EmailSettings> options) : IEmailService
                             body: message));
     }
 
-    public async Task SendHTMLPage(string email, string typeOfHTMLPage,object? prop)
+    public async Task SendHTMLPage(string email, string typeOfHTMLPage,Dictionary<string,string> props)
     {
         var path = Path.Combine("..",
+                                    "Taskly_Infrastructure",
+                                    "HTMLPages",
+                                    typeOfHTMLPage,
+                                    $"{typeOfHTMLPage}.html");
+        var htmlBody = await File.ReadAllTextAsync(path);
+
+        foreach(var prop in props)
+        {
+            var buffer = htmlBody.Split(prop.Key);
+            htmlBody = string.Join(prop.Value, buffer);
+        }
+        var client = new SmtpClient("smtp.gmail.com", 587)
+        {
+            Credentials = new NetworkCredential(userName: settings.Email, password: settings.Password),
+            EnableSsl = true
+        };
+
+        var mailMessage = new MailMessage()
+        {
+            Subject = GetSubjectByTypeOfHTMLPage(typeOfHTMLPage),
+            From = new MailAddress(settings.Email),
+            Body = htmlBody,
+            IsBodyHtml = true
+        };
+        mailMessage.To.Add(email);
+
+        await client.SendMailAsync(mailMessage);
+        /*var path = Path.Combine("..",
                                     "Taskly_Infrastructure",
                                     "HTMLPages",
                                     typeOfHTMLPage,
@@ -65,7 +93,7 @@ public class EmailService(IOptions<EmailSettings> options) : IEmailService
 
         mailMessage.To.Add(email);
 
-        await client.SendMailAsync(mailMessage);
+        await client.SendMailAsync(mailMessage);*/
     }
     private string GetSubjectByTypeOfHTMLPage(string typeOfHTMLPage)
     {

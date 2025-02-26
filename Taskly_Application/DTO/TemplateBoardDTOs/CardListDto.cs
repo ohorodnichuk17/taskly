@@ -1,4 +1,4 @@
-namespace Taskly_Application.DTO;
+namespace Taskly_Application.DTO.TemplateBoardDTOs;
 
 public record CardListDto
 {

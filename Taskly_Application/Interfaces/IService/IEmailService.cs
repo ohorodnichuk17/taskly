@@ -3,5 +3,6 @@
 public interface IEmailService
 {
     Task SendEmail(string email, string subject, string message);
-    Task SendHTMLPage(string email, string typeOfHTMLPage, object? prop);
+    Task SendHTMLPage(string email, string typeOfHTMLPage, Dictionary<string, string> props);
+
 }

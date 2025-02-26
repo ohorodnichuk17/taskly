@@ -8,16 +8,16 @@ using Taskly_Domain.Entities;
 
 namespace Taskly_Api.MapsterConfigs;
 
-public static class TableMapsterConfig
+public class TableMapsterConfig : IRegister
 {
-    public static void Config()
+    /*public static void Config()
     {
         TypeAdapterConfig<ToDoItemEntity,TableItemResponse>.NewConfig()
             .Map(src => src.Id, desp => desp.Id)
             .Map(src => src.Task, desp => desp.Text)
             .Map(src => src.Status, desp => desp.Status)
             .Map(src => src.Label, desp => desp.Label)
-            .Map(src => src.Members, desp => desp.Members/*.Adapt<UserForTableItemResponse>()*/)
+            .Map(src => src.Members, desp => desp.Members.Adapt<UserForTableItemResponse>())
             .Map(src => src.StartTime, desp => desp.TimeRange!.StartTime)
             .Map(src => src.EndTime, desp => desp.TimeRange!.EndTime);
 
@@ -32,6 +32,31 @@ public static class TableMapsterConfig
 
         TypeAdapterConfig<CreateToDoTableRuquest, CreateToDoTableCommand>.NewConfig()
             .Map(src => src.UserId, desp => desp.UserId);
+}*/
+
+    public void Register(TypeAdapterConfig config)
+    {
+        config.NewConfig<ToDoItemEntity, TableItemResponse>()
+           .Map(src => src.Id, desp => desp.Id)
+           .Map(src => src.Task, desp => desp.Text)
+           .Map(src => src.Status, desp => desp.Status)
+           .Map(src => src.Label, desp => desp.Label)
+           .Map(src => src.Members, desp => desp.Members.Adapt<UserForTableItemResponse>())
+           .Map(src => src.StartTime, desp => desp.TimeRange!.StartTime)
+           .Map(src => src.EndTime, desp => desp.TimeRange!.EndTime);
+
+        config.NewConfig<CreateToDoTableItemRequest, CreateToDoTableItemCommand>()
+           .Map(src => src.Task, desp => desp.Task)
+            .Map(src => src.Status, desp => desp.Status)
+            .Map(src => src.Label, desp => desp.Label)
+            .Map(src => src.Members, desp => desp.Members)
+            .Map(src => src.EndTime, desp => desp.EndTime)
+            .Map(src => src.Members, desp => desp.Members)
+            .Map(src => src.ToDoTableId, desp => desp.TableId);
+
+        config.NewConfig<CreateToDoTableRuquest, CreateToDoTableCommand>()
+           .Map(src => src.UserId, desp => desp.UserId);
 
     }
+
 }
