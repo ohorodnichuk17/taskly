@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Taskly_Domain.Entities;
+using Taskly_Infrastructure.Common.Persistence.FluentConfig;
 
 namespace Taskly_Infrastructure.Common.Persistence;
 
@@ -29,9 +30,10 @@ public class TasklyDbContext : IdentityDbContext<UserEntity,IdentityRole<Guid>,G
     }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
-{
-    base.OnModelCreating(modelBuilder);
+    {   
+        base.OnModelCreating(modelBuilder);
 
+<<<<<<< HEAD
     // UserEntity
     modelBuilder.Entity<UserEntity>(entity =>
     {
@@ -175,4 +177,17 @@ public class TasklyDbContext : IdentityDbContext<UserEntity,IdentityRole<Guid>,G
         entity.HasKey(v => v.Id);
     });
 }
+=======
+        modelBuilder.ApplyConfiguration(new FluentUserConfig());
+        modelBuilder.ApplyConfiguration(new FluentAvatarConfig());
+        modelBuilder.ApplyConfiguration(new FluentBoardConfig());
+        modelBuilder.ApplyConfiguration(new FluentCardConfig());
+        modelBuilder.ApplyConfiguration(new FluentCardListConfig());
+        modelBuilder.ApplyConfiguration(new FluentCommentConfig());
+        modelBuilder.ApplyConfiguration(new FluentTimeRangeConfig());
+        modelBuilder.ApplyConfiguration(new FluentToDoItemConfig());
+        modelBuilder.ApplyConfiguration(new FluentToDoTableConfig());
+        modelBuilder.ApplyConfiguration(new FluentVerificationEmailConfig());
+    }
+>>>>>>> f58c923d5a03af2fed1db6be4ff56ebd9e297487
 }
