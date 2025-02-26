@@ -3,10 +3,9 @@ import { authenticateReducer } from "../redux/slices/authenticateSlice.ts";
 import { generalReducer } from './slices/generalSlice.ts';
 
 
-
 const reducers = combineReducers({
     authenticate: authenticateReducer,
-    general: generalReducer
+    general: generalReducer,
 });
 
 export const store = configureStore({

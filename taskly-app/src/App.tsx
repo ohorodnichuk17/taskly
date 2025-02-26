@@ -11,9 +11,8 @@ import { DashboardPage } from './components/user/DashboardPage'
 import { ForgotPasswordPage } from './components/authentication/ForgotPasswordPage'
 import { AuthenticationPage } from './components/authentication/AuthenticationPage'
 import { ChangePasswordPage } from './components/authentication/ChangePasswordPage'
-import { ProfilePage } from './components/user/ProfilePage'
 import MainContainer from "./components/general/MainContainer.tsx";
-import { MenuContainer } from './components/general/MenuContainer.tsx'
+import AIAgent from "./components/user/AiAgent.tsx";
 
 
 
@@ -40,7 +39,11 @@ function App() {
     <MainContainer>
       <Routes>
 
-        <Route index element={<DashboardPage />}>
+        {/*<Route index element={<DashboardPage />}>*/}
+        <Route path="/" element={<DashboardPage />}>
+          <Route path="artificial-intelligence" element={<AIAgent />} />
+          {/* Інші маршрути */}
+        {/*</Route>*/}
 
         </Route>
 

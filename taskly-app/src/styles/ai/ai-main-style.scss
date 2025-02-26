@@ -1,0 +1,108 @@
+@use '../general/general-style.scss' as *;
+
+.ai-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  padding: 20px;
+  color: white;
+}
+
+.ai-title {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 10px rgba(255, 255, 255, 0.2);
+  position: absolute;
+  top: 40px;
+  left: 20px;
+}
+
+.ai-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+  max-width: 500px;
+  padding: 15px;
+  background: white;
+  backdrop-filter: blur(15px);
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.ai-input {
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background-color: #424242;
+  color: white;
+  font-size: 16px;
+  width: 100%;
+  outline: none;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+}
+
+.ai-input:focus {
+  border: 2px solid #7e9a92;
+  background-color: #444;
+}
+
+.ai-button {
+  padding: 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 100%;
+}
+
+.response-container {
+  padding: 20px;
+  max-width: 500px;
+  background-color: white;
+  //background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  border-radius: 12px;
+  color: #000000;
+  text-align: left;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  animation: fadeIn 0.5s ease-in-out forwards;
+  margin-bottom: 20px;
+}
+
+.ai-response {
+  font-size: 18px;
+  white-space: pre-wrap;
+  animation: typing 1s steps(40, end);
+}
+
+.loader {
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(255, 255, 255, 0.3);
+  border-top: 5px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}

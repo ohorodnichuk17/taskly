@@ -19,7 +19,12 @@ export const DashboardPage = () => {
             name: "Tables",
             path: "/tables",
             sub_items: []
-        }
+        },
+            {
+                name: "AI Agent",
+                path: "/artificial-intelligence",
+                sub_items: []
+            },
         ]} />
         <Outlet />
     </div>)
