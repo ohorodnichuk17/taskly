@@ -13,6 +13,7 @@ import { AuthenticationPage } from './components/authentication/AuthenticationPa
 import { ChangePasswordPage } from './components/authentication/ChangePasswordPage'
 import MainContainer from "./components/general/MainContainer.tsx";
 import AIAgent from "./components/user/AiAgent.tsx";
+import { BoardsPage } from './components/boards/BoardsPage.tsx'
 
 
 
@@ -42,8 +43,15 @@ function App() {
         {/*<Route index element={<DashboardPage />}>*/}
         <Route path="/" element={<DashboardPage />}>
           <Route path="artificial-intelligence" element={<AIAgent />} />
+
+          {isLogin && (<>
+            <Route path='/boards' element={<BoardsPage />}>
+            </Route>
+          </>)}
           {/* Інші маршрути */}
-        {/*</Route>*/}
+          <Route path='/boards' element={<Navigate to="/authentication/login" />} />
+
+          {/*</Route>*/}
 
         </Route>
 
@@ -54,6 +62,9 @@ function App() {
           <Route path={`change-password/:key`} element={<ChangePasswordPage />}></Route>
 
         </Route>
+
+
+
 
 
         <Route path='*' element={<PageNotFound />} />

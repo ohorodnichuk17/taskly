@@ -29,7 +29,7 @@
             input {
                 @include defaultInput();
                 width: 80%;
-                padding: 5px 35px 5px 10px;
+                padding: 5px 42px 5px 10px;
 
                 &:focus {
                     padding: 4px 34px 4px 9px;
@@ -41,7 +41,7 @@
                 height: 29px;
                 position: absolute;
                 padding: 5px;
-                right: 65px;
+                right: 75px;
                 top: 4px;
                 box-sizing: border-box;
                 background-color: #ffffff;

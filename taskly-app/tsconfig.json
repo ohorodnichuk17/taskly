@@ -8,10 +8,9 @@
       "path": "./tsconfig.node.json"
     }
   ],
-  "compilerOptions": {
-    "include": [
-      "src/**/*",
-      "src/types/redux-persist.d.ts"
-    ]
-  }
+  "compilerOptions": {},
+  "include": [
+    "src/**/*",
+    "src/types/redux-persist.d.ts"
+  ]
 }

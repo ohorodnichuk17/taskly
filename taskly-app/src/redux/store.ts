@@ -1,11 +1,13 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { authenticateReducer } from "../redux/slices/authenticateSlice.ts";
 import { generalReducer } from './slices/generalSlice.ts';
+import { boardReducer } from './slices/boardSlice.ts';
 
 
 const reducers = combineReducers({
     authenticate: authenticateReducer,
     general: generalReducer,
+    board: boardReducer
 });
 
 export const store = configureStore({
