@@ -28,21 +28,14 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
 
         board.Members ??= new List<UserEntity>();
         board.Members.Add(user);
-<<<<<<< HEAD
-        //await SaveAsync(board);
-=======
->>>>>>> f58c923d5a03af2fed1db6be4ff56ebd9e297487
+
         user.Boards.Add(board);
 
         var boardUserRelations = new Dictionary<string, object>();
         boardUserRelations.Add("BoardId", board.Id);
         boardUserRelations.Add("UserId", user.Id);
         await context.Set<Dictionary<string, object>>("UserBoard").AddAsync(boardUserRelations);
-<<<<<<< HEAD
 
-=======
-        
->>>>>>> f58c923d5a03af2fed1db6be4ff56ebd9e297487
         await context.SaveChangesAsync();
     }
 
@@ -94,7 +87,28 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
         board.CardLists.Remove(cardList);
         await context.SaveChangesAsync();
     }
-    
+
+    public async Task<ICollection<BoardEntity>?> GetBoardsByUser(Guid UserId)
+    {
+        /*var boards = await context.Boards
+                                        .Where(b =>
+                                        b.Members != null &&
+                                        b.Members.Any(u => u.Id == UserId))
+                                   .Include(b => b.Members)
+                                   .ToListAsync();*/
+        var boardsId = context.Set<Dictionary<string, object>>("UserBoard")
+                    .Where(ub => (Guid)ub["UserId"] == UserId)
+                    .Select(ub => (Guid)ub["BoardId"]);
+
+        var boards = await context.Boards
+                                        .Where(b => boardsId.Any(_b => b.Id == _b))
+                                        .Include(b => b.Members)
+                                        .Include(b => b.BoardTemplate)
+                                        .ToListAsync();
+
+        return boards;
+    }
+
     private async Task<(BoardEntity board, UserEntity user)> GetBoardAndUserAsync(Guid boardId, Guid userId)
     {
         if (userId == Guid.Empty)
@@ -130,4 +144,6 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
 
         return board;
     }
+
+   
 }
