@@ -1,7 +1,10 @@
 using MapsterMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Taskly_Api.Request.Gemini;
 using Taskly_Application.Gemini.PromptRequest;
+using Taskly_Application.Requests.Gemini.Command.CreateCardsForTask;
 using Taskly_Application.Requests.Gemini.Command.GenerateBase;
 using Taskly_Application.Requests.Gemini.Command.GenerateDeadlineSuggestions;
 using Taskly_Application.Requests.Gemini.Command.GenerateTaskImprovementSuggestions;
@@ -91,5 +94,15 @@ public class GeminiController(ISender sender, IMapper mapper) : ApiController
         {
             return StatusCode(500, ex.Message);
         }
+    }
+
+    [Authorize]
+    [HttpPost("create-cards-for-task")]
+    public async Task<IActionResult> CreateCardsForTask([FromBody] CreateCardsForTaskRequest createCardsForTaskRequest)
+    {
+        var result = await sender.Send(mapper.Map<CreateCardsForTaskCommand>(createCardsForTaskRequest));
+
+        return result.Match(result => Ok(result),
+        errors => Problem(errors));
     }
 }

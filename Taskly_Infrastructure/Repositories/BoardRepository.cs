@@ -76,6 +76,67 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
         await context.SaveChangesAsync();
     }
 
+    public async Task<Guid> GetIdOfCardsListByTitleAsync(Guid BoardId,string Title)
+    {
+        var cardList = await context.CardLists.FirstOrDefaultAsync(cl => cl.BoardId == BoardId && cl.Title == Title);
+
+        if(cardList == null)
+        {
+            cardList = new CardListEntity() { 
+                Id = Guid.NewGuid(),
+                Title = Title,
+                BoardId = BoardId     
+            };
+            await context.CardLists.AddAsync(cardList);
+            await context.SaveChangesAsync();
+        }     
+
+        return cardList.Id;
+    }
+    private async Task<CardListEntity?> GetCardListByIdAsync(Guid cardListId)
+    {
+        return await context.CardLists.FirstOrDefaultAsync(cl => cl.Id == cardListId);
+    }
+    public async Task CreateCardAsync(List<string> descriptions, string Status, Guid cardListId)
+    {
+        List<CardEntity> cards = descriptions.Select(d => new CardEntity()
+        {
+            Id = Guid.NewGuid(),
+            Description = d,
+            Status = Status,
+            CardListId = cardListId
+        }).ToList();
+
+
+        await context.Cards.AddRangeAsync(cards);
+        await context.SaveChangesAsync();
+    }
+    public async Task CreateCardAsync(string Description, string Status, Guid cardListId)
+    {
+        var card = new CardEntity()
+        {
+            Id = Guid.NewGuid(),
+            Description = Description,
+            Status = Status,
+            CardListId = cardListId
+        };
+        await context.Cards.AddAsync(card);
+        await context.SaveChangesAsync();
+    }
+    public async Task<Guid?> AddCardToCardsListAsync(CardEntity card, Guid cardListId)
+    {
+        if (card == null) return null;
+
+        var cardList = GetCardListByIdAsync(cardListId);
+
+        if (cardList == null) return null;
+
+        card.CardListId = cardListId;
+        
+
+        return card.Id;
+    }
+
     public async Task RemoveCardListFromBoardAsync(Guid boardId, Guid cardListId)
     {
         var board = await GetBoardByIdAsync(boardId);

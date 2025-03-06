@@ -72,4 +72,14 @@ public class GeminiApiClient(string apiKey, string url) : IGeminiApiClient
         string prompt = $"Summarize the following text in a concise manner:\n{text}";
         return await GenerateContentAsync(prompt);
     }
+
+    public async Task<List<string>> CreateCardsForTask(string Task)
+    {
+        string prompt = $"Divide tasks into the most important stages of development in the form of a list, for a task board for other users (briefly, without further ado, just a list) : . {Task}";
+        var result = await GenerateContentAsync(prompt);
+        List<string> cards = result.Split(new[] { '\n', '\t' }, StringSplitOptions.RemoveEmptyEntries)
+                  .Select(item => item.Replace("*", "").Trim())
+                  .ToList();
+        return cards;
+    }
 }

@@ -7,4 +7,5 @@ public interface IGeminiApiClient
     Task<string> GenerateDeadlineSuggestionsAsync(string taskDescription);
     Task<string> TranslateTextAsync(string sourceLanguage, string targetLanguage, string text);
     Task<string> SummarizeTextAsync(string text);
+    Task<List<string>> CreateCardsForTask(string Task);
 }

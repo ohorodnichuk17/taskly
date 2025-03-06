@@ -80,8 +80,6 @@ public static class DependencyInjection
         services.AddSingleton(config);
         services.AddScoped<IMapper, ServiceMapper>();
 
-        /*AuthenticateMapsterConfig.Config();
-        TableMapsterConfig.Config();*/
 
         return services;
     }

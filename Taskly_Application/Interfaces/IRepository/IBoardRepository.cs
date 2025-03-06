@@ -14,4 +14,8 @@ public interface IBoardRepository : IRepository<BoardEntity>
     Task AddCardListToBoardAsync(Guid boardId, CardListEntity cardList);
     Task RemoveCardListFromBoardAsync(Guid boardId, Guid cardListId);
     Task<ICollection<BoardEntity>?> GetBoardsByUser(Guid UserId);
+    Task<Guid> GetIdOfCardsListByTitleAsync(Guid BoardId, string Title);
+    Task<Guid?> AddCardToCardsListAsync(CardEntity card, Guid cardListId);
+    Task CreateCardAsync(string Description, string Status, Guid cardListId);
+    Task CreateCardAsync(List<string> descriptions, string Status, Guid cardListId);
 }
