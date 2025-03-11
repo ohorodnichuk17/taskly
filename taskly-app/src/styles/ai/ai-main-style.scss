@@ -66,15 +66,28 @@
   padding: 20px;
   max-width: 500px;
   background-color: white;
-  //background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(12px);
   border-radius: 12px;
   color: #000000;
   text-align: left;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  opacity: 0;
-  animation: fadeIn 0.5s ease-in-out forwards;
   margin-bottom: 20px;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: all 0.5s ease-in-out;
+  overflow: hidden;
+}
+
+.response-container.loading {
+  min-height: 100px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.response-container.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .ai-response {
@@ -95,11 +108,6 @@
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
 }
 
 @keyframes typing {

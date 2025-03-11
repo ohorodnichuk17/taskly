@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { api } from "../../axios/api.ts";
-import '../../styles/ai/ai-main-style.scss'
+import '../../styles/ai/ai-main-style.scss';
 
 const AIAgent = () => {
     const [prompt, setPrompt] = useState("");
     const [response, setResponse] = useState("");
     const [loading, setLoading] = useState(false);
+    const [isContainerVisible, setIsContainerVisible] = useState(false);
 
     const handleInputChange = (e) => {
         setPrompt(e.target.value);
@@ -13,7 +14,10 @@ const AIAgent = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!prompt.trim()) return;
+
         setLoading(true);
+        setIsContainerVisible(true);
         setResponse("");
 
         try {
@@ -31,13 +35,15 @@ const AIAgent = () => {
         <div className="ai-container">
             <h1 className="ai-title">AI Agent</h1>
 
-            <div className="response-container">
-                {loading ? (
-                    <div className="loader"></div>
-                ) : (
-                    response && <p className="ai-response">{response}</p>
-                )}
-            </div>
+            {isContainerVisible && (
+                <div className={`response-container ${loading ? 'loading' : ''} ${!loading && response ? 'visible' : ''}`}>
+                    {loading ? (
+                        <div className="loader"></div>
+                    ) : (
+                        <p className="ai-response">{response}</p>
+                    )}
+                </div>
+            )}
 
             <form className="ai-form" onSubmit={handleSubmit}>
                 <input
