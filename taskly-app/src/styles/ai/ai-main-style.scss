@@ -9,15 +9,30 @@
   color: white;
 }
 
-.ai-title {
-  font-size: 32px;
-  font-weight: bold;
+.main-info-container {
   margin-bottom: 20px;
-  text-shadow: 2px 2px 10px rgba(255, 255, 255, 0.2);
   position: absolute;
   top: 40px;
   left: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
+
+.ai-logo {
+  width: 35px;
+  height: 35px;
+}
+
+.ai-title {
+  color: #e4eae3;
+  font-size: 32px;
+  font-weight: bold;
+  text-shadow: 2px 2px 10px rgba(255, 255, 255, 0.2);
+}
+
+
+
 
 .ai-form {
   display: flex;

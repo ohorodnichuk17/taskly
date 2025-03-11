@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { api } from "../../axios/api.ts";
 import '../../styles/ai/ai-main-style.scss';
+import AiLogo from '../../assets/ai_logo.png';
 
 const AIAgent = () => {
     const [prompt, setPrompt] = useState("");
@@ -33,7 +34,10 @@ const AIAgent = () => {
 
     return (
         <div className="ai-container">
-            <h1 className="ai-title">AI Agent</h1>
+            <div className="main-info-container">
+                <h1 className="ai-title">AI Agent</h1>
+                <img className="ai-logo" src={AiLogo} alt="Ai logo"/>
+            </div>
 
             {isContainerVisible && (
                 <div className={`response-container ${loading ? 'loading' : ''} ${!loading && response ? 'visible' : ''}`}>
