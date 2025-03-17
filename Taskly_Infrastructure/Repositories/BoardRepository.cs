@@ -97,28 +97,28 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
     {
         return await context.CardLists.FirstOrDefaultAsync(cl => cl.Id == cardListId);
     }
-    public async Task CreateCardAsync(List<string> descriptions, string Status, Guid cardListId)
+    public async Task CreateCardAsync(ICollection<string> Descriptions, string Status, Guid CardListId)
     {
-        List<CardEntity> cards = descriptions.Select(d => new CardEntity()
+        List<CardEntity> cards = Descriptions.Select(d => new CardEntity()
         {
             Id = Guid.NewGuid(),
             Description = d,
             Status = Status,
-            CardListId = cardListId
+            CardListId = CardListId
         }).ToList();
 
 
         await context.Cards.AddRangeAsync(cards);
         await context.SaveChangesAsync();
     }
-    public async Task CreateCardAsync(string Description, string Status, Guid cardListId)
+    public async Task CreateCardAsync(string Description, string Status, Guid CardListId)
     {
         var card = new CardEntity()
         {
             Id = Guid.NewGuid(),
             Description = Description,
             Status = Status,
-            CardListId = cardListId
+            CardListId = CardListId
         };
         await context.Cards.AddAsync(card);
         await context.SaveChangesAsync();
@@ -136,6 +136,8 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
 
         return card.Id;
     }
+
+
 
     public async Task RemoveCardListFromBoardAsync(Guid boardId, Guid cardListId)
     {
@@ -168,6 +170,20 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
                                         .ToListAsync();
 
         return boards;
+    }
+
+    public async Task<ICollection<CardListEntity>?> GetCardListEntityByBoardIdAsync(Guid BoardId)
+    {
+        try
+        {
+            var board = await GetBoardByIdAsync(BoardId);
+
+            return board.CardLists;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }    
     }
 
     private async Task<(BoardEntity board, UserEntity user)> GetBoardAndUserAsync(Guid boardId, Guid userId)

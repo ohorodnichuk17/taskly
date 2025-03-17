@@ -99,4 +99,5 @@ public class BoardController(ISender sender, IMapper mapper) : ApiController
         return boards.Match(boards => Ok(mapper.Map<ICollection<UsersBoardResponse>>(boards)),
             errors => Problem(errors));
     }
+
 }
