@@ -21,6 +21,7 @@ namespace Taskly_Api.Controllers;
 public class BoardController(ISender sender, IMapper mapper) : ApiController
 {
     [HttpGet("{id}")]
+    [Authorize]
     public async Task<IActionResult> GetBoardById(Guid id)
     {
         var result = await sender.Send(new GetBoardByIdQuery(id));
@@ -30,6 +31,7 @@ public class BoardController(ISender sender, IMapper mapper) : ApiController
     }
     
     [HttpGet("getAll")]
+    [Authorize]
     public async Task<IActionResult> GetAllBoards()
     {
         var result = await sender.Send(new GetAllBoardsQuery());
@@ -48,6 +50,7 @@ public class BoardController(ISender sender, IMapper mapper) : ApiController
     }
     
     [HttpPost("create")]
+    [Authorize]
     public async Task<IActionResult> CreateBoard([FromBody] CreateBoardRequest request)
     {
         var res = await sender.Send(
@@ -57,6 +60,7 @@ public class BoardController(ISender sender, IMapper mapper) : ApiController
     }
     
     [HttpDelete("delete/{id}")]
+    [Authorize]
     public async Task<IActionResult> DeleteBoard(Guid id)
     {
         var res = await sender.Send(new DeleteBoardCommand(id));
@@ -65,6 +69,7 @@ public class BoardController(ISender sender, IMapper mapper) : ApiController
     }
 
     [HttpPost("add-member")]
+    [Authorize]
     public async Task<IActionResult> AddMemberToBoard([FromBody] MemberToBoardRequest request)
     {
         var res = await sender.Send(mapper.Map<AddMemberToBoardCommand>(request));
@@ -73,6 +78,7 @@ public class BoardController(ISender sender, IMapper mapper) : ApiController
     }
 
     [HttpDelete("remove-member")]
+    [Authorize]
     public async Task<IActionResult> RemoveMemberFromBoard([FromBody] MemberToBoardRequest request)
     {
         var res = await sender.Send(mapper.Map<RemoveMemberFromBoardCommand>(request));
@@ -81,6 +87,7 @@ public class BoardController(ISender sender, IMapper mapper) : ApiController
     }
     
     [HttpGet("members/{boardId}")]
+    [Authorize]
     public async Task<IActionResult> GetMembersOfBoard(Guid boardId)
     {
         var result = await sender.Send(new GetMembersOfBoardQuery(boardId));

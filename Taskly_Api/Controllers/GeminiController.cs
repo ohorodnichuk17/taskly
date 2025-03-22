@@ -17,6 +17,7 @@ namespace Taskly_Api.Controllers;
 public class GeminiController(ISender sender, IMapper mapper) : ApiController
 {
     [HttpPost("generate")]
+    [Authorize]
     public async Task<IActionResult> GenerateContent([FromBody] PromptRequest request)
     {
         try
@@ -33,6 +34,7 @@ public class GeminiController(ISender sender, IMapper mapper) : ApiController
     }
     
     [HttpPost("generate-task-improvement-suggestions")]
+    [Authorize]
     public async Task<IActionResult> GenerateTaskImprovementSuggestions([FromBody] PromptRequest request)
     {
         try
@@ -49,6 +51,7 @@ public class GeminiController(ISender sender, IMapper mapper) : ApiController
     }
     
     [HttpPost("generate-deadline-suggestions")]
+    [Authorize]
     public async Task<IActionResult> GenerateDeadlineSuggestions([FromBody] PromptRequest request)
     {
         try
@@ -65,6 +68,7 @@ public class GeminiController(ISender sender, IMapper mapper) : ApiController
     }
     
     [HttpPost("translate-text")]
+    [Authorize]
     public async Task<IActionResult> Translate([FromBody] TranslateTextRequest request)
     {
         try
@@ -81,6 +85,7 @@ public class GeminiController(ISender sender, IMapper mapper) : ApiController
     }
     
     [HttpPost("summarize")]
+    [Authorize]
     public async Task<IActionResult> Summarize([FromBody] PromptRequest request)
     {
         try
