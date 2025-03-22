@@ -42,7 +42,9 @@ const AIAgent = () => {
             {isContainerVisible && (
                 <div className={`response-container ${loading ? 'loading' : ''} ${!loading && response ? 'visible' : ''}`}>
                     {loading ? (
-                        <div className="loader"></div>
+                        <div className="loader-container">
+                            <div className="loader"></div>
+                        </div>
                     ) : (
                         <p className="ai-response">{response}</p>
                     )}
@@ -57,10 +59,13 @@ const AIAgent = () => {
                     placeholder="Enter your request..."
                     className="ai-input"
                 />
-                <button type="submit" className="ai-button">Generate</button>
+                <button type="submit" className="ai-button" disabled={loading}>
+                    {loading ? "Generating..." : "Generate"}
+                </button>
             </form>
         </div>
     );
+
 };
 
 export default AIAgent;
