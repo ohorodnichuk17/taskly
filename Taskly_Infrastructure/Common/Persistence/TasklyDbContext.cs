@@ -19,7 +19,8 @@ public class TasklyDbContext : IdentityDbContext<UserEntity,IdentityRole<Guid>,G
     public DbSet<ToDoItemEntity> ToDoItems { get; set; }
     public DbSet<VerificationEmailEntity> EmailVerifications { get; set; }
     public DbSet<TimeRangeEntity> TimeRanges { get; set; }
-    
+    public DbSet<ChangePasswordKeyEntity> ChangePasswordKeys { get; set; }
+
     public TasklyDbContext() : base()
     {
     }
@@ -27,9 +28,9 @@ public class TasklyDbContext : IdentityDbContext<UserEntity,IdentityRole<Guid>,G
     public TasklyDbContext(DbContextOptions<TasklyDbContext> options) : base(options)
     {
     }
-    
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {   
+    {
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.ApplyConfiguration(new FluentUserConfig());

@@ -2,5 +2,7 @@
 
 public interface IEmailService
 {
-    public Task SendEmail(string email, string subject, string message);
+    Task SendEmail(string email, string subject, string message);
+    Task SendHTMLPage(string email, string typeOfHTMLPage, Dictionary<string, string> props);
+
 }

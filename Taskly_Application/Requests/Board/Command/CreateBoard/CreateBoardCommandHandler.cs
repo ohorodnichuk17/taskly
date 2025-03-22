@@ -36,6 +36,7 @@ public class CreateBoardCommandHandler(IUnitOfWork unitOfWork,
             };
             
             var createdBoard = await unitOfWork.Board.CreateAsync(board);
+
             
             await unitOfWork.Board.AddMemberToBoardAsync(createdBoard, request.UserId);
 

@@ -4,8 +4,9 @@ using Taskly_Application.Common.Helpers;
 using Taskly_Application.Interfaces;
 using Taskly_Application.Interfaces.IRepository;
 using Taskly_Application.Interfaces.IService;
+using Taskly_Domain;
 
-namespace Taskly_Application.Requests.Authentication.Command.SendVerificationEmail;
+namespace Taskly_Application.Requests.Authentication.Command.SendVerificationCode;
 
 public class SendVerificationCodeCommandHandler(
     IUnitOfWork unitOfWork,
@@ -20,7 +21,10 @@ public class SendVerificationCodeCommandHandler(
         var code = CodeGenerator.GenerateCode();
 
         var verificationEmail = await unitOfWork.Authentication.AddVerificationEmail(request.Email, code);
-        await emailService.SendEmail(verificationEmail, "Verification Code", code);
+        var props = new Dictionary<string, string>();
+        props.Add("[VERIFICATION_CODE]", code);
+
+        await emailService.SendHTMLPage(verificationEmail, Constants.VerificateEmail, props);
 
         return verificationEmail;
     }

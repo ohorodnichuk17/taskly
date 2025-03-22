@@ -3,12 +3,14 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Taskly_Api.Request.Board;
+using Taskly_Api.Response.Board;
 using Taskly_Application.Requests.Board.Command.AddMemberToBoard;
 using Taskly_Application.Requests.Board.Command.CreateBoard;
 using Taskly_Application.Requests.Board.Command.DeleteBoard;
 using Taskly_Application.Requests.Board.Command.RemoveMemberFromBoard;
 using Taskly_Application.Requests.Board.Query.GetAllBoards;
 using Taskly_Application.Requests.Board.Query.GetBoardById;
+using Taskly_Application.Requests.Board.Query.GetBoardsByUser;
 using Taskly_Application.Requests.Board.Query.GetMembersOfBoard;
 using Taskly_Application.Requests.Board.Query.GetTemplateBoard;
 
@@ -85,4 +87,17 @@ public class BoardController(ISender sender, IMapper mapper) : ApiController
         return result.Match(r => Ok(r),
             errors => Problem(errors));
     }
+
+    [Authorize]
+    [HttpGet("get-boards-by-user")]
+    public async Task<IActionResult> GetBoardsByUser()
+    {
+        var userId = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "id")!.Value;
+
+        var boards = await sender.Send(new GetBoardsByUserQuery(Guid.Parse(userId)));
+
+        return boards.Match(boards => Ok(mapper.Map<ICollection<UsersBoardResponse>>(boards)),
+            errors => Problem(errors));
+    }
+
 }

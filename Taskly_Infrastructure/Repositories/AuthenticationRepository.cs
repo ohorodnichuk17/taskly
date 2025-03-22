@@ -12,7 +12,9 @@ public class AuthenticationRepository(UserManager<UserEntity> userManager, Taskl
 {
 
     readonly private DbSet<VerificationEmailEntity> _verificationEmailEntities = tasklyDbContext.Set<VerificationEmailEntity>();
-    
+    readonly private DbSet<ChangePasswordKeyEntity> _changePasswordKeyEntity = tasklyDbContext.Set<ChangePasswordKeyEntity>();
+    readonly private DbSet<UserEntity> _userEntity = tasklyDbContext.Set<UserEntity>();
+
     public async Task<bool> IsUserExist(string Email)
     {
         return await userManager.FindByEmailAsync(Email) != null;
@@ -56,10 +58,50 @@ public class AuthenticationRepository(UserManager<UserEntity> userManager, Taskl
     }
     public async Task<UserEntity?> GetUserByEmail(string Email)
     {
-        return await userManager.FindByEmailAsync(Email);
+        return await _userEntity.Include(u => u.Avatar).FirstOrDefaultAsync(u => u.Email == Email);
     }
+
     public async Task<bool> IsPasswordValid(UserEntity User, string Password)
     {
         return await userManager.CheckPasswordAsync(User, Password);
     }
+    public async Task AddChangePasswordKey(string Email, Guid Key)
+    {
+        var changePasswordKeyEntity = await _changePasswordKeyEntity.FirstOrDefaultAsync(c => c.Email == Email);
+        if(changePasswordKeyEntity != null)
+        {
+             _changePasswordKeyEntity.Remove(changePasswordKeyEntity);
+        }
+        await _changePasswordKeyEntity.AddAsync(
+            new ChangePasswordKeyEntity() {
+            Key = Key,
+            Email = Email 
+        });
+
+        await tasklyDbContext.SaveChangesAsync();
+    }
+    public async Task<string?> GetUserEmailByChangePasswordKeyAsync(Guid Key)
+    {
+        var user = await _changePasswordKeyEntity.FirstOrDefaultAsync(c => c.Key == Key);
+        if(user == null)
+            return null;
+        return user.Email;
+    }
+    public async Task<bool> HasUserSentRequestToChangePassword(string Email, Guid Key)
+    {
+        var changePasswordKeyEntity = await _changePasswordKeyEntity.FirstOrDefaultAsync(c => c.Key == Key && c.Email == Email);
+
+        return changePasswordKeyEntity != null;
+    }
+    public async Task<ErrorOr<Guid>> ChangePasswordAsync(UserEntity user, string Password)
+    {
+        var resetPasswordToken = await userManager.GeneratePasswordResetTokenAsync(user);
+        var result = await userManager.ResetPasswordAsync(user, resetPasswordToken, Password);
+        if (result.Succeeded)
+        {     
+            return user.Id;
+        }
+        return Error.Conflict(result.Errors.FirstOrDefault()!.Description);
+    }
+
 }

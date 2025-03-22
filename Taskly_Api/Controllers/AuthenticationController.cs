@@ -2,14 +2,20 @@
 using Microsoft.AspNetCore.Mvc;
 using Taskly_Api.Request.Authenticate;
 using MapsterMapper;
-using Taskly_Application.Requests.Authentication.Command.SendVerificationEmail;
+using Taskly_Application.Requests.Authentication.Command.SendVerificationCode;
 using Taskly_Application.Requests.Authentication.Command.VerificateEmail;
 using Taskly_Application.Requests.Authentication.Command.Register;
 using Taskly_Application.Requests.Authentication.Query.Login;
 using Taskly_Application.Requests.Authentication.Query.GetAllAvatars;
 using Taskly_Api.Response.Authenticate;
 using Microsoft.AspNetCore.Authorization;
+using Taskly_Application.Requests.Authentication.Query.CheckHasUserSentRequestToChangePassword;
+using Taskly_Application.Requests.Authentication.Command.SendRequestToChangePassword;
+using Taskly_Application.Requests.Authentication.Command.ChangePassword;
+using Taskly_Application.Requests.Authentication.Query.GetInformationAboutUser;
+using Microsoft.AspNetCore.Identity.Data;
 using System.Linq;
+using System.Runtime.Intrinsics.X86;
 
 namespace Taskly_Api.Controllers
 {
@@ -34,7 +40,7 @@ namespace Taskly_Api.Controllers
                 errors => Problem(errors));
         }
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterRequest registerRequest)
+        public async Task<IActionResult> Register([FromBody] Request.Authenticate.RegisterRequest registerRequest)
         {
             var result = await sender.Send(mapper.Map<RegisterCommand>(registerRequest));
 
@@ -49,18 +55,24 @@ namespace Taskly_Api.Controllers
                 errors => Problem(errors));
         }
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
+        public async Task<IActionResult> Login([FromBody] Request.Authenticate.LoginRequest loginRequest)
         {
             var result = await sender.Send(mapper.Map<LoginQuery>(loginRequest));
             
-            return result.Match(result => {
+
+            return await result.MatchAsync(async result => {
                 Response.Cookies.Append("X-JWT-Token", result, new CookieOptions()
                 {
                     HttpOnly = true, // Забороняє взаємодіяти з кукі через JS
                     SameSite = SameSiteMode.Strict, //Кукі передаються тільки в межах того ж сайту (тільки для запитів з цього ж домену).
-                }); 
-                return Ok();
-            },errors => Problem(errors));
+                });
+
+                var user = await sender.Send(new GetInformationAboutUserQuery(loginRequest.Email));
+
+                
+                return user.Match(user => Ok(mapper.Map<InformationAboutUserResponse>(user)),
+                    errors => Problem(errors));
+            },errors => Task.FromResult(Problem(errors)));
         }
         [HttpGet("get-all-avatars")]
         public async Task<IActionResult> GetAllAvatars()
@@ -74,8 +86,47 @@ namespace Taskly_Api.Controllers
         
         [HttpGet("check-token")]
         [Authorize]
-        public IActionResult CheckToken()
+        public async Task<IActionResult> CheckToken()
         {
+            var userEmail = User.Claims.First((c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")).Value;
+
+            var user = await sender.Send(new GetInformationAboutUserQuery(userEmail));
+
+            return user.Match(user => Ok(mapper.Map<InformationAboutUserResponse>(user)),
+                errors=>Problem(errors));
+        }
+
+        [HttpPost("send-request-to-change-password")]
+        public async Task<IActionResult> SendRequestToChangePassword([FromBody] EmailRequest EmailRequest)
+        {
+            var result = await sender.Send(new SendRequestToChangePasswordCommand(EmailRequest.Email));
+            return result.Match(result => Ok(),
+                errors => Problem(errors));
+        }
+
+        [HttpGet("check-has-user-sent-request-to-change-password")]
+        public async Task<IActionResult> CheckHasUserSentRequestToChangePassword([FromQuery] CheckHasUserSentRequestToChangePasswordRequest checkHasUserSent)
+        {
+            var result = await sender.Send(mapper.Map<CheckHasUserSentRequestToChangePasswordQuery>(checkHasUserSent));
+
+            return result.Match(result => Ok(result),
+                errors => Problem(errors));
+        }
+
+        [HttpPut("change-password")]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest changePasswordRequest)
+        {
+            var result = await sender.Send(mapper.Map<ChangePasswordCommand>(changePasswordRequest));
+
+            return result.Match(result => Ok(result),
+                errors => Problem(errors));
+        }
+
+        [HttpGet("exit")]
+        [Authorize]
+        public async Task<IActionResult> Exit()
+        {
+            Response.Cookies.Delete("X-JWT-Token");
             return Ok();
         }
     }
