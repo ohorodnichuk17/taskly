@@ -41,7 +41,6 @@ function App() {
     <MainContainer>
       <Routes>
 
-        {/*<Route index element={<DashboardPage />}>*/}
         <Route path="/" element={<DashboardPage />}>
           <Route path="artificial-intelligence" element={<AIAgent />} />
 
@@ -52,10 +51,8 @@ function App() {
 
             </Route>
           </>)}
-          {/* Інші маршрути */}
           <Route path='/boards' element={<Navigate to="/authentication/login" />} />
 
-          {/*</Route>*/}
 
         </Route>
 
@@ -67,10 +64,6 @@ function App() {
 
         </Route>
 
-
-
-
-
         <Route path='*' element={<PageNotFound />} />
 
       </Routes>
@@ -79,11 +72,3 @@ function App() {
 }
 
 export default App
-/*
-{isLogin &&
-          <Route path='/dashboard' element={<DashboardPage />}>
-          </Route>
-        }
-        <Route path='/dashboard' element={<Navigate to={"/authentication/login"} />}>
-        </Route>
-*/

@@ -1,6 +1,7 @@
 @mixin defaultButton($buttonWidth, $font_size) {
     width: $buttonWidth;
     font-size: $font_size;
+    font-weight: bold;
     border: none;
     border-radius: 5px;
     outline: none;
