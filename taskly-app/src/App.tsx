@@ -14,6 +14,7 @@ import { ChangePasswordPage } from './components/authentication/ChangePasswordPa
 import MainContainer from "./components/general/MainContainer.tsx";
 import AIAgent from "./components/user/AiAgent.tsx";
 import { BoardsPage } from './components/boards/BoardsPage.tsx'
+import { BoardPage } from './components/boards/BoardPage.tsx'
 
 
 
@@ -46,6 +47,9 @@ function App() {
 
           {isLogin && (<>
             <Route path='/boards' element={<BoardsPage />}>
+            </Route>
+            <Route path='/boards/:boardId' element={<BoardPage />}>
+
             </Route>
           </>)}
           {/* Інші маршрути */}

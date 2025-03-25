@@ -1,3 +1,15 @@
+@media screen and (max-width:500px) {
+    .workspace-container {
+        max-height: 690px;
+    }
+}
+
+@media screen and (min-width:500px) {
+    .workspace-container {
+        max-height: 800px;
+    }
+}
+
 .boards-container {
     width: 70%;
     height: 100%;
@@ -13,19 +25,25 @@
     .workspace-container {
         width: 100%;
         height: auto;
+        //max-height: 690px;
         display: flex;
         column-gap: 10px;
         row-gap: 10px;
         flex-wrap: wrap;
-        overflow-y: hidden;
+        padding: 10px;
+        box-sizing: border-box;
 
-        a {
+
+
+        a,
+        #more-boards {
             width: 300px;
             height: 150px;
             display: flex;
             position: relative;
             border-radius: 10px;
             text-decoration: none;
+            cursor: pointer;
 
             &:hover {
                 img {
@@ -79,6 +97,7 @@
             }
         }
 
+        #more-boards,
         #create-new-board {
             background-color: #641acc;
             justify-content: center;
@@ -93,5 +112,78 @@
             }
         }
 
+
+
+    }
+}
+
+.boards-items {
+    width: fit-content;
+    min-width: 300px;
+    max-width: 700px;
+    height: fit-content;
+    max-height: 600px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    border-radius: 10px;
+    padding: 10px;
+    gap: 10px;
+    box-sizing: border-box;
+
+    a {
+        width: 250px;
+        height: 150px;
+        position: relative;
+        box-sizing: border-box;
+
+        img {
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+        }
+
+        &:hover {
+            img {
+                filter: contrast(90%)
+            }
+        }
+
+        p {
+            position: absolute;
+            color: white;
+            font-size: 20px;
+            margin: 0;
+            top: 10px;
+            left: 10px;
+        }
+
+        .additional-information {
+            width: 100%;
+            height: 40px;
+            position: absolute;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            column-gap: 10px;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.212);
+            border-radius: 0px 0px 10px 10px;
+            padding: 10px;
+            box-sizing: border-box;
+
+            img {
+                width: 30px;
+                height: 30px;
+            }
+
+            span {
+                text-decoration: none;
+                color: white;
+                font-size: 20px;
+            }
+
+
+        }
     }
 }
