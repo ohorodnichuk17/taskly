@@ -1,7 +1,9 @@
 using ErrorOr;
 using MediatR;
+using System.Reflection.Metadata;
 using Taskly_Application.Interfaces;
 using Taskly_Application.Interfaces.IService;
+using Taskly_Domain;
 using Taskly_Domain.Entities;
 
 namespace Taskly_Application.Requests.Board.Command.CreateBoard;
@@ -20,9 +22,9 @@ public class CreateBoardCommandHandler(IUnitOfWork unitOfWork,
 
             var cardLists = new[]
             {
-                new CardListEntity { Title = "To-Do" },
-                new CardListEntity { Title = "Doing" },
-                new CardListEntity { Title = "Done" }
+                new CardListEntity { Title = Constants.Todo },
+                new CardListEntity { Title = Constants.Inprogress },
+                new CardListEntity { Title = Constants.Todo }
             };
 
             var board = new BoardEntity
