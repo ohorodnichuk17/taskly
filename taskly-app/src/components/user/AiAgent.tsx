@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { api } from "../../axios/api.ts";
-import '../../styles/ai/ai-main-style.scss';
-import AiLogo from '../../assets/ai_logo.png';
+import ReactMarkdown from "react-markdown";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import "../../styles/ai/ai-main-style.scss";
 
 const AIAgent = () => {
     const [prompt, setPrompt] = useState("");
@@ -22,7 +24,7 @@ const AIAgent = () => {
         setResponse("");
 
         try {
-            const result = await api.post("/api/gemini/generate", { prompt: prompt });
+            const result = await api.post("/api/gemini/generate", { prompt: prompt }, { withCredentials: true });
             setResponse(result.data);
         } catch (error) {
             console.error("Error generating content:", error);
@@ -32,13 +34,13 @@ const AIAgent = () => {
         }
     };
 
+    const copyToClipboard = () => {
+        navigator.clipboard.writeText(response);
+        alert("Code copied to clipboard!");
+    };
+
     return (
         <div className="ai-container">
-            <div className="main-info-container">
-                <h1 className="ai-title">AI Agent</h1>
-                <img className="ai-logo" src={AiLogo} alt="Ai logo"/>
-            </div>
-
             {isContainerVisible && (
                 <div className={`response-container ${loading ? 'loading' : ''} ${!loading && response ? 'visible' : ''}`}>
                     {loading ? (
@@ -46,7 +48,26 @@ const AIAgent = () => {
                             <div className="loader"></div>
                         </div>
                     ) : (
-                        <p className="ai-response">{response}</p>
+                        <>
+                            <ReactMarkdown
+                                children={response}
+                                components={{
+                                    code({ node, inline, className, children, ...props }) {
+                                        const match = /language-(\w+)/.exec(className || "");
+                                        return !inline && match ? (
+                                            <div className="code-block">
+                                                <SyntaxHighlighter style={oneDark} language={match[1]} PreTag="div">
+                                                    {String(children).replace(/\n$/, "")}
+                                                </SyntaxHighlighter>
+                                                <button className="copy-btn" onClick={copyToClipboard}>Copy</button>
+                                            </div>
+                                        ) : (
+                                            <code className={className} {...props}>{children}</code>
+                                        );
+                                    }
+                                }}
+                            />
+                        </>
                     )}
                 </div>
             )}
@@ -65,7 +86,6 @@ const AIAgent = () => {
             </form>
         </div>
     );
-
 };
 
 export default AIAgent;

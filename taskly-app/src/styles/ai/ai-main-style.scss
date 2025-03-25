@@ -24,13 +24,6 @@
   height: 35px;
 }
 
-.ai-title {
-  color: #e4eae3;
-  font-size: 32px;
-  font-weight: bold;
-  text-shadow: 2px 2px 10px rgba(255, 255, 255, 0.2);
-}
-
 .ai-form {
   display: flex;
   flex-direction: column;
@@ -144,4 +137,29 @@
 .ai-button:disabled {
   background-color: #6c757d;
   cursor: not-allowed;
+}
+
+.code-block {
+  position: relative;
+  background: #282c34;
+  border-radius: 8px;
+  padding: 10px;
+  overflow-x: auto;
+}
+
+.copy-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.copy-btn:hover {
+  background: #0056b3;
 }

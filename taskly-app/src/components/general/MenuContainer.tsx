@@ -62,7 +62,7 @@ export const MenuContainer = (props: IMenuContainer) => {
 
         checkMenuWidth();
 
-        return () => observer.disconnect(); // Прибираємо, коли компонент розмонтовується
+        return () => observer.disconnect();
 
 
     }, []);
