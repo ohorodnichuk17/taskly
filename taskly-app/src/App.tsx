@@ -15,6 +15,7 @@ import MainContainer from "./components/general/MainContainer.tsx";
 import AIAgent from "./components/user/AiAgent.tsx";
 import { BoardsPage } from './components/boards/BoardsPage.tsx'
 import { BoardPage } from './components/boards/BoardPage.tsx'
+import MainPage from "./components/general/MainPage.tsx";
 
 
 
@@ -42,6 +43,8 @@ function App() {
       <Routes>
 
         <Route path="/" element={<DashboardPage />}>
+          <Route path="" element={<MainPage />} />
+
           <Route path="artificial-intelligence" element={<AIAgent />} />
 
           {isLogin && (<>
