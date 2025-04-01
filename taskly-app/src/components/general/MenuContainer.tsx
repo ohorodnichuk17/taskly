@@ -62,7 +62,7 @@ export const MenuContainer = (props: IMenuContainer) => {
 
         checkMenuWidth();
 
-        return () => observer.disconnect(); // Прибираємо, коли компонент розмонтовується
+        return () => observer.disconnect();
 
 
     }, []);
@@ -108,6 +108,7 @@ export const MenuContainer = (props: IMenuContainer) => {
     >
         <div className="menu-container-icon">
             <img src={props.icon} onClick={() => <Navigate to={"/"} />} />
+            <p>askly</p>
         </div>
 
         {hideMenu === false && <nav
@@ -132,13 +133,14 @@ export const MenuContainer = (props: IMenuContainer) => {
 
         <div className='menu-authentication-buttons'>
             <button>
-                <Link to="/authentication/register">
-                    Sign up
+                <Link to="/authentication/login">
+                    Log in
                 </Link>
             </button>
             <button>
-                <Link to="/authentication/login">
-                    Log in
+                <Link to="/authentication/register">
+                    Sign up
+
                 </Link>
             </button>
         </div>

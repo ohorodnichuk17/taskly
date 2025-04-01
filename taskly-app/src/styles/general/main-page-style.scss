@@ -1,0 +1,69 @@
+@use 'general-style' as *;
+
+.main-page-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100vh;
+  padding: 0 5%;
+
+  .text-content {
+    flex: 1;
+    max-width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    h1 {
+      font-size: 2.5rem;
+      max-width: 20ch;
+      text-align: left;
+      line-height: 1.2;
+      margin-bottom: 0;
+      color: #ECF0F1;
+    }
+
+    p {
+      font-size: 1.2rem;
+      max-width: 30ch;
+      text-align: left;
+      line-height: 1.4;
+      margin-top: 1rem;
+      color: #BDC3C7;
+    }
+
+    button {
+      @include defaultButton($buttonWidth: 20%, $font_size: 17px);
+      align-self: flex-start;
+      margin-top: 2rem;
+      border: none;
+      color: white;
+      cursor: pointer;
+
+      &:hover {
+        filter: brightness(1.2);
+      }
+    }
+  }
+
+  .animated-shapes {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .shapes {
+      width: 100%;
+      height: auto;
+      max-width: 400px;
+
+      circle {
+        transition: transform 0.3s ease-in-out;
+      }
+
+      path {
+        stroke-dasharray: 5;
+      }
+    }
+  }
+}
