@@ -28,6 +28,7 @@
 using Microsoft.Extensions.FileProviders;
 using Taskly_Api;
 using Taskly_Api.Common;
+using Taskly_Api.SignalR.Hubs;
 using Taskly_Application;
 using Taskly_Infrastructure;
 using Taskly_Infrastructure.Common.Seeder;
@@ -80,5 +81,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHub<BoardHub>("/board");
 
 app.Run();

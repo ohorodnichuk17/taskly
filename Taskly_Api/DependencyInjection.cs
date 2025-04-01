@@ -56,6 +56,7 @@ public static class DependencyInjection
         services.AddInfrastructureServices();
         services.AddCustomCors();
         services.AddGeminiClient();
+        services.AddSignalR();
 
         return services;
     }
