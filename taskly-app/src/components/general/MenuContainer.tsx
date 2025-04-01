@@ -138,11 +138,7 @@ export const MenuContainer = (props: IMenuContainer) => {
             </button>
             <button>
                 <Link to="/authentication/login">
-<<<<<<< HEAD
                     Log in
-=======
-                    Sing in
->>>>>>> 77be09eb1c71f81732098bafeb8896009e1a9096
                 </Link>
             </button>
         </div>

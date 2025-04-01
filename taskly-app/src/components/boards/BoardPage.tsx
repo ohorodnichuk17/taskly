@@ -6,15 +6,19 @@ import { getCardsListsByBoardIdAsync } from "../../redux/actions/boardsAction";
 import { format } from "date-fns";
 import setting_icon from '../../../public/icon/setting_icon.png';
 import { ICard, ICardListItem } from "../../interfaces/boardInterface";
-import { array } from "zod";
+import { HubConnection, HubConnectionBuilder, HubConnectionState, LogLevel } from "@microsoft/signalr";
+import { baseUrl } from "../../axios/baseUrl";
 
 
 
 const addItemToArrayFromAnotherArray = (item: any, array: any[]) => {
-    console.log("addItemToArrayFromAnotherArray");
-    return [...array, item];
+
+    let newArr = [...array, item];
+
+    return newArr;
 }
 const findAndRemoveItemFromArray = (condition: (c: any) => boolean, array: any[]) => {
+    console.log("remove card - ");
     let item = array.find(condition);
     if (item) {
         let index = array.indexOf(item);
@@ -26,9 +30,16 @@ const findAndRemoveItemFromArray = (condition: (c: any) => boolean, array: any[]
 }
 
 export const BoardPage = () => {
+
+    const conn = new HubConnectionBuilder()
+        .withUrl(`${baseUrl}/board`)
+        .configureLogging(LogLevel.Information)
+        .build();
+
     const { boardId } = useParams();
 
     const cardList = useRootState(s => s.board.cardList);
+    const userId = useRootState(s => s.authenticate.userProfile?.id);
     const dispatch = useAppDispatch();
 
 
@@ -45,20 +56,16 @@ export const BoardPage = () => {
     }[]>([]);
     const [dragenCard, setDragenCard] = useState<{
         cardId: string,
-        cardListId: string
+        fromCardListId: string,
     } | null>(null);
-    let [cardLists, setCardLists] = useState<ICardListItem[] | null>(null);
-
-
+    const [cardLists, setCardLists] = useState<ICardListItem[] | null>(null);
 
 
     const getCardList = async () => {
         if (boardId != null)
             await dispatch(getCardsListsByBoardIdAsync(boardId))
     }
-    useEffect(() => {
-        getCardList();
-    }, [])
+
     useEffect(() => {
         if (cardList)
             setCardLists(cardList);
@@ -86,6 +93,87 @@ export const BoardPage = () => {
 
         }
     }, [cardsRef.current])
+
+    useEffect(() => {
+        getCardList();
+        startConnection();
+    }, [])
+
+    useEffect(() => {
+        console.log("cardLists змінився - ", cardLists)
+    }, [cardLists])
+
+    const startConnection = async () => {
+
+
+        conn.on("ConnectToTeamBoard", (mess) => {
+            console.log(mess)
+        });
+        conn.on("TransferCardToAnotherCardList", (model: {
+            userId: string,
+            cardId: string,
+            fromCardListId: string,
+            toCardListId: string
+        }) => {
+            console.log("Model - ", model)
+            if (cardLists === null) {
+                console.error("cardLists є null перед оновленням!");
+            }
+            if (userId != model.userId) {
+                transferCardToAnotherCardList(model);
+            }
+
+        })
+        conn.on("DisconnectFromTeamBoard", (mess) => {
+            console.log(mess);
+        })
+
+        await conn.start();
+        await conn.invoke("ConnectToTeamBoard", { userId, boardId });
+        //await conn.stop()
+    }
+
+    const endConnection = async () => {
+        await conn.invoke("DisconnectFromTeamBoard", { userId, boardId });
+        await conn.stop();
+    }
+
+    useEffect(() => {
+        return (() => {
+
+            endConnection();
+        });
+    }, [])
+
+
+    const transferCardToAnotherCardList = (model: {
+        cardId: string,
+        fromCardListId: string,
+        toCardListId: string
+    }) => {
+        if (cardLists !== null) {
+            console.log("TRANSFER")
+            let dragenCardItem: ICard | null = null;
+
+            cardLists.forEach(item => {
+                if (item.cards && item.id === model.fromCardListId) {
+                    dragenCardItem = item.cards.find(card => card.id === model.cardId) || null;
+                }
+            })
+            setCardLists(prev => prev ? prev.map(item => ({
+                ...item,
+                cards: item.cards && item.id === model.fromCardListId ?
+                    findAndRemoveItemFromArray(el => el.id === model.cardId, item.cards) :
+                    item.cards && item.id === model.toCardListId ?
+                        addItemToArrayFromAnotherArray(dragenCardItem, item.cards) :
+                        item.cards
+
+
+            })) : []);
+
+        }
+
+    }
 
     return <div className="board-page-container"
         ref={(ref) => {
@@ -115,46 +203,54 @@ export const BoardPage = () => {
                                     cardsOverflowY.find((card) => card.id === element.id)?.scroll :
                                     "auto"
                         }}
-                        onDragEnd={(e) => {
-                            if (dragenCard) {
-
-                                let dragenCardItem: ICard | null = null;
-                                cardLists.forEach(item => {
-                                    if (item.cards && item.id === dragenCard.cardListId) {
-                                        dragenCardItem = item.cards.find(card => card.id === dragenCard.cardId) || null;
-                                    }
+                        onDrop={async (e) => {
+                            e.preventDefault();
+                            if (dragenCard && dragenCard.fromCardListId !== element.id) {
+                                transferCardToAnotherCardList({
+                                    cardId: dragenCard.cardId,
+                                    fromCardListId: dragenCard.fromCardListId,
+                                    toCardListId: element.id
                                 })
-                                console.log("dragenCardItem - ", dragenCardItem)
-                                setCardLists(prev => prev ? prev.map(item => ({
-                                    ...item,
-                                    cards: item.cards && element.id === dragenCard.cardListId ?
-                                        findAndRemoveItemFromArray(el => el.id === dragenCard.cardId, item.cards) :
-                                        (item.cards && item.id === element.id && dragenCardItem ?
-                                            addItemToArrayFromAnotherArray(dragenCardItem, item.cards) :
-                                            item.cards
-                                        )
+                                if (conn.state !== HubConnectionState.Connected) {
+                                    conn.start()
+                                        .then(async () => {
+                                            await conn.invoke("TransferCardToAnotherCardList", {
+                                                userId: userId,
+                                                cardId: dragenCard.cardId,
+                                                fromCardListId: dragenCard.fromCardListId,
+                                                toCardListId: element.id,
+                                                boardId: boardId
+                                            })
+                                        })
+                                }
+                                else {
+                                    await conn.invoke("TransferCardToAnotherCardList", {
+                                        userId: userId,
+                                        cardId: dragenCard.cardId,
+                                        fromCardListId: dragenCard.fromCardListId,
+                                        toCardListId: element.id,
+                                        boardId: boardId
+                                    })
+                                }
 
-                                })) : []);
-                                console.log(dragenCardItem);
 
-                                /*setCardLists(prev => prev ? prev.map(item => ({
-                                    ...item,
-                                    cards: item.cards && item.id === element.id && dragenCardItem ?
-                                        addItemToArrayFromAnotherArray(dragenCardItem, item.cards) :
-                                        item.cards
-                                })) : []);*/
                                 setDragenCard(null);
                             }
 
                         }}
+                        onDragOver={(e) => {
+                            e.preventDefault();
+                        }}
                     >
                         {element.cards && element.cards.map((element_card) => (
                             <div className="card" key={element_card.id} onDragStart={() => {
+
                                 setDragenCard({
                                     cardId: element_card.id,
-                                    cardListId: element.id
+                                    fromCardListId: element.id
                                 });
-                            }} draggable>
+                            }}
+                                draggable>
                                 <p>{element_card.description}</p>
                                 <div>
                                     <div className="card-deadline"

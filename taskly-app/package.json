@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
+    "@microsoft/signalr": "^8.0.7",
     "@reduxjs/toolkit": "^2.5.0",
     "@types/redux-persist": "^4.0.0",
     "axios": "^1.7.9",

@@ -2,13 +2,12 @@
     width: 70%;
     height: 100%;
     margin: auto;
+    padding: 20px;
+    overflow-y: hidden;
     overflow-x: scroll;
-    display: flex;
-    justify-content: center;
 
     .card-list-container {
-        width: auto;
-        min-width: max-content;
+        width: max-content;
         height: 100%;
         display: flex;
         column-gap: 10px;
@@ -16,7 +15,7 @@
         box-sizing: border-box;
 
         .card-list-item {
-            width: 400px;
+            width: fit-content;
             height: 100%;
             background-color: rgba(255, 255, 255, 0.63);
 
@@ -24,12 +23,12 @@
             border-radius: 10px;
             flex-direction: column;
             padding: 10px;
-            box-sizing: border-box;
+
 
             .card-list-cards {
-                width: 100%;
+                width: 400px;
                 height: 100%;
-                overflow-y: scroll;
+                //overflow-y: scroll;
                 display: flex;
                 flex-direction: column;
                 row-gap: 5px;
@@ -90,6 +89,7 @@
                         }
 
                     }
+
 
 
                 }
