@@ -134,7 +134,7 @@ export const MenuContainer = (props: IMenuContainer) => {
         <div className='menu-authentication-buttons'>
             <button>
                 <Link to="/authentication/login">
-                    Log in
+                    Sign in
                 </Link>
             </button>
             <button>
