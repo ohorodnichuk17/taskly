@@ -4,6 +4,8 @@ import menu_icon from '../../../public/icon/menu_icon.png';
 import menu_icon_opened from '../../../public/icon/menu_icon_opened.png';
 import { Link, Navigate } from 'react-router-dom';
 import { HideMenuContainer } from './HideMenuContainer';
+import { RootState } from '../../redux/store.ts';
+import { useSelector } from 'react-redux';
 
 export interface IMenuContainer {
     icon: string;
@@ -18,15 +20,12 @@ export interface IMenuContainer {
 }
 
 function CalculateMenuItemsWidth(items: (HTMLAnchorElement | null)[]) {
-
     if (items === null) return 0;
 
     let itemsLength = 0;
     items.forEach(element => {
         if (element) {
-
             itemsLength += element.offsetWidth;
-
         }
     });
     itemsLength += (items.length - 1) * 20 + 100;
@@ -34,7 +33,7 @@ function CalculateMenuItemsWidth(items: (HTMLAnchorElement | null)[]) {
 }
 
 export const MenuContainer = (props: IMenuContainer) => {
-
+    const { isLogin, userProfile } = useSelector((state: RootState) => state.authenticate);
     const widthToHide = useRef<number | null>(null);
     const containerRef = useRef<HTMLDivElement | null>();
     const containerItemsRef = useRef<HTMLElement | null>();
@@ -42,8 +41,6 @@ export const MenuContainer = (props: IMenuContainer) => {
 
     const [hideMenu, setHideMenu] = useState<boolean>(false);
     const [isMenuOpened, setIsMenuOpened] = useState<boolean>(false);
-
-
 
     useEffect(() => {
         if (hideMenu === false && isMenuOpened === true)
@@ -63,90 +60,132 @@ export const MenuContainer = (props: IMenuContainer) => {
         checkMenuWidth();
 
         return () => observer.disconnect();
-
-
     }, []);
-
 
     const checkMenuWidth = () => {
         const containerWidth = containerRef.current != null ? containerRef.current.offsetWidth : 0;
         const itemsContainerWidth = containerItemsRef.current != null ? containerItemsRef.current.offsetWidth : 0;
 
-        let itemsLength = CalculateMenuItemsWidth(itemsRef.current)
-
+        let itemsLength = CalculateMenuItemsWidth(itemsRef.current);
 
         if (widthToHide.current !== null) {
             if (containerWidth >= widthToHide.current) {
                 setHideMenu(false);
-            }
-            else {
+            } else {
                 setHideMenu(true);
             }
-        }
-        else {
+        } else {
             if (itemsContainerWidth > 0) {
                 if (itemsLength >= itemsContainerWidth) {
                     widthToHide.current = containerWidth + (itemsLength - itemsContainerWidth) + 100;
                     setHideMenu(true);
-                }
-                else {
+                } else {
                     if (hideMenu === true) {
                         setHideMenu(false);
                     }
                 }
             }
         }
+    };
 
-    }
-    return (<div
-        ref={(ref) => {
-            containerRef.current = ref;
+    const formatUsername = (username: string): string => {
+        const atIndex = username.indexOf('@');
+        return atIndex !== -1 ? username.slice(0, atIndex) : username;
+    };
 
-        }}
-        className="menu-container"
-
-    >
-        <div className="menu-container-icon">
-            <img src={props.icon} onClick={() => <Navigate to={"/"} />} />
-            <p>askly</p>
-        </div>
-
-        {hideMenu === false && <nav
+    return (
+        <div
             ref={(ref) => {
-                containerItemsRef.current = ref;
+                containerRef.current = ref;
             }}
-            className="menu-container-items"
+            className="menu-container"
         >
-            {props.items.map((item, index) => (
-                <Link
-                    key={index}
-                    className="menu-item"
+            <div className="menu-container-icon">
+                <img src={props.icon} onClick={() => <Navigate to={"/"}/>}/>
+                <p>askly</p>
+            </div>
+
+            {hideMenu === false && (
+                <nav
                     ref={(ref) => {
-                        itemsRef.current[index] = ref;
+                        containerItemsRef.current = ref;
                     }}
-                    to={item.path}
+                    className="menu-container-items"
                 >
-                    {item.name}
-                </Link>
-            ))}
-        </nav>}
+                    {props.items.map((item, index) => (
+                        <Link
+                            key={index}
+                            className="menu-item"
+                            ref={(ref) => {
+                                itemsRef.current[index] = ref;
+                            }}
+                            to={item.path}
+                        >
+                            {item.name}
+                        </Link>
+                    ))}
+                </nav>
+            )}
 
-        <div className='menu-authentication-buttons'>
-            <button>
-                <Link to="/authentication/login">
-                    Sign in
-                </Link>
-            </button>
-            <button>
-                <Link to="/authentication/register">
-                    Sign up
+            <div className='menu-authentication'>
+                {isLogin && userProfile ? (
+                    <div className="user-info" style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
+                        <img
+                            src={`http://localhost:5258/images/avatars/${userProfile.avatarName}.png`}
+                            alt="Avatar"
+                            className="user-avatar"
+                            style={{
+                                width: '38px',
+                                height: '38px',
+                                borderRadius: '50%',
+                                border: '2px solid #ffffff',
+                                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+                                transition: 'transform 0.2s ease-in-out',
+                            }}
+                            onMouseEnter={(e) => {
+                                e.currentTarget.style.transform = 'scale(1.1)';
+                            }}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.style.transform = 'scale(1)';
+                            }}
+                        />
 
-                </Link>
-            </button>
+                        <span
+                            className="user-name"
+                            style={{
+                                whiteSpace: 'nowrap',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                maxWidth: '120px',
+                                fontSize: '16px',
+                                fontWeight: '500',
+                            }}
+                        >
+                            {formatUsername(userProfile.email)}
+                        </span>
+                    </div>
+                ) : (
+                    <div className='menu-authentication-buttons'>
+                        <button>
+                            <Link to="/authentication/login">Sign in</Link>
+                        </button>
+                        <button>
+                            <Link to="/authentication/register">Sign up</Link>
+                        </button>
+                    </div>
+                )}
+            </div>
+
+            {hideMenu === true && (
+                <div className='hiden-menu-icon'>
+                    <img
+                        src={isMenuOpened === true ? menu_icon_opened : menu_icon}
+                        alt="Menu Icon"
+                        onClick={() => setIsMenuOpened(!isMenuOpened)}
+                    />
+                </div>
+            )}
+            {isMenuOpened === true && <HideMenuContainer items={props.items} closeHideMenu={setIsMenuOpened}/>}
         </div>
-        {hideMenu === true && <div className='hiden-menu-icon'>
-            <img src={isMenuOpened === true ? menu_icon_opened : menu_icon} alt="Menu Icon" onClick={() => setIsMenuOpened(!isMenuOpened)} />
-        </div>}
-        {isMenuOpened === true && <HideMenuContainer items={props.items} closeHideMenu={setIsMenuOpened} />}
-    </div>)
-}
+    );
+};
