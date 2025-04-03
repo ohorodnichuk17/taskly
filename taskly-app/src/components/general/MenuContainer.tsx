@@ -106,75 +106,77 @@ export const MenuContainer = (props: IMenuContainer) => {
             </div>
 
             {hideMenu === false && (
-                <nav
-                    ref={(ref) => {
-                        containerItemsRef.current = ref;
-                    }}
-                    className="menu-container-items"
-                >
-                    {props.items.map((item, index) => (
-                        <Link
-                            key={index}
-                            className="menu-item"
-                            ref={(ref) => {
-                                itemsRef.current[index] = ref;
-                            }}
-                            to={item.path}
-                        >
-                            {item.name}
-                        </Link>
-                    ))}
-                </nav>
-            )}
+                <>
+                    <nav
+                        ref={(ref) => {
+                            containerItemsRef.current = ref;
+                        }}
+                        className="menu-container-items"
+                    >
+                        {props.items.map((item, index) => (
+                            <Link
+                                key={index}
+                                className="menu-item"
+                                ref={(ref) => {
+                                    itemsRef.current[index] = ref;
+                                }}
+                                to={item.path}
+                            >
+                                {item.name}
+                            </Link>
+                        ))}
+                    </nav>
 
-            <div className='menu-authentication'>
-                {isLogin && userProfile ? (
-                    <div className="user-info" style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
-                        <img
-                            src={`http://localhost:5258/images/avatars/${userProfile.avatarName}.png`}
-                            alt="Avatar"
-                            className="user-avatar"
-                            style={{
-                                width: '38px',
-                                height: '38px',
-                                borderRadius: '50%',
-                                border: '2px solid #ffffff',
-                                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-                                transition: 'transform 0.2s ease-in-out',
-                            }}
-                            onMouseEnter={(e) => {
-                                e.currentTarget.style.transform = 'scale(1.1)';
-                            }}
-                            onMouseLeave={(e) => {
-                                e.currentTarget.style.transform = 'scale(1)';
-                            }}
-                        />
+                    <div className='menu-authentication'>
+                        {isLogin && userProfile ? (
+                            <div className="user-info" style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
+                                <img
+                                    src={`http://localhost:5258/images/avatars/${userProfile.avatarName}.png`}
+                                    alt="Avatar"
+                                    className="user-avatar"
+                                    style={{
+                                        width: '38px',
+                                        height: '38px',
+                                        borderRadius: '50%',
+                                        border: '2px solid #ffffff',
+                                        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+                                        transition: 'transform 0.2s ease-in-out',
+                                    }}
+                                    onMouseEnter={(e) => {
+                                        e.currentTarget.style.transform = 'scale(1.1)';
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        e.currentTarget.style.transform = 'scale(1)';
+                                    }}
+                                />
 
-                        <span
-                            className="user-name"
-                            style={{
-                                whiteSpace: 'nowrap',
-                                overflow: 'hidden',
-                                textOverflow: 'ellipsis',
-                                maxWidth: '120px',
-                                fontSize: '16px',
-                                fontWeight: '500',
-                            }}
-                        >
+                                <span
+                                    className="user-name"
+                                    style={{
+                                        whiteSpace: 'nowrap',
+                                        overflow: 'hidden',
+                                        textOverflow: 'ellipsis',
+                                        maxWidth: '120px',
+                                        fontSize: '16px',
+                                        fontWeight: '500',
+                                    }}
+                                >
                             {formatUsername(userProfile.email)}
                         </span>
+                            </div>
+                        ) : (
+                            <div className='menu-authentication-buttons'>
+                                <button>
+                                    <Link to="/authentication/login">Sign in</Link>
+                                </button>
+                                <button>
+                                    <Link to="/authentication/register">Sign up</Link>
+                                </button>
+                            </div>
+                        )}
                     </div>
-                ) : (
-                    <div className='menu-authentication-buttons'>
-                        <button>
-                            <Link to="/authentication/login">Sign in</Link>
-                        </button>
-                        <button>
-                            <Link to="/authentication/register">Sign up</Link>
-                        </button>
-                    </div>
-                )}
-            </div>
+                </>
+            )}
 
             {hideMenu === true && (
                 <div className='hiden-menu-icon'>
