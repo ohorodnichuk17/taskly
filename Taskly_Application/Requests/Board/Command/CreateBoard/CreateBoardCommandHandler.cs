@@ -9,7 +9,7 @@ using Taskly_Domain.Entities;
 namespace Taskly_Application.Requests.Board.Command.CreateBoard;
 
 public class CreateBoardCommandHandler(IUnitOfWork unitOfWork, 
-    ICurrentUserService currentUserService) 
+    IUserService userService) 
     : IRequestHandler<CreateBoardCommand, ErrorOr<Guid>>
 {
     public async Task<ErrorOr<Guid>> Handle(CreateBoardCommand request, CancellationToken cancellationToken)
