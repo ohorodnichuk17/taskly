@@ -2,10 +2,12 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import '../../styles/general/menu-container-style.scss';
 import menu_icon from '../../../public/icon/menu_icon.png';
 import menu_icon_opened from '../../../public/icon/menu_icon_opened.png';
-import { Link, Navigate } from 'react-router-dom';
+import {Link, Navigate, useNavigate} from 'react-router-dom';
 import { HideMenuContainer } from './HideMenuContainer';
 import { RootState } from '../../redux/store.ts';
-import { useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import {logout, logoutAsync} from "../../redux/actions/authenticateAction.ts";
+import {useAppDispatch} from "../../redux/hooks.ts";
 
 export interface IMenuContainer {
     icon: string;
@@ -38,9 +40,23 @@ export const MenuContainer = (props: IMenuContainer) => {
     const containerRef = useRef<HTMLDivElement | null>();
     const containerItemsRef = useRef<HTMLElement | null>();
     const itemsRef = useRef<(HTMLAnchorElement | null)[]>([]);
-
+    const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
+    const dropdownRef = useRef<HTMLDivElement | null>(null);
     const [hideMenu, setHideMenu] = useState<boolean>(false);
     const [isMenuOpened, setIsMenuOpened] = useState<boolean>(false);
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const handleLogout = async () => {
+        try {
+            await dispatch(logoutAsync()).unwrap();
+            setIsDropdownOpen(false);
+            navigate('/');
+        } catch (error) {
+            console.error("Logout failed:", error);
+        }
+    };
 
     useEffect(() => {
         if (hideMenu === false && isMenuOpened === true)
@@ -50,6 +66,18 @@ export const MenuContainer = (props: IMenuContainer) => {
     useEffect(() => {
         checkMenuWidth();
     }, [props.items]);
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+                setIsDropdownOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
 
     useLayoutEffect(() => {
         if (!containerRef.current) return;
@@ -129,7 +157,7 @@ export const MenuContainer = (props: IMenuContainer) => {
 
                     <div className='menu-authentication'>
                         {isLogin && userProfile ? (
-                            <div className="user-info" style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
+                            <div ref={dropdownRef} className="user-info" style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
                                 <img
                                     src={`http://localhost:5258/images/avatars/${userProfile.avatarName}.png`}
                                     alt="Avatar"
@@ -139,17 +167,85 @@ export const MenuContainer = (props: IMenuContainer) => {
                                         height: '38px',
                                         borderRadius: '50%',
                                         border: '2px solid #ffffff',
-                                        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-                                        transition: 'transform 0.2s ease-in-out',
+                                        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+                                        transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
+                                        cursor: 'pointer',
                                     }}
                                     onMouseEnter={(e) => {
                                         e.currentTarget.style.transform = 'scale(1.1)';
+                                        e.currentTarget.style.boxShadow = '0 6px 8px rgba(0, 0, 0, 0.15)';
                                     }}
                                     onMouseLeave={(e) => {
                                         e.currentTarget.style.transform = 'scale(1)';
+                                        e.currentTarget.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
                                     }}
+                                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                                 />
-
+                                {isDropdownOpen && (
+                                    <div
+                                        className="dropdown-menu"
+                                        style={{
+                                            position: 'absolute',
+                                            top: '55px',
+                                            background: '#ffffff',
+                                            boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.15)',
+                                            borderRadius: '8px',
+                                            zIndex: 1000,
+                                            width: '200px',
+                                            overflow: 'hidden',
+                                            animation: 'fadeIn 0.3s ease-in-out',
+                                        }}
+                                    >
+                                        <Link
+                                            to="/edit-account"
+                                            className="dropdown-item"
+                                            style={{
+                                                display: 'block',
+                                                padding: '12px 16px',
+                                                color: '#333333',
+                                                textDecoration: 'none',
+                                                fontSize: '14px',
+                                                transition: 'background-color 0.2s ease-in-out, color 0.2s ease-in-out',
+                                            }}
+                                            onMouseEnter={(e) => {
+                                                e.currentTarget.style.backgroundColor = '#f0f0f0';
+                                                e.currentTarget.style.color = '#007bff';
+                                            }}
+                                            onMouseLeave={(e) => {
+                                                e.currentTarget.style.backgroundColor = 'transparent';
+                                                e.currentTarget.style.color = '#333333';
+                                            }}
+                                        >
+                                            Edit Account
+                                        </Link>
+                                        <Link
+                                            to=""
+                                            className="dropdown-item"
+                                            style={{
+                                                display: 'block',
+                                                padding: '12px 16px',
+                                                color: '#333333',
+                                                textDecoration: 'none',
+                                                fontSize: '14px',
+                                                transition: 'background-color 0.2s ease-in-out, color 0.2s ease-in-out',
+                                            }}
+                                            onMouseEnter={(e) => {
+                                                e.currentTarget.style.backgroundColor = '#ffebee';
+                                                e.currentTarget.style.color = '#e53935';
+                                            }}
+                                            onMouseLeave={(e) => {
+                                                e.currentTarget.style.backgroundColor = 'transparent';
+                                                e.currentTarget.style.color = '#333333';
+                                            }}
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                handleLogout();
+                                            }}
+                                        >
+                                            Logout
+                                        </Link>
+                                    </div>
+                                )}
                                 <span
                                     className="user-name"
                                     style={{
