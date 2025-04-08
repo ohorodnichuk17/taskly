@@ -32,6 +32,6 @@ public class CardMapsterConfig : IRegister
 
         config.NewConfig<TransferCardToAnotherCardListRequest, TransferCardToAnotherCardListCommand>()
             .Map(src => src.CardId, desp => desp.CardId)
-            .Map(src => src.AnotherCardListId, desp => desp.AnotherCardListId);
+            .Map(src => src.ToCardListId, desp => desp.AnotherCardListId);
     }
 }

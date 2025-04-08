@@ -4,4 +4,4 @@ using Microsoft.AspNetCore.Http;
 
 namespace Taskly_Application.Requests.Card.Command.TransferCardToAnotherCardList;
 
-public record TransferCardToAnotherCardListCommand(Guid AnotherCardListId, Guid CardId) : IRequest<ErrorOr<Guid>>;
+public record TransferCardToAnotherCardListCommand(Guid ToCardListId, Guid CardId) : IRequest<ErrorOr<Guid>>;

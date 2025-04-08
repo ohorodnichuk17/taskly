@@ -1,9 +1,13 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using MediatR;
+using Microsoft.AspNetCore.SignalR;
+using Taskly_Api.Request.Card;
 using Taskly_Api.SignalR.Models;
+using Taskly_Application.Requests.Card.Command.RemoveCard;
+using Taskly_Application.Requests.Card.Command.TransferCardToAnotherCardList;
 
 namespace Taskly_Api.SignalR.Hubs;
 
-public class BoardHub : Hub
+public class BoardHub(ISender sender) : Hub
 {
     public async Task ConnectToTeamBoard(ConnectToTeamBoardModel model)
     {
@@ -30,9 +34,22 @@ public class BoardHub : Hub
                                          CardId : model.CardId,
                                          FromCardListId : model.FromCardListId,
                                          ToCardListId : model.ToCardListId));
-        /*await Clients
-            .Groups(model.BoardId.ToString())
-            .SendAsync("TransferCardToAnotherCardList",
-                "Test message");*/
+
+        await sender.Send(new TransferCardToAnotherCardListCommand(
+            ToCardListId: model.ToCardListId,
+            CardId: model.CardId
+            ));
+    }
+    public async Task RemoveCardFromCardList(RemoveCardFromCardList model)
+    {
+        await Clients
+                .Groups(model.BoardId.ToString())
+                .SendAsync("RemoveCardFromCardList", new RemoveInformationModel(
+                    CardListId : model.CardListId,
+                    CardId : model.CardId,
+                    UserId : model.UserId
+                ));
+
+        await sender.Send(new RemoveCardCommand(CardId: model.CardId));
     }
 }

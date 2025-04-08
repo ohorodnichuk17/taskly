@@ -11,5 +11,5 @@ public interface IUnitOfWork
     IToDoTableRepository ToDoTable { get; }
     IToDoTableItemsRepository ToDoTableItems { get; }
     IBoardTemplateRepository BoardTemplates { get; }
-    ICardRepository CardTemplates { get; }
+    ICardRepository Cards { get; }
 }

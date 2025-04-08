@@ -27,4 +27,14 @@ public class CardRepository(TasklyDbContext context) : Repository<CardEntity>(co
 
         return card.Id;
     }
+    public async Task RemoveCardFromBoardAsync(Guid CardId)
+    {
+        var card = await _cards.FirstOrDefaultAsync(card => card.Id == CardId);
+
+        if (card != null)
+        {
+            _cards.Remove(card);
+            await context.SaveChangesAsync();
+        }
+    }
 }
