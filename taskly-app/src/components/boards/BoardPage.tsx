@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom"
 import '../../styles/board/board-page-style.scss';
 import { useAppDispatch, useRootState } from "../../redux/hooks";
 import { getCardsListsByBoardIdAsync } from "../../redux/actions/boardsAction";
 import { format } from "date-fns";
-import setting_icon from '../../../public/icon/setting_icon.png';
+import trash_can_icon from '../../../public/icon/trash_can_icon.png';
+import edit_icon from '../../../public/icon/edit_icon.png';
 import { ICard, ICardListItem } from "../../interfaces/boardInterface";
 import { HubConnection, HubConnectionBuilder, HubConnectionState, LogLevel } from "@microsoft/signalr";
 import { baseUrl } from "../../axios/baseUrl";
@@ -18,7 +19,6 @@ const addItemToArrayFromAnotherArray = (item: any, array: any[]) => {
     return newArr;
 }
 const findAndRemoveItemFromArray = (condition: (c: any) => boolean, array: any[]) => {
-    console.log("remove card - ");
     let item = array.find(condition);
     if (item) {
         let index = array.indexOf(item);
@@ -31,10 +31,12 @@ const findAndRemoveItemFromArray = (condition: (c: any) => boolean, array: any[]
 
 export const BoardPage = () => {
 
-    const conn = new HubConnectionBuilder()
+    const conn = useRef<HubConnection | null>(null);
+
+    /*const conn = new HubConnectionBuilder()
         .withUrl(`${baseUrl}/board`)
         .configureLogging(LogLevel.Information)
-        .build();
+        .build();*/
 
     const { boardId } = useParams();
 
@@ -48,17 +50,16 @@ export const BoardPage = () => {
         element: (HTMLDivElement | null)
         id: string
     }[]>([]);
+    const cardListRef = useRef<ICardListItem[] | null>(null);
 
     const [boardPageOverflowX, setBoardPageOverflowX] = useState<"auto" | "scroll">("auto");
-    const [cardsOverflowY, setCardsOverflowY] = useState<{
-        id: string,
-        scroll: "auto" | "scroll"
-    }[]>([]);
     const [dragenCard, setDragenCard] = useState<{
         cardId: string,
         fromCardListId: string,
     } | null>(null);
     const [cardLists, setCardLists] = useState<ICardListItem[] | null>(null);
+    const [settingsOpenedId, setSettingsOpenedId] = useState<string | null>(null);
+
 
 
     const getCardList = async () => {
@@ -70,6 +71,23 @@ export const BoardPage = () => {
         if (cardList)
             setCardLists(cardList);
     }, [cardList])
+    useLayoutEffect(() => {
+        cardListRef.current = cardLists;
+        if (cardsRef.current) {
+            cardsRef.current.forEach((el) => {
+                if (el.element) {
+                    if (el.element.scrollHeight > el.element.offsetHeight) {
+                        el.element.style.overflowY = "scroll";
+                        el.element.scrollTo(0, el.element.scrollHeight);
+                    }
+                    else {
+                        el.element.style.overflowY = "auto";
+                        el.element.scrollTo(0, 0);
+                    }
+                }
+            });
+        }
+    }, [cardLists])
     useEffect(() => {
         if (boardPageRef.current) {
             setBoardPageOverflowX(boardPageRef.current.offsetWidth < boardPageRef.current.scrollWidth ?
@@ -80,62 +98,56 @@ export const BoardPage = () => {
         }
     }, [boardPageRef.current])
 
-    useEffect(() => {
-        if (cardsRef.current) {
-            cardsRef.current.forEach((element) => {
-                if (element.element && element.element.clientHeight > element.element.offsetHeight) {
-                    const scrollableCard = cardsOverflowY.find((card) => card.id === element.id);
-                    if (scrollableCard) {
-                        scrollableCard.scroll = "scroll";
-                    }
-                }
-            })
 
-        }
-    }, [cardsRef.current])
-
-    useEffect(() => {
+    useLayoutEffect(() => {
         getCardList();
         startConnection();
     }, [])
 
-    useEffect(() => {
-        console.log("cardLists змінився - ", cardLists)
-    }, [cardLists])
+
 
     const startConnection = async () => {
 
+        conn.current = new HubConnectionBuilder()
+            .withUrl(`${baseUrl}/board`)
+            .configureLogging(LogLevel.Information)
+            .build();
 
-        conn.on("ConnectToTeamBoard", (mess) => {
+        conn.current.on("ConnectToTeamBoard", (mess) => {
             console.log(mess)
         });
-        conn.on("TransferCardToAnotherCardList", (model: {
+        conn.current.on("TransferCardToAnotherCardList", (model: {
             userId: string,
             cardId: string,
             fromCardListId: string,
             toCardListId: string
         }) => {
-            console.log("Model - ", model)
-            if (cardLists === null) {
-                console.error("cardLists є null перед оновленням!");
-            }
             if (userId != model.userId) {
                 transferCardToAnotherCardList(model);
             }
 
         })
-        conn.on("DisconnectFromTeamBoard", (mess) => {
-            console.log(mess);
+        conn.current.on("RemoveCardFromCardList", (model: {
+            cardListId: string,
+            cardId: string,
+            userId: string
+        }) => {
+            if (userId != model.userId) {
+                removeCardFromCardList(model);
+            }
         })
 
-        await conn.start();
-        await conn.invoke("ConnectToTeamBoard", { userId, boardId });
+        await conn.current.start();
+        await conn.current.invoke("ConnectToTeamBoard", { userId, boardId });
         //await conn.stop()
     }
 
     const endConnection = async () => {
-        await conn.invoke("DisconnectFromTeamBoard", { userId, boardId });
-        await conn.stop();
+        if (conn.current != null) {
+            await conn.current.invoke("DisconnectFromTeamBoard", { userId, boardId });
+            await conn.current.stop();
+        }
+
     }
 
     useEffect(() => {
@@ -151,16 +163,16 @@ export const BoardPage = () => {
         fromCardListId: string,
         toCardListId: string
     }) => {
-        if (cardLists !== null) {
-            console.log("TRANSFER")
+        if (cardListRef.current !== null) {
             let dragenCardItem: ICard | null = null;
 
-            cardLists.forEach(item => {
+            cardListRef.current.forEach(item => {
                 if (item.cards && item.id === model.fromCardListId) {
                     dragenCardItem = item.cards.find(card => card.id === model.cardId) || null;
                 }
             })
-            setCardLists(prev => prev ? prev.map(item => ({
+
+            const updated = cardListRef.current.map(item => ({
                 ...item,
                 cards: item.cards && item.id === model.fromCardListId ?
                     findAndRemoveItemFromArray(el => el.id === model.cardId, item.cards) :
@@ -169,12 +181,30 @@ export const BoardPage = () => {
                         item.cards
 
 
-            })) : []);
+            }));
+
+            setCardLists(updated);
 
         }
 
     }
+    const removeCardFromCardList = (model: {
+        cardListId: string,
+        cardId: string,
+        userId: string
+    }) => {
+        if (cardListRef.current !== null) {
+            const updated = cardListRef.current.map((item) => ({
+                ...item,
+                cards: item.cards && item.cards.find((card) => card.id === model.cardId) ?
+                    findAndRemoveItemFromArray((card) => card.id === model.cardId, item.cards)
+                    :
+                    item.cards
+            }));
 
+            setCardLists(updated);
+        }
+    }
     return <div className="board-page-container"
         ref={(ref) => {
             boardPageRef.current = ref;
@@ -191,17 +221,6 @@ export const BoardPage = () => {
                                 element: ref,
                                 id: element.id
                             });
-
-                            cardsOverflowY.push({
-                                id: element.id,
-                                scroll: "auto"
-                            })
-                        }}
-                        style={{
-                            overflowY:
-                                cardsOverflowY.find((card) => card.id === element.id) ?
-                                    cardsOverflowY.find((card) => card.id === element.id)?.scroll :
-                                    "auto"
                         }}
                         onDrop={async (e) => {
                             e.preventDefault();
@@ -211,27 +230,15 @@ export const BoardPage = () => {
                                     fromCardListId: dragenCard.fromCardListId,
                                     toCardListId: element.id
                                 })
-                                if (conn.state !== HubConnectionState.Connected) {
-                                    conn.start()
-                                        .then(async () => {
-                                            await conn.invoke("TransferCardToAnotherCardList", {
-                                                userId: userId,
-                                                cardId: dragenCard.cardId,
-                                                fromCardListId: dragenCard.fromCardListId,
-                                                toCardListId: element.id,
-                                                boardId: boardId
-                                            })
-                                        })
-                                }
-                                else {
-                                    await conn.invoke("TransferCardToAnotherCardList", {
+
+                                if (conn.current)
+                                    await conn.current.invoke("TransferCardToAnotherCardList", {
                                         userId: userId,
                                         cardId: dragenCard.cardId,
                                         fromCardListId: dragenCard.fromCardListId,
                                         toCardListId: element.id,
                                         boardId: boardId
                                     })
-                                }
 
 
                                 setDragenCard(null);
@@ -252,7 +259,7 @@ export const BoardPage = () => {
                             }}
                                 draggable>
                                 <p>{element_card.description}</p>
-                                <div>
+                                <div className="card-information">
                                     <div className="card-deadline"
                                         style={{
                                             backgroundColor: (Date.parse(element_card.endTime.toString()) < Date.now()) ? "red" : "green"
@@ -260,11 +267,36 @@ export const BoardPage = () => {
                                     >
                                         Deadline : {format(element_card.endTime, "yyyy-MM-dd")}
                                     </div>
-                                    <button>
-                                        <img src={setting_icon} alt="Settings" />
-                                    </button>
-                                </div>
+                                    <div className="card-settings-buttons">
+                                        <button>
+                                            <img src={edit_icon} alt="Edit card" />
+                                        </button>
+                                        <button
+                                            onClick={async () => {
+                                                if (conn.current)
+                                                    await conn.current.invoke("RemoveCardFromCardList", {
+                                                        boardId: boardId,
+                                                        cardListId: element.id,
+                                                        cardId: element_card.id,
+                                                        userId: userId!
+                                                    })
+                                                removeCardFromCardList({
+                                                    cardListId: element.id,
+                                                    cardId: element_card.id,
+                                                    userId: userId!
+                                                })
+                                            }}>
+                                            <img src={trash_can_icon} alt="Remove card" />
+                                        </button>
 
+                                    </div>
+                                </div>
+                                {/*settingsOpenedId && settingsOpenedId === element_card.id &&
+                                    <div className="settings">
+                                        <button>Remove</button>
+                                        <button>Edit Task</button>
+                                        <button>Edit Deadline</button>
+                                    </div>*/}
                             </div>
                         ))}
                     </div>
