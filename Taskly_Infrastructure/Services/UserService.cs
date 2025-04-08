@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Taskly_Infrastructure.Services;
 
-public class CurrentUserService(IHttpContextAccessor httpContextAccessor,
-    TasklyDbContext context) : ICurrentUserService
+public class UserService(IHttpContextAccessor httpContextAccessor,
+    TasklyDbContext context) : IUserService
 {
     public string GetCurrentUserId()
     {
@@ -30,7 +30,16 @@ public class CurrentUserService(IHttpContextAccessor httpContextAccessor,
             throw new ArgumentNullException(nameof(email));
         return await GetUserByConditionAsync(u => u.Email == email);
     }
-    
+
+    public Task<UserEntity> UpdateUserAsync(UserEntity user)
+    {
+        if(user == null)
+            throw new ArgumentNullException(nameof(user));
+        context.Users.Update(user);
+        context.SaveChanges();
+        return Task.FromResult(user);
+    }
+
     private async Task<UserEntity> GetUserByConditionAsync(Expression<Func<UserEntity, bool>> predicate)
     {
         var user =  await context.Users.FirstOrDefaultAsync(predicate);
