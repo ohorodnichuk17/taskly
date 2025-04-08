@@ -1,26 +1,34 @@
 import '../../styles/general/main-page-style.scss';
 import {Link} from "react-router-dom";
+import {useSelector} from "react-redux";
+import {RootState} from "../../redux/store.ts";
 
 export default function MainPage() {
+    const { isLogin } = useSelector((state: RootState) => state.authenticate);
+
     return (
         <div className="main-page-container">
             <div className="text-content">
                 <h1>
-                    Collect, organize and solve problems from anywhere.
+                    Collect, organize and solve problems from anywhere
                 </h1>
                 <p>
                     Forget clutter and chaos - increase your productivity with Taskly.
                 </p>
-                <button>
-                    <Link to="/authentication/register">
-                        Register - it's FREE!
-                    </Link>
-                </button>
+
+                {!isLogin && (
+                    <button>
+                        <Link to="/authentication/register">
+                            Register - it's FREE!
+                        </Link>
+                    </button>
+                )}
+
             </div>
 
             <div className="animated-shapes">
                 <svg className="shapes" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="200" cy="200" r="150" fill="rgba(255, 255, 255, 0.1)" />
+                <circle cx="200" cy="200" r="150" fill="rgba(255, 255, 255, 0.1)" />
                     <circle cx="200" cy="200" r="100" fill="rgba(255, 255, 255, 0.05)" />
                     <circle cx="200" cy="200" r="50" fill="rgba(255, 255, 255, 0.2)">
                         <animate attributeName="r" values="50;70;50" dur="3s" repeatCount="indefinite" />

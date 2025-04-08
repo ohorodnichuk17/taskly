@@ -1,6 +1,17 @@
 import { IAuthenticateInitialState, IAvatar, ICustomJwtPayload, IJwtInformation, IUserProfile, StatusEnums } from "../../interfaces/authenticateInterfaces";
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { changePasswordAsync, checkHasUserSentRequestToChangePasswordAsync, checkTokenAsync, getAllAvatarsAsync, loginAsync, registerAsync, sendRequestToChangePasswordAsync, sendVerificationCodeAsync, verificateEmailAsync } from "../actions/authenticateAction.ts";
+import {
+    changePasswordAsync,
+    checkHasUserSentRequestToChangePasswordAsync,
+    checkTokenAsync,
+    getAllAvatarsAsync,
+    loginAsync,
+    logoutAsync,
+    registerAsync,
+    sendRequestToChangePasswordAsync,
+    sendVerificationCodeAsync,
+    verificateEmailAsync
+} from "../actions/authenticateAction.ts";
 import { jwtDecode } from "jwt-decode";
 import { IInformationAlert } from "../../interfaces/generalInterface.ts";
 
@@ -184,6 +195,13 @@ const authenticateSlice = createSlice({
                 else {
                     state.error = action.error.message || "Uncnown";
                 }*/
+            })
+            .addCase(logoutAsync.fulfilled, (state) => {
+                state.isLogin = false;
+                state.userProfile = null;
+            })
+            .addCase(logoutAsync.rejected, (state, action) => {
+                console.error("Logout failed:", action.payload);
             });
 
 

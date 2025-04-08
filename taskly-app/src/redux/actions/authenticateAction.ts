@@ -205,3 +205,27 @@ export const changePasswordAsync = createAsyncThunk<
             }
         }
     )
+
+export const logoutAsync = createAsyncThunk<
+    void,
+    void,
+    { rejectValue: IValidationErrors }
+>(
+    "authenticate/logout",
+    async (_, { rejectWithValue }) => {
+        try {
+            await api.get("/api/Authentication/exit", {
+                withCredentials: true,
+            });
+
+            localStorage.removeItem("token");
+
+            return;
+        } catch (err: any) {
+            const error: AxiosError<IValidationErrors> = err;
+            if (!error.response) throw err;
+
+            return rejectWithValue(error.response.data);
+        }
+    }
+);

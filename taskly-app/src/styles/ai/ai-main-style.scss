@@ -10,6 +10,12 @@
   padding: 20px;
   color: white;
   overflow: hidden;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    height: auto;
+    padding: 10px;
+  }
 }
 
 .ai-form {
@@ -25,6 +31,16 @@
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
   border: 1px solid rgba(255, 255, 255, 0.18);
   box-sizing: border-box;
+
+  @media (max-width: 768px) {
+    flex-direction: row;
+    gap: 10px;
+    padding: 10px;
+    align-items: center;
+    justify-content: center;
+    max-width: 350px;
+    margin: 0 auto;
+  }
 }
 
 .ai-input {
@@ -38,10 +54,15 @@
   outline: none;
   transition: all 0.3s ease;
   box-sizing: border-box;
-}
 
-.ai-input:focus {
-  border: 2px solid #7e9a92;
+  @media (max-width: 768px) {
+    font-size: 14px;
+    flex: 1;
+  }
+
+  &:focus {
+    border: 2px solid #7e9a92;
+  }
 }
 
 .ai-button {
@@ -58,11 +79,17 @@
   align-items: center;
   justify-content: center;
   height: 45px;
-}
 
-.ai-button:disabled {
-  background-color: #6c757d;
-  cursor: not-allowed;
+  @media (max-width: 768px) {
+    font-size: 14px;
+    width: auto;
+    padding: 10px 15px;
+  }
+
+  &:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+  }
 }
 
 .spinner {
@@ -94,6 +121,13 @@
   resize: both;
   max-width: 90vw;
   max-height: 80vh;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    min-width: auto;
+    padding: 15px;
+    font-size: 14px;
+  }
 }
 
 .response-container.visible {
@@ -112,6 +146,10 @@
   border-radius: 8px;
   overflow: hidden;
   padding-top: 40px;
+
+  @media (max-width: 768px) {
+    padding-top: 30px;
+  }
 }
 
 .copy-btn {
@@ -137,6 +175,11 @@
   &:active {
     transform: scale(0.95);
   }
+
+  @media (max-width: 768px) {
+    font-size: 10px;
+    padding: 5px 10px;
+  }
 }
 
 .copy-notification {
@@ -151,6 +194,11 @@
   font-weight: bold;
   box-shadow: 0 4px 10px rgba(0, 123, 255, 0.4);
   animation: fadeInOut 2s ease-in-out;
+
+  @media (max-width: 768px) {
+    font-size: 12px;
+    padding: 10px 15px;
+  }
 }
 
 @keyframes fadeInOut {

@@ -50,7 +50,7 @@ export const LoginPage = () => {
             }
         }
         else {
-            navigate("/dashboard");
+            navigate("/");
         }
     }
     /*const testRequest = async () => {
