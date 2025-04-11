@@ -21,15 +21,8 @@
   }
 
   @media (max-width: 768px) {
-    top: 10px;
-    left: 10px;
-
-    .ai-title {
-      font-size: 22px;
-    }
-
-    .ai-subtitle {
-      font-size: 14px;
+    .gradient-text, .ai-subtitle {
+      display: none;
     }
   }
 }
