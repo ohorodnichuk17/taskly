@@ -5,6 +5,7 @@ using Taskly_Api.Request.Table;
 using Taskly_Api.Response.Table;
 using Taskly_Application.Requests.Table.Command.CreateToDoTable;
 using Taskly_Application.Requests.Table.Command.CreateToDoTableItem;
+using Taskly_Application.Requests.Table.Command.DeleteToDoTable;
 using Taskly_Application.Requests.Table.Query.GetAllToDoTableItemsByTableId;
 using Taskly_Application.Requests.Table.Query.GetAllToDoTables;
 using Taskly_Application.Requests.Table.Query.GetToDoTablesByUserId;
@@ -47,6 +48,14 @@ namespace Taskly_Api.Controllers
         public async Task<IActionResult> CreateToDoTableItem([FromBody] CreateToDoTableItemRequest createTableItemRequest)
         {
             var result = await sender.Send(mapper.Map<CreateToDoTableItemCommand>(createTableItemRequest));
+            return result.Match(result => Ok(result),
+                errors => Problem(errors));
+        }
+
+        [HttpDelete("delete-table")]
+        public async Task<IActionResult> DeleteToDoTable([FromQuery] Guid tableId)
+        {
+            var result = await sender.Send(new DeleteToDoTableCommand(tableId));
             return result.Match(result => Ok(result),
                 errors => Problem(errors));
         }

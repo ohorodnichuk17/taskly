@@ -61,4 +61,14 @@ public class ToDoTableRepository(TasklyDbContext tasklyDbContext) : Repository<T
 
         return tables;
     }
+
+    public async Task<bool> DeleteToDoTableAsync(Guid tableId)
+    {
+        var table = await tasklyDbContext.ToDoTables.FirstOrDefaultAsync(t => t.Id == tableId);
+        if (table == null)
+            return false;
+        tasklyDbContext.ToDoTables.Remove(table);
+        await tasklyDbContext.SaveChangesAsync();
+        return true;
+    }
 }

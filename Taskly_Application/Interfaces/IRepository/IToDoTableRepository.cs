@@ -8,4 +8,5 @@ public interface IToDoTableRepository : IRepository<ToDoTableEntity>
     Task<ToDoTableEntity> CreateNewToDoTableAsync(string name);
     Task<UserEntity> AddNewUserToToDoTableAsync(ToDoTableEntity table, UserEntity user);
     Task<ICollection<ToDoTableEntity>> GetToDoTablesByUserIdAsync(Guid userId);
+    Task<bool> DeleteToDoTableAsync(Guid tableId);
 }
