@@ -16,6 +16,8 @@ using Taskly_Application.Requests.Authentication.Query.GetInformationAboutUser;
 using Microsoft.AspNetCore.Identity.Data;
 using System.Linq;
 using System.Runtime.Intrinsics.X86;
+using Taskly_Application.DTO.UserDTO;
+using Taskly_Application.Requests.Authentication.Command.EditUserProfile;
 
 namespace Taskly_Api.Controllers
 {
@@ -83,6 +85,15 @@ namespace Taskly_Api.Controllers
                 errors => Problem(errors));
         }
 
+        [HttpPut("edit-user-profile")]
+        [Authorize]
+        public async Task<IActionResult> EditUserProfile([FromBody] EditUserDTO dto)
+        {
+            var result = await sender.Send(mapper.Map<EditUserProfileCommand>(dto));
+
+            return result.Match(result => Ok(mapper.Map<EditUserDTO>(result)),
+                errors => Problem(errors));
+        }
         
         [HttpGet("check-token")]
         [Authorize]

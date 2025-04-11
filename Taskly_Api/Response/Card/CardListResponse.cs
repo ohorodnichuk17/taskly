@@ -4,6 +4,6 @@ public record CardListResponse
 {
     public Guid Id { get; init; }
     public required string Title { get; init; }
-    public ICollection<CardResponse>? Cards { get; init; }
+    public CardResponse[]? Cards { get; init; }
     public Guid BoardId { get; init; }
 }

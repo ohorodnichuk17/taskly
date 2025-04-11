@@ -1,6 +1,8 @@
 ﻿using Mapster;
 using System.Collections.Generic;
+using Taskly_Api.Request.Card;
 using Taskly_Api.Response.Card;
+using Taskly_Application.Requests.Card.Command.TransferCardToAnotherCardList;
 using Taskly_Domain.Entities;
 
 namespace Taskly_Api.MapsterConfigs;
@@ -21,11 +23,15 @@ public class CardMapsterConfig : IRegister
             .Map(src => src.Status, desp => desp.Status)
             .Map(src => src.StartTime, desp => desp.TimeRangeEntity!.StartTime)
             .Map(src => src.EndTime, desp => desp.TimeRangeEntity!.EndTime)
-            .Map(src => src.Comments, desp => desp.Comments.Adapt<CommentResponse[]>());
+            .Map(src => src.Comments, desp => desp.Comments!.ToArray().Adapt<CommentResponse[]>());
 
         config.NewConfig<CardListEntity, CardListResponse>()
             .Map(src => src.Id, desp => desp.Id)
-            .Map(src => src.Cards, desp => desp.Cards.Adapt<CardResponse[]>())
+            .Map(src => src.Cards, desp => desp.Cards.ToArray().Adapt<CardResponse[]>())
             .Map(src => src.BoardId, desp => desp.BoardId);
+
+        config.NewConfig<TransferCardToAnotherCardListRequest, TransferCardToAnotherCardListCommand>()
+            .Map(src => src.CardId, desp => desp.CardId)
+            .Map(src => src.ToCardListId, desp => desp.AnotherCardListId);
     }
 }

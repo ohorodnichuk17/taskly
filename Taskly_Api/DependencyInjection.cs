@@ -56,6 +56,7 @@ public static class DependencyInjection
         services.AddInfrastructureServices();
         services.AddCustomCors();
         services.AddGeminiClient();
+        services.AddSignalR();
 
         return services;
     }
@@ -184,8 +185,8 @@ public static class DependencyInjection
     
     private static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
     {
-        services.AddScoped<ICurrentUserService, CurrentUserService>();
-        services.AddTransient<CurrentUserService>();
+        services.AddScoped<IUserService, UserService>();
+        services.AddTransient<UserService>();
 
         return services;
     }

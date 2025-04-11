@@ -1,10 +1,9 @@
 ﻿using ErrorOr;
 using MediatR;
 using Taskly_Application.Interfaces;
-using Taskly_Application.Requests.Card.GetCardsListsByBoardId;
 using Taskly_Domain.Entities;
 
-namespace Taskly_Application.Requests.Card.GetCardListByBoardId;
+namespace Taskly_Application.Requests.Card.Query.GetCardsListsByBoardId;
 
 public class GetCardListByBoardIdQueryHandler(IUnitOfWork unitOfWork) : IRequestHandler<GetCardListByBoardIdQuery, ErrorOr<CardListEntity[]>>
 {

@@ -17,6 +17,7 @@ public class UnitOfWork : IUnitOfWork
     public IToDoTableRepository ToDoTable { get; private set; }
     public IToDoTableItemsRepository ToDoTableItems { get; private set; }
     public IBoardTemplateRepository BoardTemplates { get; private set; }
+    public ICardRepository Cards { get; private set; }
 
     public UnitOfWork(TasklyDbContext context, UserManager<UserEntity> userManager)
     {
@@ -28,6 +29,7 @@ public class UnitOfWork : IUnitOfWork
         ToDoTable = new ToDoTableRepository(_context);
         ToDoTableItems = new ToDoTableItemsRepository(_context);
         BoardTemplates = new BoardTemplateRepository(_context);
+        Cards = new CardRepository(_context);
     }
     
     public async Task SaveChangesAsync(string errorMessage)

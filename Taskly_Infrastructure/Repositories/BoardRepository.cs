@@ -99,13 +99,16 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
     }
     public async Task CreateCardAsync(ICollection<string> Descriptions, string Status, Guid CardListId)
     {
-        List<CardEntity> cards = Descriptions.Select(d => new CardEntity()
+        
+
+        List<CardEntity> cards = (await Task.WhenAll(Descriptions.Select(async d => new CardEntity()
         {
             Id = Guid.NewGuid(),
             Description = d,
             Status = Status,
-            CardListId = CardListId
-        }).ToList();
+            CardListId = CardListId,
+            TimeRangeEntityId = await CreateDeadLineForCard(DateTime.Now + TimeSpan.FromDays(10))
+        }))).ToList();
 
 
         await context.Cards.AddRangeAsync(cards);
@@ -185,6 +188,7 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
             return null;
         }    
     }
+    
 
     private async Task<(BoardEntity board, UserEntity user)> GetBoardAndUserAsync(Guid boardId, Guid userId)
     {
@@ -222,5 +226,19 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
         return board;
     }
 
-   
+    private async Task<Guid> CreateDeadLineForCard(DateTime endTime)
+    {
+        TimeRangeEntity timeRang = new TimeRangeEntity()
+        {
+            Id = Guid.NewGuid(),
+            StartTime = DateTime.Now,
+            EndTime = endTime
+        };
+
+        await context.TimeRanges.AddAsync(timeRang);
+        //await context.SaveChangesAsync();
+
+        return timeRang.Id;
+    }
+
 }

@@ -9,6 +9,6 @@ public record CardResponse
     public required string Status { get; init; } 
     public DateTime StartTime { get; init; }
     public DateTime EndTime { get; init; }
-    public ICollection<CommentResponse>? Comments { get; init; }
+    public CommentResponse[]? Comments { get; init; }
 
 }
