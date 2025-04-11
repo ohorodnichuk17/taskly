@@ -1,9 +1,17 @@
-import { IAuthenticateInitialState, IAvatar, ICustomJwtPayload, IJwtInformation, IUserProfile, StatusEnums } from "../../interfaces/authenticateInterfaces";
+import {
+    IAuthenticateInitialState,
+    IAvatar,
+    ICustomJwtPayload,
+    IEditUserProfile,
+    IJwtInformation,
+    IUserProfile,
+    StatusEnums
+} from "../../interfaces/authenticateInterfaces";
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import {
     changePasswordAsync,
     checkHasUserSentRequestToChangePasswordAsync,
-    checkTokenAsync,
+    checkTokenAsync, editUserProfileAsync,
     getAllAvatarsAsync,
     loginAsync,
     logoutAsync,
@@ -37,8 +45,16 @@ const initialState: IAuthenticateInitialState = {
             id: localStorage.getItem("user_profile_id"),
             email: localStorage.getItem("user_profile_email"),
             avatarName: localStorage.getItem("user_profile_avatar")
-        } as IUserProfile
-    ,
+        } as IUserProfile,
+    editUserProfile: (!localStorage.getItem("user_profile_username") ||
+        !localStorage.getItem("user_profile_email") ||
+        !localStorage.getItem("user_profile_avatar_id")) ?
+        null
+        : {
+            id: localStorage.getItem("user_profile_username"),
+            email: localStorage.getItem("user_profile_email"),
+            avatarName: localStorage.getItem("user_profile_avatar_id")
+        } as IEditUserProfile,
     verificationEmail: null,
     verificatedEmail: null,
     isLogin: localStorage.getItem("isLogin") === "true" ? true : false,
@@ -202,9 +218,19 @@ const authenticateSlice = createSlice({
             })
             .addCase(logoutAsync.rejected, (state, action) => {
                 console.error("Logout failed:", action.payload);
+            })
+            .addCase(editUserProfileAsync.fulfilled, (state, action) => {
+                const { username, email, avatarId } = action.payload;
+
+                state.editUserProfile = action.payload;
+
+                localStorage.setItem("user_profile_username", username);
+                localStorage.setItem("user_profile_email", email);
+                localStorage.setItem("user_profile_avatar_id", avatarId);
+            })
+            .addCase(editUserProfileAsync.rejected, (state, action) => {
+                console.error("Edit user profile failed:", action.payload);
             });
-
-
     }
 })
 

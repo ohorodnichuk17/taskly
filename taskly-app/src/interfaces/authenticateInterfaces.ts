@@ -4,6 +4,7 @@ export enum StatusEnums { Loading, None }
 export interface IAuthenticateInitialState {
     user: IUser | null,
     userProfile: IUserProfile | null,
+    editUserProfile: IEditUserProfile | null,
     verificationEmail: string | null,
     verificatedEmail: string | null,
     isLogin: boolean,
@@ -19,6 +20,13 @@ export interface IUserProfile {
     email: string,
     avatarName: string
 }
+
+export interface IEditUserProfile {
+    email: string,
+    username: string,
+    avatarId: string
+}
+
 export interface IUser {
     id: string
     email: string,
