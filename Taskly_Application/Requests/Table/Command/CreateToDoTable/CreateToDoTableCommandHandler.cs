@@ -15,7 +15,7 @@ public class CreateToDoTableCommandHandler(IUnitOfWork unitOfWork) : IRequestHan
             if (user == null)
                 return Error.Conflict("User isn't exist");
 
-            var newTable = await unitOfWork.ToDoTable.CreateNewToDoTableAsync();
+            var newTable = await unitOfWork.ToDoTable.CreateNewToDoTableAsync(request.Name);
 
             var userFromToDoTable = await unitOfWork.ToDoTable.AddNewUserToToDoTableAsync(newTable,user);
             

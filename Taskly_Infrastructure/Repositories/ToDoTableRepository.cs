@@ -20,9 +20,9 @@ public class ToDoTableRepository(TasklyDbContext tasklyDbContext) : Repository<T
         return table;
     }
 
-    public async Task<ToDoTableEntity> CreateNewToDoTableAsync()
+    public async Task<ToDoTableEntity> CreateNewToDoTableAsync(string name)
     {
-        var newTable = new ToDoTableEntity() { Id = Guid.NewGuid() };
+        var newTable = new ToDoTableEntity() { Id = Guid.NewGuid(), Name = name };
         if (newTable.Members == null)
             newTable.Members = new List<UserEntity>();
 
