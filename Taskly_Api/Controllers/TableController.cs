@@ -6,6 +6,7 @@ using Taskly_Api.Response.Table;
 using Taskly_Application.Requests.Table.Command.CreateToDoTable;
 using Taskly_Application.Requests.Table.Command.CreateToDoTableItem;
 using Taskly_Application.Requests.Table.Query.GetAllToDoTableItemsByTableId;
+using Taskly_Application.Requests.Table.Query.GetAllToDoTables;
 
 namespace Taskly_Api.Controllers
 {
@@ -26,6 +27,13 @@ namespace Taskly_Api.Controllers
             var result = await sender.Send(new GetAllToDoTableItemsByTableIdQuery(toDoTableId));
             return result.Match(result => Ok(mapper.Map<ICollection<TableItemResponse>>(result)),
                 errors => Problem(errors)); 
+        }
+        [HttpGet("get-all-tables")]
+        public async Task<IActionResult> GetAllToDoTables()
+        {
+            var result = await sender.Send(new GetAllToDoTablesQuery());
+            return result.Match(result => Ok(mapper.Map<ICollection<TableResponse>>(result)),
+                errors => Problem(errors));
         }
         [HttpPost("create-table-item")]
         public async Task<IActionResult> CreateToDoTableItem([FromBody] CreateToDoTableItemRequest createTableItemRequest)
