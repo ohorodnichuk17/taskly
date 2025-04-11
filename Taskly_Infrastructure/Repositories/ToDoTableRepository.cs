@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Taskly_Application.Interfaces;
 using Taskly_Application.Interfaces.IRepository;
 using Taskly_Domain.Entities;
 using Taskly_Infrastructure.Common.Persistence;
@@ -31,13 +30,19 @@ public class ToDoTableRepository(TasklyDbContext tasklyDbContext) : Repository<T
         return newTable;
     }
 
-    public async Task<UserEntity> AddNewUserToToDoTableAsync(ToDoTableEntity table,UserEntity user)
+    public async Task<UserEntity> AddNewUserToToDoTableAsync(ToDoTableEntity table, UserEntity user)
     {
-        table.Members?.Add(user);
-        await SaveAsync(table);
+        if (table.Members == null)
+            table.Members = new List<UserEntity>();
+
+        table.Members.Add(user);
+
         if (user.ToDoTables == null)
             user.ToDoTables = new List<ToDoTableEntity>();
+
         user.ToDoTables.Add(table);
+
+        await SaveAsync(table); 
 
         return user;
     }
