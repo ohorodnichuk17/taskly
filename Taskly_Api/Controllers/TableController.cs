@@ -7,6 +7,7 @@ using Taskly_Application.Requests.Table.Command.CreateToDoTable;
 using Taskly_Application.Requests.Table.Command.CreateToDoTableItem;
 using Taskly_Application.Requests.Table.Query.GetAllToDoTableItemsByTableId;
 using Taskly_Application.Requests.Table.Query.GetAllToDoTables;
+using Taskly_Application.Requests.Table.Query.GetToDoTablesByUserId;
 
 namespace Taskly_Api.Controllers
 {
@@ -32,6 +33,13 @@ namespace Taskly_Api.Controllers
         public async Task<IActionResult> GetAllToDoTables()
         {
             var result = await sender.Send(new GetAllToDoTablesQuery());
+            return result.Match(result => Ok(mapper.Map<ICollection<TableResponse>>(result)),
+                errors => Problem(errors));
+        }
+        [HttpGet("get-tables-by-user-id")]
+        public async Task<IActionResult> GetToDoTablesByUserId([FromQuery] Guid userId)
+        {
+            var result = await sender.Send(new GetToDoTablesByUserIdQuery(userId));
             return result.Match(result => Ok(mapper.Map<ICollection<TableResponse>>(result)),
                 errors => Problem(errors));
         }

@@ -7,4 +7,5 @@ public interface IToDoTableRepository : IRepository<ToDoTableEntity>
     Task<ToDoTableEntity?> GetToDoTableIncludeById(Guid TableId);
     Task<ToDoTableEntity> CreateNewToDoTableAsync();
     Task<UserEntity> AddNewUserToToDoTableAsync(ToDoTableEntity table, UserEntity user);
+    Task<ICollection<ToDoTableEntity>> GetToDoTablesByUserIdAsync(Guid userId);
 }

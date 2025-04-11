@@ -41,4 +41,19 @@ public class ToDoTableRepository(TasklyDbContext tasklyDbContext) : Repository<T
 
         return user;
     }
+
+    public async Task<ICollection<ToDoTableEntity>> GetToDoTablesByUserIdAsync(Guid userId)
+    {
+        var tablesId = await tasklyDbContext.Set<Dictionary<string, object>>("UserTable")
+            .Where(ut => (Guid)ut["UserId"] == userId)
+            .Select(ut => (Guid)ut["ToDoTableId"])
+            .ToListAsync();
+
+        var tables = await tasklyDbContext.ToDoTables
+            .Where(t => tablesId.Any(t_ => t.Id == t_))
+            .Include(t => t.Members)
+            .ToListAsync();
+
+        return tables;
+    }
 }
