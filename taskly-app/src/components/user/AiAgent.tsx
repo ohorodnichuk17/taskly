@@ -43,56 +43,65 @@ const AIAgent = () => {
     };
 
     return (
-        <div className="ai-container">
-            {showCopied && <div className="copy-notification">✅ Code copied to clipboard!</div>}
+        <>
+            <div className="ai-header">
+                <h1 className="gradient-text">AI Assistant</h1>
+                <p className="ai-subtitle">Ask something and get a smart answer or code!</p>
+            </div>
+            <div className="ai-container">
+                {showCopied && <div className="copy-notification">✅ Code copied to clipboard!</div>}
 
-            {isContainerVisible && (
-                <div className={`response-container ${loading ? 'loading' : ''} ${!loading && response ? 'visible' : ''}`} ref={responseRef}>
-                    {loading ? (
-                        <div className="loader-container">
-                            <div className="loader"></div>
-                        </div>
-                    ) : (
-                        <>
-                            <ReactMarkdown
-                                children={response}
-                                components={{
-                                    code({ node, inline, className, children, ...props }) {
-                                        const match = /language-(\w+)/.exec(className || "");
-                                        const codeText = String(children).replace(/\n$/, "");
+                {isContainerVisible && (
+                    <div
+                        className={`response-container ${loading ? 'loading' : ''} ${!loading && response ? 'visible' : ''}`}
+                        ref={responseRef}>
+                        {loading ? (
+                            <div className="loader-container">
+                                <div className="loader"></div>
+                            </div>
+                        ) : (
+                            <>
+                                <ReactMarkdown
+                                    children={response}
+                                    components={{
+                                        code({node, inline, className, children, ...props}) {
+                                            const match = /language-(\w+)/.exec(className || "");
+                                            const codeText = String(children).replace(/\n$/, "");
 
-                                        return !inline && match ? (
-                                            <div className="code-block">
-                                                <button className="copy-btn" onClick={() => copyCode(codeText)}>Copy</button>
-                                                <SyntaxHighlighter style={oneDark} language={match[1]} PreTag="div">
-                                                    {codeText}
-                                                </SyntaxHighlighter>
-                                            </div>
-                                        ) : (
-                                            <code className={className} {...props}>{children}</code>
-                                        );
-                                    }
-                                }}
-                            />
-                        </>
-                    )}
-                </div>
-            )}
+                                            return !inline && match ? (
+                                                <div className="code-block">
+                                                    <button className="copy-btn" onClick={() => copyCode(codeText)}>Copy
+                                                    </button>
+                                                    <SyntaxHighlighter style={oneDark} language={match[1]} PreTag="div">
+                                                        {codeText}
+                                                    </SyntaxHighlighter>
+                                                </div>
+                                            ) : (
+                                                <code className={className} {...props}>{children}</code>
+                                            );
+                                        }
+                                    }}
+                                />
+                            </>
+                        )}
+                    </div>
+                )}
 
-            <form className="ai-form" onSubmit={handleSubmit}>
-                <input
-                    type="text"
-                    value={prompt}
-                    onChange={handleInputChange}
-                    placeholder="Enter your request..."
-                    className="ai-input"
-                    disabled={loading}
-                />
-                <button type="submit" className="ai-button" disabled={loading}>
-                    {loading ? <div className="spinner"></div> : "Generate"}
-                </button>
-            </form>
-        </div>
+                <form className="ai-form" onSubmit={handleSubmit}>
+                    <input
+                        type="text"
+                        value={prompt}
+                        onChange={handleInputChange}
+                        placeholder="Enter your request..."
+                        className="ai-input"
+                        disabled={loading}
+                    />
+                    <button type="submit" className="ai-button" disabled={loading}>
+                        {loading ? <div className="spinner"></div> : "Generate"}
+                    </button>
+                </form>
+            </div>
+        </>
     );
 };
 

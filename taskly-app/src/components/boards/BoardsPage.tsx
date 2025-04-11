@@ -84,7 +84,7 @@ export const BoardsPage = () => {
                     </Link>))}
             </div>
         </GeneralMode>
-        <h2>YOUR WORKSPACE</h2>
+        <h2 className="gradient-text">YOUR WORKSPACE</h2>
         <div className="workspace-container"
             ref={(ref) => {
                 worcspaceContainerRef.current = ref;

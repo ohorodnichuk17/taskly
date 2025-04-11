@@ -9,7 +9,7 @@ export default function MainPage() {
     return (
         <div className="main-page-container">
             <div className="text-content">
-                <h1>
+                <h1 className="gradient-text">
                     Collect, organize and solve problems from anywhere
                 </h1>
                 <p>
