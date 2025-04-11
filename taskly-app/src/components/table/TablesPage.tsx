@@ -4,6 +4,7 @@ import { useRootState } from "../../redux/hooks.ts";
 import { useDispatch } from "react-redux";
 import { useEffect, useRef, useState } from "react";
 import {getTablesByUser} from "../../redux/actions/tablesAction.ts";
+import {Link, useNavigate} from "react-router-dom";
 
 export default function TablesPage() {
     const tables = useRootState((state) => state.table.listOfTables);
@@ -11,6 +12,7 @@ export default function TablesPage() {
     const workspaceContainerRef = useRef<HTMLDivElement | null>(null);
     const [workSpaceOverflowY, setWorkspaceOverflowY] = useState<"auto" | "scroll">("auto");
     const userId = useRootState(s => s.authenticate.userProfile?.id);
+    const navigate = useNavigate();
 
     const fetchTables = async () => {
         if (userId) {
@@ -23,6 +25,10 @@ export default function TablesPage() {
         console.log("Tables from Redux:", tables);
 
     }, []);
+
+    const handleCreateTableClick = () => {
+        navigate('/tables/create');
+    };
 
     useEffect(() => {
         if (workspaceContainerRef.current) {
@@ -40,7 +46,7 @@ export default function TablesPage() {
                 <h1>
                     <span className="gradient-text">📋 My Tables</span>
                 </h1>
-                <button className="create-table-btn" onClick={() => alert("Create New Table")}>
+                <button className="create-table-btn" onClick={handleCreateTableClick}>
                     <span className="icon">＋</span> Create
                 </button>
             </header>

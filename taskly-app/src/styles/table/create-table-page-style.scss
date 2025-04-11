@@ -1,0 +1,82 @@
+.create-table-page {
+  display: flex;
+  flex-direction: column;
+  padding: 32px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+
+  .create-table-header {
+    margin-bottom: 30px;
+    h1 {
+      font-size: 36px;
+      font-weight: 800;
+      color: #ffffff;
+      margin: 0;
+    }
+  }
+
+  .create-table-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .input-table-name {
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 10px 20px;
+      border-radius: 12px;
+      font-size: 16px;
+      margin-bottom: 20px;
+      width: 300px;
+      text-align: center;
+      font-weight: 500;
+      transition: all 0.3s ease;
+
+      &::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+      }
+    }
+
+    .create-table-btn {
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 10px 20px;
+      border-radius: 12px;
+      font-weight: 500;
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      backdrop-filter: blur(6px);
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+      }
+
+      &:active {
+        transform: scale(0.97);
+      }
+
+      &:disabled {
+        background: rgba(255, 255, 255, 0.3);
+        cursor: not-allowed;
+      }
+    }
+
+    .error-message {
+      color: red;
+      margin-top: 20px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+  }
+}

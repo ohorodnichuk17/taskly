@@ -18,6 +18,7 @@ import { BoardPage } from './components/boards/BoardPage.tsx'
 import MainPage from "./components/general/MainPage.tsx";
 import {ProfilePage} from "./components/user/ProfilePage.tsx";
 import TablesPage from "./components/table/TablesPage.tsx";
+import CreateTablePage from "./components/table/CreateTablePage.tsx";
 
 
 function App() {
@@ -53,6 +54,7 @@ function App() {
             <Route path='/boards/:boardId' element={<BoardPage />}/>
             <Route path='/edit-profile' element={<ProfilePage />}/>
             <Route path='/tables' element={<TablesPage />}/>
+            <Route path='tables/create' element={<CreateTablePage />}/>
           </>)}
           <Route path='/boards' element={<Navigate to="/authentication/login" />} />
 

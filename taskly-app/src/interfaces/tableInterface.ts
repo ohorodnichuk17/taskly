@@ -5,12 +5,14 @@ export interface ITableInitialState {
 
 export interface ITable {
     id: string,
+    name: string,
     toDoItems: ITableItem[],
     members: IUserForTable[]
 }
 
 export interface ITableCreate {
-    userId: string
+    userId: string,
+    name: string
 }
 
 export interface ITableItem {
