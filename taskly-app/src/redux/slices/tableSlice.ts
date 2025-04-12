@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {ITable, ITableCreate, ITableInitialState, ITableItem} from "../../interfaces/tableInterface.ts";
-import {createTable, getTableItems, getTablesByUser} from "../actions/tablesAction.ts";
+import {createTable, deleteTable, getTableItems, getTablesByUser} from "../actions/tablesAction.ts";
 
 const initialState: ITableInitialState = {
     listOfTables: null,
@@ -31,6 +31,13 @@ const tableSlice = createSlice({
             })
             .addCase(createTable.rejected, (state, action) => {
                 state.createTableError = action.payload;
+            })
+            .addCase(deleteTable.fulfilled, (state, action: PayloadAction<string>) => {
+                if (state.listOfTables) {
+                    state.listOfTables = state.listOfTables.filter((table) => table.id !== action.payload);
+           }})
+            .addCase(deleteTable.rejected, (state, action) => {
+                state.deleteTableError = action.payload;
             });
     },
 });
