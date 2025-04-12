@@ -71,4 +71,16 @@ public class ToDoTableRepository(TasklyDbContext tasklyDbContext) : Repository<T
         await tasklyDbContext.SaveChangesAsync();
         return true;
     }
+
+    public async Task<ToDoTableEntity> EditToDoTableAsync(Guid tableId, string name)
+    {
+        var table = await tasklyDbContext.ToDoTables.FirstOrDefaultAsync(t => t.Id == tableId);
+        if (table == null)
+            throw new Exception("Table not found");
+
+        table.Name = name;
+        tasklyDbContext.ToDoTables.Update(table); 
+        await tasklyDbContext.SaveChangesAsync(); 
+        return table;
+    }
 }
