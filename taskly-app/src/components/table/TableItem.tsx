@@ -1,7 +1,35 @@
-import "../../styles/table/table-item-styles.scss"
+import "../../styles/table/table-item-styles.scss";
+import { useState } from "react";
+import { ChromePicker } from "react-color";
 
 export default function TableItem({ item }: TableItemProps) {
+    const normalizeStatus = (status: string): string => {
+        return status.trim().toLowerCase().replace(/\s+/g, "");
+    };
+
+    const [labelColor, setLabelColor] = useState<string>(() => {
+        const savedColor = localStorage.getItem(`labelColor-${item.task}`);
+        return savedColor || item.label || "#ffffff";
+    });
+
+    const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
+
+    const handleLabelClick = () => {
+        setIsColorPickerOpen(true);
+    };
+
+    const handleColorChange = (color: { hex: string }) => {
+        const newColor = color.hex;
+        setLabelColor(newColor);
+        localStorage.setItem(`labelColor-${item.task}`, newColor);
+    };
+
+    const handleClosePicker = () => {
+        setIsColorPickerOpen(false);
+    };
+
     return (
+        <>
         <div className="table-item">
             <div className="table-item-header">
                 <h4>Task</h4>
@@ -15,9 +43,9 @@ export default function TableItem({ item }: TableItemProps) {
                 <div className="column status">
                     <span
                         className={`status ${
-                            item.status === "To Do"
+                            normalizeStatus(item.status) === "todo"
                                 ? "status--todo"
-                                : item.status === "In Progress"
+                                : normalizeStatus(item.status) === "inprogress"
                                     ? "status--in-progress"
                                     : "status--done"
                         }`}
@@ -25,17 +53,13 @@ export default function TableItem({ item }: TableItemProps) {
                         {item.status}
                     </span>
                 </div>
-                <div className="column label">
+                <div className="column label" onClick={handleLabelClick}>
                     <span
-                        className={`label-dot ${
-                            item.label === "Green"
-                                ? "label--green"
-                                : item.label === "Red"
-                                    ? "label--red"
-                                    : item.label === "Blue"
-                                        ? "label--blue"
-                                        : "label--yellow"
-                        }`}
+                        className="label-dot"
+                        style={{
+                            backgroundColor: labelColor,
+                            boxShadow: `0 0 5px ${labelColor}`,
+                        }}
                     ></span>
                     <span className="label-text">{item.label}</span>
                 </div>
@@ -44,5 +68,16 @@ export default function TableItem({ item }: TableItemProps) {
                 </div>
             </div>
         </div>
+            {isColorPickerOpen && (
+                <div className="color-picker-modal">
+                    <div className="color-picker-modal-content">
+                        <button className="close-button" onClick={handleClosePicker}>
+                            ✖ Close
+                        </button>
+                        <ChromePicker color={labelColor} onChange={handleColorChange} />
+                    </div>
+                </div>
+            )}
+        </>
     );
 }
