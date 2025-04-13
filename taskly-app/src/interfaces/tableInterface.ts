@@ -15,6 +15,11 @@ export interface ITableCreate {
     name: string
 }
 
+export interface ITableEdit {
+    userId: string,
+    name: string
+}
+
 export interface ITableItem {
     id: string,
     task: string,
@@ -31,7 +36,7 @@ export interface ITableItemCreate {
     label: string,
     members: string[],
     endTime: Date,
-    toDoTableId: string
+    tableId: string
 }
 
 export interface IUserForTable {

@@ -49,7 +49,6 @@
     }
   }
 
-
   .tables-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -75,6 +74,10 @@
         box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
       }
 
+      .table-name-link {
+        margin-bottom: 20px;
+      }
+
       .delete-btn {
         background: rgba(255, 255, 255, 0.05);
         border: none;
@@ -85,7 +88,6 @@
         align-items: center;
         justify-content: center;
         transition: all 0.2s ease;
-        margin-right: 10px;
 
         .trash-icon {
           fill: #ffffff;
@@ -97,27 +99,13 @@
 
           .trash-icon {
             transform: scale(1.15);
-            fill: #ff4d4f;
+            fill: #ff4d4d;
           }
         }
-
         &:active {
           transform: scale(0.95);
         }
       }
-
-      span {
-        flex: 1;
-        word-break: break-word;
-      }
     }
-  }
-
-  p {
-    text-align: center;
-    color: #ffffff;
-    font-size: 16px;
-    opacity: 0.8;
-    margin-top: 20px;
   }
 }

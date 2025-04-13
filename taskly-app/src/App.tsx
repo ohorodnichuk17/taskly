@@ -17,8 +17,9 @@ import { BoardsPage } from './components/boards/BoardsPage.tsx'
 import { BoardPage } from './components/boards/BoardPage.tsx'
 import MainPage from "./components/general/MainPage.tsx";
 import {ProfilePage} from "./components/user/ProfilePage.tsx";
-import TablesPage from "./components/table/TablesPage.tsx";
+import TablesListPage from "./components/table/TablesListPage.tsx";
 import CreateTablePage from "./components/table/CreateTablePage.tsx";
+import TablePage from "./components/table/TablePage.tsx";
 
 
 function App() {
@@ -53,8 +54,9 @@ function App() {
             <Route path='/boards' element={<BoardsPage />}/>
             <Route path='/boards/:boardId' element={<BoardPage />}/>
             <Route path='/edit-profile' element={<ProfilePage />}/>
-            <Route path='/tables' element={<TablesPage />}/>
-            <Route path='tables/create' element={<CreateTablePage />}/>
+            <Route path='/tables' element={<TablesListPage />}/>
+            <Route path='/tables/create' element={<CreateTablePage />}/>
+            <Route path="/tables/:tableId" element={<TablePage />} />
           </>)}
           <Route path='/boards' element={<Navigate to="/authentication/login" />} />
 

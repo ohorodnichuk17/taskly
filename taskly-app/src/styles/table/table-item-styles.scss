@@ -1,0 +1,135 @@
+.table-item {
+  display: flex;
+  flex-direction: column;
+  margin: 40px auto;
+  padding: 20px;
+  width: 90%;
+  max-width: 800px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  backdrop-filter: blur(15px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  animation: fadeIn 0.8s ease;
+
+  transition: all 0.3s ease;
+  &:hover {
+    transform: translateY(-5px) scale(1.01);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.table-item-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: #e0e0e0;
+  margin-bottom: 10px;
+
+  h4 {
+    margin: 0;
+    text-align: center;
+    flex: 1;
+    text-shadow: 0 0 5px #8e44ad;
+  }
+}
+
+.table-item-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .column {
+    flex: 1;
+    text-align: center;
+    margin: 0 5px;
+    color: #ffffffd9;
+  }
+
+  .task {
+    font-weight: bold;
+    font-size: 16px;
+  }
+
+  .status {
+    .status {
+      margin-right: 5px;
+    }
+  }
+
+  .label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .label {
+      margin-right: 5px;
+    }
+  }
+
+  .due-date {
+    font-weight: bold;
+    color: #fdfdfd;
+  }
+}
+
+.status {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  color: white;
+  font-weight: bold;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.status--todo {
+  background-color: #ff7675;
+}
+
+.status--in-progress {
+  background: linear-gradient(45deg, #6a89cc, #38ada9);
+}
+
+.status--done {
+  background: linear-gradient(45deg, #00b894, #55efc4);
+}
+
+.label {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+
+.label--green {
+  background-color: #00ff8c;
+  box-shadow: 0 0 5px #00ff8c;
+}
+
+.label--red {
+  background-color: #ff4b5c;
+  box-shadow: 0 0 5px #ff4b5c;
+}
+
+.label--blue {
+  background-color: #4b7bec;
+  box-shadow: 0 0 5px #4b7bec;
+}
+
+.label--yellow {
+  background-color: #f1c40f;
+  box-shadow: 0 0 5px #f1c40f;
+}

@@ -1,12 +1,11 @@
 import "../../styles/table/tables-page-style.scss"
-
 import { useRootState } from "../../redux/hooks.ts";
 import { useDispatch } from "react-redux";
 import { useEffect, useRef, useState } from "react";
-import {deleteTable, getTablesByUser} from "../../redux/actions/tablesAction.ts";
-import {Link, useNavigate} from "react-router-dom";
+import { deleteTable, getTablesByUser } from "../../redux/actions/tablesAction.ts";
+import { Link, useNavigate } from "react-router-dom";
 
-export default function TablesPage() {
+export default function TablesListPage() {
     const tables = useRootState((state) => state.table.listOfTables);
     const dispatch = useDispatch();
     const workspaceContainerRef = useRef<HTMLDivElement | null>(null);
@@ -32,12 +31,11 @@ export default function TablesPage() {
         } finally {
             setIsLoading(false);
         }
-    }
+    };
 
     useEffect(() => {
         fetchTables();
         console.log("Tables from Redux:", tables);
-
     }, []);
 
     const handleCreateTableClick = () => {
@@ -55,7 +53,7 @@ export default function TablesPage() {
     }, [workspaceContainerRef.current]);
 
     return (
-        <div className="tables-page" ref={workspaceContainerRef} style={{overflowY: workSpaceOverflowY}}>
+        <div className="tables-page" ref={workspaceContainerRef} style={{ overflowY: workSpaceOverflowY }}>
             <header className="tables-header">
                 <h1>
                     <span className="gradient-text">📋 My Tables</span>
@@ -68,6 +66,9 @@ export default function TablesPage() {
                 {tables && tables.length > 0 ? (
                     tables.map((table, index) => (
                         <div key={index} className="table-item">
+                            <Link to={`${table.id}`} key={table.id} className="table-name-link">
+                                <span>{table.name}</span>
+                            </Link>
                             <button className="delete-btn" onClick={() => handleDeleteTable(table.id)}>
                                 <svg className="trash-icon" xmlns="http://www.w3.org/2000/svg" height="20"
                                      viewBox="0 0 24 24" width="20" fill="#ffffff">
@@ -75,7 +76,6 @@ export default function TablesPage() {
                                     <path d="M16 9v10H8V9h8m-1.5-6h-5l-1 1H5v2h14V4h-4.5l-1-1z"/>
                                 </svg>
                             </button>
-                            <span>{table.name}</span>
                         </div>
                     ))
                 ) : (
