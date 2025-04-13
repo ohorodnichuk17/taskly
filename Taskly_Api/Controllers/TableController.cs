@@ -9,6 +9,7 @@ using Taskly_Application.Requests.Table.Command.DeleteToDoTable;
 using Taskly_Application.Requests.Table.Command.EditToDoTable;
 using Taskly_Application.Requests.Table.Query.GetAllToDoTableItemsByTableId;
 using Taskly_Application.Requests.Table.Query.GetAllToDoTables;
+using Taskly_Application.Requests.Table.Query.GetToDoTableById;
 using Taskly_Application.Requests.Table.Query.GetToDoTablesByUserId;
 
 namespace Taskly_Api.Controllers
@@ -43,6 +44,13 @@ namespace Taskly_Api.Controllers
         {
             var result = await sender.Send(new GetToDoTablesByUserIdQuery(userId));
             return result.Match(result => Ok(mapper.Map<ICollection<TableResponse>>(result)),
+                errors => Problem(errors));
+        }
+        [HttpGet("get-table-by-id")]
+        public async Task<IActionResult> GetToDoTableById([FromQuery] Guid tableId)
+        {
+            var result = await sender.Send(new GetToDoTableByIdQuery(tableId));
+            return result.Match(result => Ok(mapper.Map<TableResponse>(result)),
                 errors => Problem(errors));
         }
         [HttpPost("create-table-item")]
