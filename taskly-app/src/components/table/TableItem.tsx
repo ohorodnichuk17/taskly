@@ -1,3 +1,5 @@
+import "../../styles/table/table-item-styles.scss"
+
 export default function TableItem({ item }: TableItemProps) {
     return (
         <div className="table-item">
