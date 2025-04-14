@@ -5,7 +5,12 @@ using Taskly_Api.Request.Table;
 using Taskly_Api.Response.Table;
 using Taskly_Application.Requests.Table.Command.CreateToDoTable;
 using Taskly_Application.Requests.Table.Command.CreateToDoTableItem;
+using Taskly_Application.Requests.Table.Command.DeleteToDoTable;
+using Taskly_Application.Requests.Table.Command.EditToDoTable;
 using Taskly_Application.Requests.Table.Query.GetAllToDoTableItemsByTableId;
+using Taskly_Application.Requests.Table.Query.GetAllToDoTables;
+using Taskly_Application.Requests.Table.Query.GetToDoTableById;
+using Taskly_Application.Requests.Table.Query.GetToDoTablesByUserId;
 
 namespace Taskly_Api.Controllers
 {
@@ -27,10 +32,47 @@ namespace Taskly_Api.Controllers
             return result.Match(result => Ok(mapper.Map<ICollection<TableItemResponse>>(result)),
                 errors => Problem(errors)); 
         }
+        [HttpGet("get-all-tables")]
+        public async Task<IActionResult> GetAllToDoTables()
+        {
+            var result = await sender.Send(new GetAllToDoTablesQuery());
+            return result.Match(result => Ok(mapper.Map<ICollection<TableResponse>>(result)),
+                errors => Problem(errors));
+        }
+        [HttpGet("get-tables-by-user-id")]
+        public async Task<IActionResult> GetToDoTablesByUserId([FromQuery] Guid userId)
+        {
+            var result = await sender.Send(new GetToDoTablesByUserIdQuery(userId));
+            return result.Match(result => Ok(mapper.Map<ICollection<TableResponse>>(result)),
+                errors => Problem(errors));
+        }
+        [HttpGet("get-table-by-id")]
+        public async Task<IActionResult> GetToDoTableById([FromQuery] Guid tableId)
+        {
+            var result = await sender.Send(new GetToDoTableByIdQuery(tableId));
+            return result.Match(result => Ok(mapper.Map<TableResponse>(result)),
+                errors => Problem(errors));
+        }
         [HttpPost("create-table-item")]
         public async Task<IActionResult> CreateToDoTableItem([FromBody] CreateToDoTableItemRequest createTableItemRequest)
         {
             var result = await sender.Send(mapper.Map<CreateToDoTableItemCommand>(createTableItemRequest));
+            return result.Match(result => Ok(result),
+                errors => Problem(errors));
+        }
+
+        [HttpDelete("delete-table")]
+        public async Task<IActionResult> DeleteToDoTable([FromQuery] Guid tableId)
+        {
+            var result = await sender.Send(new DeleteToDoTableCommand(tableId));
+            return result.Match(result => Ok(result),
+                errors => Problem(errors));
+        }
+
+        [HttpPut("edit-table")]
+        public async Task<IActionResult> EditToDoTable([FromBody] EditToDoTableRequest editToDoTableRequest)
+        {
+            var result = await sender.Send(mapper.Map<EditToDoTableCommand>(editToDoTableRequest));
             return result.Match(result => Ok(result),
                 errors => Problem(errors));
         }
