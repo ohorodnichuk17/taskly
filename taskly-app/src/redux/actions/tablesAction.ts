@@ -90,14 +90,14 @@ export const createTable = createAsyncThunk<
 
 export const addTableItem = createAsyncThunk<
     ITableItemCreate,
-    {task: string, status: string, label: string, members: string[], endTime: Date, tableId: string},
+    {task: string, status: string, label: string, startTime: Date, endTime: Date, tableId: string},
     { rejectValue: IValidationErrors }
 >(
     "table/create-table-item",
-    async ({task, status, label, members, endTime, tableId}, {rejectWithValue}) => {
+    async ({task, status, label, startTime, endTime, tableId}, {rejectWithValue}) => {
         try {
             const response = await api.post("api/table/create-table-item",
-                {task, status, label, members, endTime, tableId},
+                {task, status, label, startTime, endTime, tableId},
                 {withCredentials: true}
             );
             return response.data;

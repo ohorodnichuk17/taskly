@@ -1,8 +1,20 @@
 import "../../styles/table/table-item-styles.scss";
 import { useState } from "react";
 import { ChromePicker } from "react-color";
+import {useNavigate, useParams} from "react-router-dom";
+import {addTableItem} from "../../redux/actions/tablesAction.ts";
+import {useDispatch} from "react-redux";
 
 export default function TableItem({ item }: TableItemProps) {
+    const tableId = useParams();
+    const [task, setTask] = useState<string>("");
+    const [status, setStatus] = useState<string>("");
+    const [label, setLabel] = useState<string>("");
+    const [startTime, setStartTime] = useState<Date>(null);
+    const [endTime, setEndTime] = useState<Date>(null);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     const normalizeStatus = (status: string): string => {
         return status.trim().toLowerCase().replace(/\s+/g, "");
     };
@@ -28,6 +40,17 @@ export default function TableItem({ item }: TableItemProps) {
         setIsColorPickerOpen(false);
     };
 
+    const createNewTableItem = async () => {
+        if(tableId && task && status && label && startTime && endTime) {
+            try {
+                await dispatch(addTableItem({task, status, label, startTime, endTime, tableId}));
+                navigate("/");
+            } catch (err) {
+                console.error("Failed to create table item:", err);
+            }
+        }
+    }
+
     return (
         <>
         <div className="table-item">
@@ -36,6 +59,7 @@ export default function TableItem({ item }: TableItemProps) {
                 <h4>Status</h4>
                 <h4>Label</h4>
                 <h4>Due Date</h4>
+                <h4>Members</h4>
             </div>
 
             <div className="table-item-content">
@@ -66,6 +90,18 @@ export default function TableItem({ item }: TableItemProps) {
                 <div className="column due-date">
                     {new Date(item.endTime).toLocaleDateString()}
                 </div>
+                {/*<div className="column members">*/}
+                {/*    {(item.members?.$values || []).map((member, index) => (*/}
+                {/*        <div key={index} className="member">*/}
+                {/*            <img*/}
+                {/*                src={member.avatar}*/}
+                {/*                alt={member.email}*/}
+                {/*                className="member-avatar"*/}
+                {/*            />*/}
+                {/*            <span className="member-email">{member.email}</span>*/}
+                {/*        </div>*/}
+                {/*    ))}*/}
+                {/*</div>*/}
             </div>
         </div>
             {isColorPickerOpen && (
@@ -74,7 +110,7 @@ export default function TableItem({ item }: TableItemProps) {
                         <button className="close-button" onClick={handleClosePicker}>
                             ✖ Close
                         </button>
-                        <ChromePicker color={labelColor} onChange={handleColorChange} />
+                        <ChromePicker color={labelColor} onChange={handleColorChange}/>
                     </div>
                 </div>
             )}
