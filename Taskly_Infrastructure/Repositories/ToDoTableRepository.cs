@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 using Taskly_Application.Interfaces.IRepository;
 using Taskly_Domain.Entities;
 using Taskly_Infrastructure.Common.Persistence;
@@ -81,6 +82,30 @@ public class ToDoTableRepository(TasklyDbContext tasklyDbContext) : Repository<T
         table.Name = name;
         tasklyDbContext.ToDoTables.Update(table); 
         await tasklyDbContext.SaveChangesAsync(); 
+        return table;
+    }
+    
+    private async Task<(ToDoTableEntity table, UserEntity user)> GetTableAndUserAsync(Guid tableId, Guid userId)
+    {
+        if (userId == Guid.Empty)
+            throw new ArgumentException("TableId and UserId must not be empty");
+        var table = await GetToDoTableIncludeById(tableId);
+        var user = await tasklyDbContext.Users.FindAsync(userId);
+        if (user == null)
+            throw new KeyNotFoundException("User not found");
+        return (table, user);
+    }
+    
+    private async Task<ToDoTableEntity> GetTableByConditionAsync(Expression<Func<ToDoTableEntity, bool>> condition)
+    {
+        var table = await tasklyDbContext.ToDoTables
+            .Include(b => b.Members)
+            .Include(b => b.ToDoItems)
+            .FirstOrDefaultAsync(condition);
+
+        if (table == null)
+            throw new KeyNotFoundException("Table not found");
+
         return table;
     }
 }
