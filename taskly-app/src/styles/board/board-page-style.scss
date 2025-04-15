@@ -6,6 +6,10 @@
     overflow-y: hidden;
     overflow-x: scroll;
 
+    p {
+        margin: 0;
+    }
+
     .card-list-container {
         width: max-content;
         height: 100%;
@@ -27,13 +31,14 @@
 
             .card-list-cards {
                 width: 400px;
-                height: 100%;
-                //overflow-y: scroll;
+                height: 90%;
+                margin-top: auto;
                 display: flex;
                 flex-direction: column;
                 row-gap: 5px;
                 padding: 10px;
                 box-sizing: border-box;
+                overflow-x: hidden;
 
                 .card {
                     width: 100%;
@@ -45,17 +50,37 @@
                     background-color: azure;
                     box-sizing: border-box;
                     row-gap: 10px;
-                    position: relative;
+                    //position: relative;
 
-                    p {
-                        width: 100%;
-                        font-size: 17px;
-                        text-align: start;
+                    div.card-task {
+                        padding: 0;
                         margin: 0;
+
+                        textarea {
+                            width: 100%;
+                            max-width: 100%;
+                            background-color: white;
+                            border: none;
+                            border-radius: 10px;
+                            font-size: 17px;
+                            box-sizing: border-box;
+                            color: black;
+                            outline: none;
+                            resize: none;
+                        }
+
+                        p {
+                            width: 100%;
+                            font-size: 17px;
+                            text-align: start;
+                        }
+
                     }
+
 
                     div.card-information {
                         width: 100%;
+                        height: 40px;
                         display: flex;
 
                         .card-deadline {
@@ -64,12 +89,31 @@
                             border-radius: 10px;
                             box-sizing: border-box;
                             color: white;
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                            cursor: pointer;
+
+                            p {
+                                font-size: 17px;
+                            }
+
+                            input {
+                                width: 170px;
+                                font-size: 17px;
+                                border-radius: 10px;
+                                border: none;
+                                outline: none;
+                            }
                         }
 
                         .card-settings-buttons {
+
                             margin-left: auto;
                             display: flex;
+                            align-items: center;
                             box-sizing: content-box;
+                            column-gap: 5px;
 
                             button {
                                 display: inline-block;
@@ -93,7 +137,48 @@
                                     align-self: center;
                                 }
                             }
+
+                            button.inactive {
+                                background-color: azure;
+
+                                &:hover {
+                                    background-color: rgb(205, 223, 223);
+                                }
+                            }
+
+                            button.active {
+                                background-color: rgb(205, 223, 223);
+                            }
                         }
+
+                        .creator-of-card {
+                            margin-left: auto;
+                            position: relative;
+
+                            img {
+                                width: 40px;
+                                height: 40px;
+
+                                padding: 5px;
+                                border-radius: 30px;
+                                box-sizing: border-box;
+                                border: 1px solid gray;
+                                cursor: pointer;
+
+                                &:hover {
+                                    border-style: dashed;
+                                }
+                            }
+
+                            .dropdown-user-name {
+                                background-color: white;
+                                border-radius: 10px;
+                                padding: 5px 10px;
+                                box-sizing: border-box;
+                                position: absolute;
+                            }
+                        }
+
 
 
 

@@ -1,0 +1,1 @@
+export const done_card_list = "Done";
