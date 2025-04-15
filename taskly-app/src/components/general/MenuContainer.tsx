@@ -8,6 +8,7 @@ import { RootState } from '../../redux/store.ts';
 import {useDispatch, useSelector} from 'react-redux';
 import {logout, logoutAsync} from "../../redux/actions/authenticateAction.ts";
 import {useAppDispatch} from "../../redux/hooks.ts";
+import {baseUrl} from "../../axios/baseUrl.ts";
 
 export interface IMenuContainer {
     icon: string;
@@ -159,7 +160,7 @@ export const MenuContainer = (props: IMenuContainer) => {
                         {isLogin && userProfile ? (
                             <div ref={dropdownRef} className="user-info" style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
                                 <img
-                                    src={`http://localhost:5258/images/avatars/${userProfile.avatarName}.png`}
+                                    src={`${baseUrl}/images/avatars/${userProfile.avatarName}.png`}
                                     alt="Avatar"
                                     className="user-avatar"
                                     style={{
@@ -197,7 +198,7 @@ export const MenuContainer = (props: IMenuContainer) => {
                                         }}
                                     >
                                         <Link
-                                            to="/edit-account"
+                                            to="/edit-profile"
                                             className="dropdown-item"
                                             style={{
                                                 display: 'block',
@@ -216,7 +217,7 @@ export const MenuContainer = (props: IMenuContainer) => {
                                                 e.currentTarget.style.color = '#333333';
                                             }}
                                         >
-                                            Edit Account
+                                            Edit profile
                                         </Link>
                                         <Link
                                             to=""

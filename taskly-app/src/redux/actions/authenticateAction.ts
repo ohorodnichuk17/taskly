@@ -2,12 +2,21 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import { IValidationErrors } from '../../interfaces/generalInterface'
 import { api } from '../../axios/api'
 import { AxiosError } from "axios";
-import { IAvatar, IChangePasswordRequest, ICheckHasUserSentRequestToChangePassword, ILoginRequest, IRegisterRequest, IUserProfile, IVerificateEmailRequest } from '../../interfaces/authenticateInterfaces';
+import {
+    IAvatar,
+    IChangePasswordRequest,
+    ICheckHasUserSentRequestToChangePassword,
+    IEditUserProfile,
+    ILoginRequest,
+    IRegisterRequest,
+    IUserProfile,
+    IVerificateEmailRequest
+} from '../../interfaces/authenticateInterfaces';
 
 export const sendVerificationCodeAsync = createAsyncThunk<
-    string, // Тип який повертається
-    string, // Тип який передається 
-    { rejectValue: IValidationErrors }> // Тип помилки
+    string,
+    string,
+    { rejectValue: IValidationErrors }>
     (
         "authentication/send-verification-code",
         async (email: string, { rejectWithValue }) => {
@@ -183,6 +192,33 @@ export const checkHasUserSentRequestToChangePasswordAsync = createAsyncThunk<
         }
     )
 
+export const editUserProfileAsync = createAsyncThunk<
+    string,
+    IEditUserProfile,
+    { rejectValue: IValidationErrors }>(
+        "authentication/edit-user-profile",
+        async (request: IEditUserProfile, { rejectWithValue }) => {
+            try {
+                var response = await api.put("api/authentication/edit-user-profile", {
+                    email: request.email,
+                    username: request.username,
+                    avatarId: request.avatarId
+                }, {
+                    withCredentials: true
+                });
+
+                return response.data;
+            } catch (err: any) {
+                let error: AxiosError<IValidationErrors> = err;
+                console.log("Validation error:", error.response?.data);
+                if (!error.response)
+                    throw err;
+
+                return rejectWithValue(error.response.data);
+            }
+        }
+    )
+
 export const changePasswordAsync = createAsyncThunk<
     string,
     IChangePasswordRequest,
@@ -228,4 +264,5 @@ export const logoutAsync = createAsyncThunk<
             return rejectWithValue(error.response.data);
         }
     }
+
 );
