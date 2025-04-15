@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Taskly_Infrastructure.Common.Persistence;
@@ -11,9 +12,11 @@ using Taskly_Infrastructure.Common.Persistence;
 namespace Taskly_Infrastructure.Migrations
 {
     [DbContext(typeof(TasklyDbContext))]
-    partial class TasklyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250411135957_AddNameFieldToTableEntity")]
+    partial class AddNameFieldToTableEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -227,17 +230,11 @@ namespace Taskly_Infrastructure.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<bool>("IsCompleated")
-                        .HasColumnType("boolean");
-
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<Guid?>("TimeRangeEntityId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("UserId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
@@ -246,8 +243,6 @@ namespace Taskly_Infrastructure.Migrations
 
                     b.HasIndex("TimeRangeEntityId")
                         .IsUnique();
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Cards");
                 });
@@ -579,15 +574,9 @@ namespace Taskly_Infrastructure.Migrations
                         .WithOne()
                         .HasForeignKey("Taskly_Domain.Entities.CardEntity", "TimeRangeEntityId");
 
-                    b.HasOne("Taskly_Domain.Entities.UserEntity", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
                     b.Navigation("CardList");
 
                     b.Navigation("TimeRangeEntity");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Taskly_Domain.Entities.CardListEntity", b =>
