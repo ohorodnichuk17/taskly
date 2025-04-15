@@ -1,6 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Reflection.Metadata;
 using Taskly_Application.Interfaces.IRepository;
+using Taskly_Domain;
 using Taskly_Domain.Entities;
+using Taskly_Domain.Other;
 using Taskly_Infrastructure.Common.Persistence;
 
 namespace Taskly_Infrastructure.Repositories;
@@ -15,12 +18,15 @@ public class CardRepository(TasklyDbContext context) : Repository<CardEntity>(co
         if(card == null)
             return null;
 
-        var isCardListExist = await context.CardLists.AnyAsync(cardList => cardList.Id == CardListId);
+        var cardList = await context.CardLists.FirstOrDefaultAsync(cardList => cardList.Id == CardListId);
 
-        if(!isCardListExist)
+        if(cardList == null)
             return null;
 
         card.CardListId = CardListId;
+        card.Status = cardList.Title;
+        card.IsCompleated = cardList.Title == Constants.Done;
+       
 
         context.Update(card);
         await context.SaveChangesAsync();
@@ -36,5 +42,22 @@ public class CardRepository(TasklyDbContext context) : Repository<CardEntity>(co
             _cards.Remove(card);
             await context.SaveChangesAsync();
         }
+    }
+    public async Task<Guid?> ChangeCardAsync(Guid CardId, ChangeCardProps ChangeCardProps)
+    {
+        var card = await GetByIdAsync(CardId);
+        if (card == null)
+            return null;
+        card.Description = ChangeCardProps.Description != null ? ChangeCardProps.Description : card.Description;
+        var timeRange = await context.TimeRanges.FirstOrDefaultAsync(t => t.Id == card.TimeRangeEntityId);
+        if(timeRange != null && ChangeCardProps.Deadline != null)
+        {
+            timeRange.EndTime = ChangeCardProps.Deadline.Value;
+            context.TimeRanges.Update(timeRange);
+        }
+
+        await SaveAsync(card);
+
+        return card.Id;
     }
 }

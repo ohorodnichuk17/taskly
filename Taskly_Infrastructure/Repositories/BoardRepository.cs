@@ -97,31 +97,31 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
     {
         return await context.CardLists.FirstOrDefaultAsync(cl => cl.Id == cardListId);
     }
-    public async Task CreateCardAsync(ICollection<string> Descriptions, string Status, Guid CardListId)
-    {
-        
-
+    public async Task CreateCardAsync(ICollection<string> Descriptions, string Status, Guid CardListId, Guid UserId)
+    {  
         List<CardEntity> cards = (await Task.WhenAll(Descriptions.Select(async d => new CardEntity()
         {
             Id = Guid.NewGuid(),
             Description = d,
             Status = Status,
             CardListId = CardListId,
-            TimeRangeEntityId = await CreateDeadLineForCard(DateTime.Now + TimeSpan.FromDays(10))
+            TimeRangeEntityId = await CreateDeadLineForCard(DateTime.Now + TimeSpan.FromDays(10)),
+            UserId = UserId
         }))).ToList();
 
 
         await context.Cards.AddRangeAsync(cards);
         await context.SaveChangesAsync();
     }
-    public async Task CreateCardAsync(string Description, string Status, Guid CardListId)
+    public async Task CreateCardAsync(string Description, string Status, Guid CardListId, Guid UserId)
     {
         var card = new CardEntity()
         {
             Id = Guid.NewGuid(),
             Description = Description,
             Status = Status,
-            CardListId = CardListId
+            CardListId = CardListId,
+            UserId = UserId
         };
         await context.Cards.AddAsync(card);
         await context.SaveChangesAsync();
@@ -212,6 +212,10 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
         var board = await context.Boards
             .Include(b => b.Members)
             .Include(b => b.BoardTemplate)
+            .Include(b => b.CardLists)
+            .ThenInclude(cl => cl.Cards)
+            .ThenInclude(cr => cr.User)
+            .ThenInclude(u => u.Avatar)
             .Include(b => b.CardLists)
             .ThenInclude(cl => cl.Cards)
             .ThenInclude(c => c.Comments)

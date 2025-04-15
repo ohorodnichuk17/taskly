@@ -21,6 +21,10 @@ public class CardMapsterConfig : IRegister
             .Map(src => src.Description, desp => desp.Description)
             .Map(src => src.AttachmentUrl, desp => desp.AttachmentUrl)
             .Map(src => src.Status, desp => desp.Status)
+            .Map(src => src.UserId, desp => desp.UserId)
+            .Map(src => src.UserAvatar, desp => desp.User == null ? null : desp.User.Avatar!.ImagePath)
+            .Map(src => src.UserName, desp => desp.User == null ? null : desp.User.UserName)
+            .Map(src => src.IsCompleated, desp => desp.IsCompleated)
             .Map(src => src.StartTime, desp => desp.TimeRangeEntity!.StartTime)
             .Map(src => src.EndTime, desp => desp.TimeRangeEntity!.EndTime)
             .Map(src => src.Comments, desp => desp.Comments!.ToArray().Adapt<CommentResponse[]>());

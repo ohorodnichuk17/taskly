@@ -8,8 +8,9 @@ public class GeminiMapsterConfig : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {
-        config.NewConfig<CreateCardsForTaskRequest, CreateCardsForTaskCommand>()
-            .Map(src => src.BoardId, desp => desp.BoardId)
-            .Map(src => src.Task, desp => desp.Task);
+        config.NewConfig<(CreateCardsForTaskRequest request, Guid userId), CreateCardsForTaskCommand>()
+            .Map(src => src.BoardId, desp => desp.request.BoardId)
+            .Map(src => src.Task, desp => desp.request.Task)
+            .Map(src => src.UserId, desp => desp.userId);
     }
 }

@@ -12,7 +12,7 @@ public class CreateCardsForTaskCommandHandler(IGeminiApiClient gemini, IUnitOfWo
     {
         var cards = await gemini.CreateCardsForTask(request.Task);
         var cardListId = await unitOfWork.Board.GetIdOfCardsListByTitleAsync(request.BoardId, Constants.Todo);
-        await unitOfWork.Board.CreateCardAsync(cards, Constants.Todo, cardListId);
+        await unitOfWork.Board.CreateCardAsync(cards, Constants.Todo, cardListId, request.UserId);
 
         return cards;
     }

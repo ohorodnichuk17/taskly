@@ -32,6 +32,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Taskly_Application\Taskly_Application.csproj" />
+      <ProjectReference Include="..\Taskly_Domain\Taskly_Domain.csproj" />
       <ProjectReference Include="..\Taskly_Infrastructure\Taskly_Infrastructure.csproj" />
     </ItemGroup>
 

@@ -105,6 +105,8 @@ public class GeminiController(ISender sender, IMapper mapper) : ApiController
     [HttpPost("create-cards-for-task")]
     public async Task<IActionResult> CreateCardsForTask([FromBody] CreateCardsForTaskRequest createCardsForTaskRequest)
     {
+        var userId = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "id")!.Value;
+
         var result = await sender.Send(mapper.Map<CreateCardsForTaskCommand>(createCardsForTaskRequest));
 
         return result.Match(result => Ok(result),
