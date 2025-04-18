@@ -53,18 +53,17 @@ export default function TableItem({ item }: TableItemProps) {
 
     return (
         <>
-        <div className="table-item">
-            <div className="table-item-header">
-                <h4>Task</h4>
-                <h4>Status</h4>
-                <h4>Label</h4>
-                <h4>Due Date</h4>
-                <h4>Members</h4>
-            </div>
+            <div className="table-item">
+                <div className="table-item-header">
+                    <h4>Task</h4>
+                    <h4>Status</h4>
+                    <h4>Label</h4>
+                    <h4>Due Date</h4>
+                </div>
 
-            <div className="table-item-content">
-                <div className="column task">{item.task}</div>
-                <div className="column status">
+                <div className="table-item-content">
+                    <div className="column task">{item.task}</div>
+                    <div className="column status">
                     <span
                         className={`status ${
                             normalizeStatus(item.status) === "todo"
@@ -76,8 +75,8 @@ export default function TableItem({ item }: TableItemProps) {
                     >
                         {item.status}
                     </span>
-                </div>
-                <div className="column label" onClick={handleLabelClick}>
+                    </div>
+                    <div className="column label" onClick={handleLabelClick}>
                     <span
                         className="label-dot"
                         style={{
@@ -85,25 +84,25 @@ export default function TableItem({ item }: TableItemProps) {
                             boxShadow: `0 0 5px ${labelColor}`,
                         }}
                     ></span>
-                    <span className="label-text">{item.label}</span>
+                        <span className="label-text">{item.label}</span>
+                    </div>
+                    <div className="column due-date">
+                        {new Date(item.endTime).toLocaleDateString()}
+                    </div>
+                    {/*<div className="column members">*/}
+                    {/*    {(item.members?.$values || []).map((member, index) => (*/}
+                    {/*        <div key={index} className="member">*/}
+                    {/*            <img*/}
+                    {/*                src={member.avatar}*/}
+                    {/*                alt={member.email}*/}
+                    {/*                className="member-avatar"*/}
+                    {/*            />*/}
+                    {/*            <span className="member-email">{member.email}</span>*/}
+                    {/*        </div>*/}
+                    {/*    ))}*/}
+                    {/*</div>*/}
                 </div>
-                <div className="column due-date">
-                    {new Date(item.endTime).toLocaleDateString()}
-                </div>
-                {/*<div className="column members">*/}
-                {/*    {(item.members?.$values || []).map((member, index) => (*/}
-                {/*        <div key={index} className="member">*/}
-                {/*            <img*/}
-                {/*                src={member.avatar}*/}
-                {/*                alt={member.email}*/}
-                {/*                className="member-avatar"*/}
-                {/*            />*/}
-                {/*            <span className="member-email">{member.email}</span>*/}
-                {/*        </div>*/}
-                {/*    ))}*/}
-                {/*</div>*/}
             </div>
-        </div>
             {isColorPickerOpen && (
                 <div className="color-picker-modal">
                     <div className="color-picker-modal-content">
