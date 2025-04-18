@@ -8,8 +8,8 @@ public interface IUnitOfWork
     IAuthenticationRepository Authentication { get; }
     IBoardRepository Board { get; }
     IAvatarRepository Avatar { get; }
-    IToDoTableRepository ToDoTable { get; }
-    IToDoTableItemsRepository ToDoTableItems { get; }
+    ITableRepository Table { get; }
+    ITableItemsRepository TableItems { get; }
     IBoardTemplateRepository BoardTemplates { get; }
     ICardRepository Cards { get; }
 }

@@ -7,6 +7,6 @@ public class UserEntity : IdentityUser<Guid>
     public Guid AvatarId { get; set; } 
     public AvatarEntity? Avatar { get; set; }  
     public ICollection<BoardEntity> Boards { get; set; } = new List<BoardEntity>();
-    public ICollection<ToDoTableEntity> ToDoTables { get; set; } = new List<ToDoTableEntity>();
-    public ICollection<ToDoItemEntity> ToDoTableItems { get; set; } = new List<ToDoItemEntity>();
+    public ICollection<TableEntity> ToDoTables { get; set; } = new List<TableEntity>();
+    public ICollection<TableItemEntity> ToDoTableItems { get; set; } = new List<TableItemEntity>();
 }

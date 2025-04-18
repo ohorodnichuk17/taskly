@@ -4,14 +4,14 @@ using Taskly_Domain.Entities;
 
 namespace Taskly_Infrastructure.Common.Persistence.FluentConfig;
 
-public class FluentToDoTableConfig : IEntityTypeConfiguration<ToDoTableEntity>
+public class FluentTableConfig : IEntityTypeConfiguration<TableEntity>
 {
-    public void Configure(EntityTypeBuilder<ToDoTableEntity> builder)
+    public void Configure(EntityTypeBuilder<TableEntity> builder)
     {
         builder.HasKey(tt => tt.Id);
 
         builder.HasMany(tt => tt.ToDoItems)
-            .WithOne(td => td.ToDoTable)
+            .WithOne(td => td.Table)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

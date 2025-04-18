@@ -1,3 +1,3 @@
 ﻿namespace Taskly_Api.Request.Table;
 
-public record CreateToDoTableRuquest(Guid UserId, string Name);
+public record CreateTableRuquest(Guid UserId, string Name);

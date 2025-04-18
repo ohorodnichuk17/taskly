@@ -42,8 +42,8 @@ public static class DependencyInjection
         services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
         services.AddScoped<IAvatarRepository, AvatarRepository>();
         services.AddScoped<IBoardRepository, BoardRepository>();
-        services.AddScoped<IToDoTableRepository, ToDoTableRepository>();
-        services.AddScoped<IToDoTableItemsRepository, ToDoTableItemsRepository>();
+        services.AddScoped<ITableRepository, TableRepository>();
+        services.AddScoped<ITableItemsRepository, TableItemsRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddHostedService<CustomCleaner<VerificationEmailEntity>>();
         services.AddHostedService<CustomCleaner<ChangePasswordKeyEntity>>();

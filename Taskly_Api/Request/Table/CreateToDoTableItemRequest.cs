@@ -2,7 +2,7 @@
 
 namespace Taskly_Api.Request.Table;
 
-public record CreateToDoTableItemRequest(string Task, 
+public record CreateTableItemRequest(string Task, 
                                      string Status, 
                                      string Label, 
                                      List<Guid> Members,
