@@ -3,7 +3,7 @@ import {ITable, ITableCreate, ITableEdit, ITableInitialState, ITableItem} from "
 import {
     addTableItem,
     createTable,
-    deleteTable,
+    deleteTable, deleteTableItem,
     editTable,
     getTableById,
     getTableItems,
@@ -65,6 +65,14 @@ const tableSlice = createSlice({
            }})
             .addCase(deleteTable.rejected, (state, action) => {
                 state.deleteTableError = action.payload;
+            })
+            .addCase(deleteTableItem.fulfilled, (state, action: PayloadAction<string>) => {
+                if (state.tableItems) {
+                    state.tableItems = state.tableItems.filter((item) => item.id !== action.payload);
+                }
+            })
+            .addCase(deleteTableItem.rejected, (state, action) => {
+                state.deleteTableItemError = action.payload;
             })
             .addCase(editTable.fulfilled, (state, action: PayloadAction<ITableEdit>) => {
                 if (state.listOfTables) {
