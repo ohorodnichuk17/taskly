@@ -6,6 +6,7 @@ using Taskly_Api.Response.Table;
 using Taskly_Application.Requests.Table.Command.CreateTable;
 using Taskly_Application.Requests.Table.Command.CreateTableItem;
 using Taskly_Application.Requests.Table.Command.DeleteTable;
+using Taskly_Application.Requests.Table.Command.DeleteTableItem;
 using Taskly_Application.Requests.Table.Command.EditTable;
 using Taskly_Application.Requests.Table.Query.GetAllTableItemsByTableId;
 using Taskly_Application.Requests.Table.Query.GetAllTables;
@@ -65,6 +66,14 @@ namespace Taskly_Api.Controllers
         public async Task<IActionResult> DeleteTable([FromQuery] Guid tableId)
         {
             var result = await sender.Send(new DeleteTableCommand(tableId));
+            return result.Match(result => Ok(result),
+                errors => Problem(errors));
+        }
+        
+        [HttpDelete("delete-table-item")]
+        public async Task<IActionResult> DeleteTableItem([FromQuery] Guid tableItemId)
+        {
+            var result = await sender.Send(new DeleteTableItemCommand(tableItemId));
             return result.Match(result => Ok(result),
                 errors => Problem(errors));
         }
