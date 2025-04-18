@@ -193,3 +193,9 @@
     color: #ff4b5c;
   }
 }
+
+@media (max-width: 480px) {
+  .table-item {
+    margin: 30px auto !important;
+  }
+}
