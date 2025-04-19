@@ -6,6 +6,8 @@ import { getCardsListsByBoardIdAsync } from "../../redux/actions/boardsAction";
 import { format } from "date-fns";
 import trash_can_icon from '../../../public/icon/trash_can_icon.png';
 import edit_icon from '../../../public/icon/edit_icon.png';
+import leave_card_icon from '../../../public/icon/leave_card_icon.png';
+import take_card_icon from '../../../public/icon/take_card_icon.png';
 import { ICard, ICardListItem } from "../../interfaces/boardInterface";
 import { HubConnection, HubConnectionBuilder, HubConnectionState, LogLevel } from "@microsoft/signalr";
 import { baseUrl } from "../../axios/baseUrl";
@@ -15,7 +17,6 @@ import { done_card_list } from "../../constants/constants";
 
 
 const addItemToArrayFromAnotherArray = (item: any, array: any[]) => {
-
     let newArr = [...array, item];
 
     return newArr;
@@ -44,6 +45,7 @@ export const BoardPage = () => {
 
     const cardList = useRootState(s => s.board.cardList);
     const userId = useRootState(s => s.authenticate.userProfile?.id);
+    const user = useRootState(s => s.authenticate.userProfile);
     const dispatch = useAppDispatch();
 
 
@@ -69,7 +71,7 @@ export const BoardPage = () => {
             prop: ("description" | "deadline"),
             cardId: string
         } | null>(null);
-
+    const [creatorOfCardPosition, setCreatorOfCardPosition] = useState<DOMRect | null>(null);
 
 
     const getCardList = async () => {
@@ -165,7 +167,37 @@ export const BoardPage = () => {
                     deadline: model.changeProps.deadline
                 });
             }
-        })
+        });
+        conn.current.on("LeaveCard", (model: {
+            cardListId: string,
+            cardId: string,
+            userId: string
+        }) => {
+            if (userId != model.userId) {
+                leaveCard({
+                    cardListId: model.cardListId,
+                    cardId: model.cardId
+                });
+            }
+        });
+        conn.current.on("TakeCard", (model: {
+            cardListId: string,
+            cardId: string,
+            userId: string,
+            userName: string,
+            userAvatar: string
+        }) => {
+            if (userId != model.userId) {
+                takeCard({
+                    cardListId: model.cardListId,
+                    cardId: model.cardId,
+                    userId: model.userId,
+                    userName: model.userName,
+                    userAvatar: model.userAvatar
+                });
+            }
+        });
+
 
         await conn.current.start();
         await conn.current.invoke("ConnectToTeamBoard", { userId, boardId });
@@ -182,7 +214,6 @@ export const BoardPage = () => {
 
     useEffect(() => {
         return (() => {
-
             endConnection();
         });
     }, [])
@@ -205,7 +236,7 @@ export const BoardPage = () => {
 
 
 
-            let updated = cardListRef.current.map(item => ({
+            const updated = cardListRef.current.map(item => ({
                 ...item,
                 cards: item.cards && item.id === model.fromCardListId ?
                     findAndRemoveItemFromArray(el => el.id === model.cardId, item.cards) :
@@ -255,8 +286,8 @@ export const BoardPage = () => {
         if (cardListRef.current !== null) {
             const updated = cardListRef.current.map((item) => ({
                 ...item,
-                cards: item.id === model.cardListId ? (
-                    item.cards ? item.cards.map((card) => {
+                cards: item.id === model.cardListId && item.cards ?
+                    item.cards.map((card) => {
                         if (card.id === model.cardId) {
                             return {
                                 ...card,
@@ -265,12 +296,63 @@ export const BoardPage = () => {
                             }
                         }
                         return card;
-                    }) :
-                        item.cards)
-                    :
-                    item.cards
+                    })
+                    : item.cards
 
             }));
+
+            setCardLists(updated);
+        }
+    }
+    const leaveCard = (model: {
+        cardListId: string,
+        cardId: string
+    }) => {
+        if (cardListRef.current !== null) {
+            const update = cardListRef.current.map((item) => ({
+                ...item,
+                cards: item.id === model.cardListId && item.cards ? (
+                    item.cards.map((card) => {
+                        if (card.id === model.cardId) {
+                            return {
+                                ...card,
+                                userId: null,
+                                userName: null,
+                                userAvatar: null
+                            }
+                        }
+                        return card;
+                    })
+                ) : item.cards
+            }));
+
+            setCardLists(update);
+        }
+    }
+    const takeCard = (model: {
+        cardListId: string,
+        cardId: string,
+        userId: string,
+        userName: string,
+        userAvatar: string
+    }) => {
+        if (cardListRef.current !== null) {
+            const updated = cardListRef.current.map((item) => ({
+                ...item,
+                cards: item.id === model.cardListId && item.cards ?
+                    item.cards.map((card) => {
+                        if (card.id === model.cardId) {
+                            return {
+                                ...card,
+                                userId: model.userId,
+                                userName: model.userName,
+                                userAvatar: model.userAvatar
+                            }
+                        }
+                        return card;
+                    })
+                    : item.cards
+            }))
 
             setCardLists(updated);
         }
@@ -281,6 +363,11 @@ export const BoardPage = () => {
             boardPageRef.current = ref;
         }}
         style={{ overflowX: boardPageOverflowX }}
+        onScroll={() => {
+            if (creatorOfCardPosition !== null) {
+                setCreatorOfCardPosition(null);
+            }
+        }}
     >
         <div className="card-list-container">
             {/*<SelectDeadlineComponent />*/}
@@ -311,7 +398,8 @@ export const BoardPage = () => {
                                         cardId: dragenCard.cardId,
                                         fromCardListId: dragenCard.fromCardListId,
                                         toCardListId: element.id,
-                                        boardId: boardId
+                                        boardId: boardId,
+                                        isCompleated: element.title === done_card_list
                                     })
 
 
@@ -335,8 +423,9 @@ export const BoardPage = () => {
 
                             }}
                                 draggable={
-                                    element_card.userId === null ||
-                                    (element_card.userId !== null && element_card.userId === userId)}
+                                    (element_card.userId === null ||
+                                        (element_card.userId !== null && element_card.userId === userId)) &&
+                                    element_card.isCompleated !== true}
                             >
                                 <div className="card-task">
                                     {changeCardProps &&
@@ -449,7 +538,7 @@ export const BoardPage = () => {
                                         }
 
                                     </div>
-                                    {element_card.userId === userId ?
+                                    {element_card.userId !== null && element_card.userId === userId ?
                                         <div className="card-settings-buttons">
                                             <button
                                                 className={changeCardProps &&
@@ -484,29 +573,82 @@ export const BoardPage = () => {
                                                 }}>
                                                 <img src={trash_can_icon} alt="Remove card" />
                                             </button>
+                                            <button
+                                                onClick={async () => {
+                                                    if (conn.current) {
+                                                        await conn.current.send("LeaveCard", {
+                                                            boardId: boardId,
+                                                            cardListId: element.id,
+                                                            cardId: element_card.id,
+                                                            userId: userId!
+                                                        });
+                                                        leaveCard({
+                                                            cardListId: element.id,
+                                                            cardId: element_card.id
+                                                        })
+                                                    }
+                                                }}
+                                            >
+                                                <img src={leave_card_icon} alt="Leave card" />
+                                            </button>
 
                                         </div>
-                                        :
-                                        <div className="creator-of-card">
-                                            <img
-                                                className="creator-of-card"
-                                                src={`${baseUrl}/images/avatars/${element_card.userAvatar}.png`}
-                                                alt=""
-                                                onMouseEnter={(e) => {
-                                                    setDropDownCardId(element_card.id);
-                                                }}
-                                                onMouseLeave={() => {
-                                                    setDropDownCardId(null);
-                                                }}
-                                            />
-                                            {dropDownCardId !== null && dropDownCardId === element_card.id &&
-                                                <div
-                                                    className="dropdown-user-name"
-                                                >
-                                                    {element_card.userName}
-                                                </div>
-                                            }
-                                        </div>
+                                        : (element_card.userId !== null ?
+                                            <div className="creator-of-card">
+                                                <img
+                                                    className="creator-of-card"
+                                                    src={`${baseUrl}/images/avatars/${element_card.userAvatar}.png`}
+                                                    alt=""
+
+                                                    onMouseEnter={(e) => {
+                                                        setDropDownCardId(element_card.id);
+                                                        setCreatorOfCardPosition(e.currentTarget.getBoundingClientRect()); // Дістає позицію елемента відносно вікна
+                                                    }}
+                                                    onMouseLeave={() => {
+                                                        setDropDownCardId(null);
+                                                        setCreatorOfCardPosition(null);
+                                                    }}
+
+                                                />
+                                                {dropDownCardId !== null &&
+                                                    dropDownCardId === element_card.id &&
+                                                    creatorOfCardPosition !== null &&
+                                                    <div
+                                                        className="dropdown-user-name"
+                                                        style={{
+                                                            position: "fixed",
+                                                            top: `${creatorOfCardPosition.top + 50}px`,
+                                                            left: `${creatorOfCardPosition.left}px`,
+                                                        }}
+
+                                                    >
+                                                        {element_card.userName}
+                                                    </div>
+                                                }
+                                            </div> : <div className="take-card">
+                                                <button onClick={async () => {
+                                                    if (conn.current !== null) {
+                                                        await conn.current.send("TakeCard", {
+                                                            boardId: boardId,
+                                                            cardListId: element.id,
+                                                            cardId: element_card.id,
+                                                            userId: userId,
+                                                            userName: user!.email,
+                                                            userAvatar: user!.avatarName
+                                                        });
+
+                                                        takeCard({
+                                                            cardListId: element.id,
+                                                            cardId: element_card.id,
+                                                            userId: userId!,
+                                                            userName: user!.email,
+                                                            userAvatar: user!.avatarName
+                                                        })
+                                                    }
+                                                }}>
+                                                    <img src={take_card_icon} alt="Take card" />
+                                                </button>
+                                            </div>)
 
 
                                     }

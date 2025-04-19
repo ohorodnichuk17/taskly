@@ -114,7 +114,7 @@ export const BoardsPage = () => {
                         <p>{element.name}</p>
 
                         <div className="additional-information">
-                            <span>2</span>
+                            <span>{element.countOfMemebers}</span>
                             <img src={person_icon} alt={`Count of members ${element.countOfMemebers}`} />
                         </div>
                     </Link>
