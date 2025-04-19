@@ -29,7 +29,7 @@ public class UnitOfWork : IUnitOfWork
         ToDoTable = new ToDoTableRepository(_context);
         ToDoTableItems = new ToDoTableItemsRepository(_context);
         BoardTemplates = new BoardTemplateRepository(_context);
-        Cards = new CardRepository(_context);
+        Cards = new CardRepository(_userManager,_context);
     }
     
     public async Task SaveChangesAsync(string errorMessage)

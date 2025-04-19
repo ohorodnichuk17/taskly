@@ -1,3 +1,3 @@
 ﻿namespace Taskly_Api.SignalR.Models;
 
-public record TransferCardToAnotherCardListModel(Guid UserId, Guid CardId, Guid FromCardListId, Guid ToCardListId, Guid BoardId);
+public record TransferCardToAnotherCardListModel(Guid UserId, Guid CardId, Guid FromCardListId, Guid ToCardListId, Guid BoardId, bool IsCompleated);
