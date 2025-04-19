@@ -20,7 +20,7 @@ public class FluentUserConfig : IEntityTypeConfiguration<UserEntity>
             .WithMany(t => t.Members)
             .UsingEntity<Dictionary<string, object>>(
                 "UserTable",
-                j => j.HasOne<ToDoTableEntity>().WithMany().HasForeignKey("ToDoTableId"),
+                j => j.HasOne<TableEntity>().WithMany().HasForeignKey("TableId"),
                 j => j.HasOne<UserEntity>().WithMany().HasForeignKey("UserId")
             );
 
@@ -28,7 +28,7 @@ public class FluentUserConfig : IEntityTypeConfiguration<UserEntity>
             .WithMany(td => td.Members)
             .UsingEntity<Dictionary<string, object>>(
                 "UserTableItem",
-                j => j.HasOne<ToDoItemEntity>().WithMany().HasForeignKey("ToDoItemId"),
+                j => j.HasOne<TableItemEntity>().WithMany().HasForeignKey("ItemId"),
                 j => j.HasOne<UserEntity>().WithMany().HasForeignKey("UserId")
             );
 

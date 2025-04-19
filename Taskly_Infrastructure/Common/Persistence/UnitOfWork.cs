@@ -14,8 +14,8 @@ public class UnitOfWork : IUnitOfWork
     public IAuthenticationRepository Authentication { get; private set; }
     public IBoardRepository Board { get; private set; }
     public IAvatarRepository Avatar { get; private set; }
-    public IToDoTableRepository ToDoTable { get; private set; }
-    public IToDoTableItemsRepository ToDoTableItems { get; private set; }
+    public ITableRepository Table { get; private set; }
+    public ITableItemsRepository TableItems { get; private set; }
     public IBoardTemplateRepository BoardTemplates { get; private set; }
     public ICardRepository Cards { get; private set; }
 
@@ -26,8 +26,8 @@ public class UnitOfWork : IUnitOfWork
         Authentication = new AuthenticationRepository(_userManager, _context);
         Board = new BoardRepository(_context);
         Avatar = new AvatarRepository(_context);
-        ToDoTable = new ToDoTableRepository(_context);
-        ToDoTableItems = new ToDoTableItemsRepository(_context);
+        Table = new TableRepository(_context);
+        TableItems = new TableItemsRepository(_context);
         BoardTemplates = new BoardTemplateRepository(_context);
         Cards = new CardRepository(_userManager,_context);
     }

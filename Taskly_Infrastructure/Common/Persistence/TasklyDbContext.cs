@@ -15,8 +15,8 @@ public class TasklyDbContext : IdentityDbContext<UserEntity,IdentityRole<Guid>,G
     public DbSet<CardEntity> Cards { get; set; }
     public DbSet<CardListEntity> CardLists { get; set; }
     public DbSet<CommentEntity> Comments { get; set; }
-    public DbSet<ToDoTableEntity> ToDoTables { get; set; }
-    public DbSet<ToDoItemEntity> ToDoItems { get; set; }
+    public DbSet<TableEntity> ToDoTables { get; set; }
+    public DbSet<TableItemEntity> ToDoItems { get; set; }
     public DbSet<VerificationEmailEntity> EmailVerifications { get; set; }
     public DbSet<TimeRangeEntity> TimeRanges { get; set; }
     public DbSet<ChangePasswordKeyEntity> ChangePasswordKeys { get; set; }
@@ -40,8 +40,8 @@ public class TasklyDbContext : IdentityDbContext<UserEntity,IdentityRole<Guid>,G
         modelBuilder.ApplyConfiguration(new FluentCardListConfig());
         modelBuilder.ApplyConfiguration(new FluentCommentConfig());
         modelBuilder.ApplyConfiguration(new FluentTimeRangeConfig());
-        modelBuilder.ApplyConfiguration(new FluentToDoItemConfig());
-        modelBuilder.ApplyConfiguration(new FluentToDoTableConfig());
+        modelBuilder.ApplyConfiguration(new FluentItemConfig());
+        modelBuilder.ApplyConfiguration(new FluentTableConfig());
         modelBuilder.ApplyConfiguration(new FluentVerificationEmailConfig());
     }
 }
