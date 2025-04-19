@@ -2,7 +2,7 @@ import "../../styles/table/table-item-styles.scss";
 import { useState } from "react";
 import { ChromePicker } from "react-color";
 import {useNavigate, useParams} from "react-router-dom";
-import {addTableItem} from "../../redux/actions/tablesAction.ts";
+import {addTableItem, deleteTableItem, getTableItems} from "../../redux/actions/tablesAction.ts";
 import {useDispatch} from "react-redux";
 
 export default function TableItem({ item }: TableItemProps) {
@@ -51,20 +51,29 @@ export default function TableItem({ item }: TableItemProps) {
         }
     }
 
+    const handleDeleteTableItem = async (itemId: string) => {
+        try {
+            await dispatch(deleteTableItem(itemId));
+            window.location.reload();
+        } catch (err) {
+            console.error("Failed to delete table item:", err);
+        }
+    }
+
     return (
         <>
-        <div className="table-item">
-            <div className="table-item-header">
-                <h4>Task</h4>
-                <h4>Status</h4>
-                <h4>Label</h4>
-                <h4>Due Date</h4>
-                <h4>Members</h4>
-            </div>
+            <div className="table-item">
+                <div className="table-item-header">
+                    <h4>Task</h4>
+                    <h4>Status</h4>
+                    <h4>Label</h4>
+                    <h4>Due Date</h4>
+                    <h4>Actions</h4>
+                </div>
 
-            <div className="table-item-content">
-                <div className="column task">{item.task}</div>
-                <div className="column status">
+                <div className="table-item-content">
+                    <div className="column task">{item.task}</div>
+                    <div className="column status">
                     <span
                         className={`status ${
                             normalizeStatus(item.status) === "todo"
@@ -76,8 +85,8 @@ export default function TableItem({ item }: TableItemProps) {
                     >
                         {item.status}
                     </span>
-                </div>
-                <div className="column label" onClick={handleLabelClick}>
+                    </div>
+                    <div className="column label" onClick={handleLabelClick}>
                     <span
                         className="label-dot"
                         style={{
@@ -85,25 +94,22 @@ export default function TableItem({ item }: TableItemProps) {
                             boxShadow: `0 0 5px ${labelColor}`,
                         }}
                     ></span>
-                    <span className="label-text">{item.label}</span>
+                        <span className="label-text">{item.label}</span>
+                    </div>
+                    <div className="column due-date">
+                        {new Date(item.endTime).toLocaleDateString()}
+                    </div>
+                    <div className="column actions">
+                        <button className="delete-btn" onClick={() => handleDeleteTableItem(item.id)}>
+                            <svg className="trash-icon" xmlns="http://www.w3.org/2000/svg" height="20"
+                                 viewBox="0 0 24 24" width="20" fill="#ffffff">
+                                <path d="M0 0h24v24H0z" fill="none"/>
+                                <path d="M16 9v10H8V9h8m-1.5-6h-5l-1 1H5v2h14V4h-4.5l-1-1z"/>
+                            </svg>
+                        </button>
+                    </div>
                 </div>
-                <div className="column due-date">
-                    {new Date(item.endTime).toLocaleDateString()}
-                </div>
-                {/*<div className="column members">*/}
-                {/*    {(item.members?.$values || []).map((member, index) => (*/}
-                {/*        <div key={index} className="member">*/}
-                {/*            <img*/}
-                {/*                src={member.avatar}*/}
-                {/*                alt={member.email}*/}
-                {/*                className="member-avatar"*/}
-                {/*            />*/}
-                {/*            <span className="member-email">{member.email}</span>*/}
-                {/*        </div>*/}
-                {/*    ))}*/}
-                {/*</div>*/}
             </div>
-        </div>
             {isColorPickerOpen && (
                 <div className="color-picker-modal">
                     <div className="color-picker-modal-content">

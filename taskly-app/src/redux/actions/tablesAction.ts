@@ -130,6 +130,27 @@ export const deleteTable = createAsyncThunk<
     }
 )
 
+export const deleteTableItem = createAsyncThunk<
+    boolean,
+    string,
+    { rejectValue: IValidationErrors }
+> (
+    "table/delete-table-item",
+    async (tableItemId, { rejectWithValue }) => {
+        try {
+            const response = await api.delete(`api/table/delete-table-item`, {
+                params: {tableItemId},
+                withCredentials: true
+            });
+            return response.data;
+        } catch (err: any) {
+            let error: AxiosError<IValidationErrors> = err;
+            if (!error.response) throw err;
+            return rejectWithValue(error.response.data);
+        }
+    }
+)
+
 export const editTable = createAsyncThunk<
     ITableEdit,
     { tableId: string; tableName: string },
