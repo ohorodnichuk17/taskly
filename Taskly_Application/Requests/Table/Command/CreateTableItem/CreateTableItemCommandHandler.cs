@@ -1,10 +1,6 @@
 ﻿using ErrorOr;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Taskly_Application.Interfaces;
-using Taskly_Application.Interfaces.IRepository;
-using Taskly_Application.Interfaces.IService;
 using Taskly_Domain.Entities;
 
 namespace Taskly_Application.Requests.Table.Command.CreateTableItem;
@@ -22,6 +18,7 @@ public class CreateTableItemCommandHandler(IUnitOfWork unitOfWork) : IRequestHan
                 TimeRange = new TimeRangeEntity() { StartTime = DateTime.UtcNow, EndTime = request.EndTime },
                 Status = request.Status,
                 Label = request.Label,
+                IsCompleted = request.IsCompleted,
                 ToDoTableId = request.TableId
             };
 

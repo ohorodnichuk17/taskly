@@ -8,5 +8,8 @@ namespace Taskly_Infrastructure.Repositories;
 
 public class TableItemsRepository(TasklyDbContext tasklyDbContext) : Repository<TableItemEntity>(tasklyDbContext), ITableItemsRepository
 {
-    
+    public Task<TableItemEntity> EditTableItemAsync(TableItemEntity tableItem)
+    {
+        throw new NotImplementedException();
+    }
 }

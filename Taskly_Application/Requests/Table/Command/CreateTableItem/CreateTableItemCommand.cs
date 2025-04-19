@@ -9,4 +9,5 @@ public record CreateTableItemCommand(string Task,
                                      string Label,
                                      List<Guid> Members,
                                      DateTime EndTime,
+                                     bool IsCompleted,
                                      Guid TableId) : IRequest<ErrorOr<string>>;

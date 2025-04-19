@@ -6,5 +6,6 @@ public record CreateTableItemRequest(string Task,
                                      string Status, 
                                      string Label, 
                                      List<Guid> Members,
-                                     DateTime EndTime, 
+                                     DateTime EndTime,
+                                     bool IsCompleted,
                                      Guid TableId);
