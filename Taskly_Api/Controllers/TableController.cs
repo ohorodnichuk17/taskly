@@ -8,6 +8,8 @@ using Taskly_Application.Requests.Table.Command.CreateTableItem;
 using Taskly_Application.Requests.Table.Command.DeleteTable;
 using Taskly_Application.Requests.Table.Command.DeleteTableItem;
 using Taskly_Application.Requests.Table.Command.EditTable;
+using Taskly_Application.Requests.Table.Command.EditTableItem;
+using Taskly_Application.Requests.Table.Command.MarkTableItemAsCompleted;
 using Taskly_Application.Requests.Table.Query.GetAllTableItemsByTableId;
 using Taskly_Application.Requests.Table.Query.GetAllTables;
 using Taskly_Application.Requests.Table.Query.GetTableById;
@@ -83,6 +85,22 @@ namespace Taskly_Api.Controllers
         {
             var result = await sender.Send(mapper.Map<EditTableCommand>(editTableRequest));
             return result.Match(result => Ok(result),
+                errors => Problem(errors));
+        }
+
+        [HttpPut("edit-table-item")]
+        public async Task<IActionResult> EditTableItem([FromBody] EditTableItemRequest editTableItemRequest)
+        {
+            var result = await sender.Send(mapper.Map<EditTableItemCommand>(editTableItemRequest));
+            return result.Match(result => Ok(result),
+                errors => Problem(errors));
+        }
+
+        [HttpPatch("{id}/completed")]
+        public async Task<IActionResult> MarkAsCompleted([FromRoute] Guid id, [FromBody] MarkTableItemAsCompletedRequest request)
+        {
+            var result = await sender.Send(new MarkTableItemAsCompletedCommand(id, request.IsCompleted));
+            return result.Match(updatedItem => Ok(updatedItem),
                 errors => Problem(errors));
         }
     }
