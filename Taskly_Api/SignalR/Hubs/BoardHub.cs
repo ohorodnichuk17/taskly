@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.SignalR;
 using Taskly_Api.Request.Card;
 using Taskly_Api.SignalR.Models;
 using Taskly_Application.Requests.Card.Command.ChangeCard;
+using Taskly_Application.Requests.Card.Command.LeaveCard;
 using Taskly_Application.Requests.Card.Command.RemoveCard;
+using Taskly_Application.Requests.Card.Command.TakeCard;
 using Taskly_Application.Requests.Card.Command.TransferCardToAnotherCardList;
 
 namespace Taskly_Api.SignalR.Hubs;
@@ -34,7 +36,8 @@ public class BoardHub(ISender sender) : Hub
                     UserId = model.UserId,
                     CardId = model.CardId,
                     FromCardListId = model.FromCardListId,
-                    ToCardListId = model.ToCardListId });
+                    ToCardListId = model.ToCardListId,
+                    IsCompleated = model.IsCompleated});
 
         await sender.Send(new TransferCardToAnotherCardListCommand(
             ToCardListId: model.ToCardListId,
@@ -65,5 +68,36 @@ public class BoardHub(ISender sender) : Hub
             });
 
         await sender.Send(new ChangeCardCommand(CardId: model.CardId, ChangeCardProps: model.ChangeProps));
+    }
+
+    public async Task LeaveCard(LeaveCardModel model)
+    {
+        await Clients
+            .Groups(model.BoardId.ToString())
+            .SendAsync("LeaveCard", new
+            {
+                CardListId = model.CardListId,
+                CardId = model.CardId,
+                UserId = model.UserId
+            });
+
+        await sender.Send(new LeaveCardCommand(model.CardId));
+    }
+    public async Task TakeCard(LeaveCardModel model)
+    {
+        await Clients
+            .Groups(model.BoardId.ToString())
+            .SendAsync("TakeCard", new
+            {
+                CardListId = model.CardListId,
+                CardId = model.CardId,
+                UserId = model.UserId,
+                UserName = model.UserName,
+                UserAvatar = model.UserAvatar
+            });
+
+        await sender.Send(new TakeCardCommand(
+            CardId: model.CardId,
+            UserId: model.UserId));
     }
 }

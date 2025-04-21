@@ -24,7 +24,7 @@ public class CreateBoardCommandHandler(IUnitOfWork unitOfWork,
             {
                 new CardListEntity { Title = Constants.Todo },
                 new CardListEntity { Title = Constants.Inprogress },
-                new CardListEntity { Title = Constants.Todo }
+                new CardListEntity { Title = Constants.Done }
             };
 
             var board = new BoardEntity

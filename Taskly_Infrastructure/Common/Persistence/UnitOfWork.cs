@@ -29,7 +29,7 @@ public class UnitOfWork : IUnitOfWork
         Table = new TableRepository(_context);
         TableItems = new TableItemsRepository(_context);
         BoardTemplates = new BoardTemplateRepository(_context);
-        Cards = new CardRepository(_context);
+        Cards = new CardRepository(_userManager,_context);
     }
     
     public async Task SaveChangesAsync(string errorMessage)

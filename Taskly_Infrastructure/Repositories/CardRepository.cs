@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System.Reflection.Metadata;
 using Taskly_Application.Interfaces.IRepository;
 using Taskly_Domain;
@@ -8,7 +9,7 @@ using Taskly_Infrastructure.Common.Persistence;
 
 namespace Taskly_Infrastructure.Repositories;
 
-public class CardRepository(TasklyDbContext context) : Repository<CardEntity>(context), ICardRepository
+public class CardRepository(UserManager<UserEntity> userManager, TasklyDbContext context) : Repository<CardEntity>(context), ICardRepository
 {
     private readonly DbSet<CardEntity> _cards = context.Set<CardEntity>();
     public async Task<Guid?> TransferCardToAnotherCardListAsync(Guid CardListId, Guid CardId)
@@ -48,13 +49,52 @@ public class CardRepository(TasklyDbContext context) : Repository<CardEntity>(co
         var card = await GetByIdAsync(CardId);
         if (card == null)
             return null;
+
         card.Description = ChangeCardProps.Description != null ? ChangeCardProps.Description : card.Description;
-        var timeRange = await context.TimeRanges.FirstOrDefaultAsync(t => t.Id == card.TimeRangeEntityId);
-        if(timeRange != null && ChangeCardProps.Deadline != null)
+
+        
+        if(ChangeCardProps.Deadline != null)
         {
-            timeRange.EndTime = ChangeCardProps.Deadline.Value;
-            context.TimeRanges.Update(timeRange);
+            var timeRange = await context.TimeRanges.FirstOrDefaultAsync(t => t.Id == card.TimeRangeEntityId);
+            if (timeRange != null)
+            {
+                timeRange.EndTime = ChangeCardProps.Deadline.Value;
+                context.TimeRanges.Update(timeRange);
+            }
         }
+
+        await SaveAsync(card);
+
+        return card.Id;
+    }
+
+    public async Task<Guid?> LeaveCardAsync(Guid CardId)
+    {
+        var card = await GetByIdAsync(CardId);
+
+        if (card == null)
+            return null;
+
+        card.UserId = null;
+
+        await SaveAsync(card);
+
+        return card.Id;
+    }
+
+    public async Task<Guid?> TakeCardAsync(Guid CardId, Guid UserId)
+    {
+        var card = await GetByIdAsync(CardId);
+
+        if (card == null)
+            return null;
+
+        var user = await userManager.FindByIdAsync(UserId.ToString());
+
+        if (user == null)
+            return null;
+
+        card.UserId = user.Id;
 
         await SaveAsync(card);
 
