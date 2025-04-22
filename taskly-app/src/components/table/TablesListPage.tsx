@@ -69,13 +69,37 @@ export default function TablesListPage() {
                             <Link to={`${table.id}`} key={table.id} className="table-name-link">
                                 <span>{table.name}</span>
                             </Link>
-                            <button className="delete-btn" onClick={() => handleDeleteTable(table.id)}>
-                                <svg className="trash-icon" xmlns="http://www.w3.org/2000/svg" height="20"
-                                     viewBox="0 0 24 24" width="20" fill="#ffffff">
-                                    <path d="M0 0h24v24H0z" fill="none"/>
-                                    <path d="M16 9v10H8V9h8m-1.5-6h-5l-1 1H5v2h14V4h-4.5l-1-1z"/>
-                                </svg>
-                            </button>
+                            <div className="buttons-container">
+                                <button className="edit-btn" onClick={() => navigate(`edit/${table.id}`)}>
+                                    <svg
+                                        className="edit-icon"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        height="20"
+                                        viewBox="0 0 24 24"
+                                        width="20"
+                                        fill="#ffffff"
+                                    >
+                                        <path
+                                            d="M3 17.25V21h3.75L17.39 12.36l-3.75-3.75L3 17.25zm12.74-7.38l3.75 3.75c.43.43.43 1.13 0 1.56l-6 6a1.12 1.12 0 0 1-1.56 0l-3.75-3.75a1.12 1.12 0 0 1 0-1.56l6-6a1.12 1.12 0 0 1 1.56 0z"
+                                        />
+                                    </svg>
+                                </button>
+
+                                <button className="delete-btn" onClick={() => handleDeleteTable(table.id)}>
+                                    <svg
+                                        className="trash-icon"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        height="20"
+                                        viewBox="0 0 24 24"
+                                        width="20"
+                                        fill="#ffffff"
+                                    >
+                                        <path d="M0 0h24v24H0z" fill="none"/>
+                                        <path d="M16 9v10H8V9h8m-1.5-6h-5l-1 1H5v2h14V4h-4.5l-1-1z"/>
+                                    </svg>
+                                </button>
+                            </div>
+
                         </div>
                     ))
                 ) : (
