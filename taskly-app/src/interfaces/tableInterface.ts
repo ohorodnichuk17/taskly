@@ -27,7 +27,8 @@ export interface ITableItem {
     label: string,
     // members: IUserForTable[],
     startTime: Date,
-    endTime: Date
+    endTime: Date,
+    isCompleted: boolean,
 }
 
 export interface ITableItemCreate {
@@ -37,6 +38,7 @@ export interface ITableItemCreate {
     // members: IUserForTable[],
     startTime: Date,
     endTime: Date,
+    isCompleted: boolean,
     tableId: string
 }
 

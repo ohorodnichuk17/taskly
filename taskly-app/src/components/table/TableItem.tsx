@@ -1,12 +1,17 @@
 import "../../styles/table/table-item-styles.scss";
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { ChromePicker } from "react-color";
 import {useNavigate, useParams} from "react-router-dom";
-import {addTableItem, deleteTableItem, getTableItems} from "../../redux/actions/tablesAction.ts";
+import {
+    addTableItem,
+    deleteTableItem,
+    markTableItemAsCompleted
+} from "../../redux/actions/tablesAction.ts";
 import {useDispatch} from "react-redux";
+import {ITableItem} from "../../interfaces/tableInterface.ts";
 
-export default function TableItem({ item }: TableItemProps) {
-    const tableId = useParams();
+export default function TableItem({ item }: ITableItem) {
+    const {tableId} = useParams();
     const [task, setTask] = useState<string>("");
     const [status, setStatus] = useState<string>("");
     const [label, setLabel] = useState<string>("");
@@ -60,6 +65,22 @@ export default function TableItem({ item }: TableItemProps) {
         }
     }
 
+    const handleIsCompletedTableItem = async (tableItemId: string, isCompleted: boolean) => {
+        try {
+            await dispatch(markTableItemAsCompleted({ tableItemId, isCompleted }));
+            dispatch({
+                type: "tableSlice/markTableItemAsCompleted",
+                payload: { tableItemId, isCompleted },
+            });
+        } catch (err) {
+            console.error("Failed to mark table item as completed:", err);
+        }
+    };
+
+    useEffect(() => {
+        console.log("Item updated:", item);
+    }, [item]);
+
     return (
         <>
             <div className="table-item">
@@ -68,11 +89,14 @@ export default function TableItem({ item }: TableItemProps) {
                     <h4>Status</h4>
                     <h4>Label</h4>
                     <h4>Due Date</h4>
+                    <h4>Is Completed</h4>
                     <h4>Actions</h4>
                 </div>
 
                 <div className="table-item-content">
-                    <div className="column task">{item.task}</div>
+                    <div className={`column task ${item.isCompleted ? "task--completed" : ""}`}>
+                        {item.task}
+                    </div>
                     <div className="column status">
                     <span
                         className={`status ${
@@ -98,6 +122,13 @@ export default function TableItem({ item }: TableItemProps) {
                     </div>
                     <div className="column due-date">
                         {new Date(item.endTime).toLocaleDateString()}
+                    </div>
+                    <div className="column is-completed">
+                        <div
+                            className={`completion-circle ${item.isCompleted === true ? "completed" : ""}`}
+                            onClick={() => handleIsCompletedTableItem(item.id, !item.isCompleted)}
+                            title="Mark as completed"
+                        ></div>
                     </div>
                     <div className="column actions">
                         <button className="delete-btn" onClick={() => handleDeleteTableItem(item.id)}>

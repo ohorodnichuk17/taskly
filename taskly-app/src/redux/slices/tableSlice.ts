@@ -7,7 +7,7 @@ import {
     editTable,
     getTableById,
     getTableItems,
-    getTablesByUser
+    getTablesByUser, markTableItemAsCompleted
 } from "../actions/tablesAction.ts";
 
 const initialState: ITableInitialState = {
@@ -72,6 +72,18 @@ const tableSlice = createSlice({
                 }
             })
             .addCase(deleteTableItem.rejected, (state, action) => {
+                state.deleteTableItemError = action.payload;
+            })
+            .addCase(markTableItemAsCompleted.fulfilled, (state, action: PayloadAction<boolean>) => {
+                if (state.tableItems) {
+                    const item = state.tableItems.find((item) => item.id === action.meta.arg.tableItemId);
+                    if (item) {
+                        item.isCompleted = action.meta.arg.isCompleted;
+                        item.status = action.meta.arg.isCompleted ? "Done" : item.status;
+                    }
+                }
+            })
+            .addCase(markTableItemAsCompleted.rejected, (state, action) => {
                 state.deleteTableItemError = action.payload;
             })
             .addCase(editTable.fulfilled, (state, action: PayloadAction<ITableEdit>) => {

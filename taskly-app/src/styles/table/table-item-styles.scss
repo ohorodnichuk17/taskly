@@ -234,3 +234,39 @@
     margin: 30px auto !important;
   }
 }
+
+.completion-circle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #ffffff99;
+  margin: 0 auto;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: #00ffcc;
+  }
+
+  &.completed {
+    background-color: #00ffcc;
+    border-color: #00ffcc;
+
+    &::after {
+      content: '✓';
+      color: #000;
+      font-size: 14px;
+      font-weight: bold;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -55%);
+    }
+  }
+}
+
+.task--completed {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
