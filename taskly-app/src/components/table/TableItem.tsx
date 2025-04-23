@@ -1,40 +1,24 @@
 import "../../styles/table/table-item-styles.scss";
-import {useEffect, useState} from "react";
-import { ChromePicker } from "react-color";
+import { useEffect, useState } from "react";
 import {
     deleteTableItem,
-    markTableItemAsCompleted
+    markTableItemAsCompleted,
+    editTableItem,
+    getTableItems
 } from "../../redux/actions/tablesAction.ts";
-import {useDispatch} from "react-redux";
-import {ITableItem} from "../../interfaces/tableInterface.ts";
+import { useDispatch } from "react-redux";
+import { ITableItem } from "../../interfaces/tableInterface.ts";
+import {useParams} from "react-router-dom";
 
 export default function TableItem({ item }: ITableItem) {
     const dispatch = useDispatch();
+    const { tableId } = useParams();
+    const normalizeStatus = (status: string): string =>
+        status.trim().toLowerCase().replace(/\s+/g, "");
 
-    const normalizeStatus = (status: string): string => {
-        return status.trim().toLowerCase().replace(/\s+/g, "");
-    };
-
-    const [labelColor, setLabelColor] = useState<string>(() => {
-        const savedColor = localStorage.getItem(`labelColor-${item.task}`);
-        return savedColor || item.label || "#ffffff";
-    });
-
-    const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
-
-    const handleLabelClick = () => {
-        setIsColorPickerOpen(true);
-    };
-
-    const handleColorChange = (color: { hex: string }) => {
-        const newColor = color.hex;
-        setLabelColor(newColor);
-        localStorage.setItem(`labelColor-${item.task}`, newColor);
-    };
-
-    const handleClosePicker = () => {
-        setIsColorPickerOpen(false);
-    };
+    const [editField, setEditField] = useState<null | keyof ITableItem>(null);
+    const [editedItem, setEditedItem] = useState<ITableItem>({ ...item });
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleDeleteTableItem = async (itemId: string) => {
         try {
@@ -43,11 +27,22 @@ export default function TableItem({ item }: ITableItem) {
         } catch (err) {
             console.error("Failed to delete table item:", err);
         }
-    }
+    };
 
     const handleIsCompletedTableItem = async (tableItemId: string, isCompleted: boolean) => {
         try {
+            const newStatus = isCompleted ? "Done" : editedItem.status;
+
+            await dispatch(editTableItem({
+                Id: tableItemId,
+                Text: editedItem.task,
+                Status: newStatus,
+                EndTime: new Date(editedItem.endTime).toISOString(),
+                Label: editedItem.label,
+            }));
+
             await dispatch(markTableItemAsCompleted({ tableItemId, isCompleted }));
+
             dispatch({
                 type: "tableSlice/markTableItemAsCompleted",
                 payload: { tableItemId, isCompleted },
@@ -57,9 +52,44 @@ export default function TableItem({ item }: ITableItem) {
         }
     };
 
+    const saveChanges = async () => {
+        try {
+            const payload = {
+                Id: editedItem.id,
+                Text: editedItem.task,
+                Status: editedItem.status,
+                EndTime: new Date(editedItem.endTime).toISOString(),
+                Label: editedItem.label,
+            };
+
+            await dispatch(editTableItem(payload));
+            await dispatch(getTableItems(tableId));
+
+        } catch (err) {
+            console.error("Failed to save item edits:", err);
+        } finally {
+            setEditField(null);
+        }
+    };
+
     useEffect(() => {
-        console.log("Item updated:", item);
+        setEditedItem({ ...item });
     }, [item]);
+
+    const getLabelColor = (label: string): string => {
+        switch (label) {
+            case "Info":
+                return "#2196f3";
+            case "Danger":
+                return "#ff5252";
+            case "Warning":
+                return "#ff9800";
+            case "Success":
+                return "#4caf50";
+            default:
+                return "#ffffff";
+        }
+    };
 
     return (
         <>
@@ -74,42 +104,149 @@ export default function TableItem({ item }: ITableItem) {
                 </div>
 
                 <div className="table-item-content">
+                    {isModalOpen && (
+                        <div className="custom-modal">
+                            <div className="custom-modal-content">
+                                <h3>Unable to Change Status</h3>
+                                <p>
+                                    You cannot change the status of an item marked as "Done" unless you first mark it as incomplete.
+                                </p>
+                                <div className="modal-actions">
+                                    <button
+                                        className="confirm-button"
+                                        onClick={() => {
+                                            setIsModalOpen(false);
+                                        }}
+                                    >
+                                        OK
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                     <div className={`column task ${item.isCompleted ? "task--completed" : ""}`}>
-                        {item.task}
+                        {editField === "task" ? (
+                            <input
+                                className="edit-field edit-field-active"
+                                value={editedItem.task}
+                                onChange={(e) => setEditedItem({...editedItem, task: e.target.value})}
+                                onBlur={saveChanges}
+                                autoFocus
+                            />
+                        ) : (
+                            <div onClick={() => setEditField("task")}>{item.task}</div>
+                        )}
                     </div>
+
                     <div className="column status">
-                    <span
-                        className={`status ${
-                            normalizeStatus(item.status) === "todo"
-                                ? "status--todo"
-                                : normalizeStatus(item.status) === "inprogress"
-                                    ? "status--in-progress"
-                                    : "status--done"
-                        }`}
-                    >
-                        {item.status}
-                    </span>
+                        {editField === "status" ? (
+                            editedItem.isCompleted ? (
+                                <>
+                                    <span className="warning-text">Cannot change status from 'Done' unless the item is uncompleted.</span>
+                                    <select
+                                        disabled
+                                        value={editedItem.status}
+                                        className="edit-field"
+                                    >
+                                        <option value="ToDo">To Do</option>
+                                        <option value="InProgress">In Progress</option>
+                                        <option value="Done">Done</option>
+                                    </select>
+                                </>
+                            ) : (
+                                <select
+                                    className="edit-field edit-field-active"
+                                    value={editedItem.status}
+                                    onChange={(e) => {
+                                        console.log("📝 Status changed to:", e.target.value);
+                                        setEditedItem({...editedItem, status: e.target.value});
+                                    }}
+                                    onBlur={saveChanges}
+                                    autoFocus
+                                >
+                                    <option value="ToDo">To Do</option>
+                                    <option value="InProgress">In Progress</option>
+                                    <option value="Done">Done</option>
+                                </select>
+                            )
+                        ) : (
+                            <span
+                                className={`status ${
+                                    normalizeStatus(item.status) === "todo"
+                                        ? "status--todo"
+                                        : normalizeStatus(item.status) === "inprogress"
+                                            ? "status--in-progress"
+                                            : "status--done"
+                                }`}
+                                onClick={() => {
+                                    if (item.isCompleted) {
+                                        setIsModalOpen(true);
+                                    } else {
+                                        setEditField("status");
+                                    }
+                                }}
+                            >
+                              {item.status}
+                            </span>
+                        )}
                     </div>
-                    <div className="column label" onClick={handleLabelClick}>
-                    <span
-                        className="label-dot"
-                        style={{
-                            backgroundColor: labelColor,
-                            boxShadow: `0 0 5px ${labelColor}`,
-                        }}
-                    ></span>
-                        <span className="label-text">{item.label}</span>
+
+                    <div className="column label">
+                        {editField === "label" ? (
+                            <select
+                                className="edit-field edit-field-active"
+                                value={editedItem.label}
+                                onChange={(e) => setEditedItem({...editedItem, label: e.target.value})}
+                                onBlur={saveChanges}
+                                autoFocus
+                            >
+                                <option value="None">None</option>
+                                <option value="Info">Info</option>
+                                <option value="Danger">Danger</option>
+                                <option value="Warning">Warning</option>
+                                <option value="Success">Success</option>
+                            </select>
+                        ) : (
+                            <div onClick={() => setEditField("label")}>
+                                  <span
+                                      className="label-dot"
+                                      style={{
+                                          backgroundColor: getLabelColor(item.label),
+                                          boxShadow: `0 0 5px ${getLabelColor(item.label)}`,
+                                      }}
+                                  />
+                                <span className="label-text">{item.label}</span>
+                            </div>
+                        )}
                     </div>
+
                     <div className="column due-date">
-                        {new Date(item.endTime).toLocaleDateString()}
+                        {editField === "endTime" ? (
+                            <input
+                                type="date"
+                                className="edit-field edit-field-active"
+                                value={new Date(editedItem.endTime).toISOString().slice(0, 10)}
+                                onChange={(e) =>
+                                    setEditedItem({...editedItem, endTime: new Date(e.target.value)})
+                                }
+                                onBlur={saveChanges}
+                                autoFocus
+                            />
+                        ) : (
+                            <div onClick={() => setEditField("endTime")}>
+                                {new Date(item.endTime).toLocaleDateString()}
+                            </div>
+                        )}
                     </div>
+
                     <div className="column is-completed">
                         <div
-                            className={`completion-circle ${item.isCompleted === true ? "completed" : ""}`}
+                            className={`completion-circle ${item.isCompleted ? "completed" : ""}`}
                             onClick={() => handleIsCompletedTableItem(item.id, !item.isCompleted)}
                             title="Mark as completed"
                         ></div>
                     </div>
+
                     <div className="column actions">
                         <button className="delete-btn" onClick={() => handleDeleteTableItem(item.id)}>
                             <svg className="trash-icon" xmlns="http://www.w3.org/2000/svg" height="20"
@@ -121,16 +258,6 @@ export default function TableItem({ item }: ITableItem) {
                     </div>
                 </div>
             </div>
-            {isColorPickerOpen && (
-                <div className="color-picker-modal">
-                    <div className="color-picker-modal-content">
-                        <button className="close-button" onClick={handleClosePicker}>
-                            ✖ Close
-                        </button>
-                        <ChromePicker color={labelColor} onChange={handleColorChange}/>
-                    </div>
-                </div>
-            )}
         </>
     );
 }

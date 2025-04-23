@@ -1,5 +1,12 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import {ITable, ITableCreate, ITableEdit, ITableItem, ITableItemCreate} from "../../interfaces/tableInterface.ts";
+import {
+    ITable,
+    ITableCreate,
+    ITableEdit,
+    ITableItem,
+    ITableItemCreate,
+    ITableItemEdit
+} from "../../interfaces/tableInterface.ts";
 import {IValidationErrors} from "../../interfaces/generalInterface.ts";
 import {AxiosError} from "axios";
 import {api} from "../../axios/api.ts";
@@ -198,3 +205,25 @@ export const createTableItem = createAsyncThunk<
         }
     }
 );
+
+export const editTableItem = createAsyncThunk<
+    ITableItemEdit,
+    ITableItemEdit,
+    { rejectValue: IValidationErrors }
+>(
+    "table/edit-table-item",
+    async (tableItem, { rejectWithValue }) => {
+        try {
+            const response = await api.put(
+                "api/table/edit-table-item",
+                tableItem,
+                { withCredentials: true }
+            );
+            return response.data;
+        } catch (err: any) {
+            let error: AxiosError<IValidationErrors> = err;
+            if (!error.response) throw err;
+            return rejectWithValue(error.response.data);
+        }
+    }
+)

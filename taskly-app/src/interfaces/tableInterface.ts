@@ -26,7 +26,6 @@ export interface ITableItem {
     status: string,
     label: string,
     members: IUserForTable[],
-    // startTime: Date,
     endTime: Date,
     isCompleted: boolean,
 }
@@ -36,10 +35,16 @@ export interface ITableItemCreate {
     status: string,
     label: string,
     members: IUserForTable[],
-    // startTime: Date,
     endTime: Date,
-    isCompleted: boolean,
     tableId: string
+}
+
+export interface ITableItemEdit {
+    tableIdItem: string
+    task: string,
+    status: string,
+    label: string,
+    endTime: Date,
 }
 
 export interface IUserForTable {
