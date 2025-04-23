@@ -5,5 +5,4 @@ public record EditTableItemRequest(
     string? Text,
     string Status,
     DateTime EndTime,
-    string? Label,
-    bool IsCompleted);
+    string? Label);

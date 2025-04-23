@@ -8,11 +8,9 @@ namespace Taskly_Infrastructure.Repositories;
 public class TableItemsRepository(TasklyDbContext tasklyDbContext) : Repository<TableItemEntity>(tasklyDbContext), ITableItemsRepository
 {
     public async Task<TableItemEntity> EditTableItemAsync(Guid id, string? text, 
-        string status, DateTime endTime, string? label, 
-        bool isCompleted)
+        string status, DateTime endTime, string? label)
     {
         var tableItemToEdit = await tasklyDbContext.ToDoItems
-            // .Include(x => x.Members)
             .Include(x => x.TimeRange)
             .FirstOrDefaultAsync(x => x.Id == id);
         
@@ -20,8 +18,21 @@ public class TableItemsRepository(TasklyDbContext tasklyDbContext) : Repository<
             throw new InvalidOperationException("Table item not found.");
 
         tableItemToEdit.Text = text;
-        tableItemToEdit.IsCompleted = isCompleted;
-        tableItemToEdit.Status = isCompleted ? "Done" : status;
+        
+        if (!new[] { "ToDo", "InProgress", "Done" }.Contains(status))
+        {
+            throw new ArgumentException("Invalid status value.");
+        }
+        
+        if (tableItemToEdit.IsCompleted && tableItemToEdit.Status != "Done")
+        {
+            tableItemToEdit.Status = "Done";
+        }
+        else if (!tableItemToEdit.IsCompleted)
+        {
+            tableItemToEdit.Status = status;
+        }
+
         if (tableItemToEdit.TimeRange.EndTime != null && endTime != null)
         {
             tableItemToEdit.TimeRange.EndTime = endTime;

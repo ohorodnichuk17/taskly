@@ -9,5 +9,4 @@ public record EditTableItemCommand(
     string? Text,
     string Status,
     DateTime EndTime,
-    string? Label,
-    bool IsCompleted) : IRequest<ErrorOr<TableItemEntity>>;
+    string? Label) : IRequest<ErrorOr<TableItemEntity>>;

@@ -5,7 +5,7 @@ namespace Taskly_Application.Interfaces.IRepository;
 public interface ITableItemsRepository : IRepository<TableItemEntity>
 {
     Task<TableItemEntity> EditTableItemAsync(Guid id, string? text, string status, 
-        DateTime endTime, string? label, bool isCompleted);
+        DateTime endTime, string? label);
     
     Task<bool> MarkAsCompletedAsync(Guid id, bool isCompleted);
 }
