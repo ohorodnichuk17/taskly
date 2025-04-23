@@ -2,7 +2,7 @@
 
 namespace Taskly_Api.Response.Table;
 
-public class TableItemResponse
+public record TableItemResponse
 {
     public Guid Id { get; init; }
     public required string Task { get; init; }

@@ -4,7 +4,7 @@ public class TableItemEntity
 {
     public Guid Id { get; set; }
     public string? Text { get; set; }
-    public required string Status { get; set; } // ToDo, InProgress, Done
+    public required string Status { get; set; } 
     public TimeRangeEntity? TimeRange { get; set; }
     public string? Label { get; set; }
     private bool _isCompleted;

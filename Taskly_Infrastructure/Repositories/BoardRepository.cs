@@ -140,8 +140,6 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
         return card.Id;
     }
 
-
-
     public async Task RemoveCardListFromBoardAsync(Guid boardId, Guid cardListId)
     {
         var board = await GetBoardByIdAsync(boardId);
@@ -156,12 +154,6 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
 
     public async Task<ICollection<BoardEntity>?> GetBoardsByUser(Guid UserId)
     {
-        /*var boards = await context.Boards
-                                        .Where(b =>
-                                        b.Members != null &&
-                                        b.Members.Any(u => u.Id == UserId))
-                                   .Include(b => b.Members)
-                                   .ToListAsync();*/
         var boardsId = context.Set<Dictionary<string, object>>("UserBoard")
                     .Where(ub => (Guid)ub["UserId"] == UserId)
                     .Select(ub => (Guid)ub["BoardId"]);
@@ -240,7 +232,6 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
         };
 
         await context.TimeRanges.AddAsync(timeRang);
-        //await context.SaveChangesAsync();
 
         return timeRang.Id;
     }

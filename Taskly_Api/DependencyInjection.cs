@@ -194,7 +194,7 @@ public static class DependencyInjection
     
     private static IServiceCollection Configuring(this IServiceCollection services, IConfiguration configuration)
     {
-        services.Configure<AuthanticationSettings>(configuration.GetSection("AuthenticationSettings"));
+        services.Configure<AuthenticationSettings>(configuration.GetSection("AuthenticationSettings"));
         services.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
         services.Configure<GeminiSettings>(configuration.GetSection("Gemini"));
 

@@ -1,6 +1,4 @@
-﻿using Taskly_Domain.Entities;
-
-namespace Taskly_Api.Request.Table;
+﻿namespace Taskly_Api.Request.Table;
 
 public record CreateTableItemRequest(string Task, 
                                      string Status, 

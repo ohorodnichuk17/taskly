@@ -2,7 +2,7 @@ using Taskly_Api.Request.Authenticate;
 
 namespace Taskly_Api.Response.Table;
 
-public class TableResponse
+public record TableResponse
 {
     public Guid Id { get; set; }
     public string Name { get; set; }
