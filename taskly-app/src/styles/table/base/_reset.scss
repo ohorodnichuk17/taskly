@@ -1,0 +1,20 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  color: $text-color;
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4 {
+  margin-bottom: $padding-medium;
+}
+
+button {
+  cursor: pointer;
+}

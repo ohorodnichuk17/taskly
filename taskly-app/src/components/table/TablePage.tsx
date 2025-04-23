@@ -3,7 +3,8 @@ import { useAppDispatch, useRootState } from "../../redux/hooks.ts";
 import { getTableItems } from "../../redux/actions/tablesAction.ts";
 import TableItem from "./TableItem";
 import { useEffect, useState } from "react";
-import "../../styles/table/table-page-style.scss"
+// import "../../styles/table/table-page-style.scss"
+import "../../styles/table/main.scss";
 
 export default function TablePage() {
     const { tableId } = useParams();
@@ -44,7 +45,7 @@ export default function TablePage() {
                     <span className="icon">＋</span> Add Task
                 </button>
             </div>
-            <h1>Table</h1>
+            <h1 className="gradient-text">Table</h1>
             {isLoading ? (
                 <p>Loading...</p>
             ) : error ? (

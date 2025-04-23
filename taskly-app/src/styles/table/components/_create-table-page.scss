@@ -10,6 +10,7 @@
 
   .create-table-header {
     margin-bottom: 30px;
+
     h1 {
       font-size: 36px;
       font-weight: 800;
@@ -38,6 +39,13 @@
 
       &::placeholder {
         color: rgba(255, 255, 255, 0.5);
+      }
+
+      &:focus {
+        outline: none;
+        border-color: #ffffff;
+        background: rgba(255, 255, 255, 0.2);
+        box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
       }
     }
 
@@ -73,10 +81,27 @@
     }
 
     .error-message {
-      color: red;
+      color: #f44336;
       margin-top: 20px;
       font-size: 14px;
       font-weight: 500;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .create-table-page {
+    padding: 16px;
+
+    .create-table-header h1 {
+      font-size: 28px;
+    }
+
+    .create-table-content {
+      .input-table-name {
+        width: 100%;
+        max-width: 100%;
+      }
     }
   }
 }

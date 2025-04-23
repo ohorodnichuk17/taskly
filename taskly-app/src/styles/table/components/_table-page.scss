@@ -1,5 +1,5 @@
 .table-page {
-  padding: 22px;
+  padding: $padding-large;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 
@@ -7,28 +7,22 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px;
+    margin-bottom: $padding-large;
 
     .create-table-btn {
       background: rgba(255, 255, 255, 0.1);
-      color: #ffffff;
+      color: $text-color;
       border: 1px solid rgba(255, 255, 255, 0.3);
-      padding: 10px 20px;
-      border-radius: 12px;
-      font-weight: 500;
-      font-size: 16px;
+      padding: $padding-medium $padding-large;
+      border-radius: $border-radius;
+      font-weight: bold;
+      font-size: $font-size-medium;
       cursor: pointer;
       display: flex;
       align-items: center;
       gap: 8px;
-      transition: all 0.3s ease;
+      transition: all $transition-speed ease;
       backdrop-filter: blur(6px);
-
-      .icon {
-        font-size: 20px;
-        line-height: 1;
-        margin-top: -1px;
-      }
 
       &:hover {
         background: rgba(255, 255, 255, 0.2);

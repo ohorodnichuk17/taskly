@@ -3,7 +3,7 @@ import { useState } from "react";
 import { IUserForTable } from "../../interfaces/tableInterface.ts";
 import { createTableItem } from "../../redux/actions/tablesAction.ts";
 import { useDispatch } from "react-redux";
-import "../../styles/table/create-table-item-page-style.scss";
+import "../../styles/table/main.scss";
 
 export function CreateTableItemPage() {
     const { tableId } = useParams();

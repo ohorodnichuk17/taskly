@@ -1,7 +1,7 @@
 .tables-page {
   display: flex;
   flex-direction: column;
-  padding: 32px;
+  padding: $padding-large;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 
@@ -9,34 +9,21 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px;
-
-    h1 {
-      font-size: 36px;
-      font-weight: 800;
-      margin: 0;
-    }
+    margin-bottom: $padding-large;
 
     .create-table-btn {
+      @include flex-center;
       background: rgba(255, 255, 255, 0.1);
-      color: #ffffff;
+      color: $text-color;
       border: 1px solid rgba(255, 255, 255, 0.3);
-      padding: 10px 20px;
-      border-radius: 12px;
-      font-weight: 500;
-      font-size: 16px;
+      padding: $padding-medium $padding-large;
+      border-radius: $border-radius;
+      font-weight: bold;
+      font-size: $font-size-medium;
       cursor: pointer;
-      display: flex;
-      align-items: center;
       gap: 8px;
-      transition: all 0.3s ease;
+      transition: all $transition-speed ease;
       backdrop-filter: blur(6px);
-
-      .icon {
-        font-size: 20px;
-        line-height: 1;
-        margin-top: -1px;
-      }
 
       &:hover {
         background: rgba(255, 255, 255, 0.2);
@@ -52,41 +39,40 @@
   .tables-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 70px;
+    gap: $padding-large;
+
     .table-item {
       background: rgba(255, 255, 255, 0.08);
       border: 1px solid rgba(255, 255, 255, 0.2);
       backdrop-filter: blur(10px);
-      border-radius: 16px;
-      padding: 20px;
-      color: #ffffff;
-      font-size: 18px;
-      font-weight: 500;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-      transition: all 0.3s ease;
+      border-radius: $border-radius;
+      padding: $padding-medium;
+      color: $text-color;
+      font-size: $font-size-medium;
+      font-weight: bold;
+      box-shadow: 0 8px 20px $shadow-color;
+      transition: all $transition-speed ease;
       display: flex;
       justify-content: space-between;
       align-items: center;
 
       &:hover {
         transform: translateY(-5px);
-        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
+        box-shadow: 0 12px 24px darken($shadow-color, 10%);
       }
 
       .table-name-link {
-        margin-bottom: 20px;
+        margin-bottom: $padding-small;
       }
 
       .button-base {
         background: rgba(255, 255, 255, 0.05);
         border: none;
-        border-radius: 10px;
-        padding: 8px;
+        border-radius: $border-radius;
+        padding: $padding-small;
         cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.2s ease;
+        @include flex-center;
+        transition: all $transition-speed ease;
 
         &:hover {
           background: rgba(255, 255, 255, 0.15);
@@ -102,13 +88,13 @@
         @extend .button-base;
 
         .trash-icon {
-          fill: #ffffff;
-          transition: transform 0.2s ease, fill 0.2s ease;
-        }
+          fill: $text-color;
+          transition: transform $transition-speed ease, fill $transition-speed ease;
 
-        &:hover .trash-icon {
-          transform: scale(1.15);
-          fill: #ff4d4d;
+          &:hover {
+            transform: scale(1.15);
+            fill: $danger-color;
+          }
         }
       }
 
@@ -116,52 +102,52 @@
         @extend .button-base;
 
         .edit-icon {
-          fill: #ffffff;
-          transition: transform 0.2s ease, fill 0.2s ease;
-        }
+          fill: $text-color;
+          transition: transform $transition-speed ease, fill $transition-speed ease;
 
-        &:hover .edit-icon {
-          transform: scale(1.15);
-          fill: #ff8b4d;
+          &:hover {
+            transform: scale(1.15);
+            fill: $secondary-color;
+          }
         }
       }
 
       .buttons-container {
         display: flex;
-        gap: 10px;
+        gap: $padding-small;
       }
     }
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: $breakpoint-mobile) {
   .tables-page {
-    padding: 16px;
+    padding: $padding-small;
   }
 
   .tables-list {
-    gap: 20px;
+    gap: $padding-small;
   }
 
   .tables-header h1 {
-    font-size: 28px;
+    font-size: $font-size-medium;
   }
 
   .create-table-btn {
-    padding: 8px 16px;
-    font-size: 14px;
+    padding: $padding-small;
+    font-size: $font-size-small;
   }
 
   .table-item {
-    padding: 16px;
-    font-size: 16px;
+    padding: $padding-small;
+    font-size: $font-size-small;
   }
 }
 
 @media (max-width: 480px) {
   .tables-list {
     grid-template-columns: 1fr;
-    gap: 16px !important;
+    gap: $padding-small !important;
   }
 
   .table-item {
@@ -172,7 +158,7 @@
   .tables-header {
     flex-direction: column;
     align-items: flex-start;
-    gap: 10px;
+    gap: $padding-small;
   }
 
   .create-table-btn {

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useRootState } from "../../redux/hooks.ts";
 import { createTable, editTable } from "../../redux/actions/tablesAction.ts";
-import "../../styles/table/create-table-page-style.scss";
+import "../../styles/table/main.scss";
 
 export default function TableFormPage() {
     const navigate = useNavigate();
@@ -40,7 +40,7 @@ export default function TableFormPage() {
     return (
         <div className="create-table-page">
             <header className="create-table-header">
-                <h1>{isEditMode ? "Edit Table" : "Create a New Table"}</h1>
+                <h1 className="gradient-text">{isEditMode ? "Edit Table" : "Create a New Table"}</h1>
             </header>
             <div className="create-table-content">
                 <input

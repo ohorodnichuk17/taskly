@@ -1,4 +1,3 @@
-import "../../styles/table/table-item-styles.scss";
 import { useEffect, useState } from "react";
 import {
     deleteTableItem,
@@ -9,6 +8,7 @@ import {
 import { useDispatch } from "react-redux";
 import { ITableItem } from "../../interfaces/tableInterface.ts";
 import {useParams} from "react-router-dom";
+import "../../styles/table/main.scss";
 
 export default function TableItem({ item }: ITableItem) {
     const dispatch = useDispatch();

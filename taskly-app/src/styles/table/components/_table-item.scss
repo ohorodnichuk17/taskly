@@ -1,0 +1,323 @@
+@import "../base/variables";
+
+.table-item {
+  display: flex;
+  flex-direction: column;
+  margin: $padding-medium auto;
+  padding: $padding-medium;
+  width: 95%;
+  max-width: 1000px;
+  background: $background-color;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: $border-radius;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px $shadow-color;
+  @include transition(all, $transition-speed, ease);
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 24px darken($shadow-color, 10%);
+  }
+
+  @media (max-width: $breakpoint-mobile) {
+    margin: $padding-small auto;
+    padding: $padding-small;
+    font-size: $font-size-small;
+  }
+}
+
+.table-item-header {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: $padding-small;
+  font-size: $font-size-medium;
+  color: lighten($text-color, 10%);
+  margin-bottom: $padding-small;
+
+  h4 {
+    margin: 0;
+    text-align: center;
+  }
+
+  @media (max-width: $breakpoint-mobile) {
+    font-size: $font-size-small;
+  }
+}
+
+.table-item-content {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  align-items: center;
+  gap: $padding-small;
+  overflow-x: auto;
+
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .column {
+    text-align: center;
+    color: $text-color;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    @media (max-width: $breakpoint-mobile) {
+      font-size: $font-size-small;
+    }
+  }
+
+  .task {
+    font-weight: bold;
+    font-size: $font-size-large;
+
+    &.task--completed {
+      text-decoration: line-through;
+      opacity: 0.5;
+    }
+
+    @media (max-width: $breakpoint-mobile) {
+      font-size: $font-size-medium;
+    }
+  }
+
+  .label {
+    @include flex-center;
+
+    .label-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      margin-right: 5px;
+      box-shadow: 0 0 5px $shadow-color;
+      @include transition(transform, $transition-speed, ease);
+
+      &:hover {
+        transform: scale($label-dot-hover-scale);
+      }
+    }
+  }
+
+  .actions {
+    .delete-btn {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+
+      .trash-icon {
+        width: 20px;
+        height: 20px;
+        fill: $trash-icon-color;
+        transition: transform $transition-speed ease, fill $transition-speed ease;
+
+        &:hover {
+          transform: scale($trash-icon-hover-scale);
+          fill: $trash-icon-hover-color;
+        }
+      }
+    }
+  }
+
+  .edit-field {
+    width: 100%;
+    padding: 8px;
+    font-size: $font-size-medium;
+    border: 2px solid $input-field-border-color;
+    border-radius: $border-radius;
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #333;
+    transition: all $transition-speed ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+    &:focus {
+      border-color: $input-field-focus-border-color;
+      box-shadow: 0 0 8px rgba(255, 152, 0, 0.5);
+      outline: none;
+    }
+
+    &::placeholder {
+      color: $input-field-placeholder-color;
+    }
+  }
+
+  .edit-field-active {
+    transform: scale($input-field-active-scale);
+    border-color: $input-field-active-border-color;
+  }
+
+  select.edit-field {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23333'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 30px;
+  }
+
+  .status {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: $border-radius;
+    font-size: $font-size-small;
+    color: white;
+    font-weight: bold;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+
+    &--todo {
+      background-color: $status-todo-color;
+    }
+
+    &--in-progress {
+      background-color: $status-in-progress-color;
+    }
+
+    &--done {
+      background-color: $status-done-color;
+    }
+
+    @media (max-width: $breakpoint-mobile) {
+      font-size: $font-size-small;
+      padding: 2px 6px;
+    }
+  }
+
+  .is-completed {
+    .completion-circle {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 2px solid $completion-circle-border-color;
+      cursor: pointer;
+      transition: all $transition-speed ease;
+      margin: 0 auto;
+
+      &:hover {
+        transform: scale($completion-circle-hover-scale);
+      }
+
+      &.completed {
+        background-color: $completion-circle-completed-color;
+        box-shadow: 0 0 8px $completion-circle-completed-color;
+      }
+    }
+  }
+
+  .custom-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: $modal-background-color;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1001;
+    animation: fadeInModal $transition-speed ease;
+
+    @keyframes fadeInModal {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+  }
+
+  .custom-modal-content {
+    background: $modal-content-background-color;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 20px;
+    border-radius: $border-radius;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    color: $modal-text-color;
+    font-size: $font-size-large;
+    line-height: 1.5;
+
+    h3 {
+      margin-top: 0;
+      font-size: $font-size-large;
+      color: $danger-color;
+    }
+
+    p {
+      margin-bottom: 20px;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+
+      button {
+        padding: 8px 16px;
+        border: none;
+        border-radius: $border-radius;
+        cursor: pointer;
+        font-size: $font-size-medium;
+        transition: all $transition-speed ease;
+
+        &:hover {
+          transform: scale($button-hover-scale);
+        }
+      }
+
+      .confirm-button {
+        background-color: $modal-confirm-button-color;
+        color: white;
+
+        &:hover {
+          background-color: darken($modal-confirm-button-color, 10%);
+        }
+      }
+
+      .cancel-button {
+        background-color: $modal-cancel-button-color;
+        color: white;
+
+        &:hover {
+          background-color: darken($modal-cancel-button-color, 10%);
+        }
+      }
+    }
+  }
+
+  .label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    .label-dot {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      margin-right: 5px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease;
+
+      &:hover {
+        transform: scale(1.2);
+      }
+    }
+
+    .label-text {
+      font-size: 14px;
+      color: #ffffffd9;
+    }
+  }
+}
