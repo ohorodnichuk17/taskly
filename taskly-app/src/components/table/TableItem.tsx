@@ -1,9 +1,7 @@
 import "../../styles/table/table-item-styles.scss";
 import {useEffect, useState} from "react";
 import { ChromePicker } from "react-color";
-import {useNavigate, useParams} from "react-router-dom";
 import {
-    // addTableItem,
     deleteTableItem,
     markTableItemAsCompleted
 } from "../../redux/actions/tablesAction.ts";
@@ -11,14 +9,7 @@ import {useDispatch} from "react-redux";
 import {ITableItem} from "../../interfaces/tableInterface.ts";
 
 export default function TableItem({ item }: ITableItem) {
-    const {tableId} = useParams();
-    const [task, setTask] = useState<string>("");
-    const [status, setStatus] = useState<string>("");
-    const [label, setLabel] = useState<string>("");
-    const [startTime, setStartTime] = useState<Date>(null);
-    const [endTime, setEndTime] = useState<Date>(null);
     const dispatch = useDispatch();
-    const navigate = useNavigate();
 
     const normalizeStatus = (status: string): string => {
         return status.trim().toLowerCase().replace(/\s+/g, "");
@@ -44,17 +35,6 @@ export default function TableItem({ item }: ITableItem) {
     const handleClosePicker = () => {
         setIsColorPickerOpen(false);
     };
-
-    // const createNewTableItem = async () => {
-    //     if(tableId && task && status && label && startTime && endTime) {
-    //         try {
-    //             await dispatch(addTableItem({task, status, label, startTime, endTime, tableId}));
-    //             navigate("/");
-    //         } catch (err) {
-    //             console.error("Failed to create table item:", err);
-    //         }
-    //     }
-    // }
 
     const handleDeleteTableItem = async (itemId: string) => {
         try {
