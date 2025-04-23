@@ -7,7 +7,7 @@ export interface ITable {
     id: string,
     name: string,
     toDoItems: ITableItem[],
-    // members: IUserForTable[]
+    members: IUserForTable[]
 }
 
 export interface ITableCreate {
@@ -25,8 +25,8 @@ export interface ITableItem {
     task: string,
     status: string,
     label: string,
-    // members: IUserForTable[],
-    startTime: Date,
+    members: IUserForTable[],
+    // startTime: Date,
     endTime: Date,
     isCompleted: boolean,
 }
@@ -35,8 +35,8 @@ export interface ITableItemCreate {
     task: string,
     status: string,
     label: string,
-    // members: IUserForTable[],
-    startTime: Date,
+    members: IUserForTable[],
+    // startTime: Date,
     endTime: Date,
     isCompleted: boolean,
     tableId: string

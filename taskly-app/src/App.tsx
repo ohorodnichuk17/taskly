@@ -22,6 +22,7 @@ import CreateTablePage from "./components/table/CreateTablePage.tsx";
 import TablePage from "./components/table/TablePage.tsx";
 import EditTablePage from "./components/table/EditTablePage.tsx";
 import TableFormPage from "./components/table/TableFormPage.tsx";
+import {CreateTableItemPage} from "./components/table/CreateTableItemPage.tsx";
 
 
 function App() {
@@ -60,6 +61,7 @@ function App() {
             <Route path='/tables/create' element={<TableFormPage />}/>
             <Route path="/tables/:tableId" element={<TablePage />} />
             <Route path="/tables/edit/:tableId" element={<TableFormPage />} />
+            <Route path="/tables/:tableId/create" element={<CreateTableItemPage />} />
           </>)}
           <Route path='/boards' element={<Navigate to="/authentication/login" />} />
 

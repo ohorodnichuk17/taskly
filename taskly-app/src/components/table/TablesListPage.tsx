@@ -1,4 +1,4 @@
-import "../../styles/table/tables-page-style.scss"
+import "../../styles/table/tables-list-page-style.scss"
 import { useRootState } from "../../redux/hooks.ts";
 import { useDispatch } from "react-redux";
 import { useEffect, useRef, useState } from "react";

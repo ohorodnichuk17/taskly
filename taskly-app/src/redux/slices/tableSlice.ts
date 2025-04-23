@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {ITable, ITableCreate, ITableEdit, ITableInitialState, ITableItem} from "../../interfaces/tableInterface.ts";
 import {
     addTableItem,
-    createTable,
+    createTable, createTableItem,
     deleteTable, deleteTableItem,
     editTable,
     getTableById,
@@ -43,21 +43,31 @@ const tableSlice = createSlice({
             .addCase(getTableById.rejected, (state) => {
                 state.listOfTables = null;
             })
-            .addCase(addTableItem.fulfilled, (state, action: PayloadAction<ITableItem>) => {
+            // .addCase(addTableItem.fulfilled, (state, action: PayloadAction<ITableItem>) => {
+            //     if (state.tableItems) {
+            //         state.tableItems = [...state.tableItems, action.payload];
+            //     } else {
+            //         state.tableItems = [action.payload];
+            //     }
+            // })
+            // .addCase(addTableItem.rejected, (state) => {
+            //     state.tableItems = null;
+            // })
+            .addCase(createTable.fulfilled, (state, action: PayloadAction<ITableCreate>) => {
+                state.listOfTables = state.listOfTables ? [...state.listOfTables, action.payload] : [action.payload];
+            })
+            .addCase(createTable.rejected, (state, action) => {
+                state.createTableError = action.payload;
+            })
+            .addCase(createTableItem.fulfilled, (state, action: PayloadAction<ITableItem>) => {
                 if (state.tableItems) {
                     state.tableItems = [...state.tableItems, action.payload];
                 } else {
                     state.tableItems = [action.payload];
                 }
             })
-            .addCase(addTableItem.rejected, (state) => {
-                state.tableItems = null;
-            })
-            .addCase(createTable.fulfilled, (state, action: PayloadAction<ITableCreate>) => {
-                state.listOfTables = state.listOfTables ? [...state.listOfTables, action.payload] : [action.payload];
-            })
-            .addCase(createTable.rejected, (state, action) => {
-                state.createTableError = action.payload;
+            .addCase(createTableItem.rejected, (state, action) => {
+                state.createTableItemError = action.payload;
             })
             .addCase(deleteTable.fulfilled, (state, action: PayloadAction<string>) => {
                 if (state.listOfTables) {

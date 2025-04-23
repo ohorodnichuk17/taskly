@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import { ChromePicker } from "react-color";
 import {useNavigate, useParams} from "react-router-dom";
 import {
-    addTableItem,
+    // addTableItem,
     deleteTableItem,
     markTableItemAsCompleted
 } from "../../redux/actions/tablesAction.ts";
@@ -45,16 +45,16 @@ export default function TableItem({ item }: ITableItem) {
         setIsColorPickerOpen(false);
     };
 
-    const createNewTableItem = async () => {
-        if(tableId && task && status && label && startTime && endTime) {
-            try {
-                await dispatch(addTableItem({task, status, label, startTime, endTime, tableId}));
-                navigate("/");
-            } catch (err) {
-                console.error("Failed to create table item:", err);
-            }
-        }
-    }
+    // const createNewTableItem = async () => {
+    //     if(tableId && task && status && label && startTime && endTime) {
+    //         try {
+    //             await dispatch(addTableItem({task, status, label, startTime, endTime, tableId}));
+    //             navigate("/");
+    //         } catch (err) {
+    //             console.error("Failed to create table item:", err);
+    //         }
+    //     }
+    // }
 
     const handleDeleteTableItem = async (itemId: string) => {
         try {
