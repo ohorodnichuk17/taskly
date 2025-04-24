@@ -1,6 +1,5 @@
 namespace Taskly_Api.Request.Authenticate;
 
-public record EditUserRequest(
+public record EditAvatarRequest(
     Guid Id,
-    string UserName,
     Guid AvatarId);

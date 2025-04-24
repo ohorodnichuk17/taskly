@@ -6,14 +6,13 @@ using Taskly_Domain.Entities;
 namespace Taskly_Application.Requests.Authentication.Command.EditUserProfile;
 
 public class EditUserProfileCommandHandlerI(IUserService userService)
-    : IRequestHandler<EditUserProfileCommand, ErrorOr<UserEntity>>
+    : IRequestHandler<EditAvatarCommand, ErrorOr<UserEntity>>
 {
-    public async Task<ErrorOr<UserEntity>> Handle(EditUserProfileCommand request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<UserEntity>> Handle(EditAvatarCommand request, CancellationToken cancellationToken)
     {
         try
         {
             var user = await userService.GetUserByIdAsync(request.Id);
-            user.UserName = request.UserName;
             user.AvatarId = request.AvatarId;
             var updatedUser = await userService.UpdateUserAsync(user);
             return updatedUser;

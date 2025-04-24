@@ -81,13 +81,13 @@ namespace Taskly_Api.Controllers
                 errors => Problem(errors));
         }
 
-        [HttpPut("edit-user-profile")]
+        [HttpPut("edit-avatar")]
         [Authorize]
-        public async Task<IActionResult> EditUserProfile([FromBody] EditUserRequest request)
+        public async Task<IActionResult> EditAvatar([FromBody] EditAvatarRequest request)
         {
-            var result = await sender.Send(mapper.Map<EditUserProfileCommand>(request));
+            var result = await sender.Send(mapper.Map<EditAvatarCommand>(request));
 
-            return result.Match(result => Ok(mapper.Map<EditUserResponse>(result)),
+            return result.Match(result => Ok(mapper.Map<EditAvatarResponse>(result)),
                 errors => Problem(errors));
         }
         
