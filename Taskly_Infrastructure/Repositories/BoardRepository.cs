@@ -9,9 +9,6 @@ namespace Taskly_Infrastructure.Repositories;
 
 public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(context), IBoardRepository
 {
-    public async Task<BoardEntity> GetTemplateBoardAsync() => 
-        await GetBoardByConditionAsync(b => b.Tag == "Template");
-
     public async Task<BoardEntity> GetBoardByIdAsync(Guid boardId)
     {
         if (boardId == Guid.Empty)
