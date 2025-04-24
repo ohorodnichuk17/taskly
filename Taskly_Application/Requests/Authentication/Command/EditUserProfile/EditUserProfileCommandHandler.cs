@@ -1,24 +1,22 @@
 using ErrorOr;
 using MediatR;
-using Taskly_Application.DTO.UserDTO;
 using Taskly_Application.Interfaces.IService;
+using Taskly_Domain.Entities;
 
 namespace Taskly_Application.Requests.Authentication.Command.EditUserProfile;
 
 public class EditUserProfileCommandHandlerI(IUserService userService)
-    : IRequestHandler<EditUserProfileCommand, ErrorOr<EditUserDTO>>
+    : IRequestHandler<EditUserProfileCommand, ErrorOr<UserEntity>>
 {
-    public async Task<ErrorOr<EditUserDTO>> Handle(EditUserProfileCommand request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<UserEntity>> Handle(EditUserProfileCommand request, CancellationToken cancellationToken)
     {
         try
         {
-            var user = await userService.GetUserByEmailAsync(request.Email);
-            user.Email = request.Email;
+            var user = await userService.GetUserByIdAsync(request.Id);
             user.UserName = request.UserName;
             user.AvatarId = request.AvatarId;
             var updatedUser = await userService.UpdateUserAsync(user);
-            var dto = new EditUserDTO(updatedUser.Email, updatedUser.UserName, updatedUser.AvatarId);
-            return dto;
+            return updatedUser;
         }
         catch (Exception ex)
         {

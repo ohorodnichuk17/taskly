@@ -1,11 +1,11 @@
 using ErrorOr;
 using MediatR;
-using Taskly_Application.DTO.UserDTO;
+using Taskly_Domain.Entities;
 
 namespace Taskly_Application.Requests.Authentication.Command.EditUserProfile;
 
 public record EditUserProfileCommand(
-    string Email,
+    Guid Id,
     string UserName,
     Guid AvatarId
-    ) : IRequest<ErrorOr<EditUserDTO>>;
+    ) : IRequest<ErrorOr<UserEntity>>;

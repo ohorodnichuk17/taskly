@@ -13,10 +13,6 @@ using Taskly_Application.Requests.Authentication.Query.CheckHasUserSentRequestTo
 using Taskly_Application.Requests.Authentication.Command.SendRequestToChangePassword;
 using Taskly_Application.Requests.Authentication.Command.ChangePassword;
 using Taskly_Application.Requests.Authentication.Query.GetInformationAboutUser;
-using Microsoft.AspNetCore.Identity.Data;
-using System.Linq;
-using System.Runtime.Intrinsics.X86;
-using Taskly_Application.DTO.UserDTO;
 using Taskly_Application.Requests.Authentication.Command.EditUserProfile;
 
 namespace Taskly_Api.Controllers
@@ -87,11 +83,11 @@ namespace Taskly_Api.Controllers
 
         [HttpPut("edit-user-profile")]
         [Authorize]
-        public async Task<IActionResult> EditUserProfile([FromBody] EditUserDTO dto)
+        public async Task<IActionResult> EditUserProfile([FromBody] EditUserRequest request)
         {
-            var result = await sender.Send(mapper.Map<EditUserProfileCommand>(dto));
+            var result = await sender.Send(mapper.Map<EditUserProfileCommand>(request));
 
-            return result.Match(result => Ok(mapper.Map<EditUserDTO>(result)),
+            return result.Match(result => Ok(mapper.Map<EditUserResponse>(result)),
                 errors => Problem(errors));
         }
         
