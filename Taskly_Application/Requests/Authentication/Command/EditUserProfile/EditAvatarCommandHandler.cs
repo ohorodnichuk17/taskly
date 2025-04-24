@@ -12,7 +12,7 @@ public class EditUserProfileCommandHandlerI(IUserService userService)
     {
         try
         {
-            var user = await userService.GetUserByIdAsync(request.Id);
+            var user = await userService.GetUserByIdAsync(request.UserId);
             user.AvatarId = request.AvatarId;
             var updatedUser = await userService.UpdateUserAsync(user);
             return updatedUser;
