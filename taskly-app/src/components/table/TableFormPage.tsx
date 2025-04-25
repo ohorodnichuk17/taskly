@@ -1,36 +1,46 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
-import { useRootState } from "../../redux/hooks.ts";
 import { useDispatch } from "react-redux";
-import "../../styles/table/create-table-page-style.scss";
-import {createTable} from "../../redux/actions/tablesAction.ts";
+import { useRootState } from "../../redux/hooks.ts";
+import { createTable, editTable } from "../../redux/actions/tablesAction.ts";
+import "../../styles/table/main.scss";
 
-export default function CreateTablePage() {
+export default function TableFormPage() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const { tableId } = useParams();
     const userId = useRootState((state) => state.authenticate.userProfile?.id);
+
     const [name, setName] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
 
-    const createNewTable = async () => {
-        if (name && userId) {
-            try {
-                setIsLoading(true);
-                await dispatch(createTable({name, userId}));
-                navigate("/tables");
-            } catch (err) {
-                setError("Failed to create table. Please try again.");
-            } finally {
-                setIsLoading(false);
+    const isEditMode = !!tableId;
+
+    const handleSubmit = async () => {
+        if (!name.trim()) return;
+
+        setIsLoading(true);
+        setError(null);
+
+        try {
+            if (isEditMode && tableId) {
+                await dispatch(editTable({ tableId, tableName: name }));
+            } else if (userId) {
+                await dispatch(createTable({ name, userId }));
             }
+            navigate("/tables");
+        } catch (err) {
+            setError(`Failed to ${isEditMode ? "edit" : "create"} table. Please try again.`);
+        } finally {
+            setIsLoading(false);
         }
     };
 
     return (
         <div className="create-table-page">
             <header className="create-table-header">
-                <h1>Create a New Table</h1>
+                <h1 className="gradient-text">{isEditMode ? "Edit Table" : "Create a New Table"}</h1>
             </header>
             <div className="create-table-content">
                 <input
@@ -42,10 +52,10 @@ export default function CreateTablePage() {
                 />
                 <button
                     className="create-table-btn"
-                    onClick={createNewTable}
+                    onClick={handleSubmit}
                     disabled={isLoading || !name.trim()}
                 >
-                    {isLoading ? "Creating..." : "Create Table"}
+                    {isLoading ? (isEditMode ? "Editing..." : "Creating...") : isEditMode ? "Edit Table" : "Create Table"}
                 </button>
                 {error && <p className="error-message">{error}</p>}
             </div>

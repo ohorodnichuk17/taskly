@@ -1,79 +1,71 @@
-import React from 'react';
-import { getAllAvatarsAsync, editUserProfileAsync } from '../../redux/actions/authenticateAction';
-import { useRootState } from '../../redux/hooks';
-import '../../styles/user/profile-style.scss';
-import {useDispatch} from "react-redux";
-import {useEffect} from "react";
-import {baseUrl} from "../../axios/baseUrl.ts";
+import React from "react";
+import { useDispatch } from "react-redux";
+import { useRootState } from "../../redux/hooks.ts";
+import { editAvatarAsync, getAllAvatarsAsync } from "../../redux/actions/authenticateAction.ts";
+import { useEffect } from "react";
+import { baseUrl } from "../../axios/baseUrl.ts";
+import "../../styles/user/profile-style.scss";
+import {useNavigate} from "react-router-dom";
 
 export const ProfilePage = () => {
     const dispatch = useDispatch();
-    const userProfile = useRootState((s) => s.authenticate.userProfile);
+    const editAvatar = useRootState((s) => s.authenticate.editAvatar);
     const avatars = useRootState((s) => s.authenticate.avatars);
+    const userId = localStorage.getItem("user_profile_id");
+    const navigate = useNavigate();
+
     const [formData, setFormData] = React.useState({
-        username: userProfile?.username || '',
-        email: userProfile?.email || '',
-        avatarId: userProfile?.avatarId || '',
+        userId: userId || '',
+        avatarId: '',
     });
 
     useEffect(() => {
         dispatch(getAllAvatarsAsync());
     }, [dispatch]);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+    useEffect(() => {
+        if (editAvatar) {
+            setFormData({
+                userId: userId || '',
+                avatarId: editAvatar.avatarId,
+            });
+        }
+    }, [editAvatar, userId]);
+
+    const handleAvatarSelect = (avatarId: string) => {
+        setFormData((prev) => ({ ...prev, avatarId }));
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        await dispatch(editUserProfileAsync(formData));
+        if (!formData.userId) {
+            console.warn("User ID is missing. Cannot edit avatar.");
+            return;
+        }
+        await dispatch(editAvatarAsync(formData));
+        window.location.reload();
     };
+
+    console.log("USER ID", userId);
 
     return (
         <div className="profile-container">
-            <div className="main-information">
-                <div className="avatar">
-                    <img
-                        src={`${baseUrl}/images/avatars/${formData.avatarId}.png`}
-                        alt="User Avatar"
-                    />
-                </div>
-                <div className="name-and-buttons">
-                    <p>{formData.username}</p>
-                </div>
-            </div>
             <form onSubmit={handleSubmit} className="profile-edit-form">
-                <label>
-                    Username:
-                    <input
-                        type="text"
-                        name="username"
-                        value={formData.username}
-                        onChange={handleChange}
-                        required
-                    />
-                </label>
-                <label>
-                    Email:
-                    <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                    />
-                </label>
-                <label>
-                    Avatar:
-                    <select name="avatarId" value={formData.avatarId} onChange={handleChange}>
+                <div className="avatar-selection">
+                    <p>Choose your avatar:</p>
+                    <div className="avatar-list">
                         {avatars?.map((avatar) => (
-                            <option key={avatar.id} value={avatar.id}>
-                                {avatar.name}
-                            </option>
+                            <img
+                                key={avatar.id}
+                                src={`${baseUrl}/images/avatars/${avatar.name}.png`}
+                                alt={avatar.name}
+                                className={`avatar-option ${formData.avatarId === avatar.id ? 'selected' : ''}`}
+                                onClick={() => handleAvatarSelect(avatar.id)}
+                            />
                         ))}
-                    </select>
-                </label>
+                    </div>
+                </div>
+
                 <button type="submit">Save Changes</button>
             </form>
         </div>

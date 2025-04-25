@@ -46,7 +46,7 @@ const AIAgent = () => {
         <>
             <div className="ai-header">
                 <h1 className="gradient-text">AI Assistant</h1>
-                <p className="ai-subtitle">Ask something and get a smart answer or code!</p>
+                {/*<p className="ai-subtitle">Ask something and get a smart answer or code!</p>*/}
             </div>
             <div className="ai-container">
                 {showCopied && <div className="copy-notification">✅ Code copied to clipboard!</div>}

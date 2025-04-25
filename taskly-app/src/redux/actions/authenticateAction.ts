@@ -5,7 +5,7 @@ import { AxiosError } from "axios";
 import {
     IAvatar,
     IChangePasswordRequest,
-    ICheckHasUserSentRequestToChangePassword,
+    ICheckHasUserSentRequestToChangePassword, IEditAvatar,
     IEditUserProfile,
     ILoginRequest,
     IRegisterRequest,
@@ -192,32 +192,33 @@ export const checkHasUserSentRequestToChangePasswordAsync = createAsyncThunk<
         }
     )
 
-export const editUserProfileAsync = createAsyncThunk<
-    string,
-    IEditUserProfile,
+export const editAvatarAsync = createAsyncThunk<
+    {avatarId: string},
+    IEditAvatar,
     { rejectValue: IValidationErrors }>(
-        "authentication/edit-user-profile",
-        async (request: IEditUserProfile, { rejectWithValue }) => {
-            try {
-                var response = await api.put("api/authentication/edit-user-profile", {
-                    email: request.email,
-                    username: request.username,
-                    avatarId: request.avatarId
-                }, {
-                    withCredentials: true
-                });
+    "authentication/edit-user-profile",
+    async (request: IEditAvatar, { rejectWithValue }) => {
+        try {
+            const response = await api.put("api/authentication/edit-avatar", {
+                userId: request.userId,
+                avatarId: request.avatarId
+            }, {
+                withCredentials: true
+            });
 
-                return response.data;
-            } catch (err: any) {
-                let error: AxiosError<IValidationErrors> = err;
-                console.log("Validation error:", error.response?.data);
-                if (!error.response)
-                    throw err;
+            console.log("RESPONSE DATA", response.data);
 
-                return rejectWithValue(error.response.data);
+            return response.data;
+        } catch (err: any) {
+            let error: AxiosError<IValidationErrors> = err;
+            console.log("Validation error:", error.response?.data);
+            if (error.response) {
+                console.error("API Error:", error.response.status, error.response.data);
             }
+            return rejectWithValue(error.response?.data);
         }
-    )
+    }
+);
 
 export const changePasswordAsync = createAsyncThunk<
     string,
@@ -264,5 +265,4 @@ export const logoutAsync = createAsyncThunk<
             return rejectWithValue(error.response.data);
         }
     }
-
 );

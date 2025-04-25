@@ -1,93 +1,96 @@
 .profile-container {
+    position: absolute; // Use absolute positioning
+    top: 50%; // Move the container to 50% from the top
+    left: 50%; // Move the container to 50% from the left
+    transform: translate(-50%, -50%); // Center it precisely
     width: 40%;
     min-width: 400px;
-    height: 700px;
+    height: auto; // Adjust height dynamically based on content
     display: flex;
     flex-direction: column;
-    align-self: center;
+    align-items: center; // Center items horizontally
+    justify-content: center; // Center items vertically
     row-gap: 20px;
     box-sizing: border-box;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    padding: 20px;
+    backdrop-filter: blur(12px);
+    color: white;
 
-    .main-information {
-        height: 30%;
-        background-color: aliceblue;
+    .profile-edit-form {
         display: flex;
-        padding: 10px 30px;
-        box-sizing: border-box;
-        column-gap: 10px;
+        flex-direction: column;
+        gap: 20px;
+        width: 100%; // Ensure the form takes full width of the container
 
-        .avatar {
-            width: 100px;
-            height: 100px;
-            border: 1px solid rgb(43, 150, 221);
-            padding: 3px;
-            border-radius: 100px;
-            box-sizing: border-box;
-            background-color: white;
-            align-self: center;
+        label {
+            color: white;
+            display: flex;
+            flex-direction: column;
+            font-size: 16px;
 
-            img {
-                /*width: 100%;
-                height: 100%;*/
-                width: 95px;
-                height: 95px;
+            input {
+                margin-top: 5px;
+                padding: 8px 12px;
+                border-radius: 8px;
+                border: none;
+                outline: none;
+                background-color: rgba(255, 255, 255, 0.1);
+                color: white;
             }
         }
 
-        .name-and-buttons {
-            width: 90%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-left: auto;
-            overflow: hidden;
-
-
+        .avatar-selection {
             p {
-                width: 100%;
-                height: 50%;
-                font-size: 23px;
-                overflow: hidden;
-                text-overflow: ellipsis;
+                margin-bottom: 8px;
+                font-weight: 500;
             }
 
-            .buttons {
-                width: 100%;
-                height: 50%;
+            .avatar-list {
                 display: flex;
-                justify-content: space-evenly;
+                gap: 10px;
+                flex-wrap: wrap;
 
-                button {
-                    height: 50%;
-                    font-size: 19px;
-                    color: white;
-                    background-color: rgb(43, 150, 221);
-                    border: none;
-                    outline: none;
-                    padding: 5px 15px;
-                    box-sizing: border-box;
-                    transition: all 0.3s;
-
-                    p {
-                        margin: 0;
-                        padding: 0;
-                    }
+                .avatar-option {
+                    width: 48px;
+                    height: 48px;
+                    border-radius: 50%;
+                    object-fit: cover;
+                    cursor: pointer;
+                    border: 2px solid transparent;
+                    transition: border 0.2s ease-in-out;
 
                     &:hover {
-                        background-color: rgb(22, 154, 241);
-                        border-radius: 7px;
+                        border-color: rgba(255, 255, 255, 0.3);
+                    }
+
+                    &.selected {
+                        border-color: #00cfff;
+                        box-shadow: 0 0 10px #00cfff;
                     }
                 }
             }
         }
 
+        button {
+            padding: 10px 15px;
+            border-radius: 10px;
+            border: none;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
+            &:hover {
+                background: rgba(255, 255, 255, 0.3);
+                transform: scale(1.03);
+            }
+        }
     }
-
-    .profile-container-information {
-        height: 70%;
-        background-color: aliceblue;
-    }
-
 }

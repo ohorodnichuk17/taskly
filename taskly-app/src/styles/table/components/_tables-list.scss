@@ -1,0 +1,168 @@
+.tables-page {
+  display: flex;
+  flex-direction: column;
+  padding: $padding-large;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  .tables-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: $padding-large;
+
+    .create-table-btn {
+      @include flex-center;
+      background: rgba(255, 255, 255, 0.1);
+      color: $text-color;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: $padding-medium $padding-large;
+      border-radius: $border-radius;
+      font-weight: bold;
+      font-size: $font-size-medium;
+      cursor: pointer;
+      gap: 8px;
+      transition: all $transition-speed ease;
+      backdrop-filter: blur(6px);
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+      }
+
+      &:active {
+        transform: scale(0.97);
+      }
+    }
+  }
+
+  .tables-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: $padding-large;
+
+    .table-item {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      border-radius: $border-radius;
+      padding: $padding-medium;
+      color: $text-color;
+      font-size: $font-size-medium;
+      font-weight: bold;
+      box-shadow: 0 8px 20px $shadow-color;
+      transition: all $transition-speed ease;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 24px darken($shadow-color, 10%);
+      }
+
+      .table-name-link {
+        margin-bottom: $padding-small;
+      }
+
+      .button-base {
+        background: rgba(255, 255, 255, 0.05);
+        border: none;
+        border-radius: $border-radius;
+        padding: $padding-small;
+        cursor: pointer;
+        @include flex-center;
+        transition: all $transition-speed ease;
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.15);
+          transform: scale(1.05);
+        }
+
+        &:active {
+          transform: scale(0.95);
+        }
+      }
+
+      .delete-btn {
+        @extend .button-base;
+
+        .trash-icon {
+          fill: $text-color;
+          transition: transform $transition-speed ease, fill $transition-speed ease;
+
+          &:hover {
+            transform: scale(1.15);
+            fill: $danger-color;
+          }
+        }
+      }
+
+      .edit-btn {
+        @extend .button-base;
+
+        .edit-icon {
+          fill: $text-color;
+          transition: transform $transition-speed ease, fill $transition-speed ease;
+
+          &:hover {
+            transform: scale(1.15);
+            fill: $secondary-color;
+          }
+        }
+      }
+
+      .buttons-container {
+        display: flex;
+        gap: $padding-small;
+      }
+    }
+  }
+}
+
+@media (max-width: $breakpoint-mobile) {
+  .tables-page {
+    padding: $padding-small;
+  }
+
+  .tables-list {
+    gap: $padding-small;
+  }
+
+  .tables-header h1 {
+    font-size: $font-size-medium;
+  }
+
+  .create-table-btn {
+    padding: $padding-small;
+    font-size: $font-size-small;
+  }
+
+  .table-item {
+    padding: $padding-small;
+    font-size: $font-size-small;
+  }
+}
+
+@media (max-width: 480px) {
+  .tables-list {
+    grid-template-columns: 1fr;
+    gap: $padding-small !important;
+  }
+
+  .table-item {
+    max-width: 300px !important;
+    margin: 0 auto !important;
+  }
+
+  .tables-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: $padding-small;
+  }
+
+  .create-table-btn {
+    width: 100%;
+    text-align: center;
+  }
+}

@@ -21,9 +21,8 @@ export interface IUserProfile {
     avatarName: string
 }
 
-export interface IEditUserProfile {
-    email: string,
-    username: string,
+export interface IEditAvatar {
+    userId: string,
     avatarId: string
 }
 

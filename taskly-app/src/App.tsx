@@ -20,6 +20,9 @@ import {ProfilePage} from "./components/user/ProfilePage.tsx";
 import TablesListPage from "./components/table/TablesListPage.tsx";
 import CreateTablePage from "./components/table/CreateTablePage.tsx";
 import TablePage from "./components/table/TablePage.tsx";
+import EditTablePage from "./components/table/EditTablePage.tsx";
+import TableFormPage from "./components/table/TableFormPage.tsx";
+import {CreateTableItemPage} from "./components/table/CreateTableItemPage.tsx";
 
 
 function App() {
@@ -55,8 +58,10 @@ function App() {
             <Route path='/boards/:boardId' element={<BoardPage />}/>
             <Route path='/edit-profile' element={<ProfilePage />}/>
             <Route path='/tables' element={<TablesListPage />}/>
-            <Route path='/tables/create' element={<CreateTablePage />}/>
+            <Route path='/tables/create' element={<TableFormPage />}/>
             <Route path="/tables/:tableId" element={<TablePage />} />
+            <Route path="/tables/edit/:tableId" element={<TableFormPage />} />
+            <Route path="/tables/:tableId/create" element={<CreateTableItemPage />} />
           </>)}
           <Route path='/boards' element={<Navigate to="/authentication/login" />} />
 
