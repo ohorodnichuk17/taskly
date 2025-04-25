@@ -1,6 +1,6 @@
 ﻿namespace Taskly_Domain.Other;
 
-public record AuthanticationSettings
+public record AuthenticationSettings
 {
     public required string JwtKey { get; init; }
 }

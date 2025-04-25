@@ -35,8 +35,7 @@ public class CreateTableItemCommandHandler(IUnitOfWork unitOfWork) : IRequestHan
         }
         catch (Exception ex)
         {
-            return Error.Conflict(ex.Message);
+            return Error.Failure(ex.Message);
         }
-        
     }
 }

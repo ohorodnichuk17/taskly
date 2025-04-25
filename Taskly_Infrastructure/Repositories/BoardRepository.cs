@@ -1,6 +1,6 @@
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
-using Taskly_Application.DTO.MembersOfBoardDTO;
+using Taskly_Application.DTO;
 using Taskly_Application.Interfaces.IRepository;
 using Taskly_Domain.Entities;
 using Taskly_Infrastructure.Common.Persistence;
@@ -9,9 +9,6 @@ namespace Taskly_Infrastructure.Repositories;
 
 public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(context), IBoardRepository
 {
-    public async Task<BoardEntity> GetTemplateBoardAsync() => 
-        await GetBoardByConditionAsync(b => b.Tag == "Template");
-
     public async Task<BoardEntity> GetBoardByIdAsync(Guid boardId)
     {
         if (boardId == Guid.Empty)
@@ -55,16 +52,15 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
         await context.SaveChangesAsync();
     }
 
-    public async Task<IEnumerable<MembersOfBoardDTO>> GetMembersOfBoardAsync(Guid boardId)
+    public async Task<IEnumerable<BoardTableMemberDto>> GetMembersOfBoardAsync(Guid boardId)
     {
         var board = await GetBoardByIdAsync(boardId);
         ValidateBoardMembers(board);
-        return board.Members.Select(member => new MembersOfBoardDTO
+        return board.Members.Select(member => new BoardTableMemberDto
         {
-            UserName = member.UserName,
             Email = member.Email,
             AvatarId = member.AvatarId
-        }) ?? Enumerable.Empty<MembersOfBoardDTO>();
+        }) ?? Enumerable.Empty<BoardTableMemberDto>();
     }
 
     public async Task AddCardListToBoardAsync(Guid boardId, CardListEntity cardList)
@@ -140,8 +136,6 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
         return card.Id;
     }
 
-
-
     public async Task RemoveCardListFromBoardAsync(Guid boardId, Guid cardListId)
     {
         var board = await GetBoardByIdAsync(boardId);
@@ -156,12 +150,6 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
 
     public async Task<ICollection<BoardEntity>?> GetBoardsByUser(Guid UserId)
     {
-        /*var boards = await context.Boards
-                                        .Where(b =>
-                                        b.Members != null &&
-                                        b.Members.Any(u => u.Id == UserId))
-                                   .Include(b => b.Members)
-                                   .ToListAsync();*/
         var boardsId = context.Set<Dictionary<string, object>>("UserBoard")
                     .Where(ub => (Guid)ub["UserId"] == UserId)
                     .Select(ub => (Guid)ub["BoardId"]);
@@ -240,7 +228,6 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
         };
 
         await context.TimeRanges.AddAsync(timeRang);
-        //await context.SaveChangesAsync();
 
         return timeRang.Id;
     }

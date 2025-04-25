@@ -10,7 +10,7 @@ using Taskly_Domain.Other;
 
 namespace Taskly_Infrastructure.Services;
 
-public class JwtService(IOptions<AuthanticationSettings> options) : IJwtService
+public class JwtService(IOptions<AuthenticationSettings> options) : IJwtService
 {
     private readonly string JwtKey = options.Value.JwtKey;
     public string GetJwtToken(UserEntity userEntity, bool RememberMe)

@@ -1,6 +1,6 @@
 ﻿namespace Taskly_Api.Request.Authenticate;
 
-public class UserForTableItemResponse
+public record UserForTableItemResponse
 {
     public Guid Id { get; init; }
     public required string Email { get; init; }

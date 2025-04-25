@@ -10,7 +10,7 @@ public class GetAllTableItemsByTableIdQueryHandler(IUnitOfWork unitOfWork) : IRe
 {
     public async Task<ErrorOr<ICollection<TableItemEntity>>> Handle(GetAllTableItemsByTableIdQuery request, CancellationToken cancellationToken)
     {
-            var result = await unitOfWork.Table.GetTableIncludeById(request.TableId);
+            var result = await unitOfWork.Table.GetTableIncludeByIdAsync(request.TableId);
 
            if(result == null)
                 return Error.Conflict("Table not found");

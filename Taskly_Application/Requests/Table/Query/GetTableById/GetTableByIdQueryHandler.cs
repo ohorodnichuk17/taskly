@@ -12,7 +12,7 @@ public class GetTableByIdQueryHandler(IUnitOfWork unitOfWork) :
     {
         try
         {
-            var table = await unitOfWork.Table.GetTableIncludeById(request.TableId);
+            var table = await unitOfWork.Table.GetTableIncludeByIdAsync(request.TableId);
             if (table is null)
                 return Error.NotFound(" Table not found");
             return table;

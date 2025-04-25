@@ -12,7 +12,6 @@ using Taskly_Application.Requests.Board.Query.GetAllBoards;
 using Taskly_Application.Requests.Board.Query.GetBoardById;
 using Taskly_Application.Requests.Board.Query.GetBoardsByUser;
 using Taskly_Application.Requests.Board.Query.GetMembersOfBoard;
-using Taskly_Application.Requests.Board.Query.GetTemplateBoard;
 
 namespace Taskly_Api.Controllers;
 
@@ -35,15 +34,6 @@ public class BoardController(ISender sender, IMapper mapper) : ApiController
     public async Task<IActionResult> GetAllBoards()
     {
         var result = await sender.Send(new GetAllBoardsQuery());
-
-        return result.Match(r => Ok(r),
-            errors => Problem(errors));
-    }
-    
-    [HttpGet("getTemplateBoard")]
-    public async Task<IActionResult> GetTemplateBoard()
-    {
-        var result = await sender.Send(new GetTemplateBoardQuery());
 
         return result.Match(r => Ok(r),
             errors => Problem(errors));

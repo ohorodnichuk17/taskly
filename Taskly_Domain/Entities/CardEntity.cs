@@ -4,8 +4,8 @@ public class CardEntity
 {
     public Guid Id { get; init; }
     public string? Description { get; set; }
-    public string? AttachmentUrl { get; set; } // можна буде додати картинку або якийь пдф файл
-    public required string Status { get; set; } // ToDo, InProgress, Done
+    public string? AttachmentUrl { get; set; } 
+    public required string Status { get; set; } 
     public bool IsCompleated { get; set; }
     public Guid? TimeRangeEntityId { get; set; }
     public TimeRangeEntity? TimeRangeEntity { get; set; }
