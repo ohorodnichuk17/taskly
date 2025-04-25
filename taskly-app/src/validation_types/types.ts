@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 import z from "zod";
 
 export type EmailValidationType = z.infer<typeof EmailValidationShema>;
@@ -26,11 +27,22 @@ export const PasswordValidationShema = z.object({
             path: ["confirmPassword"]
         });
     }
-})
+});
 
 export type LoginType = z.infer<typeof LoginShema>;
 export const LoginShema = z.object({
     email: z.string().email(),
     password: z.string().min(10, "Password must contain at least 10 character(s)"),
     rememberMe: z.boolean().default(false)
-})
+});
+
+export type CardType = z.infer<typeof CardShema>;
+export const CardShema = z.object({
+    task: z.string().min(5, "Task text must contain at least 5 character(s)").max(300, "Maximum text size 300 letters"),
+    deadline: z.date().min(new Date(format(Date.now(), "yyyy-MM-dd")), "Minimum date is today").max((() => {
+        const currentYear = new Date();
+        currentYear.setFullYear(currentYear.getFullYear() + 1);
+        return currentYear;
+    })(), "Maximum term - 1 year"),
+    isPublicCard: z.boolean()
+});

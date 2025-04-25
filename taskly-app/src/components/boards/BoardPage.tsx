@@ -8,11 +8,17 @@ import trash_can_icon from '../../../public/icon/trash_can_icon.png';
 import edit_icon from '../../../public/icon/edit_icon.png';
 import leave_card_icon from '../../../public/icon/leave_card_icon.png';
 import take_card_icon from '../../../public/icon/take_card_icon.png';
+import ai_cards_icon from '../../../public/icon/ai_cards_icon.png';
+import create_custom_card_icon from '../../../public/icon/create_custom_card_icon.png';
 import { ICard, ICardListItem } from "../../interfaces/boardInterface";
 import { HubConnection, HubConnectionBuilder, HubConnectionState, LogLevel } from "@microsoft/signalr";
 import { baseUrl } from "../../axios/baseUrl";
 import { SelectDeadlineComponent } from "../general/SelectDeadlineComponent";
-import { done_card_list } from "../../constants/constants";
+import { done_card_list, todo_card_list } from "../../constants/constants";
+import { TemplateOfCard } from "../general/TemplateOfCard";
+import { TaskTextArea } from "../general/TaskTextArea";
+import { CardType } from "../../validation_types/types";
+import { createCardAsync } from "../../redux/actions/cardsActions";
 
 
 
@@ -55,7 +61,7 @@ export const BoardPage = () => {
         id: string
     }[]>([]);
     const cardListRef = useRef<ICardListItem[] | null>(null);
-    const descriptionTextAreaRef = useRef<HTMLTextAreaElement | null>(null);
+    //const descriptionTextAreaRef = useRef<HTMLTextAreaElement | null>(null);
     const editDescriptionButtonRef = useRef<HTMLButtonElement | null>(null);
 
     const [boardPageOverflowX, setBoardPageOverflowX] = useState<"auto" | "scroll">("auto");
@@ -65,13 +71,15 @@ export const BoardPage = () => {
     } | null>(null);
     const [cardLists, setCardLists] = useState<ICardListItem[] | null>(null);
     const [dropDownCardId, setDropDownCardId] = useState<string | null>(null);
-    //const [changeDeadline, setChangeDeadline] = useState<string | null>(null);
     const [changeCardProps, setChangeCardProps] = useState<
         {
             prop: ("description" | "deadline"),
             cardId: string
         } | null>(null);
     const [creatorOfCardPosition, setCreatorOfCardPosition] = useState<DOMRect | null>(null);
+    const [openedCustomCardCreate, setOpenedCustomCardCreate] = useState<boolean>(false);
+    //const [cardDescription, setCardDescription] = useState<string | null>(null);
+    const cardDescription = useRef<string | null>(null);
 
 
     const getCardList = async () => {
@@ -197,7 +205,17 @@ export const BoardPage = () => {
                 });
             }
         });
-
+        conn.current.on("AddNewCard", (model: {
+            cardListId: string,
+            cardId: string,
+            task: string,
+            deadline: Date,
+            userId: string | null,
+            userAvatar: string | null,
+            userName: string | null
+        }) => {
+            addNewCard(model);
+        });
 
         await conn.current.start();
         await conn.current.invoke("ConnectToTeamBoard", { userId, boardId });
@@ -357,6 +375,68 @@ export const BoardPage = () => {
             setCardLists(updated);
         }
     }
+    const addNewCard = (model: {
+        cardListId: string,
+        cardId: string,
+        task: string,
+        deadline: Date,
+        userId: string | null,
+        userAvatar: string | null,
+        userName: string | null
+    }) => {
+        if (cardListRef.current !== null) {
+
+            const update = cardListRef.current.map((item) => ({
+                ...item,
+                cards: item.id === model.cardListId && item.cards ? [...item.cards, {
+                    id: model.cardId,
+                    title: null,
+                    description: model.task,
+                    attachmentUrl: null,
+                    userId: model.userId,
+                    isCompleated: false,
+                    userAvatar: model.userAvatar,
+                    userName: model.userName,
+                    status: todo_card_list,
+                    startTime: new Date(),
+                    endTime: model.deadline,
+                    comments: null
+                }] : item.cards
+            }));
+
+            setCardLists(update);
+        }
+    };
+
+
+
+    const handleSubmit = async (request: CardType) => {
+        const model = {
+            cardListId: cardLists!.find(cardList => cardList.title === todo_card_list)!.id,
+            task: request.task,
+            deadline: request.deadline,
+            userId: request.isPublicCard === true ? null : userId!
+        }
+        console.log("MODEL", model)
+        const response = await dispatch(createCardAsync(model));
+
+        if (createCardAsync.fulfilled.match(response)) {
+            console.log("User", user);
+            if (conn.current) {
+                await conn.current.send("AddNewCard", {
+                    boardId: boardId,
+                    cardListId: cardLists!.find(cardList => cardList.title === todo_card_list)!.id,
+                    cardId: response.payload,
+                    task: request.task,
+                    deadline: request.deadline,
+                    userId: request.isPublicCard === true ? null : userId!,
+                    userAvatar: request.isPublicCard === true ? null : user?.avatarName,
+                    userName: request.isPublicCard === true ? null : user?.email
+                });
+            }
+            setOpenedCustomCardCreate(false);
+        }
+    }
 
     return <div className="board-page-container"
         ref={(ref) => {
@@ -431,29 +511,22 @@ export const BoardPage = () => {
                                     {changeCardProps &&
                                         changeCardProps.prop === "description" &&
                                         changeCardProps.cardId === element_card.id ?
-                                        <textarea
-                                            name="card_description"
-                                            id=""
+                                        <TaskTextArea
                                             defaultValue={element_card.description}
-                                            ref={(ref) => {
-                                                descriptionTextAreaRef.current = ref;
-                                                descriptionTextAreaRef.current?.focus();
-                                                descriptionTextAreaRef.current?.setSelectionRange(
-                                                    descriptionTextAreaRef.current.value.length,
-                                                    descriptionTextAreaRef.current.value.length);
-                                            }}
+                                            value={cardDescription}
+                                            maxLength={300}
                                             onBlur={async () => {
                                                 changeCard({
                                                     cardListId: element.id,
                                                     cardId: element_card.id,
-                                                    description: descriptionTextAreaRef.current?.value,
+                                                    description: cardDescription.current,
                                                     deadline: null
                                                 });
                                                 if (conn.current)
                                                     await conn.current.send("ChangeCardInformation",
                                                         {
                                                             changeProps: {
-                                                                description: descriptionTextAreaRef.current?.value,
+                                                                description: cardDescription.current,
                                                                 deadline: null
                                                             },
                                                             boardId: boardId,
@@ -462,12 +535,12 @@ export const BoardPage = () => {
                                                             userId: userId
                                                         }
                                                     )
-                                                descriptionTextAreaRef.current = null;
+
+                                                cardDescription.current = null
                                                 setChangeCardProps(null);
                                             }}
-                                            onChange={() => {
-                                                descriptionTextAreaRef.current!.style.height = `${descriptionTextAreaRef.current!.scrollHeight}px`;
-                                            }}></textarea>
+                                        />
+
                                         :
                                         <p>{element_card.description}</p>}
 
@@ -649,13 +722,32 @@ export const BoardPage = () => {
                                                     <img src={take_card_icon} alt="Take card" />
                                                 </button>
                                             </div>)
-
-
                                     }
 
                                 </div>
                             </div>
                         ))}
+                        {element.title === todo_card_list &&
+                            (openedCustomCardCreate === false ? <div className="create-card-buttons">
+                                <button
+                                    onClick={() => {
+                                        setOpenedCustomCardCreate(true);
+                                    }}>
+                                    <p>Create custom card</p>
+                                    <img src={create_custom_card_icon} alt="Create custom card" />
+                                </button>
+                                <button>
+                                    <p>Create card with AI</p>
+                                    <img src={ai_cards_icon} alt="Create card with AI" />
+                                </button>
+                            </div> :
+                                <TemplateOfCard
+                                    handleSubmit={handleSubmit}
+                                    onClose={() => {
+                                        setOpenedCustomCardCreate(false);
+                                    }} />)
+
+                        }
                     </div>
 
                 </div>

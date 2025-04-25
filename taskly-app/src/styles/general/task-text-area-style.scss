@@ -1,0 +1,18 @@
+textarea {
+    width: 100%;
+    max-width: 100%;
+    height: max-content;
+    background-color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 17px;
+    box-sizing: border-box;
+    color: black;
+    outline: none;
+    resize: none;
+}
+
+.length-of-task {
+    color: black;
+    text-align: end;
+}
