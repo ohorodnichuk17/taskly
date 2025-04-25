@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Taskly_Api.Request.Card;
 using Taskly_Api.Response.Card;
+using Taskly_Application.Requests.Card.Command.CreateCard;
 using Taskly_Application.Requests.Card.Command.TransferCardToAnotherCardList;
 using Taskly_Application.Requests.Card.Query.GetCardsListsByBoardId;
 
@@ -32,8 +33,23 @@ namespace Taskly_Api.Controllers
         {
             var transferedCard = await sender.Send(mapper.Map<TransferCardToAnotherCardListCommand>(transferCardToAnotherCardListRequest));
 
-            return transferedCard.Match(transferedCardt =>
+            return transferedCard.Match(transferedCard =>
                 Ok(transferedCard),
+                errors => Problem(errors));
+        }
+
+        [Authorize]
+        [HttpPost("create-card")]
+        public async Task<IActionResult> CreateCard([FromBody] CreateCardRequest createCustomCardRequest)
+        {
+            Console.WriteLine($"CardListId - {createCustomCardRequest.CardListId}");
+            Console.WriteLine($"Task - {createCustomCardRequest.Task}");
+            Console.WriteLine($"Deadline - {createCustomCardRequest.Deadline}");
+            Console.WriteLine($"UserId - {createCustomCardRequest.UserId}");
+            var createdCardId = await sender.Send(mapper.Map<CreateCardCommand>(createCustomCardRequest));
+
+            return createdCardId.Match(createdCardId =>
+                Ok(createdCardId),
                 errors => Problem(errors));
         }
     }

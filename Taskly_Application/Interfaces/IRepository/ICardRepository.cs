@@ -10,4 +10,5 @@ public interface ICardRepository : IRepository<CardEntity>
     Task<Guid?> ChangeCardAsync(Guid CardId, ChangeCardProps ChangeCardProps);
     Task<Guid?> LeaveCardAsync(Guid CardId);
     Task<Guid?> TakeCardAsync(Guid CardId, Guid UserId);
+    Task<Guid?> CreateCardAsync(Guid CardListId, string Task, DateTime Deadline, Guid? UserId);
 }

@@ -100,4 +100,41 @@ public class CardRepository(UserManager<UserEntity> userManager, TasklyDbContext
 
         return card.Id;
     }
+
+    public async Task<Guid?> CreateCardAsync(Guid CardListId, string Task, DateTime Deadline, Guid? UserId)
+    {
+        var cardListExist = await context.CardLists.AnyAsync(cl => cl.Id == CardListId);
+
+        if (cardListExist == false)
+            return null;
+        var newTimeRangEntity = new TimeRangeEntity()
+        {
+            Id = Guid.NewGuid(),
+            StartTime = DateTime.Now,
+            EndTime = Deadline,
+        };
+        await context.TimeRanges.AddAsync(newTimeRangEntity);
+
+        var newCard = new CardEntity()
+        {
+            Id = Guid.NewGuid(),
+            Description = Task,
+            Status = Constants.Todo,
+            IsCompleated = false,
+            TimeRangeEntityId = newTimeRangEntity.Id,
+            CardListId = CardListId,
+            UserId = UserId
+        };
+
+        try
+        {
+            var cardId = await CreateAsync(newCard);
+            return cardId;
+        }
+        catch (Exception)
+        {
+            return null;
+        }
+
+    }
 }

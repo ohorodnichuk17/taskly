@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Taskly_Api.Request.Card;
 using Taskly_Api.Response.Card;
+using Taskly_Application.Requests.Card.Command.CreateCard;
 using Taskly_Application.Requests.Card.Command.TransferCardToAnotherCardList;
 using Taskly_Domain.Entities;
 
@@ -37,5 +38,11 @@ public class CardMapsterConfig : IRegister
         config.NewConfig<TransferCardToAnotherCardListRequest, TransferCardToAnotherCardListCommand>()
             .Map(src => src.CardId, desp => desp.CardId)
             .Map(src => src.ToCardListId, desp => desp.AnotherCardListId);
+
+        config.NewConfig<CreateCardRequest, CreateCardCommand>()
+           .Map(src => src.CardListId, desp => desp.CardListId)
+           .Map(src => src.Task, desp => desp.Task)
+           .Map(src => src.Deadline, desp => desp.Deadline)
+           .Map(src => src.UserId, desp => desp.UserId);
     }
 }

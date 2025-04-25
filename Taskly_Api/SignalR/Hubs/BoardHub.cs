@@ -100,4 +100,19 @@ public class BoardHub(ISender sender) : Hub
             CardId: model.CardId,
             UserId: model.UserId));
     }
+    public async Task AddNewCard(AddNewCardModel model)
+    {
+        await Clients
+            .Groups(model.BoardId.ToString())
+            .SendAsync("AddNewCard", new
+            {
+                CardListId = model.CardListId,
+                CardId = model.CardId,
+                Task = model.Task,
+                Deadline = model.Deadline,
+                UserId = model.UserId,
+                UserAvatar = model.UserAvatar,
+                UserName = model.UserName
+            });
+    }
 }
