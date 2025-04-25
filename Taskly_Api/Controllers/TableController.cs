@@ -1,8 +1,10 @@
 ﻿using MapsterMapper;
 using MediatR;
+using Microsoft.AspNet.SignalR;
 using Microsoft.AspNetCore.Mvc;
 using Taskly_Api.Request.Table;
 using Taskly_Api.Response.Table;
+using Taskly_Application.Requests.Table.Command.AddMemberToTable;
 using Taskly_Application.Requests.Table.Command.CreateTable;
 using Taskly_Application.Requests.Table.Command.CreateTableItem;
 using Taskly_Application.Requests.Table.Command.DeleteTable;
@@ -10,8 +12,10 @@ using Taskly_Application.Requests.Table.Command.DeleteTableItem;
 using Taskly_Application.Requests.Table.Command.EditTable;
 using Taskly_Application.Requests.Table.Command.EditTableItem;
 using Taskly_Application.Requests.Table.Command.MarkTableItemAsCompleted;
+using Taskly_Application.Requests.Table.Command.RemoveMemberFromTable;
 using Taskly_Application.Requests.Table.Query.GetAllTableItemsByTableId;
 using Taskly_Application.Requests.Table.Query.GetAllTables;
+using Taskly_Application.Requests.Table.Query.GetMembersOfTable;
 using Taskly_Application.Requests.Table.Query.GetTableById;
 using Taskly_Application.Requests.Table.Query.GetTablesByUserId;
 
@@ -19,6 +23,7 @@ namespace Taskly_Api.Controllers
 {
     [Route("api/table")]
     [ApiController]
+    [Authorize]
     public class TableController(ISender sender, IMapper mapper) : ApiController
     {
         [HttpPost("create-table")]
@@ -101,6 +106,31 @@ namespace Taskly_Api.Controllers
         {
             var result = await sender.Send(new MarkTableItemAsCompletedCommand(id, request.IsCompleted));
             return result.Match(updatedItem => Ok(updatedItem),
+                errors => Problem(errors));
+        }
+        
+        [HttpPost("add-member-to-table")]
+        public async Task<IActionResult> AddMemberToTable([FromBody] MemberTableRequest memberTableRequest)
+        {
+            var result = await sender.Send(mapper.Map<AddMemberToTableCommand>(memberTableRequest));
+            return result.Match(result => Ok(result),
+                errors => Problem(errors));
+        }
+
+        [HttpDelete("remove-member-from-table")]
+        public async Task<IActionResult> RemoveMemberFromTable(
+            [FromBody] MemberTableRequest removeMemberFromTableRequest)
+        {
+            var result = await sender.Send(mapper.Map<RemoveMemberFromTableCommand>(removeMemberFromTableRequest));
+            return result.Match(result => Ok(result),
+                errors => Problem(errors));
+        }
+
+        [HttpGet("members/{tableId}")]
+        public async Task<IActionResult> GetMembersOfTable([FromRoute] Guid tableId)
+        {
+            var result = await sender.Send(new GetMembersOfTableQuery(tableId));
+            return result.Match(result => Ok(result),
                 errors => Problem(errors));
         }
     }

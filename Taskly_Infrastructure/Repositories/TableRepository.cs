@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using Taskly_Application.DTO;
 using Taskly_Application.Interfaces.IRepository;
 using Taskly_Domain.Entities;
 using Taskly_Infrastructure.Common.Persistence;
@@ -8,14 +9,14 @@ namespace Taskly_Infrastructure.Repositories;
 
 public class TableRepository(TasklyDbContext tasklyDbContext) : Repository<TableEntity>(tasklyDbContext), ITableRepository
 {
-    public async Task<TableEntity?> GetTableIncludeById(Guid TableId)
+    public async Task<TableEntity?> GetTableIncludeByIdAsync(Guid tableId)
     {
         var table = await dbSet.Include(t => t.ToDoItems)
                 .ThenInclude(ti => ti.Members)
                 .ThenInclude(m => m.Avatar)
                 .Include(t => t.ToDoItems)
                 .ThenInclude(ti => ti.TimeRange)
-                .FirstOrDefaultAsync(t => t.Id == TableId);
+                .FirstOrDefaultAsync(t => t.Id == tableId);
 
         return table;
     }
@@ -84,12 +85,60 @@ public class TableRepository(TasklyDbContext tasklyDbContext) : Repository<Table
         await tasklyDbContext.SaveChangesAsync(); 
         return table;
     }
-    
+
+    public async Task AddMemberToTableAsync(Guid tableId, Guid userId)
+    {
+        var (table, user) = await GetTableAndUserAsync(tableId, userId);
+        ValidateTableMembers(table);
+        if (table.Members.Any(m => m.Id == userId))
+            throw new ArgumentException("User already exists in the table");
+        table.Members ??= new List<UserEntity>();
+        table.Members.Add(user);
+        user.ToDoTables.Add(table);
+        var tableUserRelations = new Dictionary<string, object>();
+        tableUserRelations.Add("TableId", table.Id);
+        tableUserRelations.Add("UserId", user.Id);
+        await tasklyDbContext.Set<Dictionary<string, object>>("UserTable").AddAsync(tableUserRelations);
+        await tasklyDbContext.SaveChangesAsync();
+    }
+
+    public async Task RemoveMemberFromTableAsync(Guid tableId, Guid userId)
+    {
+        var (table, user) = await GetTableAndUserAsync(tableId, userId);
+        ValidateTableMembers(table);
+        if(table.Members == null)
+            throw new InvalidOperationException("Table members list is not initialized.");
+        if (!table.Members.Any(m => m.Id == userId))
+            throw new ArgumentException("User does not exist in the table");
+        var tableUser = await tasklyDbContext.Set<Dictionary<string, object>>("UserTable")
+            .FirstOrDefaultAsync(tu => (Guid)tu["TableId"] == table.Id && (Guid)tu["UserId"] == user.Id);
+        if (tableUser != null)
+            tasklyDbContext.Set<Dictionary<string, object>>("UserTable").Remove(tableUser);
+        await tasklyDbContext.SaveChangesAsync();
+    }
+
+    public async Task<IEnumerable<BoardTableMemberDto>> GetMembersOfTableAsync(Guid tableId)
+    {
+        var table = await GetTableIncludeByIdAsync(tableId);
+        ValidateTableMembers(table);
+        return table.Members.Select(m => new BoardTableMemberDto
+        {
+            Email = m.Email,
+            AvatarId = m.AvatarId
+        }) ?? Enumerable.Empty<BoardTableMemberDto>();
+    }
+
+    private void ValidateTableMembers(TableEntity tableEntity)
+    {
+        if(tableEntity.Members == null)
+            throw new ArgumentException("Table members is not initialized");
+    }
+
     private async Task<(TableEntity table, UserEntity user)> GetTableAndUserAsync(Guid tableId, Guid userId)
     {
         if (userId == Guid.Empty)
             throw new ArgumentException("TableId and UserId must not be empty");
-        var table = await GetTableIncludeById(tableId);
+        var table = await GetTableIncludeByIdAsync(tableId);
         var user = await tasklyDbContext.Users.FindAsync(userId);
         if (user == null)
             throw new KeyNotFoundException("User not found");

@@ -1,8 +1,7 @@
 using ErrorOr;
 using MediatR;
-using Taskly_Application.DTO.MembersOfBoardDTO;
-using Taskly_Domain.Entities;
+using Taskly_Application.DTO;
 
 namespace Taskly_Application.Requests.Board.Query.GetMembersOfBoard;
 
-public record GetMembersOfBoardQuery(Guid BoardId) : IRequest<ErrorOr<IEnumerable<MembersOfBoardDTO>>>;
+public record GetMembersOfBoardQuery(Guid BoardId) : IRequest<ErrorOr<IEnumerable<BoardTableMemberDto>>>;

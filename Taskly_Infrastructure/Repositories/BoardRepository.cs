@@ -1,6 +1,6 @@
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
-using Taskly_Application.DTO.MembersOfBoardDTO;
+using Taskly_Application.DTO;
 using Taskly_Application.Interfaces.IRepository;
 using Taskly_Domain.Entities;
 using Taskly_Infrastructure.Common.Persistence;
@@ -52,16 +52,15 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
         await context.SaveChangesAsync();
     }
 
-    public async Task<IEnumerable<MembersOfBoardDTO>> GetMembersOfBoardAsync(Guid boardId)
+    public async Task<IEnumerable<BoardTableMemberDto>> GetMembersOfBoardAsync(Guid boardId)
     {
         var board = await GetBoardByIdAsync(boardId);
         ValidateBoardMembers(board);
-        return board.Members.Select(member => new MembersOfBoardDTO
+        return board.Members.Select(member => new BoardTableMemberDto
         {
-            UserName = member.UserName,
             Email = member.Email,
             AvatarId = member.AvatarId
-        }) ?? Enumerable.Empty<MembersOfBoardDTO>();
+        }) ?? Enumerable.Empty<BoardTableMemberDto>();
     }
 
     public async Task AddCardListToBoardAsync(Guid boardId, CardListEntity cardList)
