@@ -40,6 +40,12 @@ export default function TablePage() {
             <div className="table-header">
                 <button
                     className="create-table-btn"
+                    onClick={() => navigate(`/tables/${tableId}/add-member`)}
+                >
+                    <span className="icon">＋</span> Add Member To Table
+                </button>
+                <button
+                    className="create-table-btn"
                     onClick={() => navigate(`/tables/${tableId}/create`)}
                 >
                     <span className="icon">＋</span> Add Task

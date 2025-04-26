@@ -1,5 +1,6 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {
+    IAddUserToTable,
     ITable,
     ITableCreate,
     ITableEdit,
@@ -227,3 +228,25 @@ export const editTableItem = createAsyncThunk<
         }
     }
 )
+
+export const addUserToTable = createAsyncThunk<
+    void,
+    IAddUserToTable,
+    { rejectValue: IValidationErrors }
+>(
+    "table/add-member-to-table",
+    async ({tableId, memberEmail}, {rejectWithValue}) => {
+        try {
+            const response = await api.post(
+                "api/table/add-member-to-table",
+                { tableId, memberEmail },
+                { withCredentials: true }
+            );
+            return;
+        } catch (err: any) {
+            let error: AxiosError<IValidationErrors> = err;
+            if (!error.response) throw err;
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
