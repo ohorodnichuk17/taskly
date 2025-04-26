@@ -1,0 +1,34 @@
+.generate-cards-with-ai {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(255, 255, 255, 0.596);
+    padding: 10px;
+    border-radius: 10px;
+    box-sizing: border-box;
+    position: relative;
+
+    .generate-cards-with-ai-buttons {
+        width: 100%;
+        height: 35px;
+        display: flex;
+        justify-content: flex-end;
+        column-gap: 10px;
+
+        button {
+            font-size: 17px;
+            border: none;
+            outline: none;
+            border-radius: 10px;
+            padding: 5px 8px;
+            box-sizing: border-box;
+            color: white;
+            background-color: #641acc;
+            cursor: pointer;
+
+            &:hover {
+                background-color: #6822ca;
+            }
+        }
+    }
+}

@@ -3,22 +3,19 @@ import '../../styles/general/template-of-card-style.scss';
 import { TaskTextArea } from './TaskTextArea';
 import { format } from 'date-fns';
 import { Controller, useForm } from 'react-hook-form';
-import { CardShema, CardType } from '../../validation_types/types';
+import { NewCardShema, NewCardType } from '../../validation_types/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRootState } from '../../redux/hooks';
 import { InputMessage, typeOfMessage } from './InputMessage';
-import { boolean } from 'zod';
+
 
 interface ITemplateOfCard {
-    handleSubmit: (request: CardType) => void,
+    handleSubmit: (request: NewCardType) => void,
     onClose: () => void
 }
 
 export const TemplateOfCard = (props: ITemplateOfCard) => {
     const userId = useRootState((s) => s.authenticate.userProfile?.id);
-
-    const maxTextOfTask = 300;
-    const cardDescription = useRef<string | null>(null);
 
     const {
         register,
@@ -29,8 +26,8 @@ export const TemplateOfCard = (props: ITemplateOfCard) => {
             errors
         },
         control
-    } = useForm<CardType>({
-        resolver: zodResolver(CardShema),
+    } = useForm<NewCardType>({
+        resolver: zodResolver(NewCardShema),
         defaultValues: {
             deadline: (() => {
                 const currentDay = new Date();
@@ -56,7 +53,6 @@ export const TemplateOfCard = (props: ITemplateOfCard) => {
                     control={control}
                     render={({ field }) => (
                         <TaskTextArea
-                            value={cardDescription}
                             maxLength={300}
                             register={{
                                 name: field.name,
@@ -116,8 +112,3 @@ export const TemplateOfCard = (props: ITemplateOfCard) => {
 
         </div>)
 }
-/*<TaskTextArea
-                    value={cardDescription}
-                    maxLength={300}
-                    register={register("task")}
-                /> */

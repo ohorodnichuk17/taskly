@@ -2,14 +2,18 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { authenticateReducer } from "../redux/slices/authenticateSlice.ts";
 import { generalReducer } from './slices/generalSlice.ts';
 import { boardReducer } from './slices/boardSlice.ts';
-import {tableReducer} from "./slices/tableSlice.ts";
+import { tableReducer } from "./slices/tableSlice.ts";
+import { cardReducer } from './slices/cardSlice.ts';
+import { geminiReducer } from './slices/geminiSlice.ts';
 
 
 const reducers = combineReducers({
     authenticate: authenticateReducer,
     general: generalReducer,
     board: boardReducer,
-    table: tableReducer
+    table: tableReducer,
+    card: cardReducer,
+    gemini: geminiReducer
 });
 
 export const store = configureStore({

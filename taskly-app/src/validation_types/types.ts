@@ -36,8 +36,8 @@ export const LoginShema = z.object({
     rememberMe: z.boolean().default(false)
 });
 
-export type CardType = z.infer<typeof CardShema>;
-export const CardShema = z.object({
+export type NewCardType = z.infer<typeof NewCardShema>;
+export const NewCardShema = z.object({
     task: z.string().min(5, "Task text must contain at least 5 character(s)").max(300, "Maximum text size 300 letters"),
     deadline: z.date().min(new Date(format(Date.now(), "yyyy-MM-dd")), "Minimum date is today").max((() => {
         const currentYear = new Date();
@@ -46,3 +46,8 @@ export const CardShema = z.object({
     })(), "Maximum term - 1 year"),
     isPublicCard: z.boolean()
 });
+
+export type GenerateCardsWithAIType = z.infer<typeof GenerateCardsWithAIShema>;
+export const GenerateCardsWithAIShema = z.object({
+    description: z.string().min(5, "Description must contain at least 5 character(s)").max(300, "Maximum text size 300 letters")
+})

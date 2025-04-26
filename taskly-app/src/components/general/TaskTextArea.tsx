@@ -5,7 +5,7 @@ import { FieldValues, Path, UseFormRegister, UseFormRegisterReturn } from "react
 interface ITaskTextArea {
     defaultValue?: string | null,
     onBlur?: (() => void),
-    value: React.MutableRefObject<string | null>,
+    value?: React.MutableRefObject<string | null>,
     maxLength: number,
     register?: {
         name: string;
@@ -20,7 +20,9 @@ export const TaskTextArea = (prop: ITaskTextArea) => {
     const [lengthOfText, setLengtOfText] = useState<number>(0);
 
     useEffect(() => {
-        prop.value.current = prop.defaultValue ? prop.defaultValue : "";
+        if (prop.value) {
+            prop.value.current = prop.defaultValue ? prop.defaultValue : "";
+        }
         setLengtOfText(prop.defaultValue ? prop.defaultValue.length : 0);
     }, [])
     useEffect(() => {
@@ -58,7 +60,9 @@ export const TaskTextArea = (prop: ITaskTextArea) => {
                 }}
                 onBlur={prop.onBlur ? prop.onBlur : () => { }}
                 onChange={(e) => {
-                    prop.value.current = descriptionTextAreaRef.current ? descriptionTextAreaRef.current.value : "";
+                    if (prop.value) {
+                        prop.value.current = descriptionTextAreaRef.current ? descriptionTextAreaRef.current.value : "";
+                    }
                     if (descriptionTextAreaRef.current) {
                         descriptionTextAreaRef.current.style.height = '0px';
                         descriptionTextAreaRef.current.style.height = `${descriptionTextAreaRef.current.scrollHeight}px`;

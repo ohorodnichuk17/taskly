@@ -17,8 +17,11 @@ import { SelectDeadlineComponent } from "../general/SelectDeadlineComponent";
 import { done_card_list, todo_card_list } from "../../constants/constants";
 import { TemplateOfCard } from "../general/TemplateOfCard";
 import { TaskTextArea } from "../general/TaskTextArea";
-import { CardType } from "../../validation_types/types";
+import { GenerateCardsWithAIType, NewCardType } from "../../validation_types/types";
 import { createCardAsync } from "../../redux/actions/cardsActions";
+import { GenerateCardsWithAI } from "../general/GenerateCardsWithAI";
+import { generateCardsWithAIAsync } from "../../redux/actions/geminiActions";
+import { ICreateCardWithAI } from "../../interfaces/cardsInterface";
 
 
 
@@ -78,6 +81,7 @@ export const BoardPage = () => {
         } | null>(null);
     const [creatorOfCardPosition, setCreatorOfCardPosition] = useState<DOMRect | null>(null);
     const [openedCustomCardCreate, setOpenedCustomCardCreate] = useState<boolean>(false);
+    const [openedAICardCreate, setOpenedAICardCreate] = useState<boolean>(false);
     //const [cardDescription, setCardDescription] = useState<string | null>(null);
     const cardDescription = useRef<string | null>(null);
 
@@ -92,33 +96,56 @@ export const BoardPage = () => {
             setCardLists(cardList);
     }, [cardList])
     useLayoutEffect(() => {
-        cardListRef.current = cardLists;
-        if (cardsRef.current) {
-            cardsRef.current.forEach((el) => {
-                if (el.element) {
+        if ((!cardListRef.current) || (cardListRef.current && cardLists != null)) {
+            if (cardsRef.current) {
+                cardsRef.current.forEach((el) => {
+                    if (el.element) {
+                        if (!cardListRef.current) {
+                            scrollElement(el.element);
+                        }
+                        else {
+                            const newCardList = cardLists?.find((cardListItem) => cardListItem.id === el.id);
+                            const oldList = cardListRef.current.find((cardListItem) => cardListItem.id === el.id);
 
-                    if (el.element.scrollHeight > el.element.offsetHeight) {
-                        el.element.style.overflowY = "scroll";
-                        el.element.scrollTo(0, el.element.scrollHeight);
+                            if (newCardList &&
+                                newCardList.cards &&
+                                oldList &&
+                                oldList.cards &&
+                                newCardList.cards.length > oldList.cards.length) {
+                                scrollElement(el.element);
+                            }
+
+                        }
                     }
-                    else {
-                        el.element.style.overflowY = "auto";
-                        el.element.scrollTo(0, 0);
-                    }
-                }
-            });
+                });
+
+            }
+
         }
+        cardListRef.current = cardLists;
+
     }, [cardLists])
     useEffect(() => {
         if (boardPageRef.current) {
             setBoardPageOverflowX(boardPageRef.current.offsetWidth < boardPageRef.current.scrollWidth ?
                 "scroll" :
                 "auto"
-
             )
         }
     }, [boardPageRef.current])
+    useEffect(() => {
+        if ((openedCustomCardCreate === true || openedAICardCreate === true) && cardsRef.current && cardListRef.current) {
+            const toDoCardListId = cardListRef.current.find(_cardList => _cardList.title === todo_card_list)!.id || null;
+            if (toDoCardListId) {
+                const toDoCardList = cardsRef.current.find(_cardList => _cardList.id === toDoCardListId);
+                scrollElement(toDoCardList!.element!);
+                /*if (toDoCardList!.element!.scrollHeight > toDoCardList!.element!.offsetHeight) {
+                    moveToEndOfCardList(toDoCardList!.element!);
+                }*/
 
+            }
+        }
+    }, [openedCustomCardCreate, openedAICardCreate])
 
     useLayoutEffect(() => {
         getCardList();
@@ -215,6 +242,20 @@ export const BoardPage = () => {
             userName: string | null
         }) => {
             addNewCard(model);
+        });
+        conn.current.on("AddNewCards", (model: {
+            cards: {
+                cardListId: string,
+                cardId: string,
+                task: string,
+                deadline: Date,
+                userId: string | null,
+                userAvatar: string | null,
+                userName: string | null
+            }[]
+
+        }) => {
+            addNewCards(model.cards);
         });
 
         await conn.current.start();
@@ -407,10 +448,92 @@ export const BoardPage = () => {
             setCardLists(update);
         }
     };
+    const addNewCards = (model: {
+        cardListId: string,
+        cardId: string,
+        task: string,
+        deadline: Date,
+        userId: string | null,
+        userAvatar: string | null,
+        userName: string | null
+    }[]) => {
+        if (cardListRef.current !== null) {
+
+            const update = cardListRef.current.map((item) => ({
+                ...item,
+                cards: item.cards ? [...item.cards, ...model
+                    .filter(card => item.id === card.cardListId)
+                    .map((card) => {
+                        return {
+                            id: card.cardId,
+                            title: null,
+                            description: card.task,
+                            attachmentUrl: null,
+                            userId: card.userId,
+                            isCompleated: false,
+                            userAvatar: card.userAvatar,
+                            userName: card.userName,
+                            status: todo_card_list,
+                            startTime: new Date(),
+                            endTime: card.deadline,
+                            comments: null
+                        }
+                    })] : item.cards
+            }));
+
+            setCardLists(update);
+        }
+    };
+
+    const scrollElement = (cardList: HTMLDivElement) => {
+        if (cardList.scrollHeight > cardList.offsetHeight) {
+            cardList.style.overflowY = "scroll";
+            cardList.scrollTo(0, cardList.scrollHeight);
+        }
+        else {
+            cardList.style.overflowY = "auto";
+            cardList.scrollTo(0, 0);
+        }
+    }
+    const createNewCards = () => {
+        if (openedCustomCardCreate === false && openedAICardCreate === false) {
+            return (
+                <div className="create-card-buttons">
+                    <button
+                        onClick={() => {
+                            setOpenedCustomCardCreate(true);
+                        }}>
+                        <p>Create custom card</p>
+                        <img src={create_custom_card_icon} alt="Create custom card" />
+                    </button>
+                    <button onClick={() => {
+                        setOpenedAICardCreate(true);
+                    }}>
+                        <p>Create card with AI</p>
+                        <img src={ai_cards_icon} alt="Create card with AI" />
+                    </button>
+                </div>
+            );
+        }
+        else if (openedCustomCardCreate === true) {
+            return (<TemplateOfCard
+                handleSubmit={handleSubmitCreateCustomCard}
+                onClose={() => {
+                    setOpenedCustomCardCreate(false);
+                }} />);
+        }
+        else {
+            return (<GenerateCardsWithAI
+                handleSubmit={handleSubmitGenerateCardsWithAI}
+                onClose={() => {
+                    setOpenedAICardCreate(false);
+                }}
+            />);
+        }
+    }
 
 
-
-    const handleSubmit = async (request: CardType) => {
+    const handleSubmitCreateCustomCard = async (request: NewCardType) => {
         const model = {
             cardListId: cardLists!.find(cardList => cardList.title === todo_card_list)!.id,
             task: request.task,
@@ -425,16 +548,37 @@ export const BoardPage = () => {
             if (conn.current) {
                 await conn.current.send("AddNewCard", {
                     boardId: boardId,
-                    cardListId: cardLists!.find(cardList => cardList.title === todo_card_list)!.id,
-                    cardId: response.payload,
-                    task: request.task,
-                    deadline: request.deadline,
-                    userId: request.isPublicCard === true ? null : userId!,
-                    userAvatar: request.isPublicCard === true ? null : user?.avatarName,
-                    userName: request.isPublicCard === true ? null : user?.email
+                    cardModel: {
+                        cardListId: cardLists!.find(cardList => cardList.title === todo_card_list)!.id,
+                        cardId: response.payload,
+                        task: request.task,
+                        deadline: request.deadline,
+                        userId: request.isPublicCard === true ? null : userId!,
+                        userAvatar: request.isPublicCard === true ? null : user?.avatarName,
+                        userName: request.isPublicCard === true ? null : user?.email
+                    }
                 });
             }
             setOpenedCustomCardCreate(false);
+        }
+    }
+    const handleSubmitGenerateCardsWithAI = async (request: GenerateCardsWithAIType) => {
+        const model: ICreateCardWithAI = {
+            boardId: boardId!,
+            task: request.description
+        }
+        const response = await dispatch(generateCardsWithAIAsync(model));
+
+        if (generateCardsWithAIAsync.fulfilled.match(response)) {
+            console.log("User", user);
+            console.log("response.payload", response.payload);
+            if (conn.current) {
+                await conn.current.send("AddNewCards", {
+                    boardId: boardId,
+                    cardModels: response.payload
+                });
+            }
+            setOpenedAICardCreate(false);
         }
     }
 
@@ -727,27 +871,7 @@ export const BoardPage = () => {
                                 </div>
                             </div>
                         ))}
-                        {element.title === todo_card_list &&
-                            (openedCustomCardCreate === false ? <div className="create-card-buttons">
-                                <button
-                                    onClick={() => {
-                                        setOpenedCustomCardCreate(true);
-                                    }}>
-                                    <p>Create custom card</p>
-                                    <img src={create_custom_card_icon} alt="Create custom card" />
-                                </button>
-                                <button>
-                                    <p>Create card with AI</p>
-                                    <img src={ai_cards_icon} alt="Create card with AI" />
-                                </button>
-                            </div> :
-                                <TemplateOfCard
-                                    handleSubmit={handleSubmit}
-                                    onClose={() => {
-                                        setOpenedCustomCardCreate(false);
-                                    }} />)
-
-                        }
+                        {element.title === todo_card_list && createNewCards()}
                     </div>
 
                 </div>

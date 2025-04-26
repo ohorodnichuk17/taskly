@@ -9,6 +9,7 @@
     bottom: 0;
     left: 0;
     z-index: 100;
+    border-radius: 10px;
 
     .dots-block {
         display: flex;
@@ -18,7 +19,7 @@
             width: 25px;
             height: 25px;
             border-radius: 25px;
-            background-color: #0052CC;
+            background-color: #641acc;
             animation-name: dotAnimation;
             animation-duration: 0.5s;
             animation-iteration-count: infinite;
@@ -47,6 +48,6 @@
 
     to {
         transform: scale(0.7);
-        background-color: #004ab9;
+        background-color: #6822ca;
     }
 }
