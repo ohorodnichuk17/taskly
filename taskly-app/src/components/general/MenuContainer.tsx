@@ -6,8 +6,7 @@ import {Link, Navigate, useNavigate} from 'react-router-dom';
 import { HideMenuContainer } from './HideMenuContainer';
 import { RootState } from '../../redux/store.ts';
 import {useDispatch, useSelector} from 'react-redux';
-import {logout, logoutAsync} from "../../redux/actions/authenticateAction.ts";
-import {useAppDispatch} from "../../redux/hooks.ts";
+import {logoutAsync} from "../../redux/actions/authenticateAction.ts";
 import {baseUrl} from "../../axios/baseUrl.ts";
 
 export interface IMenuContainer {
@@ -217,7 +216,7 @@ export const MenuContainer = (props: IMenuContainer) => {
                                                 e.currentTarget.style.color = '#333333';
                                             }}
                                         >
-                                            Edit profile
+                                            Edit avatar
                                         </Link>
                                         <Link
                                             to=""
