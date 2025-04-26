@@ -25,7 +25,6 @@ export interface ITableItem {
     task: string,
     status: string,
     label: string,
-    members: IUserForTable[],
     endTime: Date,
     isCompleted: boolean,
 }
@@ -34,7 +33,6 @@ export interface ITableItemCreate {
     task: string,
     status: string,
     label: string,
-    members: IUserForTable[],
     endTime: Date,
     tableId: string
 }
@@ -45,6 +43,11 @@ export interface ITableItemEdit {
     status: string,
     label: string,
     endTime: Date,
+}
+
+export interface IAddUserToTable {
+    tableId: string,
+    memberEmail: string
 }
 
 export interface IUserForTable {
