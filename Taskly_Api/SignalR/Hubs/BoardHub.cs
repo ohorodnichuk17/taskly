@@ -106,13 +106,22 @@ public class BoardHub(ISender sender) : Hub
             .Groups(model.BoardId.ToString())
             .SendAsync("AddNewCard", new
             {
-                CardListId = model.CardListId,
-                CardId = model.CardId,
-                Task = model.Task,
-                Deadline = model.Deadline,
-                UserId = model.UserId,
-                UserAvatar = model.UserAvatar,
-                UserName = model.UserName
+                CardListId = model.CardModel.CardListId,
+                CardId = model.CardModel.CardId,
+                Task = model.CardModel.Task,
+                Deadline = model.CardModel.Deadline,
+                UserId = model.CardModel.UserId,
+                UserAvatar = model.CardModel.UserAvatar,
+                UserName = model.CardModel.UserName
+            });
+    }
+    public async Task AddNewCards(AddNewCardsModel model)
+    {
+        await Clients
+            .Groups(model.BoardId.ToString())
+            .SendAsync("AddNewCards", new
+            {
+                Cards = model.CardModels,               
             });
     }
 }

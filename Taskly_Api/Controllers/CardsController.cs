@@ -42,10 +42,6 @@ namespace Taskly_Api.Controllers
         [HttpPost("create-card")]
         public async Task<IActionResult> CreateCard([FromBody] CreateCardRequest createCustomCardRequest)
         {
-            Console.WriteLine($"CardListId - {createCustomCardRequest.CardListId}");
-            Console.WriteLine($"Task - {createCustomCardRequest.Task}");
-            Console.WriteLine($"Deadline - {createCustomCardRequest.Deadline}");
-            Console.WriteLine($"UserId - {createCustomCardRequest.UserId}");
             var createdCardId = await sender.Send(mapper.Map<CreateCardCommand>(createCustomCardRequest));
 
             return createdCardId.Match(createdCardId =>

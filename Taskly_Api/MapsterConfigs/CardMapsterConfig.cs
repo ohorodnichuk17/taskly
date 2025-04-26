@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Taskly_Api.Request.Card;
 using Taskly_Api.Response.Card;
+using Taskly_Api.SignalR.Models;
 using Taskly_Application.Requests.Card.Command.CreateCard;
 using Taskly_Application.Requests.Card.Command.TransferCardToAnotherCardList;
 using Taskly_Domain.Entities;
@@ -32,7 +33,7 @@ public class CardMapsterConfig : IRegister
 
         config.NewConfig<CardListEntity, CardListResponse>()
             .Map(src => src.Id, desp => desp.Id)
-            .Map(src => src.Cards, desp => desp.Cards.ToArray().Adapt<CardResponse[]>())
+            .Map(src => src.Cards, desp => desp.Cards.OrderBy(cl => cl.TimeRangeEntity!.StartTime).ToArray().Adapt<CardResponse[]>())
             .Map(src => src.BoardId, desp => desp.BoardId);
 
         config.NewConfig<TransferCardToAnotherCardListRequest, TransferCardToAnotherCardListCommand>()
@@ -44,5 +45,14 @@ public class CardMapsterConfig : IRegister
            .Map(src => src.Task, desp => desp.Task)
            .Map(src => src.Deadline, desp => desp.Deadline)
            .Map(src => src.UserId, desp => desp.UserId);
+
+        config.NewConfig<CardEntity, CardModel>()
+            .Map(src => src.CardId, desp => desp.Id)
+            .Map(src => src.CardListId, desp => desp.CardListId)
+            .Map(src => src.Task, desp => desp.Description)
+            .Map(src => src.Deadline, desp => desp.TimeRangeEntity!.EndTime)
+            .Map(src => src.UserId, desp => desp.UserId)
+            .Map(src => src.UserAvatar, desp => desp.UserId == null ? null : desp.User!.Avatar!.ImagePath)
+            .Map(src => src.UserName, desp => desp.UserId == null ? null : desp.User!.Email);
     }
 }

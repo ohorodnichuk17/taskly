@@ -19,6 +19,10 @@ public class AuthenticationRepository(UserManager<UserEntity> userManager, Taskl
     {
         return await userManager.FindByEmailAsync(Email) != null;
     }
+    public async Task<bool> IsUserExist(Guid Id)
+    {
+        return await userManager.FindByIdAsync(Id.ToString()) != null;
+    }
 
     public async Task<string> AddVerificationEmail(string Email, string Code)
     {

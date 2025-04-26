@@ -3,12 +3,15 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Taskly_Api.Request.Gemini;
+using Taskly_Api.Response.Card;
+using Taskly_Api.SignalR.Models;
 using Taskly_Application.Gemini.PromptRequest;
 using Taskly_Application.Requests.Gemini.Command.CreateCardsForTask;
 using Taskly_Application.Requests.Gemini.Command.GenerateBase;
 using Taskly_Application.Requests.Gemini.Command.GenerateDeadlineSuggestions;
 using Taskly_Application.Requests.Gemini.Command.GenerateTaskImprovementSuggestions;
 using Taskly_Application.Requests.Gemini.Command.TranslateText;
+using Taskly_Domain.Entities;
 
 namespace Taskly_Api.Controllers;
 
@@ -106,10 +109,11 @@ public class GeminiController(ISender sender, IMapper mapper) : ApiController
     public async Task<IActionResult> CreateCardsForTask([FromBody] CreateCardsForTaskRequest createCardsForTaskRequest)
     {
         var userId = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "id")!.Value;
+        Console.WriteLine($"userId - {userId}");
 
-        var result = await sender.Send(mapper.Map<CreateCardsForTaskCommand>(createCardsForTaskRequest));
+        var result = await sender.Send(mapper.Map<CreateCardsForTaskCommand>((createCardsForTaskRequest,userId)));
 
-        return result.Match(result => Ok(result),
+        return result.Match(result => Ok(mapper.Map<CardModel[]>(result)),
         errors => Problem(errors));
     }
 }

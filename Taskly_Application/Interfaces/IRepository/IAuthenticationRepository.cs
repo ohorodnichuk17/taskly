@@ -6,6 +6,7 @@ namespace Taskly_Application.Interfaces.IRepository;
 public interface IAuthenticationRepository : IRepository<UserEntity>
 {
     Task<bool> IsUserExist(string Email);
+    Task<bool> IsUserExist(Guid Id);
     Task<string> AddVerificationEmail(string Email, string Code);
     Task<bool> IsVerificationEmailExistAndCodeValid(string Email, string Code);
     Task VerificateEmail(string Email);
