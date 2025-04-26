@@ -11,12 +11,15 @@ public class TableRepository(TasklyDbContext tasklyDbContext) : Repository<Table
 {
     public async Task<TableEntity?> GetTableIncludeByIdAsync(Guid tableId)
     {
-        var table = await dbSet.Include(t => t.ToDoItems)
-                .ThenInclude(ti => ti.Members)
-                .ThenInclude(m => m.Avatar)
-                .Include(t => t.ToDoItems)
-                .ThenInclude(ti => ti.TimeRange)
-                .FirstOrDefaultAsync(t => t.Id == tableId);
+        var table = await dbSet
+            .Include(t => t.Members) 
+            .ThenInclude(m => m.Avatar) 
+            .Include(t => t.ToDoItems)
+            .ThenInclude(ti => ti.Members)
+            .ThenInclude(m => m.Avatar)
+            .Include(t => t.ToDoItems)
+            .ThenInclude(ti => ti.TimeRange)
+            .FirstOrDefaultAsync(t => t.Id == tableId);
 
         return table;
     }
