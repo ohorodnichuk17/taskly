@@ -1,13 +1,14 @@
 export interface ITableInitialState {
     listOfTables: ITable[] | null,
     tableItems: ITableItem[] | null
+    membersList: IUserListForTable[] | null
 }
 
 export interface ITable {
     id: string,
     name: string,
     toDoItems: ITableItem[],
-    members: IUserForTable[]
+    members: IUserToTable[]
 }
 
 export interface ITableCreate {
@@ -45,13 +46,13 @@ export interface ITableItemEdit {
     endTime: Date,
 }
 
-export interface IAddUserToTable {
+export interface IUserToTable {
     tableId: string,
     memberEmail: string
 }
 
-export interface IUserForTable {
-    id: string,
+export interface IUserListForTable {
+    $id: string;
     email: string,
-    avatar: string
+    avatarId: string
 }

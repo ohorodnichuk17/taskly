@@ -24,6 +24,7 @@ import EditTablePage from "./components/table/EditTablePage.tsx";
 import TableFormPage from "./components/table/TableFormPage.tsx";
 import {CreateTableItemPage} from "./components/table/CreateTableItemPage.tsx";
 import AddMemberToTablePage from "./components/table/AddMemberToTablePage.tsx";
+import ListOfMembersInTable from "./components/table/ListOfMembersInTable.tsx";
 
 
 function App() {
@@ -64,6 +65,7 @@ function App() {
             <Route path="/tables/edit/:tableId" element={<TableFormPage />} />
             <Route path="/tables/:tableId/create" element={<CreateTableItemPage />} />
             <Route path="/tables/:tableId/add-member" element={<AddMemberToTablePage />} />
+            <Route path="/tables/:tableId/members" element={<ListOfMembersInTable />} />
           </>)}
           <Route path='/boards' element={<Navigate to="/authentication/login" />} />
 

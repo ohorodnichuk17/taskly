@@ -1,0 +1,133 @@
+@import "../base/variables";
+
+.members-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  color: #ffffffd9;
+  position: relative;
+}
+
+.members-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  position: relative;
+  margin-bottom: $padding-large;
+}
+
+.members-header h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-align: center;
+}
+
+.back-btn {
+  @include flex-center;
+  background: rgba(255, 255, 255, 0.1);
+  color: $text-color;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: $padding-medium $padding-large;
+  border-radius: $border-radius;
+  font-weight: bold;
+  font-size: $font-size-medium;
+  cursor: pointer;
+  gap: 8px;
+  transition: all $transition-speed ease;
+  backdrop-filter: blur(6px);
+
+  position: absolute;
+  top: 20px;
+  right: 20px;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
+}
+
+.members-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  max-width: 1000px;
+}
+
+.member-item {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  margin-bottom: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.member-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+}
+
+.member-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 15px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.member-item span {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #ffffffd9;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.members-page div {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #ff6f61;
+  margin-top: 20px;
+}
+
+.members-page div.loading {
+  color: #ffffffd9;
+}
+
+
+@media (max-width: 768px) {
+  .members-list {
+    padding: 0 10px;
+  }
+
+  .member-item {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 10px;
+  }
+
+  .member-avatar {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+
+  .member-item span {
+    font-size: 0.9rem;
+  }
+}

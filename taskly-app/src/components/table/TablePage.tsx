@@ -1,9 +1,8 @@
-import {useNavigate, useParams} from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useRootState } from "../../redux/hooks.ts";
 import { getTableItems } from "../../redux/actions/tablesAction.ts";
 import TableItem from "./TableItem";
 import { useEffect, useState } from "react";
-// import "../../styles/table/table-page-style.scss"
 import "../../styles/table/main.scss";
 
 export default function TablePage() {
@@ -12,6 +11,7 @@ export default function TablePage() {
     const dispatch = useAppDispatch();
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [isMenuOpen, setIsMenuOpen] = useState(false); // Стан для відкриття/закриття меню
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -38,18 +38,37 @@ export default function TablePage() {
     return (
         <div className="table-page">
             <div className="table-header">
+                {/* Головна кнопка для відкриття меню */}
                 <button
-                    className="create-table-btn"
-                    onClick={() => navigate(`/tables/${tableId}/add-member`)}
+                    className="menu-btn"
+                    onClick={() => setIsMenuOpen(!isMenuOpen)}
                 >
-                    <span className="icon">＋</span> Add Member To Table
+                    <span className="icon">≡</span> Menu
                 </button>
-                <button
-                    className="create-table-btn"
-                    onClick={() => navigate(`/tables/${tableId}/create`)}
-                >
-                    <span className="icon">＋</span> Add Task
-                </button>
+
+                {/* Випадаюче меню */}
+                {isMenuOpen && (
+                    <div className="dropdown-menu">
+                        <button
+                            className="dropdown-item"
+                            onClick={() => navigate(`/tables/${tableId}/add-member`)}
+                        >
+                            <span className="icon">＋</span> Add Member To Table
+                        </button>
+                        <button
+                            className="dropdown-item"
+                            onClick={() => navigate(`/tables/${tableId}/members`)}
+                        >
+                            <span className="icon">＋</span> Members In Table
+                        </button>
+                        <button
+                            className="dropdown-item"
+                            onClick={() => navigate(`/tables/${tableId}/create`)}
+                        >
+                            <span className="icon">＋</span> Add Task
+                        </button>
+                    </div>
+                )}
             </div>
             <h1 className="gradient-text">Table</h1>
             {isLoading ? (
@@ -59,7 +78,7 @@ export default function TablePage() {
             ) : Array.isArray(tableItems) && tableItems.length > 0 ? (
                 <div className="table-items">
                     {tableItems.map((item, index) => (
-                        <TableItem key={index} item={item}/>
+                        <TableItem key={index} item={item} />
                     ))}
                 </div>
             ) : (

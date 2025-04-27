@@ -1,17 +1,19 @@
-@import "../base/variables";
-
 .table-page {
   padding: $padding-large;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
 
   .table-header {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
     margin-bottom: $padding-large;
 
-    .create-table-btn {
+    .menu-btn {
       background: rgba(255, 255, 255, 0.1);
       color: $text-color;
       border: 1px solid rgba(255, 255, 255, 0.3);
@@ -35,5 +37,46 @@
         transform: scale(0.97);
       }
     }
+
+    .dropdown-menu {
+      display: flex;
+      flex-direction: column;
+      gap: $padding-small;
+      margin-top: $padding-small;
+
+      .dropdown-item {
+        background: rgba(255, 255, 255, 0.1);
+        color: $text-color;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        padding: $padding-medium $padding-large;
+        border-radius: $border-radius;
+        font-weight: bold;
+        font-size: $font-size-medium;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all $transition-speed ease;
+        backdrop-filter: blur(6px);
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.2);
+          transform: translateY(-2px);
+        }
+
+        &:active {
+          transform: scale(0.97);
+        }
+      }
+    }
+  }
+
+  .table-items {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: $padding-small;
+    padding-right: $padding-small;
   }
 }

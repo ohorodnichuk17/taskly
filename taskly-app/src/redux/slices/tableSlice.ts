@@ -1,9 +1,17 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import {ITable, ITableCreate, ITableEdit, ITableInitialState, ITableItem} from "../../interfaces/tableInterface.ts";
 import {
+    ITable,
+    ITableCreate,
+    ITableEdit,
+    ITableInitialState,
+    ITableItem,
+    IUserListForTable
+} from "../../interfaces/tableInterface.ts";
+import {
+    addUserToTable,
     createTable, createTableItem,
     deleteTable, deleteTableItem,
-    editTable, editTableItem,
+    editTable, editTableItem, getAllMembersInTable,
     getTableById,
     getTableItems,
     getTablesByUser, markTableItemAsCompleted
@@ -12,6 +20,7 @@ import {
 const initialState: ITableInitialState = {
     listOfTables: null,
     tableItems: null,
+    membersList: [],
 }
 
 const tableSlice = createSlice({
@@ -100,6 +109,18 @@ const tableSlice = createSlice({
             })
             .addCase(editTableItem.rejected, (state, action) => {
                 state.editTableItemError = action.payload;
+            })
+            .addCase(addUserToTable.fulfilled, (state, action: PayloadAction<ITable>) => {
+
+            })
+            .addCase(addUserToTable.rejected, (state, action) => {
+
+            })
+            .addCase(getAllMembersInTable.fulfilled, (state, action: PayloadAction<IUserListForTable[]>) => {
+                state.membersList = action.payload;
+            })
+            .addCase(getAllMembersInTable.rejected, (state, action) => {
+                state.membersList = null;
             })
             .addCase(editTable.fulfilled, (state, action: PayloadAction<ITableEdit>) => {
                 if (state.listOfTables) {
