@@ -1,12 +1,14 @@
 @import "../base/variables";
+@import "../base/mixins";
 
 .members-page {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
-  color: #ffffffd9;
+  padding: $padding-large;
+  color: $text-color;
   position: relative;
+  height: 85%;
 }
 
 .members-header {
@@ -16,18 +18,12 @@
   width: 100%;
   position: relative;
   margin-bottom: $padding-large;
-}
-
-.members-header h1 {
-  font-size: 2rem;
-  font-weight: bold;
-  letter-spacing: 1px;
-  text-align: center;
+  padding-top: $padding-small;
 }
 
 .back-btn {
   @include flex-center;
-  background: rgba(255, 255, 255, 0.1);
+  background: $background-color;
   color: $text-color;
   border: 1px solid rgba(255, 255, 255, 0.3);
   padding: $padding-medium $padding-large;
@@ -36,12 +32,12 @@
   font-size: $font-size-medium;
   cursor: pointer;
   gap: 8px;
-  transition: all $transition-speed ease;
+  @include transition(all, $transition-speed, ease);
   backdrop-filter: blur(6px);
 
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: $padding-small;
+  right: $padding-small;
 
   &:hover {
     background: rgba(255, 255, 255, 0.2);
@@ -55,28 +51,30 @@
 
 .members-list {
   list-style: none;
-  padding: 0;
   margin: 0;
   width: 100%;
   max-width: 1000px;
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 8px;
 }
 
 .member-item {
   display: flex;
   align-items: center;
-  padding: 15px;
-  margin-bottom: 10px;
+  padding: $padding-medium;
+  margin-bottom: $padding-small;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 10px;
   backdrop-filter: blur(10px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-  transition: all 0.3s ease;
+  box-shadow: 0 8px 32px $shadow-color;
+  @include transition(all, 0.3s, ease);
 }
 
 .member-item:hover {
   transform: translateY(-3px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 12px 24px $shadow-color;
 }
 
 .member-avatar {
@@ -84,15 +82,15 @@
   height: 50px;
   border-radius: 50%;
   object-fit: cover;
-  margin-right: 15px;
+  margin-right: $padding-medium;
   border: 2px solid rgba(255, 255, 255, 0.3);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .member-item span {
-  font-size: 1rem;
+  font-size: $font-size-medium;
   font-weight: 500;
-  color: #ffffffd9;
+  color: $text-color;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -100,17 +98,16 @@
 
 .members-page div {
   text-align: center;
-  font-size: 1.2rem;
-  color: #ff6f61;
-  margin-top: 20px;
+  font-size: $font-size-large;
+  color: $danger-color;
+  margin-top: $padding-medium;
 }
 
 .members-page div.loading {
-  color: #ffffffd9;
+  color: $text-color;
 }
 
-
-@media (max-width: 768px) {
+@media (max-width: $breakpoint-mobile) {
   .members-list {
     padding: 0 10px;
   }
@@ -119,15 +116,27 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
-    padding: 10px;
+    padding: $padding-small;
   }
 
   .member-avatar {
     margin-right: 0;
-    margin-bottom: 10px;
+    margin-bottom: $padding-small;
   }
 
   .member-item span {
-    font-size: 0.9rem;
+    font-size: $font-size-small;
+  }
+
+  .members-header {
+    padding-top: $padding-medium;
+  }
+
+  .back-btn {
+    top: $padding-small;
+  }
+
+  h1 {
+    font-size: $font-size-medium;
   }
 }

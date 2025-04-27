@@ -37,7 +37,7 @@ export default function ListOfMembersInTable() {
     return (
         <div className="members-page">
             <header className="members-header">
-                <h1><span className="gradient-text">Members</span></h1>
+                <h1 className="gradient-text">Members</h1>
                 <button className="back-btn"
                         onClick={() => navigate(`/tables/${tableId}`)}
                 >
