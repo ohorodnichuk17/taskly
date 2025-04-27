@@ -251,6 +251,28 @@ export const addUserToTable = createAsyncThunk<
     }
 );
 
+export const removeUserFromTable = createAsyncThunk<
+    void,
+    IUserToTable,
+    { rejectValue: IValidationErrors }
+>(
+    "table/remove-member-from-table",
+    async ({tableId, memberEmail}, {rejectWithValue}) => {
+        try {
+            await api.delete(
+                "api/table/add-member-to-table",
+                { tableId, memberEmail },
+                { withCredentials: true }
+            );
+            return;
+        } catch (err: any) {
+            let error: AxiosError<IValidationErrors> = err;
+            if (!error.response) throw err;
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
+
 export const getAllMembersInTable = createAsyncThunk<
     IUserListForTable,
     string,

@@ -5,7 +5,7 @@ import {
     ITableEdit,
     ITableInitialState,
     ITableItem,
-    IUserListForTable
+    IUserListForTable, IUserToTable
 } from "../../interfaces/tableInterface.ts";
 import {
     addUserToTable,
@@ -14,7 +14,7 @@ import {
     editTable, editTableItem, getAllMembersInTable,
     getTableById,
     getTableItems,
-    getTablesByUser, markTableItemAsCompleted
+    getTablesByUser, markTableItemAsCompleted, removeUserFromTable
 } from "../actions/tablesAction.ts";
 
 const initialState: ITableInitialState = {
@@ -110,10 +110,16 @@ const tableSlice = createSlice({
             .addCase(editTableItem.rejected, (state, action) => {
                 state.editTableItemError = action.payload;
             })
-            .addCase(addUserToTable.fulfilled, (state, action: PayloadAction<ITable>) => {
+            .addCase(addUserToTable.fulfilled, (state, action: PayloadAction<IUserToTable>) => {
 
             })
             .addCase(addUserToTable.rejected, (state, action) => {
+
+            })
+            .addCase(removeUserFromTable.fulfilled, (state, action: PayloadAction<IUserToTable>) => {
+
+            })
+            .addCase(removeUserFromTable.rejected, (state, action) => {
 
             })
             .addCase(getAllMembersInTable.fulfilled, (state, action: PayloadAction<IUserListForTable[]>) => {

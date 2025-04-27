@@ -35,6 +35,15 @@ export default function ListOfMembersInTable() {
         fetchMembers();
     }, [tableId]);
 
+    const handleAddMember = () => {
+        // Логіка для додавання нового члена
+        // Наприклад, переадресація на сторінку додавання члена
+        navigate(`/tables/${tableId}/add-member`);
+    };
+
+    // Фільтруємо членів, виключаючи поточного користувача
+    const filteredMembers = members?.filter((member) => member.email !== currentUser?.email);
+
     return (
         <div className="members-page">
             <header className="members-header">
@@ -50,30 +59,33 @@ export default function ListOfMembersInTable() {
                 <div>Loading...</div>
             ) : error ? (
                 <div>{error}</div>
-            ) : members && members.length > 0 ? (
+            ) : filteredMembers && filteredMembers.length > 0 ? (
                 <ul className="members-list">
-                    {members
-                        .filter((member) => member.email !== currentUser?.email)
-                        .map((member) => {
-                            const avatar = avatars?.find((avatar) => avatar.id === member.avatarId);
-                            return (
-                                <li key={member.$id} className="member-item">
-                                    <img
-                                        src={
-                                            avatar
-                                                ? `${baseUrl}/images/avatars/${avatar.name}.png`
-                                                : "/path/to/default-avatar.png"
-                                        }
-                                        alt={`${member.email}'s avatar`}
-                                        className="member-avatar"
-                                    />
-                                    <span>{member.email}</span>
-                                </li>
-                            );
-                        })}
+                    {filteredMembers.map((member) => {
+                        const avatar = avatars?.find((avatar) => avatar.id === member.avatarId);
+                        return (
+                            <li key={member.$id} className="member-item">
+                                <img
+                                    src={
+                                        avatar
+                                            ? `${baseUrl}/images/avatars/${avatar.name}.png`
+                                            : "/path/to/default-avatar.png"
+                                    }
+                                    alt={`${member.email}'s avatar`}
+                                    className="member-avatar"
+                                />
+                                <span>{member.email}</span>
+                            </li>
+                        );
+                    })}
                 </ul>
             ) : (
-                <div>No members found.</div>
+                <div className="no-members">
+                    <p>No members found.</p>
+                    <button className="add-member-btn" onClick={handleAddMember}>
+                        Add Member
+                    </button>
+                </div>
             )}
         </div>
     );

@@ -49,6 +49,43 @@
   }
 }
 
+.add-member-btn {
+  background: $background-color;
+  color: $text-color;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: $padding-small $padding-medium;
+  border-radius: $border-radius;
+  font-size: $font-size-medium;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: $padding-large;
+  @include transition(all, $transition-speed, ease);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
+}
+
+.no-members {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-top: $padding-large;
+
+  p {
+    font-size: $font-size-large;
+    color: $text-color;
+    margin-bottom: $padding-small;
+  }
+}
+
 .members-list {
   list-style: none;
   margin: 0;
