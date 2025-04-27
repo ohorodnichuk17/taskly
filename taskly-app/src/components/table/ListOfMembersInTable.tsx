@@ -2,9 +2,9 @@ import { useAppDispatch, useRootState } from "../../redux/hooks.ts";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getAllMembersInTable } from "../../redux/actions/tablesAction.ts";
-import {baseUrl} from "../../axios/baseUrl.ts";
-import {getAllAvatarsAsync} from "../../redux/actions/authenticateAction.ts";
-import "../../styles/table/main.scss"
+import { baseUrl } from "../../axios/baseUrl.ts";
+import { getAllAvatarsAsync } from "../../redux/actions/authenticateAction.ts";
+import "../../styles/table/main.scss";
 
 export default function ListOfMembersInTable() {
     const [error, setError] = useState<string | null>(null);
@@ -12,8 +12,11 @@ export default function ListOfMembersInTable() {
     const dispatch = useAppDispatch();
     const { tableId } = useParams();
     const navigate = useNavigate();
+
     const members = useRootState((state) => state.table.membersList);
     const avatars = useRootState((s) => s.authenticate.avatars);
+
+    const currentUser = useRootState((state) => state.authenticate.userProfile);
 
     const fetchMembers = async () => {
         try {
@@ -26,20 +29,19 @@ export default function ListOfMembersInTable() {
         } finally {
             setLoading(false);
         }
-    }
+    };
 
     useEffect(() => {
         fetchMembers();
-        console.log("Members from Redux:", members);
-        console.log("Avatars from Redux:", avatars);
     }, [tableId]);
 
     return (
         <div className="members-page">
             <header className="members-header">
                 <h1 className="gradient-text">Members</h1>
-                <button className="back-btn"
-                        onClick={() => navigate(`/tables/${tableId}`)}
+                <button
+                    className="back-btn"
+                    onClick={() => navigate(`/tables/${tableId}`)}
                 >
                     Back to table
                 </button>
@@ -50,19 +52,25 @@ export default function ListOfMembersInTable() {
                 <div>{error}</div>
             ) : members && members.length > 0 ? (
                 <ul className="members-list">
-                    {members.map((member) => {
-                        const avatar = avatars?.find((avatar) => avatar.id === member.avatarId);
-                        return (
-                            <li key={member.$id} className="member-item">
-                                <img
-                                    src={avatar ? `${baseUrl}/images/avatars/${avatar.name}.png` : "/path/to/default-avatar.png"}
-                                    alt={`${member.email}'s avatar`}
-                                    className="member-avatar"
-                                />
-                                <span>{member.email}</span>
-                            </li>
-                        );
-                    })}
+                    {members
+                        .filter((member) => member.email !== currentUser?.email)
+                        .map((member) => {
+                            const avatar = avatars?.find((avatar) => avatar.id === member.avatarId);
+                            return (
+                                <li key={member.$id} className="member-item">
+                                    <img
+                                        src={
+                                            avatar
+                                                ? `${baseUrl}/images/avatars/${avatar.name}.png`
+                                                : "/path/to/default-avatar.png"
+                                        }
+                                        alt={`${member.email}'s avatar`}
+                                        className="member-avatar"
+                                    />
+                                    <span>{member.email}</span>
+                                </li>
+                            );
+                        })}
                 </ul>
             ) : (
                 <div>No members found.</div>
