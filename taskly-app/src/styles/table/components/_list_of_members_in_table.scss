@@ -107,6 +107,7 @@
   backdrop-filter: blur(10px);
   box-shadow: 0 8px 32px $shadow-color;
   @include transition(all, 0.3s, ease);
+  justify-content: space-between;
 }
 
 .member-item:hover {
@@ -131,6 +132,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-right: auto;
 }
 
 .members-page div {
@@ -144,36 +146,83 @@
   color: $text-color;
 }
 
+.delete-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  order: 2;
+  margin-left: 10px;
+
+  .trash-icon {
+    width: 20px;
+    height: 20px;
+    fill: $trash-icon-color;
+    transition: transform $transition-speed ease, fill $transition-speed ease;
+
+    &:hover {
+      transform: scale($trash-icon-hover-scale);
+      fill: $trash-icon-hover-color;
+    }
+  }
+}
+
 @media (max-width: $breakpoint-mobile) {
-  .members-list {
-    padding: 0 10px;
-  }
-
-  .member-item {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: $padding-small;
-  }
-
-  .member-avatar {
-    margin-right: 0;
-    margin-bottom: $padding-small;
-  }
-
-  .member-item span {
-    font-size: $font-size-small;
+  .members-page {
+    padding: $padding-medium;
   }
 
   .members-header {
-    padding-top: $padding-medium;
+    margin-bottom: $padding-medium;
   }
 
   .back-btn {
     top: $padding-small;
+    right: $padding-small;
+    font-size: $font-size-small;
+    padding: $padding-small $padding-medium;
   }
 
-  h1 {
-    font-size: $font-size-medium;
+  .add-member-btn {
+    font-size: $font-size-small;
+    padding: $padding-small $padding-medium;
+    margin-top: $padding-medium;
+  }
+
+  .no-members {
+    margin-top: $padding-medium;
+  }
+
+  .members-list {
+    padding: 0 10px;
+    max-height: 300px;
+  }
+
+  .member-item {
+    flex-direction: row;
+    align-items: center;
+    padding: $padding-small;
+  }
+
+  .member-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: $padding-small;
+    margin-bottom: 0;
+  }
+
+  .member-item span {
+    font-size: $font-size-small;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: auto;
+  }
+
+  .delete-btn {
+    position: static;
+    margin-left: $padding-small;
+    order: 2;
   }
 }

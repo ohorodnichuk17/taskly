@@ -1,7 +1,7 @@
 import { useAppDispatch, useRootState } from "../../redux/hooks.ts";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getAllMembersInTable } from "../../redux/actions/tablesAction.ts";
+import {getAllMembersInTable, removeUserFromTable} from "../../redux/actions/tablesAction.ts";
 import { baseUrl } from "../../axios/baseUrl.ts";
 import { getAllAvatarsAsync } from "../../redux/actions/authenticateAction.ts";
 import "../../styles/table/main.scss";
@@ -31,17 +31,26 @@ export default function ListOfMembersInTable() {
         }
     };
 
+    const handleRemoveMemberFromTable = async (memberEmail: string) => {
+        try {
+            setLoading(true);
+            await dispatch(removeUserFromTable({ tableId, memberEmail }));
+            fetchMembers();
+        } catch (err) {
+            setError("Failed to remove member from table. Please try again.");
+        } finally {
+            setLoading(false);
+        }
+    }
+
     useEffect(() => {
         fetchMembers();
     }, [tableId]);
 
     const handleAddMember = () => {
-        // Логіка для додавання нового члена
-        // Наприклад, переадресація на сторінку додавання члена
         navigate(`/tables/${tableId}/add-member`);
     };
 
-    // Фільтруємо членів, виключаючи поточного користувача
     const filteredMembers = members?.filter((member) => member.email !== currentUser?.email);
 
     return (
@@ -75,6 +84,14 @@ export default function ListOfMembersInTable() {
                                     className="member-avatar"
                                 />
                                 <span>{member.email}</span>
+                                <button className="delete-btn"
+                                        onClick={() => handleRemoveMemberFromTable(member.email)}>
+                                    <svg className="trash-icon" xmlns="http://www.w3.org/2000/svg" height="20"
+                                         viewBox="0 0 24 24" width="20" fill="#ffffff">
+                                        <path d="M0 0h24v24H0z" fill="none"/>
+                                        <path d="M16 9v10H8V9h8m-1.5-6h-5l-1 1H5v2h14V4h-4.5l-1-1z"/>
+                                    </svg>
+                                </button>
                             </li>
                         );
                     })}

@@ -260,9 +260,11 @@ export const removeUserFromTable = createAsyncThunk<
     async ({tableId, memberEmail}, {rejectWithValue}) => {
         try {
             await api.delete(
-                "api/table/add-member-to-table",
-                { tableId, memberEmail },
-                { withCredentials: true }
+                "api/table/remove-member-from-table",
+                {
+                    data: { tableId, memberEmail },
+                    withCredentials: true
+                }
             );
             return;
         } catch (err: any) {
