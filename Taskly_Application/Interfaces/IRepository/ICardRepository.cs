@@ -1,5 +1,5 @@
 ﻿using Taskly_Domain.Entities;
-using Taskly_Domain.Other;
+using Taskly_Domain.ValueObjects;
 
 namespace Taskly_Application.Interfaces.IRepository;
 
