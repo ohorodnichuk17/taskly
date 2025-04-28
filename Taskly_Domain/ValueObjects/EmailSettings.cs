@@ -1,4 +1,4 @@
-﻿namespace Taskly_Domain.Other;
+﻿namespace Taskly_Domain.ValueObjects;
 
 public record EmailSettings
 {

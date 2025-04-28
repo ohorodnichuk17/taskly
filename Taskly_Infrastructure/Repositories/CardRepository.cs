@@ -4,7 +4,7 @@ using System.Reflection.Metadata;
 using Taskly_Application.Interfaces.IRepository;
 using Taskly_Domain;
 using Taskly_Domain.Entities;
-using Taskly_Domain.Other;
+using Taskly_Domain.ValueObjects;
 using Taskly_Infrastructure.Common.Persistence;
 
 namespace Taskly_Infrastructure.Repositories;
