@@ -2,68 +2,166 @@
 
 .main-page-container {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-grow: 1;
-  padding: 0 5%;
+  flex-direction: column;
+  width: 100%;
+  overflow-x: hidden;
+  height: 85%;
 
-  .text-content {
-    flex: 1;
-    max-width: 50%;
+  section {
+    padding: 6rem 5%;
+  }
+
+  .hero-section {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
 
-    h1 {
-      font-size: 2.5rem;
-      max-width: 20ch;
-      text-align: left;
-      line-height: 1.2;
-      margin-bottom: 0;
-      color: #ECF0F1;
+    .text-content {
+      max-width: 50%;
+      padding-right: 2rem;
+      h1 {
+        font-size: 3.5rem;
+        color: #ffffff;
+        margin-bottom: 1rem;
+      }
+
+      .subtitle {
+        font-size: 1.5rem;
+        color: #d1d5db;
+        margin-bottom: 2rem;
+      }
+
+      .primary-button {
+        @include defaultButton($buttonWidth: 30%, $font_size: 18px);
+        background-color: #6366f1;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+
+        &:hover {
+          background-color: #818cf8;
+        }
+
+        a {
+          color: white;
+          text-decoration: none;
+        }
+      }
     }
 
-    p {
-      font-size: 1.2rem;
-      max-width: 30ch;
-      text-align: left;
-      line-height: 1.4;
-      margin-top: 1rem;
-      color: #BDC3C7;
-    }
-
-    button {
-      @include defaultButton($buttonWidth: 20%, $font_size: 17px);
-      align-self: flex-start;
+    .hero-visual {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      max-width: 100%;
       margin-top: 2rem;
-      border: none;
-      color: white;
-      cursor: pointer;
 
-      &:hover {
-        filter: brightness(1.2);
+      .floating-image {
+        width: 400px;
+        animation: float 6s ease-in-out infinite;
+        border-radius: 15px;
       }
     }
   }
 
-  .animated-shapes {
-    flex: 1;
+  .features-section {
     display: flex;
+    flex-wrap: wrap;
+    gap: 3rem;
     justify-content: center;
+
+    .feature-card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      padding: 2rem;
+      width: 300px;
+      text-align: center;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(5px);
+
+      h2 {
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+        color: #fff;
+      }
+
+      p {
+        color: #d1d5db;
+      }
+    }
+  }
+
+  .nft-gallery {
+    text-align: center;
+
+    .gallery-title {
+      font-size: 2.5rem;
+      color: #ffffff;
+      margin-bottom: 3rem;
+    }
+
+    .nft-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+
+      img {
+        width: 100%;
+        border-radius: 15px;
+        transition: transform 0.3s ease;
+
+        &:hover {
+          transform: scale(1.05);
+        }
+      }
+    }
+  }
+
+  .footer {
+    text-align: center;
+    padding: 2rem;
+    color: #9ca3af;
+    font-size: 0.9rem;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-section {
+    flex-direction: column;
     align-items: center;
+    .text-content {
+      max-width: 100%;
+      text-align: center;
+      padding-right: 0;
+      padding-left: 1rem;
+    }
 
-    .shapes {
+    .hero-visual {
       width: 100%;
-      height: auto;
-      max-width: 400px;
-
-      circle {
-        transition: transform 0.3s ease-in-out;
+      .floating-image {
+        width: 60%;
+        max-width: 300px;
+        margin-top: 2rem;
       }
+    }
+  }
+}
 
-      path {
-        stroke-dasharray: 5;
-      }
+@media (max-width: 480px) {
+  .hero-section {
+    .hero-visual .floating-image {
+      width: 80%;
+      max-width: 250px;
     }
   }
 }
