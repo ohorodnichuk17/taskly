@@ -2,7 +2,7 @@ using ErrorOr;
 using MediatR;
 using Taskly_Domain.ValueObjects;
 
-namespace Taskly_Application.Requests.SolanaWallet.Authentication.Command;
+namespace Taskly_Application.Requests.SolanaWallet.Authentication.Command.AuthenticateSolanaWallet;
 
 public class AuthenticateSolanaWalletCommandHandler : IRequestHandler<AuthenticateSolanaWalletCommand, ErrorOr<AuthenticationResult>>
 {

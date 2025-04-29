@@ -1,4 +1,4 @@
-namespace Taskly_Application.Requests.SolanaWallet.Authentication.Command;
+namespace Taskly_Application.Requests.SolanaWallet.Authentication.Command.AuthenticateSolanaWallet;
 
 public class AuthenticationResult
 {
