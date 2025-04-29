@@ -107,5 +107,4 @@ public class AuthenticationRepository(UserManager<UserEntity> userManager, Taskl
         }
         return Error.Conflict(result.Errors.FirstOrDefault()!.Description);
     }
-
 }

@@ -1,8 +1,8 @@
-using Taskly_Application.Interfaces.IService;
 using ErrorOr;
 using MediatR;
+using Taskly_Application.Interfaces.IService;
 
-namespace Taskly_Application.Requests.SolanaWallet.Authentication.Query;
+namespace Taskly_Application.Requests.SolanaWallet.Authentication.Query.GenerateJwtToken;
 
 public class GenerateJwtTokenQueryHandler(IJwtService jwtService)
     : IRequestHandler<GenerateJwtTokenQuery, ErrorOr<string>>
