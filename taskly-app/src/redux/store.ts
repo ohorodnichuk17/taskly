@@ -5,10 +5,12 @@ import { boardReducer } from './slices/boardSlice.ts';
 import { tableReducer } from "./slices/tableSlice.ts";
 import { cardReducer } from './slices/cardSlice.ts';
 import { geminiReducer } from './slices/geminiSlice.ts';
+import {solanaAuthReducer} from "./slices/solanaAuthSlice.ts";
 
 
 const reducers = combineReducers({
     authenticate: authenticateReducer,
+    solanaAuth: solanaAuthReducer,
     general: generalReducer,
     board: boardReducer,
     table: tableReducer,

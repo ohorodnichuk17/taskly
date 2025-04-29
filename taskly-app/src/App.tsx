@@ -25,6 +25,8 @@ import TableFormPage from "./components/table/TableFormPage.tsx";
 import {CreateTableItemPage} from "./components/table/CreateTableItemPage.tsx";
 import AddMemberToTablePage from "./components/table/AddMemberToTablePage.tsx";
 import ListOfMembersInTable from "./components/table/ListOfMembersInTable.tsx";
+import {WalletContextProvider} from "./providers/WalletContextProvider.tsx";
+import SolanaAuthPage from "./components/authentication/SolanaAuthPage.tsx";
 
 
 function App() {
@@ -46,44 +48,46 @@ function App() {
 
 
   return (
+      <WalletContextProvider>
+        <MainContainer>
+          <Routes>
 
-    <MainContainer>
-      <Routes>
+            <Route path="/" element={<DashboardPage />}>
+              <Route path="" element={<MainPage />} />
 
-        <Route path="/" element={<DashboardPage />}>
-          <Route path="" element={<MainPage />} />
+              <Route path="artificial-intelligence" element={<AIAgent />} />
 
-          <Route path="artificial-intelligence" element={<AIAgent />} />
-
-          {isLogin && (<>
-            <Route path='/boards' element={<BoardsPage />}/>
-            <Route path='/boards/:boardId' element={<BoardPage />}/>
-            <Route path='/edit-profile' element={<ProfilePage />}/>
-            <Route path='/tables' element={<TablesListPage />}/>
-            <Route path='/tables/create' element={<TableFormPage />}/>
-            <Route path="/tables/:tableId" element={<TablePage />} />
-            <Route path="/tables/edit/:tableId" element={<TableFormPage />} />
-            <Route path="/tables/:tableId/create" element={<CreateTableItemPage />} />
-            <Route path="/tables/:tableId/add-member" element={<AddMemberToTablePage />} />
-            <Route path="/tables/:tableId/members" element={<ListOfMembersInTable />} />
-          </>)}
-          <Route path='/boards' element={<Navigate to="/authentication/login" />} />
+              {isLogin && (<>
+                <Route path='/boards' element={<BoardsPage />}/>
+                <Route path='/boards/:boardId' element={<BoardPage />}/>
+                <Route path='/edit-profile' element={<ProfilePage />}/>
+                <Route path='/tables' element={<TablesListPage />}/>
+                <Route path='/tables/create' element={<TableFormPage />}/>
+                <Route path="/tables/:tableId" element={<TablePage />} />
+                <Route path="/tables/edit/:tableId" element={<TableFormPage />} />
+                <Route path="/tables/:tableId/create" element={<CreateTableItemPage />} />
+                <Route path="/tables/:tableId/add-member" element={<AddMemberToTablePage />} />
+                <Route path="/tables/:tableId/members" element={<ListOfMembersInTable />} />
+              </>)}
+              <Route path='/boards' element={<Navigate to="/authentication/login" />} />
 
 
-        </Route>
+            </Route>
 
-        <Route path='/authentication/' element={<AuthenticationPage />}>
-          <Route path='register' element={<RegisterPage />}></Route>
-          <Route path='login' element={<LoginPage />}></Route>
-          <Route path="forgot-password" element={<ForgotPasswordPage />}></Route>
-          <Route path={`change-password/:key`} element={<ChangePasswordPage />}></Route>
+            <Route path='/authentication/' element={<AuthenticationPage />}>
+              <Route path='register' element={<RegisterPage />}></Route>
+              <Route path='login' element={<LoginPage />}></Route>
+              <Route path="forgot-password" element={<ForgotPasswordPage />}></Route>
+              <Route path={`change-password/:key`} element={<ChangePasswordPage />}></Route>
+              <Route path="solana-auth" element={<SolanaAuthPage />} />
+            </Route>
 
-        </Route>
 
-        <Route path='*' element={<PageNotFound />} />
+            <Route path='*' element={<PageNotFound />} />
 
-      </Routes>
-    </MainContainer>
+          </Routes>
+        </MainContainer>
+      </WalletContextProvider>
   )
 }
 
