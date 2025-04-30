@@ -1,6 +1,6 @@
 ﻿using ErrorOr;
 using MediatR;
-using Taskly_Domain.Other;
+using Taskly_Domain.ValueObjects;
 
 namespace Taskly_Application.Requests.Card.Command.ChangeCard;
 

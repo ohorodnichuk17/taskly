@@ -99,5 +99,10 @@ public class AuthenticateMapsterConfig : IRegister
             .Map(src => src.Id, desp => desp.Id)
             .Map(src => src.Email, desp => desp.Email)
             .Map(src => src.AvatarName, desp => desp.Avatar != null ? desp.Avatar.ImagePath : "");
+        
+        config.NewConfig<UserEntity, InformationAboutSolanaUserResponse>()
+            .Map(src => src.Id, desp => desp.Id)
+            .Map(src => src.PublicKey, desp => desp.PublicKey)
+            .Map(src => src.AvatarName, desp => desp.Avatar != null ? desp.Avatar.ImagePath : "");
     }
 }

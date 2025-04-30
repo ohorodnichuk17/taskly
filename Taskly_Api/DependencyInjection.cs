@@ -19,7 +19,7 @@ using Taskly_Application.Interfaces;
 using Taskly_Application.Interfaces.IRepository;
 using Taskly_Application.Interfaces.IService;
 using Taskly_Domain.Entities;
-using Taskly_Domain.Other;
+using Taskly_Domain.ValueObjects;
 using Taskly_Infrastructure;
 using Taskly_Infrastructure.Common.Persistence;
 using Taskly_Infrastructure.Repositories;

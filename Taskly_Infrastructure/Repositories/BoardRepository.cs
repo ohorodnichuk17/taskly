@@ -164,6 +164,7 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
             return null;
         }    
     }
+<<<<<<< HEAD
 
     public async Task<bool> IsUserHasBoardByIdAsync(Guid BoardId, Guid UserId)
     {
@@ -213,6 +214,8 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
         }
     }
     
+=======
+>>>>>>> ef9cee814d80bbbd816d3168afbd312d62aa048b
 
     private async Task<(BoardEntity board, UserEntity user)> GetBoardAndUserAsync(Guid boardId, Guid userId)
     {
@@ -253,7 +256,4 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
 
         return board;
     }
-
-    
-
 }

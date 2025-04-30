@@ -6,7 +6,7 @@ using System.Text;
 using Taskly_Application.Interfaces;
 using Taskly_Application.Interfaces.IService;
 using Taskly_Domain;
-using Taskly_Domain.Other;
+using Taskly_Domain.ValueObjects;
 
 namespace Taskly_Infrastructure.Services;
 

@@ -1,9 +1,11 @@
-﻿using ErrorOr;
+﻿using System.Linq.Expressions;
+using ErrorOr;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Taskly_Application.Interfaces;
 using Taskly_Application.Interfaces.IRepository;
 using Taskly_Domain.Entities;
+using Taskly_Domain.ValueObjects;
 using Taskly_Infrastructure.Common.Persistence;
 
 namespace Taskly_Infrastructure.Repositories;
@@ -11,39 +13,33 @@ namespace Taskly_Infrastructure.Repositories;
 public class AuthenticationRepository(UserManager<UserEntity> userManager, TasklyDbContext tasklyDbContext) : Repository<UserEntity>(tasklyDbContext),IAuthenticationRepository 
 {
 
-    readonly private DbSet<VerificationEmailEntity> _verificationEmailEntities = tasklyDbContext.Set<VerificationEmailEntity>();
-    readonly private DbSet<ChangePasswordKeyEntity> _changePasswordKeyEntity = tasklyDbContext.Set<ChangePasswordKeyEntity>();
-    readonly private DbSet<UserEntity> _userEntity = tasklyDbContext.Set<UserEntity>();
+    private readonly DbSet<VerificationEmailEntity> _verificationEmailEntities = tasklyDbContext.Set<VerificationEmailEntity>();
+    private readonly DbSet<ChangePasswordKeyEntity> _changePasswordKeyEntity = tasklyDbContext.Set<ChangePasswordKeyEntity>();
+    private readonly DbSet<UserEntity> _userEntity = tasklyDbContext.Set<UserEntity>();
 
-    public async Task<bool> IsUserExist(string Email)
-    {
-        return await userManager.FindByEmailAsync(Email) != null;
-    }
-    public async Task<bool> IsUserExist(Guid Id)
-    {
-        return await userManager.FindByIdAsync(Id.ToString()) != null;
-    }
+    public async Task<bool> IsUserExist(string email) =>
+        await userManager.FindByEmailAsync(email) != null;
+    public async Task<bool> IsUserExist(Guid id) =>
+        await userManager.FindByIdAsync(id.ToString()) != null;
 
-    public async Task<string> AddVerificationEmail(string Email, string Code)
+    public async Task<string> AddVerificationEmail(string email, string code)
     {
         await _verificationEmailEntities.AddAsync(new VerificationEmailEntity() {
             Id = Guid.NewGuid(),
-            Email = Email,
-            Code = Code
+            Email = email,
+            Code = code
         });
         await tasklyDbContext.SaveChangesAsync();
 
-        return Email;
+        return email;
     }
 
-    public async Task<bool> IsVerificationEmailExistAndCodeValid(string Email, string Code)
-    {
-       return await _verificationEmailEntities.AnyAsync(e => e.Email == Email && e.Code == Code);
-    }
+    public async Task<bool> IsVerificationEmailExistAndCodeValid(string email, string code) =>
+        await _verificationEmailEntities.AnyAsync(e => e.Email == email && e.Code == code);
 
-    public async Task VerificateEmail(string Email)
+    public async Task VerificateEmail(string email)
     {
-        var verificateEmail = await _verificationEmailEntities.FirstOrDefaultAsync(e => e.Email == Email);
+        var verificateEmail = await _verificationEmailEntities.FirstOrDefaultAsync(e => e.Email == email);
         if(verificateEmail != null)
         {
             _verificationEmailEntities.Remove(verificateEmail);
@@ -51,56 +47,56 @@ public class AuthenticationRepository(UserManager<UserEntity> userManager, Taskl
         }
     }
 
-    public async Task<ErrorOr<UserEntity>> CreateNewUser(UserEntity NewUser,string Password)
+    public async Task<ErrorOr<UserEntity>> CreateNewUser(UserEntity newUser,string password)
     {
-        var result = await userManager.CreateAsync(NewUser,Password);
+        var result = await userManager.CreateAsync(newUser,password);
 
         if(!result.Succeeded && result.Errors.Any())
             return Error.Conflict(result.Errors.FirstOrDefault()!.Description);
 
-        return NewUser;
+        return newUser;
     }
-    public async Task<UserEntity?> GetUserByEmail(string Email)
+    public async Task<UserEntity?> GetUserByEmail(string email) => 
+        await GetUserByConditionAsync(u => u.Email == email);
+    public async Task<UserEntity?> GetUserByPublicKey(string publicKey) => 
+        await GetUserByConditionAsync(u => u.PublicKey == publicKey);
+    
+    public async Task<bool> IsPasswordValid(UserEntity user, string password)
     {
-        return await _userEntity.Include(u => u.Avatar).FirstOrDefaultAsync(u => u.Email == Email);
+        return await userManager.CheckPasswordAsync(user, password);
     }
-
-    public async Task<bool> IsPasswordValid(UserEntity User, string Password)
+    public async Task AddChangePasswordKey(string email, Guid key)
     {
-        return await userManager.CheckPasswordAsync(User, Password);
-    }
-    public async Task AddChangePasswordKey(string Email, Guid Key)
-    {
-        var changePasswordKeyEntity = await _changePasswordKeyEntity.FirstOrDefaultAsync(c => c.Email == Email);
+        var changePasswordKeyEntity = await _changePasswordKeyEntity.FirstOrDefaultAsync(c => c.Email == email);
         if(changePasswordKeyEntity != null)
         {
              _changePasswordKeyEntity.Remove(changePasswordKeyEntity);
         }
         await _changePasswordKeyEntity.AddAsync(
             new ChangePasswordKeyEntity() {
-            Key = Key,
-            Email = Email 
+            Key = key,
+            Email = email 
         });
 
         await tasklyDbContext.SaveChangesAsync();
     }
-    public async Task<string?> GetUserEmailByChangePasswordKeyAsync(Guid Key)
+    public async Task<string?> GetUserEmailByChangePasswordKeyAsync(Guid key)
     {
-        var user = await _changePasswordKeyEntity.FirstOrDefaultAsync(c => c.Key == Key);
+        var user = await _changePasswordKeyEntity.FirstOrDefaultAsync(c => c.Key == key);
         if(user == null)
             return null;
         return user.Email;
     }
-    public async Task<bool> HasUserSentRequestToChangePassword(string Email, Guid Key)
+    public async Task<bool> HasUserSentRequestToChangePassword(string email, Guid key)
     {
-        var changePasswordKeyEntity = await _changePasswordKeyEntity.FirstOrDefaultAsync(c => c.Key == Key && c.Email == Email);
+        var changePasswordKeyEntity = await _changePasswordKeyEntity.FirstOrDefaultAsync(c => c.Key == key && c.Email == email);
 
         return changePasswordKeyEntity != null;
     }
-    public async Task<ErrorOr<Guid>> ChangePasswordAsync(UserEntity user, string Password)
+    public async Task<ErrorOr<Guid>> ChangePasswordAsync(UserEntity user, string password)
     {
         var resetPasswordToken = await userManager.GeneratePasswordResetTokenAsync(user);
-        var result = await userManager.ResetPasswordAsync(user, resetPasswordToken, Password);
+        var result = await userManager.ResetPasswordAsync(user, resetPasswordToken, password);
         if (result.Succeeded)
         {     
             return user.Id;
@@ -108,4 +104,22 @@ public class AuthenticationRepository(UserManager<UserEntity> userManager, Taskl
         return Error.Conflict(result.Errors.FirstOrDefault()!.Description);
     }
 
+    public async Task<UserEntity> UpdateSolanaUserProfileAsync(string publicKey, Guid avatarId, string username)
+    {
+        var user = await tasklyDbContext.Users.FirstOrDefaultAsync(
+            u => u.PublicKey == publicKey);
+        if(user == null)
+            throw new Exception("User not found");
+        user.AvatarId = avatarId;
+        user.UserName = username;
+        await SaveAsync(user);
+        return user;
+    }
+
+    private async Task<UserEntity?> GetUserByConditionAsync(Expression<Func<UserEntity, bool>> predicate)
+    {
+        return await _userEntity
+            .Include(u => u.Avatar)
+            .FirstOrDefaultAsync(predicate);
+    }
 }
