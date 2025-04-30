@@ -8,6 +8,7 @@ import { RootState } from '../../redux/store.ts';
 import {useDispatch, useSelector} from 'react-redux';
 import {logoutAsync} from "../../redux/actions/authenticateAction.ts";
 import {baseUrl} from "../../axios/baseUrl.ts";
+import {logout} from "../../redux/slices/authenticateSlice.ts";
 
 export interface IMenuContainer {
     icon: string;
@@ -35,7 +36,7 @@ function CalculateMenuItemsWidth(items: (HTMLAnchorElement | null)[]) {
 }
 
 export const MenuContainer = (props: IMenuContainer) => {
-    const { isLogin, userProfile } = useSelector((state: RootState) => state.authenticate);
+    const { isLogin, userProfile, solanaUserProfile, authMethod } = useSelector((state: RootState) => state.authenticate);
     const widthToHide = useRef<number | null>(null);
     const containerRef = useRef<HTMLDivElement | null>();
     const containerItemsRef = useRef<HTMLElement | null>();
@@ -48,9 +49,26 @@ export const MenuContainer = (props: IMenuContainer) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    const checkAuthMethodLogoutAsync = async () => {
+        const validAuthMethods = ["jwt", "solana"] as const;
+        type AuthMethod = typeof validAuthMethods[number];
+
+        if (!authMethod || !validAuthMethods.includes(authMethod as AuthMethod)) {
+            console.warn("Invalid or missing auth method detected. Defaulting to 'jwt'...");
+            await dispatch(logoutAsync()).unwrap();
+            return;
+        }
+
+        if (authMethod === "jwt") {
+            await dispatch(logoutAsync()).unwrap();
+        } else if (authMethod === "solana") {
+            await dispatch(logout()).unwrap();
+        }
+    };
+
     const handleLogout = async () => {
         try {
-            await dispatch(logoutAsync()).unwrap();
+            await checkAuthMethodLogoutAsync();
             setIsDropdownOpen(false);
             navigate('/');
         } catch (error) {
@@ -156,32 +174,88 @@ export const MenuContainer = (props: IMenuContainer) => {
                     </nav>
 
                     <div className='menu-authentication'>
-                        {console.log("isLogin before render:", isLogin)}
-                        {isLogin && userProfile ? (
+                        {isLogin ? (
                             <div ref={dropdownRef} className="user-info" style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
-                                <img
-                                    src={`${baseUrl}/images/avatars/${userProfile.avatarName}.png`}
-                                    alt="Avatar"
-                                    className="user-avatar"
-                                    style={{
-                                        width: '38px',
-                                        height: '38px',
-                                        borderRadius: '50%',
-                                        border: '2px solid #ffffff',
-                                        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-                                        transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
-                                        cursor: 'pointer',
-                                    }}
-                                    onMouseEnter={(e) => {
-                                        e.currentTarget.style.transform = 'scale(1.1)';
-                                        e.currentTarget.style.boxShadow = '0 6px 8px rgba(0, 0, 0, 0.15)';
-                                    }}
-                                    onMouseLeave={(e) => {
-                                        e.currentTarget.style.transform = 'scale(1)';
-                                        e.currentTarget.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
-                                    }}
-                                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                                />
+                                {authMethod ==="jwt" && userProfile && (
+                                    <>
+                                        <img
+                                            src={`${baseUrl}/images/avatars/${userProfile.avatarName}.png`}
+                                            alt="Avatar"
+                                            className="user-avatar"
+                                            style={{
+                                                width: '38px',
+                                                height: '38px',
+                                                borderRadius: '50%',
+                                                border: '2px solid #ffffff',
+                                                boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+                                                transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
+                                                cursor: 'pointer',
+                                            }}
+                                            onMouseEnter={(e) => {
+                                                e.currentTarget.style.transform = 'scale(1.1)';
+                                                e.currentTarget.style.boxShadow = '0 6px 8px rgba(0, 0, 0, 0.15)';
+                                            }}
+                                            onMouseLeave={(e) => {
+                                                e.currentTarget.style.transform = 'scale(1)';
+                                                e.currentTarget.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+                                            }}
+                                            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                                        />
+                                        <span
+                                            className="user-name"
+                                            style={{
+                                                whiteSpace: 'nowrap',
+                                                overflow: 'hidden',
+                                                textOverflow: 'ellipsis',
+                                                maxWidth: '120px',
+                                                fontSize: '16px',
+                                                fontWeight: '500',
+                                            }}
+                                        >
+                                            {formatUsername(userProfile.email)}
+                                        </span>
+                                    </>
+                                )}
+                                {authMethod === "solana" && solanaUserProfile && (
+                                    <>
+                                        <img
+                                            src={`${baseUrl}/images/avatars/${solanaUserProfile.avatarName}.png`}
+                                            alt="Avatar"
+                                            className="user-avatar"
+                                            style={{
+                                                width: '38px',
+                                                height: '38px',
+                                                borderRadius: '50%',
+                                                border: '2px solid #ffffff',
+                                                boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+                                                transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
+                                                cursor: 'pointer',
+                                            }}
+                                            onMouseEnter={(e) => {
+                                                e.currentTarget.style.transform = 'scale(1.1)';
+                                                e.currentTarget.style.boxShadow = '0 6px 8px rgba(0, 0, 0, 0.15)';
+                                            }}
+                                            onMouseLeave={(e) => {
+                                                e.currentTarget.style.transform = 'scale(1)';
+                                                e.currentTarget.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+                                            }}
+                                            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                                        />
+                                        <span
+                                            className="user-name"
+                                            style={{
+                                                whiteSpace: 'nowrap',
+                                                overflow: 'hidden',
+                                                textOverflow: 'ellipsis',
+                                                maxWidth: '120px',
+                                                fontSize: '16px',
+                                                fontWeight: '500',
+                                            }}
+                                        >
+                                            {solanaUserProfile.userName}
+                                        </span>
+                                    </>
+                                )}
                                 {isDropdownOpen && (
                                     <div
                                         className="dropdown-menu"
@@ -247,19 +321,6 @@ export const MenuContainer = (props: IMenuContainer) => {
                                         </Link>
                                     </div>
                                 )}
-                                <span
-                                    className="user-name"
-                                    style={{
-                                        whiteSpace: 'nowrap',
-                                        overflow: 'hidden',
-                                        textOverflow: 'ellipsis',
-                                        maxWidth: '120px',
-                                        fontSize: '16px',
-                                        fontWeight: '500',
-                                    }}
-                                >
-                            {formatUsername(userProfile.email)}
-                        </span>
                             </div>
                         ) : (
                             <div className='menu-authentication-buttons'>

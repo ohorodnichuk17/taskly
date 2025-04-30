@@ -25,7 +25,8 @@ export interface IUserProfile {
 export interface ISolanaUserProfile {
     id: string
     publicKey: string,
-    avatarId: string
+    avatarName: string
+    userName: string
 }
 
 export interface IEditAvatar {

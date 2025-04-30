@@ -49,12 +49,14 @@ const initialState: IAuthenticateInitialState = {
         } as IUserProfile,
     solanaUserProfile: (!localStorage.getItem("user_profile_id") ||
         !localStorage.getItem("user_profile_publicKey") ||
-        !localStorage.getItem("user_profile_avatarId")) ?
+        !localStorage.getItem("user_profile_userName") ||
+        !localStorage.getItem("user_profile_avatar")) ?
         null
         : {
             id: localStorage.getItem("user_profile_id"),
             publicKey: localStorage.getItem("user_profile_publicKey"),
-            avatarId: localStorage.getItem("user_profile_avatarId")
+            userName: localStorage.getItem("user_profile_userName"),
+            avatarName: localStorage.getItem("user_profile_avatar")
         } as ISolanaUserProfile,
     editAvatar: (!localStorage.getItem("user_profile_id") ||
         !localStorage.getItem("avatar_id")) ?
@@ -256,15 +258,18 @@ const authenticateSlice = createSlice({
                 localStorage.setItem("authMethod", "solana");
                 localStorage.setItem("user_profile_id", action.payload.id);
                 localStorage.setItem("user_profile_publicKey", action.payload.publicKey);
-                localStorage.setItem("user_profile_avatarId", action.payload.avatarId);
+                localStorage.setItem("user_profile_userName", action.payload.userName);
+                localStorage.setItem("user_profile_avatar", action.payload.avatarName);
             })
             .addCase(solanaWalletAuthAsync.rejected, (state, action) => {
                 if (localStorage.getItem("user_profile_id") !== null)
                     localStorage.removeItem("user_profile_id");
                 if (localStorage.getItem("user_profile_publicKey") !== null)
                     localStorage.removeItem("user_profile_publicKey");
-                if (localStorage.getItem("user_profile_avatarId") !== null)
-                    localStorage.removeItem("user_profile_avatarId");
+                if (localStorage.getItem("user_profile_userName") !== null)
+                    localStorage.removeItem("user_profile_userName");
+                if (localStorage.getItem("user_profile_avatar") !== null)
+                    localStorage.removeItem("user_profile_avatar");
             })
             .addCase(checkSolanaTokenAsync.fulfilled, (state, action: PayloadAction<ISolanaUserProfile>) => {
                 localStorage.setItem("isLogin", "true");
@@ -273,7 +278,8 @@ const authenticateSlice = createSlice({
                 state.solanaUserProfile = action.payload;
                 localStorage.setItem("user_profile_id", action.payload.id);
                 localStorage.setItem("user_profile_publicKey", action.payload.publicKey);
-                localStorage.setItem("user_profile_avatarId", action.payload.avatarId);
+                localStorage.setItem("user_profile_userName", action.payload.publicKey);
+                localStorage.setItem("user_profile_avatar", action.payload.avatarName);
             })
             .addCase(checkSolanaTokenAsync.rejected, (state) => {
                 /*if (action.payload) {
@@ -288,8 +294,10 @@ const authenticateSlice = createSlice({
                     localStorage.removeItem("user_profile_id");
                 if (localStorage.getItem("user_profile_publicKey") !== null)
                     localStorage.removeItem("user_profile_publicKey");
-                if (localStorage.getItem("user_profile_avatarId") !== null)
-                    localStorage.removeItem("user_profile_avatarId");
+                if (localStorage.getItem("user_profile_userName") !== null)
+                    localStorage.removeItem("user_profile_userName");
+                if (localStorage.getItem("user_profile_avatar") !== null)
+                    localStorage.removeItem("user_profile_avatar");
             });
     }
 })
