@@ -4,9 +4,8 @@ import { RegisterPage } from './components/authentication/RegisterPage'
 import { PageNotFound } from './components/general/PageNotFound'
 
 import { useEffect } from 'react'
-import { LoginPage } from './components/authentication/LoginPage'
 import { useAppDispatch, useRootState } from './redux/hooks'
-import { checkTokenAsync } from './redux/actions/authenticateAction'
+import {checkSolanaTokenAsync, checkTokenAsync} from './redux/actions/authenticateAction'
 import { DashboardPage } from './components/user/DashboardPage'
 import { ForgotPasswordPage } from './components/authentication/ForgotPasswordPage'
 import { AuthenticationPage } from './components/authentication/AuthenticationPage'
@@ -18,15 +17,13 @@ import { BoardPage } from './components/boards/BoardPage.tsx'
 import MainPage from "./components/general/MainPage.tsx";
 import {ProfilePage} from "./components/user/ProfilePage.tsx";
 import TablesListPage from "./components/table/TablesListPage.tsx";
-import CreateTablePage from "./components/table/CreateTablePage.tsx";
 import TablePage from "./components/table/TablePage.tsx";
-import EditTablePage from "./components/table/EditTablePage.tsx";
 import TableFormPage from "./components/table/TableFormPage.tsx";
 import {CreateTableItemPage} from "./components/table/CreateTableItemPage.tsx";
 import AddMemberToTablePage from "./components/table/AddMemberToTablePage.tsx";
 import ListOfMembersInTable from "./components/table/ListOfMembersInTable.tsx";
 import {WalletContextProvider} from "./providers/WalletContextProvider.tsx";
-import SolanaAuthPage from "./components/authentication/SolanaAuthPage.tsx";
+import {UnifiedLoginPage} from "./components/authentication/UnifiedLoginPage.tsx";
 
 
 function App() {
@@ -35,12 +32,22 @@ function App() {
 
   const isLogin = useRootState(s => s.authenticate.isLogin);
 
-  const checkUserToken = async () => {
-    await dispatch(checkTokenAsync());
-  }
+  const checkAuthToken = async () => {
+    const authMethod = localStorage.getItem("authMethod") as "jwt" | "solana" | null;
+
+    if(authMethod === "jwt") {
+      await dispatch(checkTokenAsync());
+    } else if(authMethod === "solana") {
+      await dispatch(checkSolanaTokenAsync());
+    } else {
+      console.error("No auth method found");
+    }
+  };
+
   useEffect(() => {
-    checkUserToken();
+    checkAuthToken();
   }, [])
+
   useEffect(() => {
     console.log(isLogin)
   }, [isLogin])
@@ -75,11 +82,12 @@ function App() {
             </Route>
 
             <Route path='/authentication/' element={<AuthenticationPage />}>
+              <Route path="login" element={<UnifiedLoginPage />} />
+              <Route path="solana-login" element={<UnifiedLoginPage />} />
+
               <Route path='register' element={<RegisterPage />}></Route>
-              <Route path='login' element={<LoginPage />}></Route>
               <Route path="forgot-password" element={<ForgotPasswordPage />}></Route>
               <Route path={`change-password/:key`} element={<ChangePasswordPage />}></Route>
-              <Route path="solana-auth" element={<SolanaAuthPage />} />
             </Route>
 
 

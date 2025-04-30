@@ -156,6 +156,7 @@ export const MenuContainer = (props: IMenuContainer) => {
                     </nav>
 
                     <div className='menu-authentication'>
+                        {console.log("isLogin before render:", isLogin)}
                         {isLogin && userProfile ? (
                             <div ref={dropdownRef} className="user-info" style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
                                 <img
