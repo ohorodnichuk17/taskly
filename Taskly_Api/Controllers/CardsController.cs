@@ -20,7 +20,8 @@ namespace Taskly_Api.Controllers
         [HttpGet("get-card-list-by-board-id")]
         public async Task<IActionResult> GetCardsListsByBoardId([FromQuery] Guid boardId)
         {
-            var cardList = await sender.Send(new GetCardListByBoardIdQuery(boardId));
+            var userId = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "id")!.Value;
+            var cardList = await sender.Send(new GetCardListByBoardIdQuery(boardId, Guid.Parse(userId)));
 
             return cardList.Match(cardList =>
                 Ok(mapper.Map<CardListResponse[]>(cardList)),

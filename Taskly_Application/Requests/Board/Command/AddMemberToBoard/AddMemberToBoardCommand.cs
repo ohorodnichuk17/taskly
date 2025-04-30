@@ -5,4 +5,4 @@ namespace Taskly_Application.Requests.Board.Command.AddMemberToBoard;
 
 public record AddMemberToBoardCommand(
     Guid BoardId,
-    string MemberEmail) : IRequest<ErrorOr<Unit>>;
+    string MemberEmail) : IRequest<ErrorOr<string>>;
