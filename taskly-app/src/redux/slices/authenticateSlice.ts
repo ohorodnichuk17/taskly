@@ -3,21 +3,21 @@ import {
     IAvatar,
     ICustomJwtPayload, IEditAvatar,
     IEditUserProfile,
-    IJwtInformation,
+    IJwtInformation, ISolanaUserProfile,
     IUserProfile,
     StatusEnums
 } from "../../interfaces/authenticateInterfaces";
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import {
     changePasswordAsync,
-    checkHasUserSentRequestToChangePasswordAsync,
+    checkHasUserSentRequestToChangePasswordAsync, checkSolanaTokenAsync,
     checkTokenAsync, editAvatarAsync, editUserProfileAsync,
     getAllAvatarsAsync,
     loginAsync,
     logoutAsync,
     registerAsync,
     sendRequestToChangePasswordAsync,
-    sendVerificationCodeAsync,
+    sendVerificationCodeAsync, solanaWalletAuthAsync,
     verificateEmailAsync
 } from "../actions/authenticateAction.ts";
 import { jwtDecode } from "jwt-decode";
@@ -36,6 +36,7 @@ const decodeJWT = (token: string) => {
 
 }
 const initialState: IAuthenticateInitialState = {
+    authMethod: localStorage.getItem("authMethod") as "jwt" | "solana" | null,
     user: null,
     userProfile: (!localStorage.getItem("user_profile_id") ||
         !localStorage.getItem("user_profile_email") ||
@@ -46,6 +47,17 @@ const initialState: IAuthenticateInitialState = {
             email: localStorage.getItem("user_profile_email"),
             avatarName: localStorage.getItem("user_profile_avatar")
         } as IUserProfile,
+    solanaUserProfile: (!localStorage.getItem("user_profile_id") ||
+        !localStorage.getItem("user_profile_publicKey") ||
+        !localStorage.getItem("user_profile_userName") ||
+        !localStorage.getItem("user_profile_avatar")) ?
+        null
+        : {
+            id: localStorage.getItem("user_profile_id"),
+            publicKey: localStorage.getItem("user_profile_publicKey"),
+            userName: localStorage.getItem("user_profile_userName"),
+            avatarName: localStorage.getItem("user_profile_avatar")
+        } as ISolanaUserProfile,
     editAvatar: (!localStorage.getItem("user_profile_id") ||
         !localStorage.getItem("avatar_id")) ?
         null
@@ -59,10 +71,10 @@ const initialState: IAuthenticateInitialState = {
     avatars: null,
     keyToChangePassword: null,
     emailOfUserWhoWantToChangePassword: null,
+    token: null,
+    isAuthenticated: false,
     //jwtInformation: null
 }
-
-
 
 const authenticateSlice = createSlice({
     name: "authenticateSlice",
@@ -71,7 +83,13 @@ const authenticateSlice = createSlice({
         setEmailOfUserWhoWantToChangePassword(state, payload: PayloadAction<string | null>) {
             state.emailOfUserWhoWantToChangePassword = payload.payload;
         },
-
+        logout: (state) => {
+            state.authMethod = null;
+            localStorage.removeItem("authMethod");
+            state.token = null;
+            state.isAuthenticated = false;
+            localStorage.removeItem('authToken');
+        },
 
         /*setErrorAuthenticate(state, error: PayloadAction<string | null>) {
             state.error = error.payload;
@@ -135,6 +153,8 @@ const authenticateSlice = createSlice({
                 //document.cookie = `jwt_token=${action.payload}`
                 state.isLogin = true;
                 state.userProfile = action.payload;
+                state.authMethod = "jwt";
+                localStorage.setItem("authMethod", "jwt");
                 localStorage.setItem("user_profile_id", action.payload.id);
                 localStorage.setItem("user_profile_email", action.payload.email);
                 localStorage.setItem("user_profile_avatar", action.payload.avatarName);
@@ -211,6 +231,8 @@ const authenticateSlice = createSlice({
                 }*/
             })
             .addCase(logoutAsync.fulfilled, (state) => {
+                state.authMethod = null;
+                localStorage.removeItem("authMethod");
                 state.isLogin = false;
                 state.userProfile = null;
             })
@@ -227,9 +249,58 @@ const authenticateSlice = createSlice({
             })
             .addCase(editAvatarAsync.rejected, (state, action) => {
                 console.error("Edit avatar failed:", action.payload);
+            })
+            .addCase(solanaWalletAuthAsync.fulfilled, (state, action: PayloadAction<ISolanaUserProfile>) => {
+                state.isLogin = true;
+                state.isAuthenticated = true;
+                state.token = action.payload;
+                localStorage.setItem("authToken", action.payload);
+                localStorage.setItem("authMethod", "solana");
+                localStorage.setItem("user_profile_id", action.payload.id);
+                localStorage.setItem("user_profile_publicKey", action.payload.publicKey);
+                localStorage.setItem("user_profile_userName", action.payload.userName);
+                localStorage.setItem("user_profile_avatar", action.payload.avatarName);
+            })
+            .addCase(solanaWalletAuthAsync.rejected, (state, action) => {
+                if (localStorage.getItem("user_profile_id") !== null)
+                    localStorage.removeItem("user_profile_id");
+                if (localStorage.getItem("user_profile_publicKey") !== null)
+                    localStorage.removeItem("user_profile_publicKey");
+                if (localStorage.getItem("user_profile_userName") !== null)
+                    localStorage.removeItem("user_profile_userName");
+                if (localStorage.getItem("user_profile_avatar") !== null)
+                    localStorage.removeItem("user_profile_avatar");
+            })
+            .addCase(checkSolanaTokenAsync.fulfilled, (state, action: PayloadAction<ISolanaUserProfile>) => {
+                localStorage.setItem("isLogin", "true");
+                state.isLogin = true;
+
+                state.solanaUserProfile = action.payload;
+                localStorage.setItem("user_profile_id", action.payload.id);
+                localStorage.setItem("user_profile_publicKey", action.payload.publicKey);
+                localStorage.setItem("user_profile_userName", action.payload.publicKey);
+                localStorage.setItem("user_profile_avatar", action.payload.avatarName);
+            })
+            .addCase(checkSolanaTokenAsync.rejected, (state) => {
+                /*if (action.payload) {
+                    state.error = action.payload.errors[0].code;
+                }
+                else {
+                    state.error = action.error.message || "Uncnown";
+                }*/
+                localStorage.removeItem("isLogin");
+                state.isLogin = false;
+                if (localStorage.getItem("user_profile_id") !== null)
+                    localStorage.removeItem("user_profile_id");
+                if (localStorage.getItem("user_profile_publicKey") !== null)
+                    localStorage.removeItem("user_profile_publicKey");
+                if (localStorage.getItem("user_profile_userName") !== null)
+                    localStorage.removeItem("user_profile_userName");
+                if (localStorage.getItem("user_profile_avatar") !== null)
+                    localStorage.removeItem("user_profile_avatar");
             });
     }
 })
 
 export const authenticateReducer = authenticateSlice.reducer;
-export const { /*setErrorAuthenticate,*/ /*clearJwtToken*/ setEmailOfUserWhoWantToChangePassword } = authenticateSlice.actions;
+export const { /*setErrorAuthenticate,*/ /*clearJwtToken*/ setEmailOfUserWhoWantToChangePassword, logout } = authenticateSlice.actions;

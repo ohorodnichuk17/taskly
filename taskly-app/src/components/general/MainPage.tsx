@@ -1,61 +1,66 @@
 import '../../styles/general/main-page-style.scss';
-import {Link} from "react-router-dom";
-import {useSelector} from "react-redux";
-import {RootState} from "../../redux/store.ts";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store.ts";
+import solanaNft from "../../assets/nft/solana-nft-sample.png"
+import nft1 from "../../assets/nft/nft1.png"
+import nft2 from "../../assets/nft/nft2.png"
+import nft3 from "../../assets/nft/nft3.png"
 
 export default function MainPage() {
     const { isLogin } = useSelector((state: RootState) => state.authenticate);
 
     return (
         <div className="main-page-container">
-            <div className="text-content">
-                <h1 className="gradient-text">
-                    Collect, organize and solve problems from anywhere
-                </h1>
-                <p>
-                    Forget clutter and chaos - increase your productivity with Taskly.
-                </p>
+            <section className="hero-section">
+                <div className="text-content">
+                    <h1 className="gradient-text">
+                        Create. Thrive. Organize.
+                    </h1>
+                    <p className="subtitle">
+                        Your gateway to smarter project management — enhanced with Solana NFTs.
+                    </p>
 
-                {!isLogin && (
-                    <button>
-                        <Link to="/authentication/register">
-                            Register - it's FREE!
-                        </Link>
-                    </button>
-                )}
+                    {!isLogin && (
+                        <button className="primary-button">
+                            <Link to="/authentication/register">
+                                Get Started — Free
+                            </Link>
+                        </button>
+                    )}
+                </div>
 
-            </div>
+                <div className="hero-visual">
+                    <img src={solanaNft} alt="Solana NFTs" className="floating-image" />
+                </div>
+            </section>
 
-            <div className="animated-shapes">
-                <svg className="shapes" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="200" cy="200" r="150" fill="rgba(255, 255, 255, 0.1)" />
-                    <circle cx="200" cy="200" r="100" fill="rgba(255, 255, 255, 0.05)" />
-                    <circle cx="200" cy="200" r="50" fill="rgba(255, 255, 255, 0.2)">
-                        <animate attributeName="r" values="50;70;50" dur="3s" repeatCount="indefinite" />
-                    </circle>
+            <section className="features-section">
+                <div className="feature-card" data-aos="fade-up">
+                    <h2>Seamless Solana Integration</h2>
+                    <p>Manage tasks with verified NFT ownership. Authenticate effortlessly and stand out.</p>
+                </div>
 
-                    <path
-                        d="M100,200 C150,150 250,150 300,200 C250,250 150,250 100,200 Z"
-                        fill="none"
-                        stroke="rgba(255, 255, 255, 0.3)"
-                        strokeWidth="2"
-                    >
-                        <animateTransform
-                            attributeName="transform"
-                            type="rotate"
-                            from="0 200 200"
-                            to="360 200 200"
-                            dur="10s"
-                            repeatCount="indefinite"
-                        />
-                    </path>
+                <div className="feature-card" data-aos="fade-up" data-aos-delay="200">
+                    <h2>Blazing Fast Performance</h2>
+                    <p>Enjoy lightning-speed updates powered by decentralized technologies.</p>
+                </div>
 
-                    <circle cx="50" cy="50" r="5" fill="rgba(255, 255, 255, 0.8)" />
-                    <circle cx="350" cy="350" r="5" fill="rgba(255, 255, 255, 0.8)" />
-                    <circle cx="350" cy="50" r="5" fill="rgba(255, 255, 255, 0.8)" />
-                    <circle cx="50" cy="350" r="5" fill="rgba(255, 255, 255, 0.8)" />
-                </svg>
-            </div>
+                <div className="feature-card" data-aos="fade-up" data-aos-delay="400">
+                    <h2>Efficient Performance</h2>
+                    <p>Experience fast load times and smooth interactions, even with complex data and heavy
+                        processes.</p>
+                </div>
+            </section>
+
+            <section className="nft-gallery" data-aos="zoom-in">
+                <h2 className="gallery-title">Discover Exclusive NFTs</h2>
+                <div className="nft-grid">
+                    <img src={nft1} alt="NFT 1" />
+                    <img src={nft2} alt="NFT 2" />
+                    <img src={nft3} alt="NFT 3" />
+                </div>
+            </section>
         </div>
     );
 }

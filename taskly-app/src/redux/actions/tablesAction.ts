@@ -1,12 +1,12 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {
-    IAddUserToTable,
+    IUserToTable,
     ITable,
     ITableCreate,
     ITableEdit,
     ITableItem,
     ITableItemCreate,
-    ITableItemEdit
+    ITableItemEdit, IUserListForTable
 } from "../../interfaces/tableInterface.ts";
 import {IValidationErrors} from "../../interfaces/generalInterface.ts";
 import {AxiosError} from "axios";
@@ -231,18 +231,63 @@ export const editTableItem = createAsyncThunk<
 
 export const addUserToTable = createAsyncThunk<
     void,
-    IAddUserToTable,
+    IUserToTable,
     { rejectValue: IValidationErrors }
 >(
     "table/add-member-to-table",
     async ({tableId, memberEmail}, {rejectWithValue}) => {
         try {
-            const response = await api.post(
-                "api/table/add-member-to-table",
-                { tableId, memberEmail },
-                { withCredentials: true }
+                await api.post(
+                    "api/table/add-member-to-table",
+                    { tableId, memberEmail },
+                    { withCredentials: true }
             );
             return;
+        } catch (err: any) {
+            let error: AxiosError<IValidationErrors> = err;
+            if (!error.response) throw err;
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
+
+export const removeUserFromTable = createAsyncThunk<
+    void,
+    IUserToTable,
+    { rejectValue: IValidationErrors }
+>(
+    "table/remove-member-from-table",
+    async ({tableId, memberEmail}, {rejectWithValue}) => {
+        try {
+            await api.delete(
+                "api/table/remove-member-from-table",
+                {
+                    data: { tableId, memberEmail },
+                    withCredentials: true
+                }
+            );
+            return;
+        } catch (err: any) {
+            let error: AxiosError<IValidationErrors> = err;
+            if (!error.response) throw err;
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
+
+export const getAllMembersInTable = createAsyncThunk<
+    IUserListForTable,
+    string,
+    { rejectValue: IValidationErrors }
+>(
+    "table/get-all-members-in-table",
+    async (tableId, { rejectWithValue }) => {
+        try {
+            const response = await api.get(
+                `api/table/members/${tableId}`,
+                { withCredentials: true }
+            );
+            return response.data.$values;
         } catch (err: any) {
             let error: AxiosError<IValidationErrors> = err;
             if (!error.response) throw err;

@@ -6,9 +6,8 @@ import {
     IAvatar,
     IChangePasswordRequest,
     ICheckHasUserSentRequestToChangePassword, IEditAvatar,
-    IEditUserProfile,
     ILoginRequest,
-    IRegisterRequest,
+    IRegisterRequest, ISolanaUserProfile,
     IUserProfile,
     IVerificateEmailRequest
 } from '../../interfaces/authenticateInterfaces';
@@ -262,6 +261,46 @@ export const logoutAsync = createAsyncThunk<
             const error: AxiosError<IValidationErrors> = err;
             if (!error.response) throw err;
 
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
+
+export const solanaWalletAuthAsync = createAsyncThunk<
+    ISolanaUserProfile,
+    string,
+    { rejectValue: IValidationErrors }
+>(
+    "api/authentication/solana-auth",
+    async (publicKey, {rejectWithValue}) => {
+        try {
+            const response = await api.post("/api/authentication/solana-auth", {
+                PublicKey: publicKey
+            },
+                {withCredentials: true}
+            );
+            return response.data;
+        } catch (error) {
+            return rejectWithValue(error.response?.data || 'Authentication failed');
+        }
+    }
+);
+
+export const checkSolanaTokenAsync = createAsyncThunk<
+    ISolanaUserProfile,
+    void,
+    { rejectValue: IValidationErrors }>(
+    "authentication/check-token-by-publickey",
+    async (_, { rejectWithValue }) => {
+        try {
+            var result = await api.get("api/authentication/check-token-by-publickey", {
+                withCredentials: true
+            });
+            return result.data;
+        } catch (err: any) {
+            let error: AxiosError<IValidationErrors> = err;
+            if (!error.response)
+                throw err;
             return rejectWithValue(error.response.data);
         }
     }

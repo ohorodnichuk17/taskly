@@ -6,7 +6,6 @@ import { tableReducer } from "./slices/tableSlice.ts";
 import { cardReducer } from './slices/cardSlice.ts';
 import { geminiReducer } from './slices/geminiSlice.ts';
 
-
 const reducers = combineReducers({
     authenticate: authenticateReducer,
     general: generalReducer,

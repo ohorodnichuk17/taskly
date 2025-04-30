@@ -112,6 +112,69 @@
             }
         }
 
-    }
+        .auth-actions {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
 
+            button[type="submit"] {
+                @include defaultButton($buttonWidth: 100%, $font_size: 16px);
+                background-color: #007bff;
+                color: white;
+                border: none;
+                border-radius: 6px;
+                padding: 10px;
+                font-size: 16px;
+                cursor: pointer;
+                transition: background-color 0.3s;
+
+                &:hover {
+                    background-color: #0056b3;
+                }
+            }
+
+            .auth-links {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+                width: 100%;
+                font-size: 14px;
+
+                span {
+                    color: #ffffff;
+                    text-align: center;
+                    cursor: pointer;
+                    text-decoration: underline;
+                    transition: color 0.2s;
+
+                    &:hover {
+                        color: #c3c3c3;
+                    }
+                }
+            }
+            }
+    }
 }
+
+.login-toggle {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+
+    button {
+        padding: 0.5rem 1rem;
+        margin: 0 0.5rem;
+        background: rgba(255, 255, 255, 0.1);
+        color: #ffffff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+
+        &.active {
+            background-color: #333;
+            color: white;
+        }
+    }
+}
+

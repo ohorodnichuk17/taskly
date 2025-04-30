@@ -12,6 +12,7 @@ export interface IAuthenticateInitialState {
     avatars: IAvatar[] | null,
     keyToChangePassword: string | null,
     emailOfUserWhoWantToChangePassword: string | null,
+    authMethod: "jwt" | "solana" | null,
 
     //jwtInformation: IJwtInformation | null
 }
@@ -19,6 +20,13 @@ export interface IUserProfile {
     id: string
     email: string,
     avatarName: string
+}
+
+export interface ISolanaUserProfile {
+    id: string
+    publicKey: string,
+    avatarName: string
+    userName: string
 }
 
 export interface IEditAvatar {

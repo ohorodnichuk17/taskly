@@ -1,0 +1,228 @@
+@import "../base/variables";
+@import "../base/mixins";
+
+.members-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: $padding-large;
+  color: $text-color;
+  position: relative;
+  height: 85%;
+}
+
+.members-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  position: relative;
+  margin-bottom: $padding-large;
+  padding-top: $padding-small;
+}
+
+.back-btn {
+  @include flex-center;
+  background: $background-color;
+  color: $text-color;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: $padding-medium $padding-large;
+  border-radius: $border-radius;
+  font-weight: bold;
+  font-size: $font-size-medium;
+  cursor: pointer;
+  gap: 8px;
+  @include transition(all, $transition-speed, ease);
+  backdrop-filter: blur(6px);
+
+  position: absolute;
+  top: $padding-small;
+  right: $padding-small;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
+}
+
+.add-member-btn {
+  background: $background-color;
+  color: $text-color;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: $padding-small $padding-medium;
+  border-radius: $border-radius;
+  font-size: $font-size-medium;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: $padding-large;
+  @include transition(all, $transition-speed, ease);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
+}
+
+.no-members {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-top: $padding-large;
+
+  p {
+    font-size: $font-size-large;
+    color: $text-color;
+    margin-bottom: $padding-small;
+  }
+}
+
+.members-list {
+  list-style: none;
+  margin: 0;
+  width: 100%;
+  max-width: 1000px;
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.member-item {
+  display: flex;
+  align-items: center;
+  padding: $padding-medium;
+  margin-bottom: $padding-small;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px $shadow-color;
+  @include transition(all, 0.3s, ease);
+  justify-content: space-between;
+}
+
+.member-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 24px $shadow-color;
+}
+
+.member-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: $padding-medium;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.member-item span {
+  font-size: $font-size-medium;
+  font-weight: 500;
+  color: $text-color;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-right: auto;
+}
+
+.members-page div {
+  text-align: center;
+  font-size: $font-size-large;
+  color: $danger-color;
+  margin-top: $padding-medium;
+}
+
+.members-page div.loading {
+  color: $text-color;
+}
+
+.delete-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  order: 2;
+  margin-left: 10px;
+
+  .trash-icon {
+    width: 20px;
+    height: 20px;
+    fill: $trash-icon-color;
+    transition: transform $transition-speed ease, fill $transition-speed ease;
+
+    &:hover {
+      transform: scale($trash-icon-hover-scale);
+      fill: $trash-icon-hover-color;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-mobile) {
+  .members-page {
+    padding: $padding-medium;
+  }
+
+  .members-header {
+    margin-bottom: $padding-medium;
+  }
+
+  .back-btn {
+    top: $padding-small;
+    right: $padding-small;
+    font-size: $font-size-small;
+    padding: $padding-small $padding-medium;
+  }
+
+  .add-member-btn {
+    font-size: $font-size-small;
+    padding: $padding-small $padding-medium;
+    margin-top: $padding-medium;
+  }
+
+  .no-members {
+    margin-top: $padding-medium;
+  }
+
+  .members-list {
+    padding: 0 10px;
+    max-height: 300px;
+  }
+
+  .member-item {
+    flex-direction: row;
+    align-items: center;
+    padding: $padding-small;
+  }
+
+  .member-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: $padding-small;
+    margin-bottom: 0;
+  }
+
+  .member-item span {
+    font-size: $font-size-small;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: auto;
+  }
+
+  .delete-btn {
+    position: static;
+    margin-left: $padding-small;
+    order: 2;
+  }
+}
