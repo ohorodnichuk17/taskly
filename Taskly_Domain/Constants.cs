@@ -8,4 +8,6 @@ public static class Constants
 
     public static readonly string ChangePassword = "ChangePassword";
     public static readonly string VerificateEmail = "VerificateEmail";
+
+    public static readonly Guid DefaultAvatarId = Guid.Parse("44cbb6cc-15ae-4d6c-b02e-c889374c9086");
 }

@@ -20,4 +20,16 @@ public record WalletAddress(string Value)
 
         return new WalletAddress(publicKey);
     }
+
+    /// <summary>
+    /// Validates a Solana public key string.
+    /// </summary>
+    /// <param name="publicKey">The Solana public key as a Base58-encoded string.</param>
+    /// <returns>
+    /// True if the public key is not null or whitespace and has a valid Solana format; otherwise, false.
+    /// </returns>
+    public static bool ValidatePublicKey(string publicKey)
+    {
+        return !string.IsNullOrWhiteSpace(publicKey) && PublicKey.IsValid(publicKey);
+    }
 }
