@@ -17,6 +17,7 @@ using Taskly_Application.Requests.Authentication.Command.EditUserProfile;
 using Taskly_Application.Requests.SolanaWallet.Authentication.Command.AuthenticateSolanaWallet;
 using Taskly_Application.Requests.SolanaWallet.Authentication.Command.UpdateUserProfile;
 using Taskly_Application.Requests.SolanaWallet.Authentication.Query.GenerateJwtToken;
+using Taskly_Application.Requests.SolanaWallet.Authentication.Query.GetUserByPublicKey;
 
 namespace Taskly_Api.Controllers
 {
@@ -64,8 +65,8 @@ namespace Taskly_Api.Controllers
             return await result.MatchAsync(async result => {
                 Response.Cookies.Append("X-JWT-Token", result, new CookieOptions()
                 {
-                    HttpOnly = true, // Забороняє взаємодіяти з кукі через JS
-                    SameSite = SameSiteMode.Strict, //Кукі передаються тільки в межах того ж сайту (тільки для запитів з цього ж домену).
+                    HttpOnly = true, 
+                    SameSite = SameSiteMode.Strict, 
                 });
 
                 var user = await sender.Send(new GetInformationAboutUserQuery(loginRequest.Email));
@@ -148,7 +149,19 @@ namespace Taskly_Api.Controllers
                 if (tokenResult.IsError)
                     return StatusCode(500, new { Message = tokenResult.Errors.First().Description });
 
-                return Ok(new { Token = tokenResult.Value });
+                // return Ok(new { Token = tokenResult.Value });
+                
+                return await tokenResult.MatchAsync(async result => {
+                    Response.Cookies.Append("X-JWT-Token", result, new CookieOptions()
+                    {
+                        HttpOnly = true, 
+                        SameSite = SameSiteMode.Strict, 
+                    });
+                    var user = await sender.Send(new GetUserByPublicKeyQuery(request.PublicKey));
+                
+                    return user.Match(user => Ok(mapper.Map<InformationAboutSolanaUserResponse>(user)),
+                        errors => Problem(errors));
+                },errors => Task.FromResult(Problem(errors)));
             }
             catch (Exception ex)
             {
@@ -163,6 +176,20 @@ namespace Taskly_Api.Controllers
 
             return result.Match(result => Ok(mapper.Map<UpdateUserProfileForSolana>(result)),
                 errors => Problem(errors));
+        }
+        
+        [HttpGet("check-token-by-publickey")]
+        [Authorize]
+        public async Task<IActionResult> CheckTokenByPublicKey()
+        {
+            var publicKey = User.Claims.FirstOrDefault(c => c.Type == "publicKey")?.Value;
+    
+            var user = await sender.Send(new GetUserByPublicKeyQuery(publicKey));
+    
+            return user.Match(
+                user => Ok(mapper.Map<InformationAboutSolanaUserResponse>(user)),
+                errors => Problem(errors)
+            );
         }
 
         [HttpGet("exit")]
