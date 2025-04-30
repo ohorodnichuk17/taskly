@@ -148,7 +148,6 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
             return null;
         }    
     }
-    
 
     private async Task<(BoardEntity board, UserEntity user)> GetBoardAndUserAsync(Guid boardId, Guid userId)
     {
@@ -189,7 +188,4 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
 
         return board;
     }
-
-    
-
 }

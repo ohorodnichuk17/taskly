@@ -9,4 +9,5 @@ public class UserEntity : IdentityUser<Guid>
     public ICollection<BoardEntity> Boards { get; set; } = new List<BoardEntity>();
     public ICollection<TableEntity> ToDoTables { get; set; } = new List<TableEntity>();
     public ICollection<TableItemEntity> ToDoTableItems { get; set; } = new List<TableItemEntity>();
+    public string? PublicKey { get; set; }
 }
