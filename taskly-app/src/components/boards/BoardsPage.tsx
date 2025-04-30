@@ -38,9 +38,9 @@ export const BoardsPage = () => {
         getBoardsByUser();
     }, [])
 
-    /*useEffect(() => {
-        
-    }, [])*/
+    useEffect(() => {
+        console.log(boards);
+    }, [boards])
     useEffect(() => {
         if (boardsItemsRef.current) {
             setBoardsItemsOverflowY(boardsItemsRef.current && boardsItemsRef.current.offsetHeight < boardsItemsRef.current.scrollHeight ?
@@ -78,7 +78,7 @@ export const BoardsPage = () => {
                         <p>{element.name}</p>
 
                         <div className="additional-information">
-                            <span>2</span>
+                            <span>{element.countOfMemebers}</span>
                             <img src={person_icon} alt={`Count of members ${element.countOfMemebers}`} />
                         </div>
                     </Link>))}
@@ -102,7 +102,7 @@ export const BoardsPage = () => {
                         <p>{element.name}</p>
 
                         <div className="additional-information">
-                            <span>2</span>
+                            <span>{element.countOfMemebers}</span>
                             <img src={person_icon} alt={`Count of members ${element.countOfMemebers}`} />
                         </div>
                     </Link>
@@ -119,7 +119,7 @@ export const BoardsPage = () => {
                         </div>
                     </Link>
                 ))}
-                    <div id="more-boards">
+                    <div onClick={() => setIsOpened(true)} id="more-boards">
                         <p>More boards</p>
                     </div>
                 </>))

@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { ICardListItem, IUsersBoard } from "../../interfaces/boardInterface";
+import { IAddMemberRequest, ICardListItem, IUsersBoard } from "../../interfaces/boardInterface";
 import { IValidationErrors } from "../../interfaces/generalInterface";
 import { api } from "../../axios/api";
 import { AxiosError } from "axios";
@@ -36,6 +36,57 @@ export const getCardsListsByBoardIdAsync = createAsyncThunk<
         async (boardId: string, { rejectWithValue }) => {
             try {
                 const response = await api.get(`/api/Cards/get-card-list-by-board-id?boardId=${boardId}`,
+                    {
+                        withCredentials: true
+                    }
+                );
+                return response.data;
+            } catch (err: any) {
+                let error: AxiosError<IValidationErrors> = err;
+                if (!error.response)
+                    throw err;
+
+                return rejectWithValue(error.response.data);
+            }
+        }
+    )
+
+export const leaveBoardAsync = createAsyncThunk<
+    string[],
+    string,
+    { rejectValue: IValidationErrors }>(
+        "board/leave-board",
+        async (boardId: string, { rejectWithValue }) => {
+            try {
+                const response = await api.put(`/api/board/leave-board`, {
+                    boardId: boardId
+                },
+                    {
+                        withCredentials: true
+                    }
+                );
+                return response.data;
+            } catch (err: any) {
+                let error: AxiosError<IValidationErrors> = err;
+                if (!error.response)
+                    throw err;
+
+                return rejectWithValue(error.response.data);
+            }
+        }
+    )
+
+export const addMemberToBoardAsync = createAsyncThunk<
+    string,
+    IAddMemberRequest,
+    { rejectValue: IValidationErrors }>(
+        "board/add-member",
+        async (request: IAddMemberRequest, { rejectWithValue }) => {
+            try {
+                const response = await api.post(`/api/board/add-member`, {
+                    boardId: request.boardId,
+                    memberEmail: request.memberEmail
+                },
                     {
                         withCredentials: true
                     }

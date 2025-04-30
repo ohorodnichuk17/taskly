@@ -1,7 +1,8 @@
 
 export interface IBoardInitialState {
     listOfBoards: IUsersBoard[] | null,
-    cardList: ICardListItem[] | null
+    cardList: ICardListItem[] | null,
+    cardsOfLeavedUser: string[] | null
 }
 
 export interface IUsersBoard {
@@ -37,4 +38,9 @@ export interface ICardListItem {
     title: string,
     cards: ICard[] | null
     boardId: string
+}
+
+export interface IAddMemberRequest {
+    boardId: string,
+    memberEmail: string
 }

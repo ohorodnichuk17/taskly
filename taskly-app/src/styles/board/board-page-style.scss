@@ -3,16 +3,91 @@
     height: 89%;
     margin: auto;
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
     overflow-y: hidden;
     box-sizing: border-box;
+    position: relative;
+
 
     p {
         margin: 0;
     }
 
+    .members-setting-container {
+        width: fit-content;
+        display: inline-flex;
+        align-self: flex-end;
+        align-items: center;
+        column-gap: 10px;
+        //background-color: white;
+        border-radius: 10px;
+        box-sizing: border-box;
+        position: sticky;
+        left: 0px;
+
+        form {
+            width: 400px;
+            display: flex;
+            column-gap: 10px;
+            align-items: center;
+            box-sizing: border-box;
+
+            input {
+                width: 70%;
+                height: 30px;
+                outline: none;
+                border: 1px solid #6822ca;
+                color: #6822ca;
+                font-size: 17px;
+                padding: 5px 10px;
+                border-radius: 10px;
+                box-sizing: border-box;
+            }
+
+        }
+
+        button {
+            width: auto;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            column-gap: 10px;
+            //background-color: #641acc;
+            background-color: white;
+            border: none;
+            outline: none;
+            border-radius: 10px;
+            padding: 5px 10px;
+            box-sizing: border-box;
+            border: 1px solid transparent;
+            transition: all 0.7s;
+
+            p {
+                color: #6822ca;
+                font-size: 17px;
+            }
+
+            img {
+                width: 20px;
+                height: 20px;
+            }
+
+            &:hover {
+                p {
+                    color: white;
+                }
+
+                background-color: #6822ca;
+                border: 1px solid white;
+            }
+        }
+    }
+
     .card-list-container {
         width: max-content;
-        height: 100%;
+        height: 95%;
         display: flex;
         column-gap: 10px;
         padding: 10px;
@@ -32,7 +107,6 @@
             .card-list-cards {
                 width: 400px;
                 height: 90%;
-                margin-top: auto;
                 display: flex;
                 flex-direction: column;
                 row-gap: 5px;
@@ -219,6 +293,8 @@
                         box-sizing: border-box;
                         border: none;
                         outline: none;
+                        transition: all 0.7s;
+
                         cursor: pointer;
 
                         img {

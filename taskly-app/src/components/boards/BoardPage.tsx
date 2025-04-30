@@ -1,8 +1,8 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import '../../styles/board/board-page-style.scss';
 import { useAppDispatch, useRootState } from "../../redux/hooks";
-import { getCardsListsByBoardIdAsync } from "../../redux/actions/boardsAction";
+import { addMemberToBoardAsync, getCardsListsByBoardIdAsync, leaveBoardAsync } from "../../redux/actions/boardsAction";
 import { format } from "date-fns";
 import trash_can_icon from '../../../public/icon/trash_can_icon.png';
 import edit_icon from '../../../public/icon/edit_icon.png';
@@ -10,18 +10,30 @@ import leave_card_icon from '../../../public/icon/leave_card_icon.png';
 import take_card_icon from '../../../public/icon/take_card_icon.png';
 import ai_cards_icon from '../../../public/icon/ai_cards_icon.png';
 import create_custom_card_icon from '../../../public/icon/create_custom_card_icon.png';
+import members_purple_icon from '../../../public/icon/person_purple_icon.png';
+import members_white_icon from '../../../public/icon/person_icon.png';
+import leave_board_white_icon from '../../../public/icon/levae_board_white_icon.png';
+import leave_board_purple_icon from '../../../public/icon/levae_board_purple_icon.png';
+import add_member_white_icon from '../../../public/icon/add_member_white_icon.png';
+import add_member_purple_icon from '../../../public/icon/add_member_purple_icon.png';
 import { ICard, ICardListItem } from "../../interfaces/boardInterface";
-import { HubConnection, HubConnectionBuilder, HubConnectionState, LogLevel } from "@microsoft/signalr";
+import { HubConnection, HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
 import { baseUrl } from "../../axios/baseUrl";
-import { SelectDeadlineComponent } from "../general/SelectDeadlineComponent";
 import { done_card_list, todo_card_list } from "../../constants/constants";
 import { TemplateOfCard } from "../general/TemplateOfCard";
 import { TaskTextArea } from "../general/TaskTextArea";
-import { GenerateCardsWithAIType, NewCardType } from "../../validation_types/types";
+import { EmailValidationShema, EmailValidationType, EmailVerificationShema, GenerateCardsWithAIType, NewCardType } from "../../validation_types/types";
 import { createCardAsync } from "../../redux/actions/cardsActions";
 import { GenerateCardsWithAI } from "../general/GenerateCardsWithAI";
 import { generateCardsWithAIAsync } from "../../redux/actions/geminiActions";
 import { ICreateCardWithAI } from "../../interfaces/cardsInterface";
+import { removeCardsOfLeavedUser } from "../../redux/slices/boardSlice";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { InformationAlert } from "../general/InformationAlert";
+import { addInformation } from "../../redux/slices/generalSlice";
+import { typeOfMessage } from "../general/InputMessage";
+import { TypeOfInformation } from "../../interfaces/generalInterface";
 
 
 
@@ -44,6 +56,14 @@ const findAndRemoveItemFromArray = (condition: (c: any) => boolean, array: any[]
 export const BoardPage = () => {
 
     const conn = useRef<HubConnection | null>(null);
+    const boardPageRef = useRef<HTMLDivElement | null>(null);
+    const cardsRef = useRef<{
+        element: (HTMLDivElement | null)
+        id: string
+    }[]>([]);
+    const cardListRef = useRef<ICardListItem[] | null>(null);
+    const editDescriptionButtonRef = useRef<HTMLButtonElement | null>(null);
+    const cardDescription = useRef<string | null>(null);
 
     /*const conn = new HubConnectionBuilder()
         .withUrl(`${baseUrl}/board`)
@@ -51,21 +71,14 @@ export const BoardPage = () => {
         .build();*/
 
     const { boardId } = useParams();
+    const navigate = useNavigate();
 
+    const information = useRootState((s) => s.general.information);
     const cardList = useRootState(s => s.board.cardList);
     const userId = useRootState(s => s.authenticate.userProfile?.id);
     const user = useRootState(s => s.authenticate.userProfile);
+    const cardsOfLeavedUser = useRootState(s => s.board.cardsOfLeavedUser);
     const dispatch = useAppDispatch();
-
-
-    const boardPageRef = useRef<HTMLDivElement | null>(null);
-    const cardsRef = useRef<{
-        element: (HTMLDivElement | null)
-        id: string
-    }[]>([]);
-    const cardListRef = useRef<ICardListItem[] | null>(null);
-    //const descriptionTextAreaRef = useRef<HTMLTextAreaElement | null>(null);
-    const editDescriptionButtonRef = useRef<HTMLButtonElement | null>(null);
 
     const [boardPageOverflowX, setBoardPageOverflowX] = useState<"auto" | "scroll">("auto");
     const [dragenCard, setDragenCard] = useState<{
@@ -82,19 +95,54 @@ export const BoardPage = () => {
     const [creatorOfCardPosition, setCreatorOfCardPosition] = useState<DOMRect | null>(null);
     const [openedCustomCardCreate, setOpenedCustomCardCreate] = useState<boolean>(false);
     const [openedAICardCreate, setOpenedAICardCreate] = useState<boolean>(false);
-    //const [cardDescription, setCardDescription] = useState<string | null>(null);
-    const cardDescription = useRef<string | null>(null);
+    const [openedAddMember, setOpenedAddMember] = useState<boolean>(false);
+    const [buttonHovered, setButtonHovered] = useState<"members" | "leave" | "add_member" | null>(null);
+
+    const {
+        register,
+        handleSubmit,
+        formState: {
+            errors
+        },
+        setValue
+    } = useForm<EmailValidationType>({
+        resolver: zodResolver(EmailValidationShema)
+    });
 
 
     const getCardList = async () => {
-        if (boardId != null)
-            await dispatch(getCardsListsByBoardIdAsync(boardId))
+        if (boardId != null) {
+            var response = await dispatch(getCardsListsByBoardIdAsync(boardId))
+
+            if (!getCardsListsByBoardIdAsync.fulfilled.match(response)) {
+                navigate('/not-found');
+            }
+        }
+        else {
+            navigate('/not-found');
+        }
     }
+
+    useEffect(() => {
+        if (cardsOfLeavedUser !== null) {
+            if (conn.current) {
+                console.log("RESPONSE - ", cardsOfLeavedUser);
+                conn.current.send("UserHasLeftBoard", {
+                    boardId: boardId,
+                    cardsId: cardsOfLeavedUser
+                });
+            }
+            dispatch(removeCardsOfLeavedUser());
+            navigate("/boards");
+
+        }
+    }, [cardsOfLeavedUser])
 
     useEffect(() => {
         if (cardList)
             setCardLists(cardList);
     }, [cardList])
+
     useLayoutEffect(() => {
         if ((!cardListRef.current) || (cardListRef.current && cardLists != null)) {
             if (cardsRef.current) {
@@ -125,14 +173,19 @@ export const BoardPage = () => {
         cardListRef.current = cardLists;
 
     }, [cardLists])
+
     useEffect(() => {
         if (boardPageRef.current) {
             setBoardPageOverflowX(boardPageRef.current.offsetWidth < boardPageRef.current.scrollWidth ?
                 "scroll" :
                 "auto"
             )
+            console.log("boardPageRef.current.offsetWidth - ", boardPageRef.current.offsetWidth);
+            console.log("boardPageRef.current.scrollWidth - ", boardPageRef.current.scrollWidth);
+            console.log("");
         }
-    }, [boardPageRef.current])
+    }, [boardPageRef.current, boardPageRef.current?.offsetWidth])
+
     useEffect(() => {
         if ((openedCustomCardCreate === true || openedAICardCreate === true) && cardsRef.current && cardListRef.current) {
             const toDoCardListId = cardListRef.current.find(_cardList => _cardList.title === todo_card_list)!.id || null;
@@ -152,7 +205,15 @@ export const BoardPage = () => {
         startConnection();
     }, [])
 
+    useEffect(() => {
+        return (() => {
+            endConnection();
+        });
+    }, [])
 
+    useEffect(() => {
+        console.log(errors)
+    }, [errors])
 
     const startConnection = async () => {
 
@@ -162,6 +223,9 @@ export const BoardPage = () => {
             .build();
 
         conn.current.on("ConnectToTeamBoard", (mess) => {
+            console.log(mess)
+        });
+        conn.current.on("DisconnectFromTeamBoard", (mess) => {
             console.log(mess)
         });
         conn.current.on("TransferCardToAnotherCardList", (model: {
@@ -257,6 +321,21 @@ export const BoardPage = () => {
         }) => {
             addNewCards(model.cards);
         });
+        conn.current.on("UserHasLeftBoard", (model: {
+            cardsId: string[]
+        }) => {
+            leaveCards(model);
+        });
+        conn.current.on("UserHasBeenAddToBoard", (model: {
+            addedUserEmail: string,
+            userEmailWhoAdd: string
+        }) => {
+            dispatch(addInformation({
+                message: `${model.addedUserEmail} has been added to board by ${model.userEmailWhoAdd}`,
+                type: TypeOfInformation.Success
+            }));
+        });
+
 
         await conn.current.start();
         await conn.current.invoke("ConnectToTeamBoard", { userId, boardId });
@@ -271,11 +350,7 @@ export const BoardPage = () => {
 
     }
 
-    useEffect(() => {
-        return (() => {
-            endConnection();
-        });
-    }, [])
+
 
 
     const transferCardToAnotherCardList = (model: {
@@ -364,15 +439,39 @@ export const BoardPage = () => {
         }
     }
     const leaveCard = (model: {
-        cardListId: string,
+        cardListId: string | null,
         cardId: string
     }) => {
         if (cardListRef.current !== null) {
             const update = cardListRef.current.map((item) => ({
                 ...item,
-                cards: item.id === model.cardListId && item.cards ? (
+                cards: ((model.cardListId != null && item.id === model.cardListId) || (model.cardListId == null)) && item.cards ? (
                     item.cards.map((card) => {
                         if (card.id === model.cardId) {
+                            return {
+                                ...card,
+                                userId: null,
+                                userName: null,
+                                userAvatar: null
+                            }
+                        }
+                        return card;
+                    })
+                ) : item.cards
+            }));
+
+            setCardLists(update);
+        }
+    }
+    const leaveCards = (model: {
+        cardsId: string[]
+    }) => {
+        if (cardListRef.current !== null) {
+            const update = cardListRef.current.map((item) => ({
+                ...item,
+                cards: item.cards ? (
+                    item.cards.map((card) => {
+                        if (model.cardsId.findIndex(cardWithoutUser => cardWithoutUser === card.id) !== -1) {
                             return {
                                 ...card,
                                 userId: null,
@@ -531,7 +630,9 @@ export const BoardPage = () => {
             />);
         }
     }
-
+    const leaveBoard = async () => {
+        await dispatch(leaveBoardAsync(boardId!));
+    }
 
     const handleSubmitCreateCustomCard = async (request: NewCardType) => {
         const model = {
@@ -540,11 +641,9 @@ export const BoardPage = () => {
             deadline: request.deadline,
             userId: request.isPublicCard === true ? null : userId!
         }
-        console.log("MODEL", model)
         const response = await dispatch(createCardAsync(model));
 
         if (createCardAsync.fulfilled.match(response)) {
-            console.log("User", user);
             if (conn.current) {
                 await conn.current.send("AddNewCard", {
                     boardId: boardId,
@@ -581,6 +680,36 @@ export const BoardPage = () => {
             setOpenedAICardCreate(false);
         }
     }
+    const handleSubmitAddMember = async (request: EmailValidationType) => {
+        console.log("Hello");
+        var response = await dispatch(addMemberToBoardAsync({
+            boardId: boardId!,
+            memberEmail: request.email
+        }));
+
+        if (addMemberToBoardAsync.fulfilled.match(response)) {
+            /*dispatch(addInformation({
+                message: `${response.payload} has been add to board.`,
+                type: TypeOfInformation.Success
+            }));*/
+            if (conn.current) {
+                conn.current.send("UserHasBeenAddToBoard", {
+                    boardId: boardId!,
+                    addedUserEmail: response.payload,
+                    userEmailWhoAdd: user!.email
+                })
+            }
+            setOpenedAddMember(false);
+
+        }
+        else {
+            dispatch(addInformation({
+                message: `${response.payload?.errors[0].code}`,
+                type: TypeOfInformation.Error
+            }));
+        }
+    }
+
 
     return <div className="board-page-container"
         ref={(ref) => {
@@ -593,6 +722,62 @@ export const BoardPage = () => {
             }
         }}
     >
+        {information && (
+            <InformationAlert message={information.message} type={information.type} />
+        )}
+        <div className="members-setting-container">
+            {openedAddMember === true ?
+                <form onSubmit={handleSubmit(handleSubmitAddMember)}>
+                    <input {...register("email")} type="text" placeholder="example@mail.com" style={{ borderColor: errors.email ? "red" : "#6822ca" }} />
+                    <button type="submit">
+                        <p>Add</p>
+                    </button>
+                    <button
+                        onClick={() => {
+                            setOpenedAddMember(false);
+                            setValue("email", "");
+                        }}
+                    >
+                        <p>Cancel</p>
+                    </button>
+                </form>
+                :
+                <button
+                    onMouseEnter={() => {
+                        setButtonHovered("add_member")
+                    }}
+                    onMouseLeave={() => {
+                        setButtonHovered(null);
+                    }}
+                    onClick={() => setOpenedAddMember(true)}
+                >
+                    <img src={buttonHovered === "add_member" ? add_member_white_icon : add_member_purple_icon} alt="Add Member" />
+                    <p>Add members</p>
+                </button>}
+            <button
+                onMouseEnter={() => {
+                    setButtonHovered("members")
+                }}
+                onMouseLeave={() => {
+                    setButtonHovered(null);
+                }}
+            >
+                <img src={buttonHovered === "members" ? members_white_icon : members_purple_icon} alt="Members" />
+                <p>Members</p>
+            </button>
+            <button
+                onMouseEnter={() => {
+                    setButtonHovered("leave")
+                }}
+                onMouseLeave={() => {
+                    setButtonHovered(null);
+                }}
+                onClick={leaveBoard}
+            >
+                <img src={buttonHovered === "leave" ? leave_board_white_icon : leave_board_purple_icon} alt="Leave board" />
+                <p>Leave</p>
+            </button>
+        </div>
         <div className="card-list-container">
             {/*<SelectDeadlineComponent />*/}
             {cardLists && cardLists.map((element) => (

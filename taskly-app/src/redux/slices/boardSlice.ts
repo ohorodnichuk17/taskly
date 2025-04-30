@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IBoardInitialState, ICard, ICardListItem, IUsersBoard } from "../../interfaces/boardInterface";
-import { getBoardsByUserAsync, getCardsListsByBoardIdAsync } from "../actions/boardsAction";
+import { addMemberToBoardAsync, getBoardsByUserAsync, getCardsListsByBoardIdAsync, leaveBoardAsync } from "../actions/boardsAction";
 import { IValidationErrors } from "../../interfaces/generalInterface";
 
 const findAndRemoveItemFromArray = (condition: (c: any) => boolean, array: any[]) => {
@@ -21,13 +21,17 @@ const addItemToArrayFromAnotherArray = (item: any, array: any[]) => {
 
 const initialState: IBoardInitialState = {
     listOfBoards: null,
-    cardList: null
+    cardList: null,
+    cardsOfLeavedUser: null
 }
 
 const boardSlice = createSlice({
     name: "boardSlice",
     initialState: initialState,
     reducers: {
+        removeCardsOfLeavedUser: (state) => {
+            state.cardsOfLeavedUser = null;
+        }
     },
     extraReducers(builder) {
         builder
@@ -43,8 +47,20 @@ const boardSlice = createSlice({
             .addCase(getCardsListsByBoardIdAsync.rejected, (state) => {
 
             })
+            .addCase(leaveBoardAsync.fulfilled, (state, action: PayloadAction<string[]>) => {
+                state.cardsOfLeavedUser = action.payload;
+            })
+            .addCase(leaveBoardAsync.rejected, (state) => {
 
+            })
+            .addCase(addMemberToBoardAsync.fulfilled, (state, action: PayloadAction<string>) => {
+
+            })
+            .addCase(addMemberToBoardAsync.rejected, (state) => {
+
+            })
     },
 });
 
 export const boardReducer = boardSlice.reducer;
+export const { removeCardsOfLeavedUser } = boardSlice.actions;

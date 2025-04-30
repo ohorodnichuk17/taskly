@@ -1,6 +1,8 @@
+import { useNavigate } from 'react-router-dom';
 import '../../styles/general/not-found-style.scss'
 
 export const PageNotFound = () => {
+    const navigate = useNavigate();
     return (
         <div className="not-found-container">
             <h1 className="not-found-title">404</h1>
@@ -9,9 +11,9 @@ export const PageNotFound = () => {
             </p>
             <button
                 className="not-found-button"
-                onClick={() => window.history.back()}
+                onClick={() => navigate("/")}
             >
-                Go Back
+                Go Home
             </button>
         </div>
     );

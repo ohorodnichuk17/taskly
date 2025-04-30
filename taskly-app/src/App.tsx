@@ -16,13 +16,13 @@ import AIAgent from "./components/user/AiAgent.tsx";
 import { BoardsPage } from './components/boards/BoardsPage.tsx'
 import { BoardPage } from './components/boards/BoardPage.tsx'
 import MainPage from "./components/general/MainPage.tsx";
-import {ProfilePage} from "./components/user/ProfilePage.tsx";
+import { ProfilePage } from "./components/user/ProfilePage.tsx";
 import TablesListPage from "./components/table/TablesListPage.tsx";
 import CreateTablePage from "./components/table/CreateTablePage.tsx";
 import TablePage from "./components/table/TablePage.tsx";
 import EditTablePage from "./components/table/EditTablePage.tsx";
 import TableFormPage from "./components/table/TableFormPage.tsx";
-import {CreateTableItemPage} from "./components/table/CreateTableItemPage.tsx";
+import { CreateTableItemPage } from "./components/table/CreateTableItemPage.tsx";
 import AddMemberToTablePage from "./components/table/AddMemberToTablePage.tsx";
 
 
@@ -55,11 +55,12 @@ function App() {
           <Route path="artificial-intelligence" element={<AIAgent />} />
 
           {isLogin && (<>
-            <Route path='/boards' element={<BoardsPage />}/>
-            <Route path='/boards/:boardId' element={<BoardPage />}/>
-            <Route path='/edit-profile' element={<ProfilePage />}/>
-            <Route path='/tables' element={<TablesListPage />}/>
-            <Route path='/tables/create' element={<TableFormPage />}/>
+            <Route path='/boards' element={<BoardsPage />} />
+            <Route path='/boards/:boardId' element={<BoardPage />} />
+            <Route path='/boards/create-new-board' element={<PageNotFound />} />
+            <Route path='/edit-profile' element={<ProfilePage />} />
+            <Route path='/tables' element={<TablesListPage />} />
+            <Route path='/tables/create' element={<TableFormPage />} />
             <Route path="/tables/:tableId" element={<TablePage />} />
             <Route path="/tables/edit/:tableId" element={<TableFormPage />} />
             <Route path="/tables/:tableId/create" element={<CreateTableItemPage />} />
