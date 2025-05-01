@@ -2,26 +2,23 @@ import {
     IAuthenticateInitialState,
     IAvatar,
     ICustomJwtPayload, IEditAvatar,
-    IEditUserProfile,
     IJwtInformation, ISolanaUserProfile,
     IUserProfile,
-    StatusEnums
 } from "../../interfaces/authenticateInterfaces";
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import {
     changePasswordAsync,
     checkHasUserSentRequestToChangePasswordAsync, checkSolanaTokenAsync,
-    checkTokenAsync, editAvatarAsync, editUserProfileAsync,
+    checkTokenAsync, editAvatarAsync,
     getAllAvatarsAsync,
     loginAsync,
     logoutAsync,
     registerAsync,
     sendRequestToChangePasswordAsync,
-    sendVerificationCodeAsync, solanaWalletAuthAsync,
+    sendVerificationCodeAsync, solanaLogoutAsync, solanaWalletAuthAsync,
     verificateEmailAsync
 } from "../actions/authenticateAction.ts";
 import { jwtDecode } from "jwt-decode";
-import { IInformationAlert } from "../../interfaces/generalInterface.ts";
 
 
 const decodeJWT = (token: string) => {
@@ -83,13 +80,17 @@ const authenticateSlice = createSlice({
         setEmailOfUserWhoWantToChangePassword(state, payload: PayloadAction<string | null>) {
             state.emailOfUserWhoWantToChangePassword = payload.payload;
         },
-        logout: (state) => {
-            state.authMethod = null;
-            localStorage.removeItem("authMethod");
-            state.token = null;
-            state.isAuthenticated = false;
-            localStorage.removeItem('authToken');
-        },
+        // logout: (state) => {
+        //     state.authMethod = null;
+        //     state.token = null;
+        //     state.solanaUserProfile = null;
+        //     state.isAuthenticated = false;
+        //     localStorage.removeItem("authMethod");
+        //     localStorage.removeItem("user_profile_id");
+        //     localStorage.removeItem("user_profile_publicKey");
+        //     localStorage.removeItem("user_profile_avatar");
+        //     localStorage.removeItem("user_profile_userName");
+        // },
 
         /*setErrorAuthenticate(state, error: PayloadAction<string | null>) {
             state.error = error.payload;
@@ -233,10 +234,30 @@ const authenticateSlice = createSlice({
             .addCase(logoutAsync.fulfilled, (state) => {
                 state.authMethod = null;
                 localStorage.removeItem("authMethod");
+                localStorage.removeItem("isLogin");
+                localStorage.removeItem("userProfile");
+                localStorage.removeItem("user_profile_id");
+                localStorage.removeItem("user_profile_email");
+                localStorage.removeItem("user_profile_avatar");
                 state.isLogin = false;
                 state.userProfile = null;
             })
             .addCase(logoutAsync.rejected, (state, action) => {
+                console.error("Logout failed:", action.payload);
+            })
+            .addCase(solanaLogoutAsync.fulfilled, (state) => {
+                state.isLogin = false;
+                state.authMethod = null;
+                state.token = null;
+                state.solanaUserProfile = null;
+                state.isAuthenticated = false;
+                localStorage.removeItem("authMethod");
+                localStorage.removeItem("user_profile_id");
+                localStorage.removeItem("user_profile_publicKey");
+                localStorage.removeItem("user_profile_avatar");
+                localStorage.removeItem("user_profile_userName");
+            })
+            .addCase(solanaLogoutAsync.rejected, (state, action) => {
                 console.error("Logout failed:", action.payload);
             })
             .addCase(editAvatarAsync.fulfilled, (state, action) => {
@@ -250,16 +271,18 @@ const authenticateSlice = createSlice({
             .addCase(editAvatarAsync.rejected, (state, action) => {
                 console.error("Edit avatar failed:", action.payload);
             })
-            .addCase(solanaWalletAuthAsync.fulfilled, (state, action: PayloadAction<ISolanaUserProfile>) => {
+            .addCase(solanaWalletAuthAsync.fulfilled, (state, action: PayloadAction<Partial<ISolanaUserProfile>>) => {
+                const payload = action.payload || {};
                 state.isLogin = true;
                 state.isAuthenticated = true;
-                state.token = action.payload;
-                localStorage.setItem("authToken", action.payload);
+                state.solanaUserProfile = {
+                    id: payload.id || localStorage.getItem("user_profile_id") || "",
+                    publicKey: payload.publicKey || localStorage.getItem("user_profile_publicKey") || "",
+                    userName: payload.userName || localStorage.getItem("user_profile_userName") || "",
+                    avatarName: payload.avatarName || localStorage.getItem("user_profile_avatar") || ""
+                };
+                state.authMethod = "solana";
                 localStorage.setItem("authMethod", "solana");
-                localStorage.setItem("user_profile_id", action.payload.id);
-                localStorage.setItem("user_profile_publicKey", action.payload.publicKey);
-                localStorage.setItem("user_profile_userName", action.payload.userName);
-                localStorage.setItem("user_profile_avatar", action.payload.avatarName);
             })
             .addCase(solanaWalletAuthAsync.rejected, (state, action) => {
                 if (localStorage.getItem("user_profile_id") !== null)
@@ -303,4 +326,4 @@ const authenticateSlice = createSlice({
 })
 
 export const authenticateReducer = authenticateSlice.reducer;
-export const { /*setErrorAuthenticate,*/ /*clearJwtToken*/ setEmailOfUserWhoWantToChangePassword, logout } = authenticateSlice.actions;
+export const { /*setErrorAuthenticate,*/ /*clearJwtToken*/ setEmailOfUserWhoWantToChangePassword } = authenticateSlice.actions;

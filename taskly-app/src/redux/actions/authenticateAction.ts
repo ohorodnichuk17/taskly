@@ -266,6 +266,30 @@ export const logoutAsync = createAsyncThunk<
     }
 );
 
+export const solanaLogoutAsync = createAsyncThunk<
+    void,
+    void,
+    { rejectValue: IValidationErrors }
+>(
+    "authenticate/solana-logout",
+    async (_, { rejectWithValue }) => {
+        try {
+            await api.get("/api/Authentication/exit", {
+                withCredentials: true,
+            });
+
+            localStorage.removeItem("token");
+
+            return;
+        } catch (err: any) {
+            const error: AxiosError<IValidationErrors> = err;
+            if (!error.response) throw err;
+
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
+
 export const solanaWalletAuthAsync = createAsyncThunk<
     ISolanaUserProfile,
     string,

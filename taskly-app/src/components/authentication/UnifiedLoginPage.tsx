@@ -9,8 +9,7 @@ import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useState, useEffect } from 'react';
 
-import { loginAsync, solanaWalletAuthAsync } from '../../redux/actions/authenticateAction';
-import { logout } from '../../redux/slices/authenticateSlice';
+import {loginAsync, solanaLogoutAsync, solanaWalletAuthAsync} from '../../redux/actions/authenticateAction';
 
 import { LoginShema, LoginType } from '../../validation_types/types';
 import { InputMessage, typeOfMessage } from '../general/InputMessage';
@@ -85,7 +84,7 @@ export const UnifiedLoginPage = () => {
 
     const handleLogout = () => {
         disconnect();
-        dispatch(logout());
+        dispatch(solanaLogoutAsync());
         alert('You have been logged out.');
     };
 
