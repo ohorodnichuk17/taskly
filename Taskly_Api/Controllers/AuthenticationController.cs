@@ -15,6 +15,7 @@ using Taskly_Application.Requests.Authentication.Command.ChangePassword;
 using Taskly_Application.Requests.Authentication.Query.GetInformationAboutUser;
 using Taskly_Application.Requests.Authentication.Command.EditUserProfile;
 using Taskly_Application.Requests.SolanaWallet.Authentication.Command.AuthenticateSolanaWallet;
+using Taskly_Application.Requests.SolanaWallet.Authentication.Command.SetUserNameForSolanaUser;
 using Taskly_Application.Requests.SolanaWallet.Authentication.Query.GenerateJwtToken;
 using Taskly_Application.Requests.SolanaWallet.Authentication.Query.GetUserByPublicKey;
 
@@ -178,6 +179,16 @@ namespace Taskly_Api.Controllers
                 user => Ok(mapper.Map<InformationAboutSolanaUserResponse>(user)),
                 errors => Problem(errors)
             );
+        }
+        
+        [HttpPost("set-user-name-for-solana-user")]
+        [Authorize]
+        public async Task<IActionResult> SetUserNameForSolanaUser([FromBody] SetUserNameForSolanaUserRequest request)
+        {
+            var result = await sender.Send(mapper.Map<SetUserNameForSolanaUserCommand>(request));
+
+            return result.Match(result => Ok(mapper.Map<SetUserNameForSolanaUserResponse>(result)),
+                errors => Problem(errors));
         }
 
         [HttpGet("exit")]

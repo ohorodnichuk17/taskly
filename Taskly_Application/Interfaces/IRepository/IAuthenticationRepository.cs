@@ -20,4 +20,5 @@ public interface IAuthenticationRepository : IRepository<UserEntity>
     Task<string?> GetUserEmailByChangePasswordKeyAsync(Guid key);
     Task<ErrorOr<Guid>> ChangePasswordAsync(UserEntity user, string password);
     // Task<UserEntity> GetSolanaUserProfile(Guid userId);
+    Task<ErrorOr<UserEntity>> SetUserNameForSolanaUserAsync(string publicKey, string userName);
 }

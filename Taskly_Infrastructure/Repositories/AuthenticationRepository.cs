@@ -102,6 +102,16 @@ public class AuthenticationRepository(UserManager<UserEntity> userManager, Taskl
         return Error.Conflict(result.Errors.FirstOrDefault()!.Description);
     }
 
+    public async Task<ErrorOr<UserEntity>> SetUserNameForSolanaUserAsync(string publicKey, string userName)
+    {
+        var user = await GetUserByPublicKey(publicKey);
+        if (user == null)
+            return Error.NotFound("User not found");
+        user.UserName = userName;
+        await SaveAsync(user);
+        return user;
+    }
+
     private async Task<UserEntity?> GetUserByConditionAsync(Expression<Func<UserEntity, bool>> predicate)
     {
         return await _userEntity

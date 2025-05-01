@@ -4,5 +4,4 @@ using MediatR;
 namespace Taskly_Application.Requests.SolanaWallet.Authentication.Command.AuthenticateSolanaWallet;
 
 public record AuthenticateSolanaWalletCommand(
-    string PublicKey,
-    string UserName) : IRequest<ErrorOr<AuthenticationResult>>;
+    string PublicKey) : IRequest<ErrorOr<AuthenticationResult>>;
