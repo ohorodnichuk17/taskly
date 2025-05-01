@@ -23,6 +23,7 @@ public class AuthenticateSolanaWalletCommandHandler(IUnitOfWork unitOfWork)
                 {
                     Id = Guid.NewGuid(),
                     PublicKey = walletAddress.Value,
+                    UserName = request.UserName,
                     AvatarId = Constants.DefaultAvatarId
                 };
                 await unitOfWork.Authentication.CreateAsync(user);
@@ -30,7 +31,7 @@ public class AuthenticateSolanaWalletCommandHandler(IUnitOfWork unitOfWork)
             }
             else
                 user = existingUser;
-            return new AuthenticationResult(walletAddress.Value, user.Id);
+            return new AuthenticationResult(walletAddress.Value, user.Id, user.UserName);
         }
         catch (Exception ex)
         {

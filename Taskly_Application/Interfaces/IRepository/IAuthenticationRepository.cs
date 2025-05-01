@@ -19,6 +19,5 @@ public interface IAuthenticationRepository : IRepository<UserEntity>
     Task<bool> HasUserSentRequestToChangePassword(string email, Guid key);
     Task<string?> GetUserEmailByChangePasswordKeyAsync(Guid key);
     Task<ErrorOr<Guid>> ChangePasswordAsync(UserEntity user, string password);
-    Task<UserEntity> UpdateSolanaUserProfileAsync(string publicKey, Guid avatarId, string username);
     // Task<UserEntity> GetSolanaUserProfile(Guid userId);
 }

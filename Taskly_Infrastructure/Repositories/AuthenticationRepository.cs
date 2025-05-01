@@ -1,11 +1,9 @@
 ﻿using System.Linq.Expressions;
 using ErrorOr;
-using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Taskly_Application.Interfaces.IRepository;
 using Taskly_Domain.Entities;
-using Taskly_Domain.ValueObjects;
 using Taskly_Infrastructure.Common.Persistence;
 
 namespace Taskly_Infrastructure.Repositories;
@@ -102,18 +100,6 @@ public class AuthenticationRepository(UserManager<UserEntity> userManager, Taskl
             return user.Id;
         }
         return Error.Conflict(result.Errors.FirstOrDefault()!.Description);
-    }
-
-    public async Task<UserEntity> UpdateSolanaUserProfileAsync(string publicKey, Guid avatarId, string username)
-    {
-        var user = await tasklyDbContext.Users.FirstOrDefaultAsync(
-            u => u.PublicKey == publicKey);
-        if(user == null)
-            throw new Exception("User not found");
-        user.AvatarId = avatarId;
-        user.UserName = username;
-        await SaveAsync(user);
-        return user;
     }
 
     private async Task<UserEntity?> GetUserByConditionAsync(Expression<Func<UserEntity, bool>> predicate)
