@@ -23,11 +23,10 @@ export const UnifiedLoginPage = () => {
     const navigate = useNavigate();
 
     const [passwordIsView, setPasswordIsView] = useState(false);
-    const [loading, setLoading] = useState(false);
     const [mode, setMode] = useState<'email' | 'solana'>('email');
 
-    const { token, isAuthenticated } = useRootState(state => state.authenticate);
-    const { publicKey, connect, disconnect, wallet, connected } = useWallet();
+    const { isAuthenticated } = useRootState(state => state.authenticate);
+    const { publicKey, disconnect, wallet, connected } = useWallet();
 
     const {
         register,
@@ -54,17 +53,24 @@ export const UnifiedLoginPage = () => {
                 if (!solanaWalletAuthAsync.fulfilled.match(resultAction)) {
                     console.error('Solana login failed:', resultAction.payload);
                 } else {
-                    console.log('✅ Solana login successful!');
+                    const userData = resultAction.payload;
+                    if (userData.userName) {
+                        navigate("/");
+                    } else {
+                        localStorage.setItem("user_profile_publicKey", publicKey.toString());
+                        navigate("/authentication/set-username-solana");
+                    }
                 }
             } catch (error) {
-                console.error('Error during Solana auto-login:', error);
+                console.error("Error during Solana auto-login:", error);
             }
         };
 
         if (connected && publicKey) {
             handleAutoLogin();
         }
-    }, [dispatch, connected, publicKey, wallet]);
+    }, [dispatch, connected, publicKey, wallet, navigate]);
+
 
 
     const login = async (obj: LoginType) => {
@@ -80,12 +86,6 @@ export const UnifiedLoginPage = () => {
         } else {
             navigate("/");
         }
-    };
-
-    const handleLogout = () => {
-        disconnect();
-        dispatch(solanaLogoutAsync());
-        alert('You have been logged out.');
     };
 
     return (

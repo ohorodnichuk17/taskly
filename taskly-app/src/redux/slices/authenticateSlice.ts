@@ -2,7 +2,7 @@ import {
     IAuthenticateInitialState,
     IAvatar,
     ICustomJwtPayload, IEditAvatar,
-    IJwtInformation, ISolanaUserProfile,
+    IJwtInformation, ISetUserNameForSolanaUser, ISolanaUserProfile,
     IUserProfile,
 } from "../../interfaces/authenticateInterfaces";
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
@@ -15,7 +15,7 @@ import {
     logoutAsync,
     registerAsync,
     sendRequestToChangePasswordAsync,
-    sendVerificationCodeAsync, solanaLogoutAsync, solanaWalletAuthAsync,
+    sendVerificationCodeAsync, setUserNameForSolanaUserAsync, solanaLogoutAsync, solanaWalletAuthAsync,
     verificateEmailAsync
 } from "../actions/authenticateAction.ts";
 import { jwtDecode } from "jwt-decode";
@@ -211,8 +211,8 @@ const authenticateSlice = createSlice({
                     state.error = action.error.message || "Uncnown";
                 }*/
             }).addCase(checkHasUserSentRequestToChangePasswordAsync.fulfilled, (state, action: PayloadAction<string | null>) => {
-                state.emailOfUserWhoWantToChangePassword = action.payload === "" ? null : action.payload;
-            })
+            state.emailOfUserWhoWantToChangePassword = action.payload === "" ? null : action.payload;
+        })
             .addCase(checkHasUserSentRequestToChangePasswordAsync.rejected, (state) => {
                 /*if (action.payload) {
                     state.error = action.payload.errors[0].code;
@@ -222,7 +222,7 @@ const authenticateSlice = createSlice({
                 }*/
             }).addCase(changePasswordAsync.fulfilled, (state, action: PayloadAction<string>) => {
 
-            })
+        })
             .addCase(changePasswordAsync.rejected, (state) => {
                 /*if (action.payload) {
                     state.error = action.payload.errors[0].code;
@@ -293,6 +293,20 @@ const authenticateSlice = createSlice({
                     localStorage.removeItem("user_profile_userName");
                 if (localStorage.getItem("user_profile_avatar") !== null)
                     localStorage.removeItem("user_profile_avatar");
+            })
+            .addCase(setUserNameForSolanaUserAsync.fulfilled, (state, action: PayloadAction<ISetUserNameForSolanaUser>) => {
+                const payload = action.payload || {};
+                state.solanaUserProfile = {
+                    ...state.solanaUserProfile,
+                    publicKey: payload.publicKey || localStorage.getItem("user_profile_publicKey") || "",
+                    userName: payload.userName || localStorage.getItem("user_profile_userName") || "",
+                };
+            })
+            .addCase(setUserNameForSolanaUserAsync.rejected, (state, action) => {
+                if (localStorage.getItem("user_profile_publicKey") !== null)
+                    localStorage.removeItem("user_profile_publicKey");
+                if (localStorage.getItem("user_profile_userName") !== null)
+                    localStorage.removeItem("user_profile_userName");
             })
             .addCase(checkSolanaTokenAsync.fulfilled, (state, action: PayloadAction<ISolanaUserProfile>) => {
                 localStorage.setItem("isLogin", "true");

@@ -24,6 +24,7 @@ import AddMemberToTablePage from "./components/table/AddMemberToTablePage.tsx";
 import ListOfMembersInTable from "./components/table/ListOfMembersInTable.tsx";
 import { WalletContextProvider } from "./providers/WalletContextProvider.tsx";
 import { UnifiedLoginPage } from "./components/authentication/UnifiedLoginPage.tsx";
+import SetUserNameForSolanaUser from "./components/authentication/SetUserNameForSolanaUser.tsx";
 
 
 function App() {
@@ -51,8 +52,6 @@ function App() {
   useEffect(() => {
     console.log(isLogin)
   }, [isLogin])
-
-
 
   return (
     <WalletContextProvider>
@@ -86,6 +85,7 @@ function App() {
           <Route path='/authentication/' element={<AuthenticationPage />}>
             <Route path="login" element={<UnifiedLoginPage />} />
             <Route path="solana-login" element={<UnifiedLoginPage />} />
+            <Route path="set-username-solana" element={<SetUserNameForSolanaUser />} />
 
             <Route path='register' element={<RegisterPage />}></Route>
             <Route path="forgot-password" element={<ForgotPasswordPage />}></Route>
