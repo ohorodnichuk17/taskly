@@ -1,6 +1,8 @@
+using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Taskly_Api.Request.Feedback;
+using Taskly_Api.Response.Feedback;
 using Taskly_Application.Requests.Feedback.Command.Create;
 using Taskly_Application.Requests.Feedback.Query.GetAll;
 using Taskly_Application.Requests.Feedback.Query.GetById;
@@ -9,7 +11,7 @@ namespace Taskly_Api.Controllers;
 
 [Route("api/feedback")]
 [ApiController]
-public class FeedbackController(ISender mediatr) : ApiController
+public class FeedbackController(ISender mediatr, IMapper mapper) : ApiController
 {
     [HttpPost("create")]
     public async Task<IActionResult> CreateFeedback([FromBody] CreateFeedbackRequest request)
@@ -19,7 +21,7 @@ public class FeedbackController(ISender mediatr) : ApiController
             request.Review,
             request.Rating);
 
-        var result = await mediatr.Send(command);
+        var result = await mediatr.Send(mapper.Map<CreateFeedbackCommand>(request));
 
         return result.Match(
             feedback => Ok(feedback),
@@ -34,7 +36,7 @@ public class FeedbackController(ISender mediatr) : ApiController
         var result = await mediatr.Send(query);
 
         return result.Match(
-            feedbacks => Ok(feedbacks),
+            feedbacks => Ok(mapper.Map<IEnumerable<FeedbackResponse>>(feedbacks)),
             errors => Problem(errors));
     }
     
@@ -46,7 +48,7 @@ public class FeedbackController(ISender mediatr) : ApiController
         var result = await mediatr.Send(query);
 
         return result.Match(
-            feedback => Ok(feedback),
+            feedback => Ok(mapper.Map<FeedbackResponse>(feedback)),
             errors => Problem(errors));
     }
 }

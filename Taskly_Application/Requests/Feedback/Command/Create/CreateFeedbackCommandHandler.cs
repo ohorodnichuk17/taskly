@@ -18,7 +18,7 @@ public class CreateFeedbackCommandHandler(IUnitOfWork unitOfWork)
                 UserId = request.UserId,
                 Review = request.Review,
                 Rating = request.Rating,
-                TimeRange = new TimeRangeEntity() { StartTime = DateTime.UtcNow },
+                CreatedAt = DateTime.UtcNow
             };
             
             await unitOfWork.Feedbacks.CreateAsync(feedback);

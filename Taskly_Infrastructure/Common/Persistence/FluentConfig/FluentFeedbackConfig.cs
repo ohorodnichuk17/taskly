@@ -16,9 +16,5 @@ public class FluentFeedbackConfig : IEntityTypeConfiguration<FeedbackEntity>
 
         builder.Property(f => f.Rating)
             .IsRequired();
-
-        builder.HasOne(td => td.TimeRange)
-            .WithOne()
-            .HasForeignKey<FeedbackEntity>(td => td.Id);
     }
 }
