@@ -52,7 +52,7 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
         }
         
     }
-    public async Task RemoveMemberFromBoardAsync(Guid boardId, Guid userId)
+    public async Task<ICollection<Guid>> RemoveMemberFromBoardAsync(Guid boardId, Guid userId)
     {
         var (board, user) = await GetBoardAndUserAsync(boardId, userId);
         
@@ -65,7 +65,8 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
         if(boardUser != null)
             context.Set<Dictionary<string, object>>("UserBoard").Remove(boardUser);
 
-        await context.SaveChangesAsync();
+
+        return await RemoveCardsOwner(boardId, userId);
     }
 
     public async Task<IEnumerable<BoardTableMemberDto>> GetMembersOfBoardAsync(Guid boardId)
@@ -74,8 +75,9 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
         ValidateBoardMembers(board);
         return board.Members.Select(member => new BoardTableMemberDto
         {
-            Email = member.Email,
-            AvatarId = member.AvatarId
+            UserId = member.Id,
+            Email = member.Email!,
+            AvatarName = member.Avatar!.ImagePath
         }) ?? Enumerable.Empty<BoardTableMemberDto>();
     }
 
@@ -164,7 +166,6 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
             return null;
         }    
     }
-<<<<<<< HEAD
 
     public async Task<bool> IsUserHasBoardByIdAsync(Guid BoardId, Guid UserId)
     {
@@ -185,20 +186,8 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
                 await RemoveMemberFromBoardAsync(BoardId, UserId);
 
                 if (includedBoard.Members.Count > 1)
-                {
-                    var cardLists = context.CardLists.Where(cl => cl.BoardId == BoardId).Select(cl => cl.Id);
-                    var cards = context.Cards.Where(card => card.UserId == UserId && cardLists.Any(cl => cl == card.CardListId));
-                    var returnedList = await cards.Select(c => c.Id).ToListAsync();
-
-                    foreach (var card in cards)
-                    {
-                        card.UserId = null;
-                        context.Cards.Update(card);
-                    }
-                    await context.SaveChangesAsync();
-                    
-                    
-                    return returnedList;
+                {                                            
+                    return await RemoveCardsOwner(BoardId, UserId);
                 }
                 else
                 {
@@ -214,8 +203,6 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
         }
     }
     
-=======
->>>>>>> ef9cee814d80bbbd816d3168afbd312d62aa048b
 
     private async Task<(BoardEntity board, UserEntity user)> GetBoardAndUserAsync(Guid boardId, Guid userId)
     {
@@ -238,6 +225,7 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
     {
         var board = await context.Boards
             .Include(b => b.Members)
+            .ThenInclude(m => m.Avatar)
             .Include(b => b.BoardTemplate)
             .Include(b => b.CardLists)
             .ThenInclude(cl => cl.Cards)
@@ -255,5 +243,21 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
             throw new KeyNotFoundException("Board not found");
 
         return board;
+    }
+
+    private async Task<ICollection<Guid>> RemoveCardsOwner(Guid BoardId, Guid UserId)
+    {
+        var cardLists = context.CardLists.Where(cl => cl.BoardId == BoardId).Select(cl => cl.Id);
+        var cards = context.Cards.Where(card => card.UserId == UserId && cardLists.Any(cl => cl == card.CardListId));
+        var returnedList = await cards.Select(c => c.Id).ToListAsync();
+
+        foreach (var card in cards)
+        {
+            card.UserId = null;
+            context.Cards.Update(card);
+        }
+        await context.SaveChangesAsync();
+
+        return returnedList;
     }
 }

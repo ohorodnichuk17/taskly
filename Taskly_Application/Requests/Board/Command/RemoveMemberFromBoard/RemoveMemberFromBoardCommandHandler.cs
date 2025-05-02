@@ -5,16 +5,15 @@ using MediatR;
 
 namespace Taskly_Application.Requests.Board.Command.RemoveMemberFromBoard;
 
-public class RemoveMemberFromBoardCommandHandler(IUnitOfWork unitOfWork, IUserService userService)
-    : IRequestHandler<RemoveMemberFromBoardCommand, ErrorOr<Unit>>
+public class RemoveMemberFromBoardCommandHandler(IUnitOfWork unitOfWork)
+    : IRequestHandler<RemoveMemberFromBoardCommand, ErrorOr<Guid[]>>
 {
-    public async Task<ErrorOr<Unit>> Handle(RemoveMemberFromBoardCommand request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<Guid[]>> Handle(RemoveMemberFromBoardCommand request, CancellationToken cancellationToken)
     {
         try
         {
-            var user = await userService.GetUserByEmailAsync(request.MemberEmail);
-            await unitOfWork.Board.RemoveMemberFromBoardAsync(request.BoardId, user.Id);
-            return Unit.Value;
+            var result = await unitOfWork.Board.RemoveMemberFromBoardAsync(request.BoardId, request.UserId);
+            return result.ToArray();
         }
         catch (Exception ex)
         {

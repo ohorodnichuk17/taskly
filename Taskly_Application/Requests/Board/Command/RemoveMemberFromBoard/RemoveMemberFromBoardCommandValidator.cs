@@ -10,8 +10,8 @@ public class RemoveMemberFromBoardCommandValidator : AbstractValidator<AddMember
         RuleFor(x => x.BoardId)
             .NotEmpty().WithMessage("Board id is required");
 
-        RuleFor(x => x.MemberEmail)
+        /*RuleFor(x => x.MemberEmail)
             .NotEmpty().WithMessage("Member email is required")
-            .EmailAddress().WithMessage("Member email is not valid");
+            .EmailAddress().WithMessage("Member email is not valid");*/
     }
 }

@@ -144,4 +144,16 @@ public class BoardHub(ISender sender) : Hub
                 UserEmailWhoAdd = model.UserEmailWhoAdd
             });
     }
+    public async Task UserHasBeenRemovedFromBoard(UserHasBeenRemovedFromBoardModel model)
+    {
+        await Clients
+            .Groups(model.BoardId.ToString())
+            .SendAsync("UserHasBeenRemovedFromBoard", new
+            {
+                RemovedUserId = model.RemovedUserId,
+                RemovedUserEmail = model.RemovedUserEmail,
+                UserEmailWhoRemoved = model.UserEmailWhoRemoved,
+                CardsId = model.CardsId
+            });
+    }
 }

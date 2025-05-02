@@ -70,7 +70,7 @@ public class BoardController(ISender sender, IMapper mapper) : ApiController
 
     [HttpDelete("remove-member")]
     [Authorize]
-    public async Task<IActionResult> RemoveMemberFromBoard([FromBody] MemberToBoardRequest request)
+    public async Task<IActionResult> RemoveMemberFromBoard([FromBody] RemoveMemberFromBoardRequest request)
     {
         var res = await sender.Send(mapper.Map<RemoveMemberFromBoardCommand>(request));
         return res.Match(result => Ok(result),
@@ -82,7 +82,7 @@ public class BoardController(ISender sender, IMapper mapper) : ApiController
     public async Task<IActionResult> GetMembersOfBoard(Guid boardId)
     {
         var result = await sender.Send(new GetMembersOfBoardQuery(boardId));
-        return result.Match(r => Ok(r),
+        return result.Match(r => Ok(r.ToArray()),
             errors => Problem(errors));
     }
 

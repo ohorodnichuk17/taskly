@@ -8,7 +8,7 @@ public interface IBoardRepository : IRepository<BoardEntity>
     Task<BoardEntity> GetBoardByIdAsync(Guid boardId);
     Task AddMemberToBoardAsync(Guid boardId, Guid userId);
     Task<bool> IsUserOnTheBoardAsync(Guid BoardId, Guid UserId);
-    Task RemoveMemberFromBoardAsync(Guid boardId, Guid userId);
+    Task<ICollection<Guid>> RemoveMemberFromBoardAsync(Guid boardId, Guid userId);
     Task<IEnumerable<BoardTableMemberDto>> GetMembersOfBoardAsync(Guid boardId);
     
     Task AddCardListToBoardAsync(Guid boardId, CardListEntity cardList);

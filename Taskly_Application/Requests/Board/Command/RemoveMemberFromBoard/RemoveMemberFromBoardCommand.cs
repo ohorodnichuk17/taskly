@@ -5,4 +5,4 @@ namespace Taskly_Application.Requests.Board.Command.RemoveMemberFromBoard;
 
 public record RemoveMemberFromBoardCommand(
     Guid BoardId,
-    string MemberEmail) : IRequest<ErrorOr<Unit>>;
+    Guid UserId) : IRequest<ErrorOr<Guid[]>>;

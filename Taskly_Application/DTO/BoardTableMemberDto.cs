@@ -2,6 +2,7 @@ namespace Taskly_Application.DTO;
 
 public record BoardTableMemberDto
 {
-    public string Email { get; set; }
-    public Guid AvatarId { get; set; }
+    public Guid UserId { get; set; }
+    public required string Email { get; set; }
+    public required string AvatarName { get; set; }
 }
