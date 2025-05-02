@@ -127,7 +127,8 @@ public class TableRepository(TasklyDbContext tasklyDbContext) : Repository<Table
         return table.Members.Select(m => new BoardTableMemberDto
         {
             Email = m.Email,
-            AvatarId = m.AvatarId
+            AvatarId = m.AvatarId,
+            UserName = m.UserName
         }) ?? Enumerable.Empty<BoardTableMemberDto>();
     }
 
