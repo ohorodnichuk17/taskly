@@ -16,6 +16,7 @@ namespace Taskly_Api.Controllers;
 public class FeedbackController(ISender mediatr, IMapper mapper) : ApiController
 {
     [HttpPost("create")]
+    [Authorize]
     public async Task<IActionResult> CreateFeedback([FromBody] CreateFeedbackRequest request)
     {
         var command = new CreateFeedbackCommand(
