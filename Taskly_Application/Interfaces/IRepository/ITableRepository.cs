@@ -13,5 +13,5 @@ public interface ITableRepository : IRepository<TableEntity>
     Task<TableEntity> EditTableAsync(Guid tableId, string name);
     Task AddMemberToTableAsync(Guid tableId, Guid userId);
     Task RemoveMemberFromTableAsync(Guid tableId, Guid userId);
-    Task<IEnumerable<BoardTableMemberDto>> GetMembersOfTableAsync(Guid tableId);
+    Task<IEnumerable<TableMemberDto>> GetMembersOfTableAsync(Guid tableId);
 }

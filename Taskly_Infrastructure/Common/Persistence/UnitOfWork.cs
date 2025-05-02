@@ -18,6 +18,7 @@ public class UnitOfWork : IUnitOfWork
     public ITableItemsRepository TableItems { get; private set; }
     public IBoardTemplateRepository BoardTemplates { get; private set; }
     public ICardRepository Cards { get; private set; }
+    public IFeedbackRepository Feedbacks { get; private set; }
 
     public UnitOfWork(TasklyDbContext context, UserManager<UserEntity> userManager)
     {
@@ -30,6 +31,7 @@ public class UnitOfWork : IUnitOfWork
         TableItems = new TableItemsRepository(_context);
         BoardTemplates = new BoardTemplateRepository(_context);
         Cards = new CardRepository(_userManager,_context);
+        Feedbacks = new FeedbackRepository(_context);
     }
     
     public async Task SaveChangesAsync(string errorMessage)

@@ -5,9 +5,9 @@ using Taskly_Application.Interfaces;
 
 namespace Taskly_Application.Requests.Table.Query.GetMembersOfTable;
 
-public class GetMembersOfTableQueryHandler(IUnitOfWork unitOfWork) : IRequestHandler<GetMembersOfTableQuery, ErrorOr<IEnumerable<BoardTableMemberDto>>>
+public class GetMembersOfTableQueryHandler(IUnitOfWork unitOfWork) : IRequestHandler<GetMembersOfTableQuery, ErrorOr<IEnumerable<TableMemberDto>>>
 {
-    public async Task<ErrorOr<IEnumerable<BoardTableMemberDto>>> Handle(GetMembersOfTableQuery request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<IEnumerable<TableMemberDto>>> Handle(GetMembersOfTableQuery request, CancellationToken cancellationToken)
     {
         try
         {

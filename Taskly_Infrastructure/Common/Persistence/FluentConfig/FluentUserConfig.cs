@@ -36,5 +36,9 @@ public class FluentUserConfig : IEntityTypeConfiguration<UserEntity>
             .WithMany(a => a.Users)
             .HasForeignKey(u => u.AvatarId)
             .OnDelete(DeleteBehavior.SetNull);
+        
+        builder.HasMany(u => u.Feedbacks) 
+            .WithOne(f => f.User)         
+            .HasForeignKey(f => f.UserId); 
     }
 }

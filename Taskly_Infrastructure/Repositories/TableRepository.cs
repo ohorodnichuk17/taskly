@@ -120,21 +120,16 @@ public class TableRepository(TasklyDbContext tasklyDbContext) : Repository<Table
         await tasklyDbContext.SaveChangesAsync();
     }
 
-    public async Task<IEnumerable<BoardTableMemberDto>> GetMembersOfTableAsync(Guid tableId)
+    public async Task<IEnumerable<TableMemberDto>> GetMembersOfTableAsync(Guid tableId)
     {
         var table = await GetTableIncludeByIdAsync(tableId);
         ValidateTableMembers(table);
-        return table.Members.Select(m => new BoardTableMemberDto
+        return table.Members.Select(m => new TableMemberDto
         {
-            UserId = m.Id,
             Email = m.Email,
-<<<<<<< HEAD
-            AvatarName = m.Avatar.ImagePath
-=======
             AvatarId = m.AvatarId,
             UserName = m.UserName
->>>>>>> 9a5bb71974aff9265d08e183c80ff215dff752e2
-        }) ?? Enumerable.Empty<BoardTableMemberDto>();
+        }) ?? Enumerable.Empty<TableMemberDto>();
     }
 
     private void ValidateTableMembers(TableEntity tableEntity)
