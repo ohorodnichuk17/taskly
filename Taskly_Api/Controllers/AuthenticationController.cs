@@ -15,7 +15,7 @@ using Taskly_Application.Requests.Authentication.Command.ChangePassword;
 using Taskly_Application.Requests.Authentication.Query.GetInformationAboutUser;
 using Taskly_Application.Requests.Authentication.Command.EditUserProfile;
 using Taskly_Application.Requests.SolanaWallet.Authentication.Command.AuthenticateSolanaWallet;
-using Taskly_Application.Requests.SolanaWallet.Authentication.Command.UpdateUserProfile;
+using Taskly_Application.Requests.SolanaWallet.Authentication.Command.SetUserNameForSolanaUser;
 using Taskly_Application.Requests.SolanaWallet.Authentication.Query.GenerateJwtToken;
 using Taskly_Application.Requests.SolanaWallet.Authentication.Query.GetUserByPublicKey;
 
@@ -149,8 +149,6 @@ namespace Taskly_Api.Controllers
                 if (tokenResult.IsError)
                     return StatusCode(500, new { Message = tokenResult.Errors.First().Description });
 
-                // return Ok(new { Token = tokenResult.Value });
-                
                 return await tokenResult.MatchAsync(async result => {
                     Response.Cookies.Append("X-JWT-Token", result, new CookieOptions()
                     {
@@ -169,15 +167,6 @@ namespace Taskly_Api.Controllers
             }
         }
         
-        [HttpPut("update-solana-profile")]
-        public async Task<IActionResult> UpdateUserProfile([FromBody] UpdateUserProfileForSolana updateUserProfileRequest)
-        {
-            var result = await sender.Send(mapper.Map<UpdateUserProfileCommand>(updateUserProfileRequest));
-
-            return result.Match(result => Ok(mapper.Map<UpdateUserProfileForSolana>(result)),
-                errors => Problem(errors));
-        }
-        
         [HttpGet("check-token-by-publickey")]
         [Authorize]
         public async Task<IActionResult> CheckTokenByPublicKey()
@@ -190,6 +179,16 @@ namespace Taskly_Api.Controllers
                 user => Ok(mapper.Map<InformationAboutSolanaUserResponse>(user)),
                 errors => Problem(errors)
             );
+        }
+        
+        [HttpPost("set-user-name-for-solana-user")]
+        [Authorize]
+        public async Task<IActionResult> SetUserNameForSolanaUser([FromBody] SetUserNameForSolanaUserRequest request)
+        {
+            var result = await sender.Send(mapper.Map<SetUserNameForSolanaUserCommand>(request));
+
+            return result.Match(result => Ok(mapper.Map<SetUserNameForSolanaUserResponse>(result)),
+                errors => Problem(errors));
         }
 
         [HttpGet("exit")]
