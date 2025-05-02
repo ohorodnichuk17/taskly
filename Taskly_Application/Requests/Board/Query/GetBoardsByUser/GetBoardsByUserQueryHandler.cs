@@ -9,7 +9,7 @@ internal class GetBoardsByUserQueryHandler(IUnitOfWork unitOfWork) : IRequestHan
 {
     public async Task<ErrorOr<ICollection<BoardEntity>>> Handle(GetBoardsByUserQuery request, CancellationToken cancellationToken)
     {
-        var result = await unitOfWork.Board.GetBoardsByUser(request.UserId);
+        var result = await unitOfWork.Board.GetBoardsByUserAsync(request.UserId);
 
         return result!.ToErrorOr();
     }

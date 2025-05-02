@@ -7,6 +7,7 @@ using Taskly_Api.Response.Board;
 using Taskly_Application.Requests.Board.Command.AddMemberToBoard;
 using Taskly_Application.Requests.Board.Command.CreateBoard;
 using Taskly_Application.Requests.Board.Command.DeleteBoard;
+using Taskly_Application.Requests.Board.Command.LeaveBoard;
 using Taskly_Application.Requests.Board.Command.RemoveMemberFromBoard;
 using Taskly_Application.Requests.Board.Query.GetAllBoards;
 using Taskly_Application.Requests.Board.Query.GetBoardById;
@@ -97,4 +98,16 @@ public class BoardController(ISender sender, IMapper mapper) : ApiController
             errors => Problem(errors));
     }
 
+    [Authorize]
+    [HttpPut("leave-board")]
+    public async Task<IActionResult> LeaveBoard([FromBody] LeaveBoardReqeust leaveBoardReqeust)
+    {
+        var userId = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "id")!.Value;
+
+        var result = await sender.Send(new LeaveBoardCommand(leaveBoardReqeust.BoardId, Guid.Parse(userId)));
+        Console.WriteLine($"Leave board cards - {result.Value.Length}");
+
+        return result.Match(result => Ok(result),
+            errors => Problem(errors));
+    }
 }

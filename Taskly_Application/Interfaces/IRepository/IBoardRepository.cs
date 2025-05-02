@@ -7,13 +7,16 @@ public interface IBoardRepository : IRepository<BoardEntity>
 {
     Task<BoardEntity> GetBoardByIdAsync(Guid boardId);
     Task AddMemberToBoardAsync(Guid boardId, Guid userId);
+    Task<bool> IsUserOnTheBoardAsync(Guid BoardId, Guid UserId);
     Task RemoveMemberFromBoardAsync(Guid boardId, Guid userId);
     Task<IEnumerable<BoardTableMemberDto>> GetMembersOfBoardAsync(Guid boardId);
     
     Task AddCardListToBoardAsync(Guid boardId, CardListEntity cardList);
     Task RemoveCardListFromBoardAsync(Guid boardId, Guid cardListId);
-    Task<ICollection<BoardEntity>?> GetBoardsByUser(Guid UserId);
+    Task<ICollection<BoardEntity>?> GetBoardsByUserAsync(Guid UserId);
+    Task<bool> IsUserHasBoardByIdAsync(Guid BoardId, Guid UserId);
     Task<Guid> GetIdOfCardsListByTitleAsync(Guid BoardId, string Title);
     Task<Guid?> AddCardToCardsListAsync(CardEntity card, Guid cardListId);
     Task<ICollection<CardListEntity>?> GetCardListEntityByBoardIdAsync(Guid BoardId);
+    Task<ICollection<Guid>?> LeaveBoardAsync(Guid BoardId, Guid UserId);
 }

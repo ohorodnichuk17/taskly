@@ -124,4 +124,24 @@ public class BoardHub(ISender sender) : Hub
                 Cards = model.CardModels,               
             });
     }
+    public async Task UserHasLeftBoard(UserHasLeftBoardModel model)
+    {
+        await Clients
+            .Groups(model.BoardId.ToString())
+            .SendAsync("UserHasLeftBoard", new
+            {
+                CardsId = model.CardsId
+            });
+    }
+    public async Task UserHasBeenAddToBoard(UserHasBeenAddToBoardModel model)
+    {
+        Console.WriteLine($"{model.UserEmailWhoAdd} - {model.AddedUserEmail}");
+        await Clients
+            .Groups(model.BoardId.ToString())
+            .SendAsync("UserHasBeenAddToBoard", new
+            {
+                AddedUserEmail = model.AddedUserEmail,
+                UserEmailWhoAdd = model.UserEmailWhoAdd
+            });
+    }
 }

@@ -23,10 +23,10 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
         ValidateBoardMembers(board);
         board.IsTeamBoard = true;
 
-        board.Members ??= new List<UserEntity>();
+        /*board.Members ??= new List<UserEntity>();
         board.Members.Add(user);
 
-        user.Boards.Add(board);
+        user.Boards.Add(board);*/
 
         var boardUserRelations = new Dictionary<string, object>();
         boardUserRelations.Add("BoardId", board.Id);
@@ -35,11 +35,27 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
 
         await context.SaveChangesAsync();
     }
+    public async Task<bool> IsUserOnTheBoardAsync(Guid BoardId, Guid UserId)
+    {
+        try
+        {
+            var board = await GetBoardByIdAsync(BoardId);
+            ValidateBoardMembers(board);
+            if (board.Members!.Any(m => m.Id == UserId))
+                return true;
 
+            return false;
+        }
+        catch (Exception)
+        {
+            return true;
+        }
+        
+    }
     public async Task RemoveMemberFromBoardAsync(Guid boardId, Guid userId)
     {
         var (board, user) = await GetBoardAndUserAsync(boardId, userId);
-        ValidateBoardMembers(board);
+        
         if (board.Members == null)
             throw new InvalidOperationException("Board members list is not initialized.");
 
@@ -120,7 +136,7 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
         await context.SaveChangesAsync();
     }
 
-    public async Task<ICollection<BoardEntity>?> GetBoardsByUser(Guid UserId)
+    public async Task<ICollection<BoardEntity>?> GetBoardsByUserAsync(Guid UserId)
     {
         var boardsId = context.Set<Dictionary<string, object>>("UserBoard")
                     .Where(ub => (Guid)ub["UserId"] == UserId)
@@ -148,6 +164,58 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
             return null;
         }    
     }
+<<<<<<< HEAD
+
+    public async Task<bool> IsUserHasBoardByIdAsync(Guid BoardId, Guid UserId)
+    {
+        var board = await GetBoardByIdAsync(BoardId);
+
+        return board.Members == null ? false : board.Members.Any(m => m.Id == UserId);
+    }
+
+    public async Task<ICollection<Guid>?> LeaveBoardAsync(Guid BoardId, Guid UserId)
+    {
+        try
+        {
+            var includedBoard = await GetBoardByIdAsync(BoardId);
+            if(includedBoard.Members != null && includedBoard.Members.Any(user => user.Id == UserId)) 
+            {
+                var user = await context.Users.FirstOrDefaultAsync(user => user.Id == UserId);
+                
+                await RemoveMemberFromBoardAsync(BoardId, UserId);
+
+                if (includedBoard.Members.Count > 1)
+                {
+                    var cardLists = context.CardLists.Where(cl => cl.BoardId == BoardId).Select(cl => cl.Id);
+                    var cards = context.Cards.Where(card => card.UserId == UserId && cardLists.Any(cl => cl == card.CardListId));
+                    var returnedList = await cards.Select(c => c.Id).ToListAsync();
+
+                    foreach (var card in cards)
+                    {
+                        card.UserId = null;
+                        context.Cards.Update(card);
+                    }
+                    await context.SaveChangesAsync();
+                    
+                    
+                    return returnedList;
+                }
+                else
+                {
+                    await DeleteAsync(BoardId);
+                }
+                return new List<Guid>();
+            }
+            return null;
+        }
+        catch (Exception)
+        {
+            return null;
+        }
+    }
+    
+=======
+>>>>>>> ef9cee814d80bbbd816d3168afbd312d62aa048b
 
     private async Task<(BoardEntity board, UserEntity user)> GetBoardAndUserAsync(Guid boardId, Guid userId)
     {
