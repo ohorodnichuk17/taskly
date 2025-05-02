@@ -16,7 +16,9 @@ export default function ListOfMembersInTable() {
     const members = useRootState((state) => state.table.membersList);
     const avatars = useRootState((s) => s.authenticate.avatars);
 
-    const currentUser = useRootState((state) => state.authenticate.userProfile);
+    const jwtCurrentUser = useRootState((state) => state.authenticate.userProfile);
+    const solanaCurrentUser = useRootState((state) => state.authenticate.solanaUserProfile);
+    const authMethod = useRootState((state) => state.authenticate.authMethod);
 
     const fetchMembers = async () => {
         try {
@@ -44,6 +46,10 @@ export default function ListOfMembersInTable() {
     }
 
     useEffect(() => {
+        console.log("Members:", members);
+    }, [members]);
+
+    useEffect(() => {
         fetchMembers();
     }, [tableId]);
 
@@ -51,7 +57,14 @@ export default function ListOfMembersInTable() {
         navigate(`/tables/${tableId}/add-member`);
     };
 
-    const filteredMembers = members?.filter((member) => member.email !== currentUser?.email);
+    const filteredMembers = members?.filter((member) => {
+        if (authMethod === "jwt" && jwtCurrentUser?.email && member.email) {
+            return member.email !== jwtCurrentUser.email;
+        } else if (authMethod === "solana" && solanaCurrentUser?.userName && member.userName) {
+            return member.userName !== solanaCurrentUser.userName;
+        }
+        return true;
+    });
 
     return (
         <div className="members-page">

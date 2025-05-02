@@ -9,8 +9,9 @@ export default function TableFormPage() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { tableId } = useParams();
-    const userId = useRootState((state) => state.authenticate.userProfile?.id);
-
+    const jwtUserId = useRootState((state) => state.authenticate.userProfile?.id);
+    const solanaUserId = useRootState((state) => state.authenticate.solanaUserProfile?.id);
+    const authMethod = useRootState((state) => state.authenticate.authMethod);
     const [name, setName] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
@@ -26,8 +27,20 @@ export default function TableFormPage() {
         try {
             if (isEditMode && tableId) {
                 await dispatch(editTable({ tableId, tableName: name }));
-            } else if (userId) {
-                await dispatch(createTable({ name, userId }));
+            } else {
+                let currentUserId: string | undefined;
+                if (authMethod === "jwt") {
+                    currentUserId = jwtUserId;
+                } else if (authMethod === "solana") {
+                    currentUserId = solanaUserId;
+                }
+
+                if (currentUserId) {
+                    await dispatch(createTable({ name, userId: currentUserId }));
+                } else {
+                    console.warn("User ID is missing for the current authentication method.");
+                    setError("Could not create table: User ID not found.");
+                }
             }
             navigate("/tables");
         } catch (err) {
