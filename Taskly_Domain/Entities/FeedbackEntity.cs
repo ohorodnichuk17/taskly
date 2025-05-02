@@ -8,5 +8,4 @@ public class FeedbackEntity
     public string Review { get; set; }  
     public int Rating { get; set; }  // Rating given by the user (e.g., 1 to 5 stars)
     public TimeRangeEntity? TimeRange { get; set; }
-    public bool IsDeleted { get; set; }  
 }
