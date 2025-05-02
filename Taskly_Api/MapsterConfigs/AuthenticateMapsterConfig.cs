@@ -103,6 +103,7 @@ public class AuthenticateMapsterConfig : IRegister
         config.NewConfig<UserEntity, InformationAboutSolanaUserResponse>()
             .Map(src => src.Id, desp => desp.Id)
             .Map(src => src.PublicKey, desp => desp.PublicKey)
+            .Map(src => src.UserName, desp => desp.UserName)
             .Map(src => src.AvatarName, desp => desp.Avatar != null ? desp.Avatar.ImagePath : "");
     }
 }
