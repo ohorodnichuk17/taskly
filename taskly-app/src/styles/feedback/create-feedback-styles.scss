@@ -1,0 +1,105 @@
+.create-feedback-page {
+  display: flex;
+  flex-direction: column;
+  padding: 32px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+
+  .create-feedback-header {
+    margin-bottom: 30px;
+
+    h1 {
+      font-size: 36px;
+      font-weight: 800;
+      color: #ffffff;
+      margin: 0;
+    }
+  }
+
+  .form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .input-review {
+        background: rgba(255, 255, 255, 0.1);
+        color: #ffffff;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        padding: 10px 20px;
+        border-radius: 12px;
+        font-size: 16px;
+        margin-bottom: 20px;
+        width: 300px;
+        text-align: center;
+        font-weight: 500;
+        transition: all 0.3s ease;
+
+        &::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        &:focus {
+            outline: none;
+            border-color: #ffffff;
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+        }
+    }
+
+    .star-rating {
+      display: flex;
+      gap: 8px;
+      font-size: 32px;
+      margin-bottom: 20px;
+      cursor: pointer;
+
+      .star {
+        color: rgba(255, 255, 255, 0.3);
+        transition: color 0.2s;
+
+        &.filled {
+          color: #FFD700;
+        }
+
+        &:hover {
+          color: #ffdd55;
+        }
+
+        &:hover ~ .star {
+          color: rgba(255, 255, 255, 0.3);
+        }
+      }
+    }
+
+    .submit-button {
+        background: rgba(255, 255, 255, 0.1);
+        color: #ffffff;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        padding: 10px 20px;
+        border-radius: 12px;
+        font-weight: 500;
+        font-size: 16px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        backdrop-filter: blur(6px);
+        transition: all 0.3s ease;
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+            border-color: #ffffff;
+        }
+    }
+    .error-message {
+        color: red;
+        font-size: 14px;
+        margin-top: 10px;
+    }
+  }
+}

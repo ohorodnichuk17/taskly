@@ -25,6 +25,11 @@ export const DashboardPage = () => {
                 path: "/artificial-intelligence",
                 sub_items: []
             },
+            {
+                name: "Feedback",
+                path: "/feedbacks",
+                sub_items: []
+            },
         ]} />
         <Outlet />
     </div>)

@@ -25,6 +25,8 @@ import ListOfMembersInTable from "./components/table/ListOfMembersInTable.tsx";
 import { WalletContextProvider } from "./providers/WalletContextProvider.tsx";
 import { UnifiedLoginPage } from "./components/authentication/UnifiedLoginPage.tsx";
 import SetUserNameForSolanaUser from "./components/authentication/SetUserNameForSolanaUser.tsx";
+import CreateFeedbackPage from "./components/feedback/CreateFeedbackPage.tsx";
+import FeedbacksPage from "./components/feedback/FeedbacksPage.tsx";
 
 
 function App() {
@@ -63,6 +65,7 @@ function App() {
 
             <Route path="artificial-intelligence" element={<AIAgent />} />
             <Route path="artificial-intelligence" element={<AIAgent />} />
+            <Route path="feedbacks" element={<FeedbacksPage />} />
 
             {isLogin && (<>
               <Route path='/boards' element={<BoardsPage />} />
@@ -76,6 +79,7 @@ function App() {
               <Route path="/tables/:tableId/create" element={<CreateTableItemPage />} />
               <Route path="/tables/:tableId/add-member" element={<AddMemberToTablePage />} />
               <Route path="/tables/:tableId/members" element={<ListOfMembersInTable />} />
+              <Route path="/feedbacks/create" element={<CreateFeedbackPage />} />
             </>)}
             <Route path='/boards' element={<Navigate to="/authentication/login" />} />
 
