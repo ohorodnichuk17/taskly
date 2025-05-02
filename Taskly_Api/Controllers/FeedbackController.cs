@@ -4,8 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 using Taskly_Api.Request.Feedback;
 using Taskly_Api.Response.Feedback;
 using Taskly_Application.Requests.Feedback.Command.Create;
+using Taskly_Application.Requests.Feedback.Command.Delete;
 using Taskly_Application.Requests.Feedback.Query.GetAll;
 using Taskly_Application.Requests.Feedback.Query.GetById;
+using Microsoft.AspNet.SignalR;
 
 namespace Taskly_Api.Controllers;
 
@@ -49,6 +51,19 @@ public class FeedbackController(ISender mediatr, IMapper mapper) : ApiController
 
         return result.Match(
             feedback => Ok(mapper.Map<FeedbackResponse>(feedback)),
+            errors => Problem(errors));
+    }
+    
+    [HttpDelete("delete/{feedbackId}")]
+    [Authorize]
+    public async Task<IActionResult> DeleteFeedback([FromRoute] Guid feedbackId)
+    {
+        var command = new DeleteFeedbackCommand(feedbackId);
+
+        var result = await mediatr.Send(command);
+
+        return result.Match(
+            isDeleted => Ok(isDeleted),
             errors => Problem(errors));
     }
 }
