@@ -32,7 +32,7 @@ export function CreateTableItemPage() {
         setError(null);
 
         try {
-            const formattedEndTime = new Date(endTime).toISOString();
+            const formattedEndTime = new Date(endTime);
             await dispatch(createTableItem({ task, status, label, members, endTime: formattedEndTime, isCompleted, tableId }));
             navigate(`/tables/${tableId}`);
         } catch (err) {

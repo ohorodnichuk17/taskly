@@ -38,6 +38,8 @@ export interface ITableItemCreate {
     label: string;
     endTime: Date;
     tableId: string;
+    isCompleted?: boolean;
+    members?: IUserListForTable[];
 }
 export interface ITableItemEdit {
     id: string;

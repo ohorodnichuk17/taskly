@@ -131,7 +131,7 @@ const tableSlice = createSlice({
             .addCase(getAllMembersInTable.fulfilled, (state, action: PayloadAction<IUserListForTable[]>) => {
                 state.membersList = action.payload;
             })
-            .addCase(getAllMembersInTable.rejected, (state, action) => {
+            .addCase(getAllMembersInTable.rejected, (state) => {
                 state.membersList = null;
             })
             .addCase(editTable.fulfilled, (state, action: PayloadAction<ITableEdit>) => {

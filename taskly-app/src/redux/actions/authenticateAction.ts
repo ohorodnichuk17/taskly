@@ -192,9 +192,10 @@ export const checkHasUserSentRequestToChangePasswordAsync = createAsyncThunk<
 )
 
 export const editAvatarAsync = createAsyncThunk<
-    {avatarId: string},
+    { avatarId: string },
     IEditAvatar,
-    { rejectValue: IValidationErrors }>(
+    { rejectValue: IValidationErrors }
+>(
     "authentication/edit-user-profile",
     async (request: IEditAvatar, { rejectWithValue }) => {
         try {
@@ -207,14 +208,14 @@ export const editAvatarAsync = createAsyncThunk<
 
             console.log("RESPONSE DATA", response.data);
 
-            return response.data;
-        } catch (err: any) {
-            let error: AxiosError<IValidationErrors> = err;
+            return response.data as { avatarId: string };
+        } catch (err: unknown) {
+            const error = err as AxiosError<IValidationErrors>;
             console.log("Validation error:", error.response?.data);
             if (error.response) {
                 console.error("API Error:", error.response.status, error.response.data);
             }
-            return rejectWithValue(error.response?.data);
+            return rejectWithValue(error.response?.data ?? { message: "An unknown error occurred" } as IValidationErrors);
         }
     }
 );
@@ -306,7 +307,7 @@ export const solanaWalletAuthAsync = createAsyncThunk<
             return response.data;
         } catch (err: unknown) {
             const error = err as AxiosError<IValidationErrors>;
-            return rejectWithValue(error.response?.data || 'Authentication failed');
+            return rejectWithValue(error.response?.data ?? { message: "Authentication failed" } as IValidationErrors);
         }
     }
 );
@@ -328,7 +329,7 @@ export const setUserNameForSolanaUserAsync = createAsyncThunk<
             return response.data;
         } catch (err: unknown) {
             const error = err as AxiosError<IValidationErrors>;
-            return rejectWithValue(error.response?.data || 'Set username failed');
+            return rejectWithValue(error.response?.data ?? { message: "Set username failed" } as IValidationErrors);
         }
     }
 );

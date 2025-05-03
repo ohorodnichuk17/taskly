@@ -219,8 +219,7 @@ const authenticateSlice = createSlice({
                 localStorage.removeItem("user_profile_avatar");
                 localStorage.removeItem("user_profile_userName");
             })
-            .addCase(solanaLogoutAsync.rejected, (action) => {
-                console.error("Logout failed:", action.payload);
+            .addCase(solanaLogoutAsync.rejected, () => {
             })
             .addCase(editAvatarAsync.fulfilled, (state, action) => {
                 const { userId, avatarId } = action.payload;
