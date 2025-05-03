@@ -1,21 +1,31 @@
-import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useRootState } from "../../redux/hooks.ts";
 import { editAvatarAsync, getAllAvatarsAsync } from "../../redux/actions/authenticateAction.ts";
 import { useEffect } from "react";
 import { baseUrl } from "../../axios/baseUrl.ts";
 import "../../styles/user/profile-style.scss";
-import {useNavigate} from "react-router-dom";
+import React from "react";
 
 export const ProfilePage = () => {
     const dispatch = useDispatch();
     const editAvatar = useRootState((s) => s.authenticate.editAvatar);
     const avatars = useRootState((s) => s.authenticate.avatars);
-    const userId = localStorage.getItem("user_profile_id");
-    const navigate = useNavigate();
+    const authMethod = useRootState((s) => s.authenticate.authMethod);
+    const jwtUserProfile = useSelector((state: useRootState) => state.authenticate.userProfile);
+    const solanaUserProfile = useSelector((state: useRootState) => state.authenticate.solanaUserProfile);
+
+    const getUserId = () => {
+        if (authMethod === "jwt" && jwtUserProfile?.id) {
+            return jwtUserProfile.id;
+        }
+        if (authMethod === "solana" && solanaUserProfile?.id) {
+            return solanaUserProfile.id;
+        }
+        return localStorage.getItem("user_profile_id") || '';
+    };
 
     const [formData, setFormData] = React.useState({
-        userId: userId || '',
+        userId: getUserId(),
         avatarId: '',
     });
 
@@ -24,13 +34,21 @@ export const ProfilePage = () => {
     }, [dispatch]);
 
     useEffect(() => {
+        const currentUserId = getUserId();
+        setFormData((prev) => ({
+            ...prev,
+            userId: currentUserId,
+        }));
+    }, [jwtUserProfile?.id, solanaUserProfile?.id, authMethod]);
+
+    useEffect(() => {
         if (editAvatar) {
             setFormData({
-                userId: userId || '',
+                userId: getUserId(),
                 avatarId: editAvatar.avatarId,
             });
         }
-    }, [editAvatar, userId]);
+    }, [editAvatar, authMethod, jwtUserProfile?.id, solanaUserProfile?.id]);
 
     const handleAvatarSelect = (avatarId: string) => {
         setFormData((prev) => ({ ...prev, avatarId }));
@@ -38,15 +56,16 @@ export const ProfilePage = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!formData.userId) {
+        const currentUserId = getUserId();
+        if (!currentUserId) {
             console.warn("User ID is missing. Cannot edit avatar.");
             return;
         }
-        await dispatch(editAvatarAsync(formData));
+        await dispatch(editAvatarAsync({ ...formData, userId: currentUserId }));
         window.location.reload();
     };
 
-    console.log("USER ID", userId);
+    console.log("USER ID", getUserId());
 
     return (
         <div className="profile-container">
@@ -65,7 +84,6 @@ export const ProfilePage = () => {
                         ))}
                     </div>
                 </div>
-
                 <button type="submit">Save Changes</button>
             </form>
         </div>
