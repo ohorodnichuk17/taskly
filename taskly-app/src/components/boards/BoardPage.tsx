@@ -255,18 +255,10 @@ export const BoardPage = () => {
 
     const startConnection = async () => {
 
-        const baseUrl = import.meta.env.VITE_SERVER_URL;
-        const websocketUrl = baseUrl ? baseUrl.replace(/^http/, 'ws') : ''
-
         conn.current = new HubConnectionBuilder()
-            .withUrl(`${websocketUrl}/board`)
+            .withUrl(`${baseUrl}/board`)
             .configureLogging(LogLevel.Information)
             .build();
-
-        // conn.current = new HubConnectionBuilder()
-        //     .withUrl(`${baseUrl}/board`)
-        //     .configureLogging(LogLevel.Information)
-        //     .build();
 
         conn.current.on("ConnectToTeamBoard", (mess) => {
             console.log(mess)
