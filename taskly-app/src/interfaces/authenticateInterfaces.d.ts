@@ -34,7 +34,7 @@ export interface ISetUserNameForSolanaUser {
     userName: string;
 }
 export interface IEditAvatar {
-    userId: string;
+    userId?: string;
     avatarId: string;
 }
 export interface IUser {

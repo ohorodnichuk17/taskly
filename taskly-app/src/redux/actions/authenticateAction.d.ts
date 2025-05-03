@@ -80,9 +80,7 @@ export declare const checkHasUserSentRequestToChangePasswordAsync: import("@redu
     fulfilledMeta?: unknown;
     rejectedMeta?: unknown;
 }>;
-export declare const editAvatarAsync: import("@reduxjs/toolkit").AsyncThunk<{
-    avatarId: string;
-}, IEditAvatar, {
+export declare const editAvatarAsync: import("@reduxjs/toolkit").AsyncThunk<IEditAvatar, IEditAvatar, {
     rejectValue: IValidationErrors;
     state?: unknown;
     dispatch?: import("redux-thunk").ThunkDispatch<unknown, unknown, import("redux").UnknownAction> | undefined;

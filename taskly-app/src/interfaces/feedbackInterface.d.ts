@@ -1,5 +1,7 @@
 export interface IFeedbackInitialState {
     listOfFeedbacks: IFeedback[] | null;
+    createFeedbackError: string | null;
+    deleteFeedbackError: string | null;
 }
 export interface IFeedbackResponse {
     id: string;

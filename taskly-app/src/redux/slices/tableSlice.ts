@@ -1,11 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
     ITable,
-    ITableCreate,
     ITableEdit,
     ITableInitialState,
     ITableItem, ITableItemEdit,
-    IUserListForTable, IUserToTable
+    IUserListForTable
 } from "../../interfaces/tableInterface.ts";
 import {
     addUserToTable,
@@ -39,7 +38,7 @@ const tableSlice = createSlice({
             .addCase(getTablesByUser.fulfilled, (state, action: PayloadAction<ITable[]>) => {
                 state.listOfTables = action.payload;
             })
-            .addCase(getTableItems.fulfilled, (state, action: PayloadAction<ITableItem[]>) => {
+            .addCase(getTableItems.fulfilled, (state, action: PayloadAction<{ $values: ITableItem[] }>) => {
                 state.tableItems = action.payload?.$values ?? [];
             })
             .addCase(getTableItems.rejected, (state) => {
@@ -49,15 +48,17 @@ const tableSlice = createSlice({
                 state.listOfTables = null;
             })
             .addCase(getTableById.fulfilled, (state, action: PayloadAction<ITable>) => {
-                const tableIndex = state.listOfTables?.findIndex((table) => table.id === action.payload.id);
-                if (tableIndex !== undefined && tableIndex !== -1) {
-                    state.listOfTables[tableIndex] = action.payload;
+                if (state.listOfTables) {
+                    const tableIndex = state.listOfTables.findIndex((table) => table.id === action.payload.id);
+                    if (tableIndex !== undefined && tableIndex !== -1) {
+                        state.listOfTables[tableIndex] = action.payload;
+                    }
                 }
             })
             .addCase(getTableById.rejected, (state) => {
                 state.listOfTables = null;
             })
-            .addCase(createTable.fulfilled, (state, action: PayloadAction<ITableCreate>) => {
+            .addCase(createTable.fulfilled, (state, action: PayloadAction<ITable>) => {
                 state.listOfTables = state.listOfTables ? [...state.listOfTables, action.payload] : [action.payload];
             })
             .addCase(createTable.rejected, (state, action) => {
@@ -71,29 +72,33 @@ const tableSlice = createSlice({
                 }
             })
             .addCase(createTableItem.rejected, (state, action) => {
-                state.createTableItemError = action.payload ? JSON.stringify(action.payload) : null;
+                state.createTableItemError = action.payload;
             })
-            .addCase(deleteTable.fulfilled, (state, action: PayloadAction<string>) => {
-                if (state.listOfTables) {
-                    state.listOfTables = state.listOfTables.filter((table) => table.id !== action.payload);
-           }})
+            .addCase(deleteTable.fulfilled, (state, action: PayloadAction<boolean, string, { arg: string; requestId: string; requestStatus: "fulfilled"; }, never>) => {
+                const tableIdToDelete = action.meta.arg;
+                if (state.listOfTables && tableIdToDelete) {
+                    state.listOfTables = state.listOfTables.filter((table) => table.id !== tableIdToDelete);
+                }
+            })
             .addCase(deleteTable.rejected, (state, action) => {
-                state.deleteTableError = action.payload  ? JSON.stringify(action.payload) : null;
+                state.deleteTableError = action.payload;
             })
-            .addCase(deleteTableItem.fulfilled, (state, action: PayloadAction<string>) => {
-                if (state.tableItems) {
-                    state.tableItems = state.tableItems.filter((item) => item.id !== action.payload);
+            .addCase(deleteTableItem.fulfilled, (state, action: PayloadAction<boolean, string, { arg: string; requestId: string; requestStatus: "fulfilled"; }, never>) => {
+                const itemIdToDelete = action.meta.arg;
+                if (state.tableItems && itemIdToDelete) {
+                    state.tableItems = state.tableItems.filter((item) => item.id !== itemIdToDelete);
                 }
             })
             .addCase(deleteTableItem.rejected, (state, action) => {
-                state.deleteTableItemError = action.payload  ? JSON.stringify(action.payload) : null;
+                state.deleteTableItemError = action.payload;
             })
-            .addCase(markTableItemAsCompleted.fulfilled, (state, action: PayloadAction<{ tableItemId: string, isCompleted: boolean }>) => {
+            .addCase(markTableItemAsCompleted.fulfilled, (state, action: PayloadAction<boolean, string, { arg: { tableItemId: string, isCompleted: boolean }; requestId: string; requestStatus: "fulfilled"; }, never>) => {
+                const { tableItemId, isCompleted } = action.meta.arg;
                 if (state.tableItems) {
-                    const item = state.tableItems.find((item) => item.id === action.payload.tableItemId);
+                    const item = state.tableItems.find((item) => item.id === tableItemId);
                     if (item) {
-                        item.isCompleted = action.payload.isCompleted;
-                        item.status = action.payload.isCompleted ? "Done" : item.status;
+                        item.isCompleted = isCompleted;
+                        item.status = isCompleted ? "Done" : item.status;
                     }
                 }
             })
@@ -148,7 +153,7 @@ const tableSlice = createSlice({
                 }
             })
             .addCase(editTable.rejected, (state, action) => {
-                state.editTableError = action.payload ? JSON.stringify(action.payload) : null;
+                state.editTableError = action.payload;
             });
     },
 });

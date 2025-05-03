@@ -1,4 +1,4 @@
-import { IUserToTable, ITable, ITableCreate, ITableEdit, ITableItem, ITableItemCreate, ITableItemEdit, IUserListForTable } from "../../interfaces/tableInterface.ts";
+import { IUserToTable, ITable, ITableEdit, ITableItem, ITableItemCreate, ITableItemEdit, IUserListForTable } from "../../interfaces/tableInterface.ts";
 import { IValidationErrors } from "../../interfaces/generalInterface.ts";
 export declare const getTablesByUser: import("@reduxjs/toolkit").AsyncThunk<ITable[], string, {
     rejectValue: IValidationErrors;
@@ -20,7 +20,9 @@ export declare const getTableById: import("@reduxjs/toolkit").AsyncThunk<ITable,
     fulfilledMeta?: unknown;
     rejectedMeta?: unknown;
 }>;
-export declare const getTableItems: import("@reduxjs/toolkit").AsyncThunk<ITableItem[], string, {
+export declare const getTableItems: import("@reduxjs/toolkit").AsyncThunk<{
+    $values: ITableItem[];
+}, string, {
     rejectValue: IValidationErrors;
     state?: unknown;
     dispatch?: import("redux-thunk").ThunkDispatch<unknown, unknown, import("redux").UnknownAction> | undefined;
@@ -30,7 +32,7 @@ export declare const getTableItems: import("@reduxjs/toolkit").AsyncThunk<ITable
     fulfilledMeta?: unknown;
     rejectedMeta?: unknown;
 }>;
-export declare const createTable: import("@reduxjs/toolkit").AsyncThunk<ITableCreate, {
+export declare const createTable: import("@reduxjs/toolkit").AsyncThunk<ITable, {
     name: string;
     userId: string;
 }, {
@@ -89,7 +91,7 @@ export declare const markTableItemAsCompleted: import("@reduxjs/toolkit").AsyncT
     fulfilledMeta?: unknown;
     rejectedMeta?: unknown;
 }>;
-export declare const createTableItem: import("@reduxjs/toolkit").AsyncThunk<ITableItemCreate, ITableItemCreate, {
+export declare const createTableItem: import("@reduxjs/toolkit").AsyncThunk<ITableItem, ITableItemCreate, {
     rejectValue: IValidationErrors;
     state?: unknown;
     dispatch?: import("redux-thunk").ThunkDispatch<unknown, unknown, import("redux").UnknownAction> | undefined;
@@ -129,7 +131,7 @@ export declare const removeUserFromTable: import("@reduxjs/toolkit").AsyncThunk<
     fulfilledMeta?: unknown;
     rejectedMeta?: unknown;
 }>;
-export declare const getAllMembersInTable: import("@reduxjs/toolkit").AsyncThunk<IUserListForTable, string, {
+export declare const getAllMembersInTable: import("@reduxjs/toolkit").AsyncThunk<IUserListForTable[], string, {
     rejectValue: IValidationErrors;
     state?: unknown;
     dispatch?: import("redux-thunk").ThunkDispatch<unknown, unknown, import("redux").UnknownAction> | undefined;

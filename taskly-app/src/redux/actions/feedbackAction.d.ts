@@ -20,10 +20,10 @@ export declare const getFeedbackByIdAsync: import("@reduxjs/toolkit").AsyncThunk
     rejectedMeta?: unknown;
 }>;
 export declare const createFeedbackAsync: import("@reduxjs/toolkit").AsyncThunk<IFeedback, ICreateFeedback, {
+    rejectValue: string;
     state?: unknown;
-    dispatch?: import("redux-thunk").ThunkDispatch<unknown, unknown, import("redux").UnknownAction>;
+    dispatch?: import("redux-thunk").ThunkDispatch<unknown, unknown, import("redux").UnknownAction> | undefined;
     extra?: unknown;
-    rejectValue?: unknown;
     serializedErrorType?: unknown;
     pendingMeta?: unknown;
     fulfilledMeta?: unknown;

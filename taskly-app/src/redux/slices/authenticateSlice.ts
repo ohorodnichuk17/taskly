@@ -1,6 +1,6 @@
 import {
     IAuthenticateInitialState,
-    IAvatar, IEditAvatar, ISetUserNameForSolanaUser, ISolanaUserProfile,
+    IAvatar, IEditAvatar, ISolanaUserProfile,
     IUserProfile,
 } from "../../interfaces/authenticateInterfaces";
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
@@ -13,7 +13,7 @@ import {
     logoutAsync,
     registerAsync,
     sendRequestToChangePasswordAsync,
-    sendVerificationCodeAsync, setUserNameForSolanaUserAsync, solanaLogoutAsync, solanaWalletAuthAsync,
+    sendVerificationCodeAsync, solanaLogoutAsync, solanaWalletAuthAsync,
     verificateEmailAsync
 } from "../actions/authenticateAction.ts";
 
@@ -222,11 +222,11 @@ const authenticateSlice = createSlice({
             .addCase(solanaLogoutAsync.rejected, () => {
             })
             .addCase(editAvatarAsync.fulfilled, (state, action) => {
-                const { userId, avatarId } = action.payload;
-
-                state.editAvatar = action.payload;
-
-                localStorage.setItem("user_profile_id", userId);
+                const { avatarId, userId } = action.payload;
+                state.editAvatar = { userId, avatarId };
+                if (userId) {
+                    localStorage.setItem("user_profile_id", userId);
+                }
                 localStorage.setItem("avatar_id", avatarId);
             })
             .addCase(editAvatarAsync.rejected, (_, action) => {
@@ -254,20 +254,6 @@ const authenticateSlice = createSlice({
                     localStorage.removeItem("user_profile_userName");
                 if (localStorage.getItem("user_profile_avatar") !== null)
                     localStorage.removeItem("user_profile_avatar");
-            })
-            .addCase(setUserNameForSolanaUserAsync.fulfilled, (state, action: PayloadAction<ISetUserNameForSolanaUser>) => {
-                const payload = action.payload || {};
-                state.solanaUserProfile = {
-                    ...state.solanaUserProfile,
-                    publicKey: payload.publicKey || localStorage.getItem("user_profile_publicKey") || "",
-                    userName: payload.userName || localStorage.getItem("user_profile_userName") || "",
-                };
-            })
-            .addCase(setUserNameForSolanaUserAsync.rejected, (state, action) => {
-                if (localStorage.getItem("user_profile_publicKey") !== null)
-                    localStorage.removeItem("user_profile_publicKey");
-                if (localStorage.getItem("user_profile_userName") !== null)
-                    localStorage.removeItem("user_profile_userName");
             })
             .addCase(checkSolanaTokenAsync.fulfilled, (state, action: PayloadAction<ISolanaUserProfile>) => {
                 localStorage.setItem("isLogin", "true");

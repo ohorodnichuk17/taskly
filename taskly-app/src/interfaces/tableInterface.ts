@@ -1,13 +1,15 @@
+import {IValidationErrors} from "./generalInterface.ts";
+
 export interface ITableInitialState {
     listOfTables: ITable[] | null,
     tableItems: ITableItem[] | null
     membersList: IUserListForTable[] | null
-    createTableError?: string | null;
-    createTableItemError?: string | null;
-    deleteTableError?: string | null;
-    deleteTableItemError?: string | null;
-    editTableError?: string | null;
-    editTableItemError?: string | null;
+    createTableError?: IValidationErrors | null | undefined;
+    createTableItemError?: IValidationErrors | null | undefined;
+    deleteTableError?: IValidationErrors | null | undefined;
+    deleteTableItemError?: IValidationErrors | null | undefined;
+    editTableError?: IValidationErrors | null | undefined;
+    editTableItemError?: IValidationErrors | null | undefined;
 }
 
 export interface ITable {
