@@ -8,12 +8,19 @@ export interface IFeedbackResponse {
     rating: number;
     review: string;
     createdAt: Date;
+    user: IFeedbackUser;
 }
 
 export interface IFeedback {
     id: string;
     userId: string;
     review: string;
-    rating: number;  // Rating given by the user (e.g., 1 to 5 stars)
+    rating: number;
     createdAt: Date;
+}
+
+export interface IFeedbackUser {
+    userName?: string;
+    email?: string;
+    avatarId: string;
 }

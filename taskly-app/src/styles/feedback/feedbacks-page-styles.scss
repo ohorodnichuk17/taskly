@@ -64,6 +64,27 @@
         box-shadow: 0 12px 24px darken(rgba(0, 0, 0, 0.3), 10%);
       }
 
+      .feedback-user {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 8px;
+
+        .feedback-avatar {
+          width: 36px;
+          height: 36px;
+          border-radius: 50%;
+          object-fit: cover;
+        }
+
+        .user-name {
+          font-weight: 500;
+          color: #fff;
+          font-size: 14px;
+          word-break: break-word;
+        }
+      }
+
       .star-rating-display {
         display: flex;
         justify-content: center;
