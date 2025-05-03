@@ -304,7 +304,8 @@ export const solanaWalletAuthAsync = createAsyncThunk<
                 {withCredentials: true}
             );
             return response.data;
-        } catch (error) {
+        } catch (err: unknown) {
+            const error = err as AxiosError<IValidationErrors>;
             return rejectWithValue(error.response?.data || 'Authentication failed');
         }
     }
@@ -325,8 +326,9 @@ export const setUserNameForSolanaUserAsync = createAsyncThunk<
                 {withCredentials: true}
             );
             return response.data;
-        } catch (error) {
-            return rejectWithValue(error.response?.data || 'Authentication failed');
+        } catch (err: unknown) {
+            const error = err as AxiosError<IValidationErrors>;
+            return rejectWithValue(error.response?.data || 'Set username failed');
         }
     }
 );

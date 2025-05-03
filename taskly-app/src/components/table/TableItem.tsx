@@ -10,7 +10,11 @@ import { ITableItem } from "../../interfaces/tableInterface.ts";
 import {useParams} from "react-router-dom";
 import "../../styles/table/main.scss";
 
-export default function TableItem({ item }: ITableItem) {
+interface TableItemProps {
+    item: ITableItem;
+}
+
+export default function TableItem({ item }: TableItemProps) {
     const dispatch = useDispatch();
     const { tableId } = useParams();
     const normalizeStatus = (status: string): string =>
@@ -34,11 +38,11 @@ export default function TableItem({ item }: ITableItem) {
             const newStatus = isCompleted ? "Done" : editedItem.status;
 
             await dispatch(editTableItem({
-                Id: tableItemId,
-                Text: editedItem.task,
-                Status: newStatus,
-                EndTime: new Date(editedItem.endTime).toISOString(),
-                Label: editedItem.label,
+                id: tableItemId,
+                text: editedItem.task,
+                status: newStatus,
+                endTime: new Date(editedItem.endTime).toISOString(),
+                label: editedItem.label,
             }));
 
             await dispatch(markTableItemAsCompleted({ tableItemId, isCompleted }));
@@ -63,6 +67,9 @@ export default function TableItem({ item }: ITableItem) {
             };
 
             await dispatch(editTableItem(payload));
+
+            if (!tableId) return;
+
             await dispatch(getTableItems(tableId));
 
         } catch (err) {

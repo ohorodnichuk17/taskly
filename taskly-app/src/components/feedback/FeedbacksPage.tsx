@@ -88,7 +88,7 @@ export default function FeedbacksPage() {
                             {feedback.user && (
                                 <div className="feedback-user">
                                     {(() => {
-                                        const avatar = avatars?.find((a) => a.id === feedback.user.avatarId);
+                                        const avatar = avatars?.find((a) => a.id === feedback.user?.avatarId);
                                         return (
                                             <>
                                                 <img
@@ -97,13 +97,14 @@ export default function FeedbacksPage() {
                                                     className="feedback-avatar"
                                                 />
                                                 <span className="user-name">
-                                                    {authMethod === "solana" ? feedback.user.userName : formatUsername(feedback.user.email)}
-                                              </span>
+                        {authMethod === "solana" ? feedback.user?.userName : formatUsername(feedback.user?.email)}
+                    </span>
                                             </>
                                         );
                                     })()}
                                 </div>
                             )}
+
 
                             <p>{feedback.review}</p>
                             {renderStars(feedback.rating)}

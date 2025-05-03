@@ -15,7 +15,7 @@ export const InputForCode = (props: IInputCode) => {
 
     return (
         <div className="input-code">
-            {focusRef.current.map((element, index) =>
+            {focusRef.current.map((_, index) =>
 
                 <input
                     key={`InputCodeKey${index}`}

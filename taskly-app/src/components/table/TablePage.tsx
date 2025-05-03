@@ -10,7 +10,7 @@ export default function TablePage() {
     const tableItems = useRootState((state) => state.table.tableItems);
     const dispatch = useAppDispatch();
     const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const [error, setError] = useState<string | null>(null);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const navigate = useNavigate();
 
@@ -18,9 +18,10 @@ export default function TablePage() {
         const fetchTableItems = async () => {
             try {
                 setIsLoading(true);
+                if (!tableId) return;
                 await dispatch(getTableItems(tableId));
                 setIsLoading(false);
-            } catch (err) {
+            } catch {
                 setError("Failed to load table items. Please try again.");
                 setIsLoading(false);
             }

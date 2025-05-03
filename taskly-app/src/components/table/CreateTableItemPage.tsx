@@ -32,7 +32,8 @@ export function CreateTableItemPage() {
         setError(null);
 
         try {
-            await dispatch(createTableItem({ task, status, label, members, endTime, isCompleted, tableId }));
+            const formattedEndTime = new Date(endTime).toISOString();
+            await dispatch(createTableItem({ task, status, label, members, endTime: formattedEndTime, isCompleted, tableId }));
             navigate(`/tables/${tableId}`);
         } catch (err) {
             setError("Failed to create table item. Please try again.");
@@ -69,10 +70,10 @@ export function CreateTableItemPage() {
                     className="select-label"
                 >
                     <option value="">None</option>
-                    <option value="info" style={{ color: '#2196F3' }}>Info</option>
-                    <option value="warning" style={{ color: '#FFC107' }}>Warning</option>
-                    <option value="danger" style={{ color: '#F44336' }}>Danger</option>
-                    <option value="success" style={{ color: '#4CAF50' }}>Success</option>
+                    <option value="Info" style={{ color: '#2196F3' }}>Info</option>
+                    <option value="Warning" style={{ color: '#FFC107' }}>Warning</option>
+                    <option value="Danger" style={{ color: '#F44336' }}>Danger</option>
+                    <option value="Success" style={{ color: '#4CAF50' }}>Success</option>
                 </select>
                 <input
                     type="date"

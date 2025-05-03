@@ -20,6 +20,7 @@ const reducers = combineReducers({
 export const store = configureStore({
     reducer: reducers
 });
+
 /*const authenticateConfig = {
     key: "authenticate", // Під яким ключем буде зберігатися стан редюсера
     storage: storage, // localStorage, щоб був sessionStorage, трема - storageSession

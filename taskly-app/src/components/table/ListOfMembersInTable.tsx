@@ -23,6 +23,7 @@ export default function ListOfMembersInTable() {
     const fetchMembers = async () => {
         try {
             setLoading(true);
+            if (!tableId) return;
             await dispatch(getAllMembersInTable(tableId));
             await dispatch(getAllAvatarsAsync());
         } catch {
@@ -34,6 +35,8 @@ export default function ListOfMembersInTable() {
     };
 
     const handleRemoveMemberFromTable = async (memberEmail: string) => {
+        if (!tableId) return;
+
         try {
             setLoading(true);
             await dispatch(removeUserFromTable({ tableId, memberEmail }));
@@ -43,7 +46,8 @@ export default function ListOfMembersInTable() {
         } finally {
             setLoading(false);
         }
-    }
+    };
+
 
     useEffect(() => {
         fetchMembers();

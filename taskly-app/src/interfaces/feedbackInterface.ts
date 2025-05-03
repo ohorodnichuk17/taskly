@@ -17,6 +17,7 @@ export interface IFeedback {
     review: string;
     rating: number;
     createdAt: Date;
+    user?: IFeedbackUser
 }
 
 export interface IFeedbackUser {

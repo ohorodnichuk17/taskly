@@ -2,6 +2,12 @@ export interface ITableInitialState {
     listOfTables: ITable[] | null,
     tableItems: ITableItem[] | null
     membersList: IUserListForTable[] | null
+    createTableError?: string | null;
+    createTableItemError?: string | null;
+    deleteTableError?: string | null;
+    deleteTableItemError?: string | null;
+    editTableError?: string | null;
+    editTableItemError?: string | null;
 }
 
 export interface ITable {
@@ -17,6 +23,7 @@ export interface ITableCreate {
 }
 
 export interface ITableEdit {
+    id: string,
     userId: string,
     name: string
 }
@@ -39,6 +46,7 @@ export interface ITableItemCreate {
 }
 
 export interface ITableItemEdit {
+    id: string,
     tableIdItem: string
     task: string,
     status: string,

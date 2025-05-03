@@ -4,7 +4,7 @@ import {
     ITableCreate,
     ITableEdit,
     ITableInitialState,
-    ITableItem,
+    ITableItem, ITableItemEdit,
     IUserListForTable, IUserToTable
 } from "../../interfaces/tableInterface.ts";
 import {
@@ -21,6 +21,12 @@ const initialState: ITableInitialState = {
     listOfTables: null,
     tableItems: null,
     membersList: [],
+    createTableError: null,
+    createTableItemError: null,
+    deleteTableError: null,
+    deleteTableItemError: null,
+    editTableError: null,
+    editTableItemError: null,
 }
 
 const tableSlice = createSlice({
@@ -65,14 +71,14 @@ const tableSlice = createSlice({
                 }
             })
             .addCase(createTableItem.rejected, (state, action) => {
-                state.createTableItemError = action.payload;
+                state.createTableItemError = action.payload ? JSON.stringify(action.payload) : null;
             })
             .addCase(deleteTable.fulfilled, (state, action: PayloadAction<string>) => {
                 if (state.listOfTables) {
                     state.listOfTables = state.listOfTables.filter((table) => table.id !== action.payload);
            }})
             .addCase(deleteTable.rejected, (state, action) => {
-                state.deleteTableError = action.payload;
+                state.deleteTableError = action.payload  ? JSON.stringify(action.payload) : null;
             })
             .addCase(deleteTableItem.fulfilled, (state, action: PayloadAction<string>) => {
                 if (state.tableItems) {
@@ -80,21 +86,21 @@ const tableSlice = createSlice({
                 }
             })
             .addCase(deleteTableItem.rejected, (state, action) => {
-                state.deleteTableItemError = action.payload;
+                state.deleteTableItemError = action.payload  ? JSON.stringify(action.payload) : null;
             })
-            .addCase(markTableItemAsCompleted.fulfilled, (state, action: PayloadAction<boolean>) => {
+            .addCase(markTableItemAsCompleted.fulfilled, (state, action: PayloadAction<{ tableItemId: string, isCompleted: boolean }>) => {
                 if (state.tableItems) {
-                    const item = state.tableItems.find((item) => item.id === action.meta.arg.tableItemId);
+                    const item = state.tableItems.find((item) => item.id === action.payload.tableItemId);
                     if (item) {
-                        item.isCompleted = action.meta.arg.isCompleted;
-                        item.status = action.meta.arg.isCompleted ? "Done" : item.status;
+                        item.isCompleted = action.payload.isCompleted;
+                        item.status = action.payload.isCompleted ? "Done" : item.status;
                     }
                 }
             })
             .addCase(markTableItemAsCompleted.rejected, (state, action) => {
                 state.deleteTableItemError = action.payload;
             })
-            .addCase(editTableItem.fulfilled, (state, action: PayloadAction<ITableItem>) => {
+            .addCase(editTableItem.fulfilled, (state, action: PayloadAction<ITableItemEdit>) => {
                 if (state.tableItems) {
                     const updatedItemIndex = state.tableItems.findIndex(
                         (item) => item.id === action.payload.id
@@ -110,16 +116,16 @@ const tableSlice = createSlice({
             .addCase(editTableItem.rejected, (state, action) => {
                 state.editTableItemError = action.payload;
             })
-            .addCase(addUserToTable.fulfilled, (state, action: PayloadAction<IUserToTable>) => {
+            .addCase(addUserToTable.fulfilled, () => {
 
             })
-            .addCase(addUserToTable.rejected, (state, action) => {
+            .addCase(addUserToTable.rejected, () => {
 
             })
-            .addCase(removeUserFromTable.fulfilled, (state, action: PayloadAction<IUserToTable>) => {
+            .addCase(removeUserFromTable.fulfilled, () => {
 
             })
-            .addCase(removeUserFromTable.rejected, (state, action) => {
+            .addCase(removeUserFromTable.rejected, () => {
 
             })
             .addCase(getAllMembersInTable.fulfilled, (state, action: PayloadAction<IUserListForTable[]>) => {
@@ -142,7 +148,7 @@ const tableSlice = createSlice({
                 }
             })
             .addCase(editTable.rejected, (state, action) => {
-                state.editTableError = action.payload;
+                state.editTableError = action.payload ? JSON.stringify(action.payload) : null;
             });
     },
 });
