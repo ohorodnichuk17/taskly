@@ -7,6 +7,6 @@ export default defineConfig({
   server: {
     port: Number(process.env.PORT) || 5173,
     host: true,
-    allowedHosts: ['taskly-frontend-p945.onrender.com'],
+    allowedHosts: ['taskly-frontend-5bz1.onrender.com'],
   },
 })
