@@ -69,16 +69,17 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
         return await RemoveCardsOwner(boardId, userId);
     }
 
-    public async Task<IEnumerable<BoardTableMemberDto>> GetMembersOfBoardAsync(Guid boardId)
+    public async Task<IEnumerable<BoardMemberDto>> GetMembersOfBoardAsync(Guid boardId)
     {
         var board = await GetBoardByIdAsync(boardId);
         ValidateBoardMembers(board);
-        return board.Members.Select(member => new BoardTableMemberDto
+        return board.Members.Select(member => new BoardMemberDto
         {
             UserId = member.Id,
             Email = member.Email!,
-            AvatarName = member.Avatar!.ImagePath
-        }) ?? Enumerable.Empty<BoardTableMemberDto>();
+            AvatarName = member.Avatar!.ImagePath,
+            UserName = member.UserName
+        }) ?? Enumerable.Empty<BoardMemberDto>();
     }
 
     public async Task AddCardListToBoardAsync(Guid boardId, CardListEntity cardList)
@@ -202,7 +203,10 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
             return null;
         }
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 500e19cd40af223cf669f4444416bc61471fd104
 
     private async Task<(BoardEntity board, UserEntity user)> GetBoardAndUserAsync(Guid boardId, Guid userId)
     {

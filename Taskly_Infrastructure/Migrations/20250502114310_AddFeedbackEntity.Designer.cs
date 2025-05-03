@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Taskly_Infrastructure.Common.Persistence;
@@ -11,9 +12,11 @@ using Taskly_Infrastructure.Common.Persistence;
 namespace Taskly_Infrastructure.Migrations
 {
     [DbContext(typeof(TasklyDbContext))]
-    partial class TasklyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250502114310_AddFeedbackEntity")]
+    partial class AddFeedbackEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -318,8 +321,8 @@ namespace Taskly_Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
                     b.Property<int>("Rating")
                         .HasColumnType("integer");
@@ -328,10 +331,15 @@ namespace Taskly_Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<Guid?>("TimeRangeId")
+                        .HasColumnType("uuid");
+
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("TimeRangeId");
 
                     b.HasIndex("UserId");
 
@@ -643,11 +651,17 @@ namespace Taskly_Infrastructure.Migrations
 
             modelBuilder.Entity("Taskly_Domain.Entities.FeedbackEntity", b =>
                 {
+                    b.HasOne("Taskly_Domain.Entities.TimeRangeEntity", "TimeRange")
+                        .WithMany()
+                        .HasForeignKey("TimeRangeId");
+
                     b.HasOne("Taskly_Domain.Entities.UserEntity", "User")
                         .WithMany("Feedbacks")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("TimeRange");
 
                     b.Navigation("User");
                 });
