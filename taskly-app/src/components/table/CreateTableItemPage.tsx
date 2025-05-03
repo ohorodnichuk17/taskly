@@ -60,8 +60,8 @@ export function CreateTableItemPage() {
                     onChange={(e) => setStatus(e.target.value)}
                     className="select-status"
                 >
-                    <option value="To Do">To Do</option>
-                    <option value="In Progress">In Progress</option>
+                    <option value="ToDo">To Do</option>
+                    <option value="InProgress">In Progress</option>
                     <option value="Done">Done</option>
                 </select>
                 <select
