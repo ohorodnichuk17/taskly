@@ -1,20 +1,21 @@
 import { JwtPayload } from "jwt-decode"
-import { IInformationAlert } from "./generalInterface"
-export enum StatusEnums { Loading, None }
-export interface IAuthenticateInitialState {
-    user: IUser | null,
-    userProfile: IUserProfile | null,
-    editUserProfile: IEditUserProfile | null,
-    verificationEmail: string | null,
-    verificatedEmail: string | null,
-    isLogin: boolean,
-    //error: string | null,
-    avatars: IAvatar[] | null,
-    keyToChangePassword: string | null,
-    emailOfUserWhoWantToChangePassword: string | null,
-    authMethod: "jwt" | "solana" | null,
 
-    //jwtInformation: IJwtInformation | null
+export enum StatusEnums { Loading, None }
+
+export interface IAuthenticateInitialState {
+    user: IUser | null;
+    userProfile: IUserProfile | null;
+    solanaUserProfile: ISolanaUserProfile | null;
+    editAvatar: IEditAvatar | null;
+    verificationEmail: string | null;
+    verificatedEmail: string | null;
+    isLogin: boolean;
+    avatars: IAvatar[] | null;
+    keyToChangePassword: string | null;
+    emailOfUserWhoWantToChangePassword: string | null;
+    authMethod: "jwt" | "solana" | null;
+    token: string | null;
+    isAuthenticated: boolean;
 }
 export interface IUserProfile {
     id: string
