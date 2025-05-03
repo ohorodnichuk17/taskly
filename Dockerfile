@@ -13,7 +13,7 @@ COPY . .
 WORKDIR /src/Taskly_Api
 RUN dotnet publish "Taskly_Api.csproj" -c Release -o /app/publish
 
-COPY ./Taskly_Api/images /app/images
+COPY ./Taskly_Api/images /src/images
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
