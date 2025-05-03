@@ -1,4 +1,4 @@
-import { IFeedback, IFeedbackResponse } from "../../interfaces/feedbackInterface.ts";
+import { ICreateFeedback, IFeedback, IFeedbackResponse } from "../../interfaces/feedbackInterface.ts";
 export declare const getAllFeedbacksAsync: import("@reduxjs/toolkit").AsyncThunk<IFeedbackResponse[], void, {
     rejectValue: string;
     state?: unknown;
@@ -19,11 +19,11 @@ export declare const getFeedbackByIdAsync: import("@reduxjs/toolkit").AsyncThunk
     fulfilledMeta?: unknown;
     rejectedMeta?: unknown;
 }>;
-export declare const createFeedbackAsync: import("@reduxjs/toolkit").AsyncThunk<IFeedback, IFeedback, {
-    rejectValue: string;
+export declare const createFeedbackAsync: import("@reduxjs/toolkit").AsyncThunk<IFeedback, ICreateFeedback, {
     state?: unknown;
-    dispatch?: import("redux-thunk").ThunkDispatch<unknown, unknown, import("redux").UnknownAction> | undefined;
+    dispatch?: import("redux-thunk").ThunkDispatch<unknown, unknown, import("redux").UnknownAction>;
     extra?: unknown;
+    rejectValue?: unknown;
     serializedErrorType?: unknown;
     pendingMeta?: unknown;
     fulfilledMeta?: unknown;

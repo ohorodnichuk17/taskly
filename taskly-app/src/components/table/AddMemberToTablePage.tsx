@@ -1,8 +1,8 @@
 import {useNavigate, useParams} from "react-router-dom";
 import {useState} from "react";
-import {useDispatch} from "react-redux";
 import {addUserToTable} from "../../redux/actions/tablesAction.ts";
 import "../../styles/table/main.scss"
+import {useAppDispatch} from "../../redux/hooks.ts";
 
 export default function AddMemberToTablePage() {
     const {tableId} = useParams();
@@ -10,7 +10,7 @@ export default function AddMemberToTablePage() {
     const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const navigate = useNavigate();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const handleSubmit = async () => {
         if (!memberEmail.trim()) {

@@ -1,6 +1,5 @@
-import {useRootState} from "../../redux/hooks.ts";
+import {useAppDispatch, useRootState} from "../../redux/hooks.ts";
 import {useState, useEffect} from "react";
-import {useDispatch} from "react-redux";
 import {deleteFeedbackAsync, getAllFeedbacksAsync} from "../../redux/actions/feedbackAction.ts";
 import {useNavigate} from "react-router-dom";
 import "../../styles/feedback/feedbacks-page-styles.scss"
@@ -14,7 +13,7 @@ export default function FeedbacksPage() {
     const authMethod = useRootState(s => s.authenticate.authMethod);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const fetchFeedbacks = async () => {
         setIsLoading(true);

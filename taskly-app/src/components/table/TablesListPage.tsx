@@ -1,5 +1,4 @@
-import { useRootState } from "../../redux/hooks.ts";
-import { useDispatch } from "react-redux";
+import {useAppDispatch, useRootState} from "../../redux/hooks.ts";
 import { useEffect, useRef, useState } from "react";
 import { deleteTable, getTablesByUser } from "../../redux/actions/tablesAction.ts";
 import { Link, useNavigate } from "react-router-dom";
@@ -7,7 +6,7 @@ import "../../styles/table/main.scss";
 
 export default function TablesListPage() {
     const tables = useRootState((state) => state.table.listOfTables);
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const workspaceContainerRef = useRef<HTMLDivElement | null>(null);
     const [workSpaceOverflowY, setWorkspaceOverflowY] = useState<"auto" | "scroll">("auto");
     const jwtUserId = useRootState(s => s.authenticate.userProfile?.id);

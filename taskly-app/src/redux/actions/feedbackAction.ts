@@ -1,5 +1,5 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import {IFeedback, IFeedbackResponse} from "../../interfaces/feedbackInterface.ts";
+import {ICreateFeedback, IFeedback, IFeedbackResponse} from "../../interfaces/feedbackInterface.ts";
 import {api} from "../../axios/api.ts";
 
 export const getAllFeedbacksAsync = createAsyncThunk<
@@ -36,7 +36,7 @@ export const getFeedbackByIdAsync = createAsyncThunk<
 
 export const createFeedbackAsync = createAsyncThunk<
     IFeedback,
-    IFeedback,
+    ICreateFeedback,
     { rejectValue: string }
 >(
     "feedback/create",

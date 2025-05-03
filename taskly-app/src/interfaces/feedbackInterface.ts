@@ -20,6 +20,14 @@ export interface IFeedback {
     user?: IFeedbackUser
 }
 
+export interface ICreateFeedback {
+    userId: string;
+    review: string;
+    rating: number;
+    createdAt: Date;
+    user?: IFeedbackUser
+}
+
 export interface IFeedbackUser {
     userName?: string;
     email?: string;

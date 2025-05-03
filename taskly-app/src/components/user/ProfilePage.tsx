@@ -1,5 +1,4 @@
-import { useDispatch } from "react-redux";
-import { useRootState } from "../../redux/hooks.ts";
+import {useAppDispatch, useRootState} from "../../redux/hooks.ts";
 import { editAvatarAsync, getAllAvatarsAsync } from "../../redux/actions/authenticateAction.ts";
 import { useEffect } from "react";
 import { baseUrl } from "../../axios/baseUrl.ts";
@@ -7,7 +6,7 @@ import "../../styles/user/profile-style.scss";
 import React from "react";
 
 export const ProfilePage = () => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const editAvatar = useRootState((s) => s.authenticate.editAvatar);
     const avatars = useRootState((s) => s.authenticate.avatars);
     const authMethod = useRootState((s) => s.authenticate.authMethod);

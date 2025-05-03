@@ -1,9 +1,9 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
 import { createTableItem } from "../../redux/actions/tablesAction.ts";
-import { useDispatch } from "react-redux";
 import "../../styles/table/main.scss";
 import {IUserListForTable} from "../../interfaces/tableInterface.ts";
+import {useAppDispatch} from "../../redux/hooks.ts";
 
 export function CreateTableItemPage() {
     const { tableId } = useParams();
@@ -16,7 +16,7 @@ export function CreateTableItemPage() {
     const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const navigate = useNavigate();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const handleSubmit = async () => {
         if (!task.trim() || !status.trim() || !label.trim() || !endTime.trim()) {

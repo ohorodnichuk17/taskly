@@ -4,10 +4,9 @@ import menu_icon from '../../../public/icon/menu_icon.png';
 import menu_icon_opened from '../../../public/icon/menu_icon_opened.png';
 import {Link, Navigate, useNavigate} from 'react-router-dom';
 import { HideMenuContainer } from './HideMenuContainer';
-import {useDispatch} from 'react-redux';
 import {logoutAsync, solanaLogoutAsync} from "../../redux/actions/authenticateAction.ts";
 import {baseUrl} from "../../axios/baseUrl.ts";
-import {useRootState} from "../../redux/hooks.ts";
+import {useAppDispatch, useRootState} from "../../redux/hooks.ts";
 
 export interface IMenuContainer {
     icon: string;
@@ -45,7 +44,7 @@ export const MenuContainer = (props: IMenuContainer) => {
     const [hideMenu, setHideMenu] = useState<boolean>(false);
     const [isMenuOpened, setIsMenuOpened] = useState<boolean>(false);
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
     const checkAuthMethodLogoutAsync = async () => {

@@ -1,13 +1,12 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { useRootState } from "../../redux/hooks.ts";
+import {useAppDispatch, useRootState} from "../../redux/hooks.ts";
 import { createTable, editTable } from "../../redux/actions/tablesAction.ts";
 import "../../styles/table/main.scss";
 
 export default function TableFormPage() {
     const navigate = useNavigate();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const { tableId } = useParams();
     const jwtUserId = useRootState((state) => state.authenticate.userProfile?.id);
     const solanaUserId = useRootState((state) => state.authenticate.solanaUserProfile?.id);
