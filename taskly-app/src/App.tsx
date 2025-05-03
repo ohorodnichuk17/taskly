@@ -24,6 +24,7 @@ import AddMemberToTablePage from "./components/table/AddMemberToTablePage.tsx";
 import ListOfMembersInTable from "./components/table/ListOfMembersInTable.tsx";
 import { WalletContextProvider } from "./providers/WalletContextProvider.tsx";
 import { UnifiedLoginPage } from "./components/authentication/UnifiedLoginPage.tsx";
+import { CreateBoardPage } from './components/boards/CreateBoardPage.tsx'
 
 
 function App() {
@@ -68,7 +69,7 @@ function App() {
             {isLogin && (<>
               <Route path='/boards' element={<BoardsPage />} />
               <Route path='/boards/:boardId' element={<BoardPage />} />
-              <Route path='/boards/create-new-board' element={<PageNotFound />} />
+              <Route path='/boards/create' element={<CreateBoardPage />} />
               <Route path='/edit-profile' element={<ProfilePage />} />
               <Route path='/tables' element={<TablesListPage />} />
               <Route path='/tables/create' element={<TableFormPage />} />

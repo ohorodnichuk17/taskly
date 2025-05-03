@@ -1,4 +1,4 @@
-import { createReducer, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IGeneralInitialState, IInformationAlert } from "../../interfaces/generalInterface";
 
 const initialState: IGeneralInitialState = {

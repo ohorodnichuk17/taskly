@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { createCardAsync } from "../actions/cardsActions";
+import { createSlice } from "@reduxjs/toolkit";
+
 
 const cardSlice = createSlice({
     name: "cardSlice",
@@ -7,12 +7,7 @@ const cardSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-            .addCase(createCardAsync.fulfilled, (state, action: PayloadAction<string>) => {
 
-            })
-            .addCase(createCardAsync.rejected, (state) => {
-
-            })
     }
 });
 

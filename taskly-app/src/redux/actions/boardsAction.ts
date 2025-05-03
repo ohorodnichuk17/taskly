@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { IAddMemberRequest, ICardListItem, IUsersBoard } from "../../interfaces/boardInterface";
+import { IAddMemberRequest, ICardListItem, ICreateBoard, IMemberOfBoard, IRemoveMemberFromBoard, ITemplateOfBoard, IUsersBoard } from "../../interfaces/boardInterface";
 import { IValidationErrors } from "../../interfaces/generalInterface";
 import { api } from "../../axios/api";
 import { AxiosError } from "axios";
@@ -77,7 +77,7 @@ export const leaveBoardAsync = createAsyncThunk<
     )
 
 export const addMemberToBoardAsync = createAsyncThunk<
-    string,
+    IMemberOfBoard,
     IAddMemberRequest,
     { rejectValue: IValidationErrors }>(
         "board/add-member",
@@ -87,6 +87,109 @@ export const addMemberToBoardAsync = createAsyncThunk<
                     boardId: request.boardId,
                     memberEmail: request.memberEmail
                 },
+                    {
+                        withCredentials: true
+                    }
+                );
+                return response.data;
+            } catch (err: any) {
+                let error: AxiosError<IValidationErrors> = err;
+                if (!error.response)
+                    throw err;
+
+                return rejectWithValue(error.response.data);
+            }
+        }
+    )
+
+export const getMembersOfBoardAsync = createAsyncThunk<
+    IMemberOfBoard[],
+    string,
+    { rejectValue: IValidationErrors }>(
+        "board/get-members-of-board",
+        async (boardId: string, { rejectWithValue }) => {
+            try {
+                const response = await api.get(`/api/board/members/${boardId}`,
+                    {
+                        withCredentials: true
+                    }
+                );
+                return response.data;
+            } catch (err: any) {
+                let error: AxiosError<IValidationErrors> = err;
+                if (!error.response)
+                    throw err;
+
+                return rejectWithValue(error.response.data);
+            }
+        }
+    )
+
+export const removeMemberFromBoardAsync = createAsyncThunk<
+    string[],
+    IRemoveMemberFromBoard,
+    { rejectValue: IValidationErrors }>(
+        "board/remove-member-from-board",
+        async (request: IRemoveMemberFromBoard, { rejectWithValue }) => {
+            try {
+                const response = await api.delete(`/api/board/remove-member`,
+                    {
+                        data: {
+                            boardId: request.boardId,
+                            userId: request.userId
+                        },
+                        withCredentials: true
+                    }
+                );
+                return response.data;
+            } catch (err: any) {
+                let error: AxiosError<IValidationErrors> = err;
+                if (!error.response)
+                    throw err;
+
+                return rejectWithValue(error.response.data);
+            }
+        }
+    )
+
+export const getTemplatesOfBoardAsync = createAsyncThunk<
+    ITemplateOfBoard[],
+    void,
+    { rejectValue: IValidationErrors }>(
+        "board/get-templates-of-board",
+        async (_, { rejectWithValue }) => {
+            try {
+                const response = await api.get(`/api/board/get-templates-of-board`,
+                    {
+                        withCredentials: true
+                    }
+                );
+                return response.data;
+            } catch (err: any) {
+                let error: AxiosError<IValidationErrors> = err;
+                if (!error.response)
+                    throw err;
+
+                return rejectWithValue(error.response.data);
+            }
+        }
+    )
+
+export const createBoardAsync = createAsyncThunk<
+    string,
+    ICreateBoard,
+    { rejectValue: IValidationErrors }>(
+        "board/create-board",
+        async (request: ICreateBoard, { rejectWithValue }) => {
+            try {
+                const response = await api.post(`/api/board/create`,
+                    {
+                        userId: request.userId,
+                        name: request.name,
+                        tag: request.tag,
+                        isTeamBoard: request.isTeamBoard,
+                        boardTemplateId: request.boadrTemplateId
+                    },
                     {
                         withCredentials: true
                     }

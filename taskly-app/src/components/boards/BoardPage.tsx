@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom"
 import '../../styles/board/board-page-style.scss';
 import { useAppDispatch, useRootState } from "../../redux/hooks";
-import { addMemberToBoardAsync, getCardsListsByBoardIdAsync, leaveBoardAsync } from "../../redux/actions/boardsAction";
+import { addMemberToBoardAsync, getCardsListsByBoardIdAsync, getMembersOfBoardAsync, leaveBoardAsync, removeMemberFromBoardAsync } from "../../redux/actions/boardsAction";
 import { format } from "date-fns";
 import trash_can_icon from '../../../public/icon/trash_can_icon.png';
 import edit_icon from '../../../public/icon/edit_icon.png';
@@ -16,7 +16,7 @@ import leave_board_white_icon from '../../../public/icon/levae_board_white_icon.
 import leave_board_purple_icon from '../../../public/icon/levae_board_purple_icon.png';
 import add_member_white_icon from '../../../public/icon/add_member_white_icon.png';
 import add_member_purple_icon from '../../../public/icon/add_member_purple_icon.png';
-import { ICard, ICardListItem } from "../../interfaces/boardInterface";
+import { ICard, ICardListItem, IMemberOfBoard } from "../../interfaces/boardInterface";
 import { HubConnection, HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
 import { baseUrl } from "../../axios/baseUrl";
 import { done_card_list, todo_card_list } from "../../constants/constants";
@@ -34,6 +34,7 @@ import { InformationAlert } from "../general/InformationAlert";
 import { addInformation } from "../../redux/slices/generalSlice";
 import { typeOfMessage } from "../general/InputMessage";
 import { TypeOfInformation } from "../../interfaces/generalInterface";
+import { GeneralMode } from "../general/GeneralModal";
 
 
 
@@ -64,6 +65,9 @@ export const BoardPage = () => {
     const cardListRef = useRef<ICardListItem[] | null>(null);
     const editDescriptionButtonRef = useRef<HTMLButtonElement | null>(null);
     const cardDescription = useRef<string | null>(null);
+    const boardMembersRef = useRef<HTMLDivElement | null>(null);
+    const membersRef = useRef<IMemberOfBoard[] | null>(null);
+
 
     /*const conn = new HubConnectionBuilder()
         .withUrl(`${baseUrl}/board`)
@@ -78,6 +82,8 @@ export const BoardPage = () => {
     const userId = useRootState(s => s.authenticate.userProfile?.id);
     const user = useRootState(s => s.authenticate.userProfile);
     const cardsOfLeavedUser = useRootState(s => s.board.cardsOfLeavedUser);
+    const cardsOfRemovedUser = useRootState(s => s.board.cardsOfRemovedUser);
+    const membersOfBoardList = useRootState(s => s.board.membersOfBoard);
     const dispatch = useAppDispatch();
 
     const [boardPageOverflowX, setBoardPageOverflowX] = useState<"auto" | "scroll">("auto");
@@ -96,7 +102,10 @@ export const BoardPage = () => {
     const [openedCustomCardCreate, setOpenedCustomCardCreate] = useState<boolean>(false);
     const [openedAICardCreate, setOpenedAICardCreate] = useState<boolean>(false);
     const [openedAddMember, setOpenedAddMember] = useState<boolean>(false);
+    const [openedGeneralModal, setOpenedGeneralModal] = useState<boolean>(false);
     const [buttonHovered, setButtonHovered] = useState<"members" | "leave" | "add_member" | null>(null);
+    const [membersOfBoard, setMembersOfBoard] = useState<IMemberOfBoard[] | null>(null);
+    const [boardMembersOverflowY, setBoardMembersOverflowY] = useState<"auto" | "scroll">("auto");
 
     const {
         register,
@@ -112,6 +121,7 @@ export const BoardPage = () => {
 
     const getCardList = async () => {
         if (boardId != null) {
+            await dispatch(getMembersOfBoardAsync(boardId));
             var response = await dispatch(getCardsListsByBoardIdAsync(boardId))
 
             if (!getCardsListsByBoardIdAsync.fulfilled.match(response)) {
@@ -124,9 +134,20 @@ export const BoardPage = () => {
     }
 
     useEffect(() => {
+        if (membersOfBoardList !== null) {
+            setMembersOfBoard(membersOfBoardList);
+        }
+    }, [membersOfBoardList])
+
+    useEffect(() => {
+        if (membersOfBoard !== null) {
+            membersRef.current = membersOfBoard;
+        }
+    }, [membersOfBoard])
+
+    useEffect(() => {
         if (cardsOfLeavedUser !== null) {
             if (conn.current) {
-                console.log("RESPONSE - ", cardsOfLeavedUser);
                 conn.current.send("UserHasLeftBoard", {
                     boardId: boardId,
                     cardsId: cardsOfLeavedUser
@@ -137,6 +158,19 @@ export const BoardPage = () => {
 
         }
     }, [cardsOfLeavedUser])
+    useEffect(() => {
+        if (cardsOfLeavedUser !== null) {
+            if (conn.current) {
+                conn.current.send("UserHasBeenRemovedFromBoard", {
+                    boardId: boardId,
+                    cardsId: cardsOfRemovedUser
+                });
+            }
+            dispatch(removeCardsOfLeavedUser());
+            navigate("/boards");
+
+        }
+    }, [cardsOfRemovedUser])
 
     useEffect(() => {
         if (cardList)
@@ -180,11 +214,8 @@ export const BoardPage = () => {
                 "scroll" :
                 "auto"
             )
-            console.log("boardPageRef.current.offsetWidth - ", boardPageRef.current.offsetWidth);
-            console.log("boardPageRef.current.scrollWidth - ", boardPageRef.current.scrollWidth);
-            console.log("");
         }
-    }, [boardPageRef.current, boardPageRef.current?.offsetWidth])
+    }, [boardPageRef.current, boardPageRef.current?.scrollWidth])
 
     useEffect(() => {
         if ((openedCustomCardCreate === true || openedAICardCreate === true) && cardsRef.current && cardListRef.current) {
@@ -210,6 +241,14 @@ export const BoardPage = () => {
             endConnection();
         });
     }, [])
+    useEffect(() => {
+        if (boardMembersRef.current) {
+            setBoardMembersOverflowY(boardMembersRef.current.offsetHeight < boardMembersRef.current.scrollHeight ?
+                "scroll" :
+                "auto"
+            )
+        }
+    }, [boardMembersRef.current, boardMembersRef.current?.scrollHeight])
 
     useEffect(() => {
         console.log(errors)
@@ -327,13 +366,52 @@ export const BoardPage = () => {
             leaveCards(model);
         });
         conn.current.on("UserHasBeenAddToBoard", (model: {
+            addedUserId: string,
             addedUserEmail: string,
+            addedUserAvatarName: string,
             userEmailWhoAdd: string
         }) => {
+            addMember({
+                userId: model.addedUserId,
+                email: model.addedUserEmail,
+                avatarName: model.addedUserAvatarName
+            });
             dispatch(addInformation({
                 message: `${model.addedUserEmail} has been added to board by ${model.userEmailWhoAdd}`,
                 type: TypeOfInformation.Success
             }));
+        });
+        conn.current.on("UserHasLeftBoard", (model: {
+            cardsId: string[]
+        }) => {
+            leaveCards(model);
+        });
+        conn.current.on("UserHasBeenRemovedFromBoard", (model: {
+            cardsId: string[],
+            removedUserId: string,
+            removedUserEmail: string,
+            userEmailWhoRemoved: string
+        }) => {
+            if (userId !== model.removedUserId) {
+                dispatch(addInformation({
+                    message: `${model.removedUserEmail} has been removed from board by ${model.userEmailWhoRemoved}`,
+                    type: TypeOfInformation.Success
+                }));
+                leaveCards({
+                    cardsId: model.cardsId
+                });
+                removeMemberFromList({
+                    email: model.removedUserEmail
+                });
+            }
+            else {
+                dispatch(addInformation({
+                    message: `You have been removed from board by ${model.userEmailWhoRemoved}`,
+                    type: TypeOfInformation.Success
+                }));
+                navigate('/boards');
+            }
+
         });
 
 
@@ -583,6 +661,36 @@ export const BoardPage = () => {
             setCardLists(update);
         }
     };
+    const addMember = (model: {
+        userId: string,
+        email: string,
+        avatarName: string
+    }) => {
+        if (membersRef.current) {
+            const updated = [...membersRef.current, {
+                userId: model.userId,
+                email: model.email,
+                avatarName: model.avatarName
+            }];
+
+            setMembersOfBoard(updated);
+        }
+    }
+    const removeMemberFromList = (model: {
+        email: string
+    }) => {
+        if (membersRef.current) {
+            console.log(model);
+            console.log(membersRef.current);
+            const removedUserIndex = membersRef.current.findIndex((member) => member.email === model.email);
+            if (removedUserIndex !== -1) {
+                const updated = [...membersRef.current.slice(0, removedUserIndex), ...membersRef.current.slice(removedUserIndex + 1, membersRef.current.length)];
+
+                setMembersOfBoard(updated);
+            }
+
+        }
+    }
 
     const scrollElement = (cardList: HTMLDivElement) => {
         if (cardList.scrollHeight > cardList.offsetHeight) {
@@ -633,6 +741,7 @@ export const BoardPage = () => {
     const leaveBoard = async () => {
         await dispatch(leaveBoardAsync(boardId!));
     }
+
 
     const handleSubmitCreateCustomCard = async (request: NewCardType) => {
         const model = {
@@ -695,7 +804,9 @@ export const BoardPage = () => {
             if (conn.current) {
                 conn.current.send("UserHasBeenAddToBoard", {
                     boardId: boardId!,
-                    addedUserEmail: response.payload,
+                    addedUserId: response.payload.userId,
+                    addedUserEmail: response.payload.email,
+                    addedUserAvatarName: response.payload.avatarName,
                     userEmailWhoAdd: user!.email
                 })
             }
@@ -707,6 +818,25 @@ export const BoardPage = () => {
                 message: `${response.payload?.errors[0].code}`,
                 type: TypeOfInformation.Error
             }));
+        }
+    }
+    const handleRemoveMemberFromBoard = async (removedUserId: string, removedUserEmail: string) => {
+        const response = await dispatch(removeMemberFromBoardAsync({
+            boardId: boardId!,
+            userId: removedUserId
+        }));
+
+        if (removeMemberFromBoardAsync.fulfilled.match(response)) {
+            if (conn.current) {
+                conn.current.send("UserHasBeenRemovedFromBoard", {
+                    boardId: boardId,
+                    removedUserId: removedUserId,
+                    removedUserEmail: removedUserEmail,
+                    userEmailWhoRemoved: user!.email,
+                    cardsId: response.payload
+                });
+            }
+
         }
     }
 
@@ -722,6 +852,31 @@ export const BoardPage = () => {
             }
         }}
     >
+        <GeneralMode isOpened={openedGeneralModal} selectedItem={null} onClose={() => {
+            setOpenedGeneralModal(false);
+        }}>
+            <div className="board-members-items"
+                ref={(ref) => {
+                    boardMembersRef.current = ref;
+                }}
+                style={{
+                    overflowY: boardMembersOverflowY
+                }}
+            >
+                {membersOfBoard && membersOfBoard.map((element) => (
+                    <div className="board-member-item" key={element.userId}>
+                        <img src={`${baseUrl}/images/avatars/${element.avatarName}.png`} alt={`Avatar of ${element.email}`} />
+                        <p>{element.email}</p>
+                        {element.userId !== userId &&
+                            <div className="buttons">
+                                <button
+                                    onClick={() => handleRemoveMemberFromBoard(element.userId, element.email)}
+                                >Remove</button>
+                            </div>}
+                    </div>
+                ))}
+            </div>
+        </GeneralMode>
         {information && (
             <InformationAlert message={information.message} type={information.type} />
         )}
@@ -761,6 +916,7 @@ export const BoardPage = () => {
                 onMouseLeave={() => {
                     setButtonHovered(null);
                 }}
+                onClick={() => setOpenedGeneralModal(true)}
             >
                 <img src={buttonHovered === "members" ? members_white_icon : members_purple_icon} alt="Members" />
                 <p>Members</p>

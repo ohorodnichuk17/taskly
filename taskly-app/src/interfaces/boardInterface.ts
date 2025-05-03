@@ -2,7 +2,10 @@
 export interface IBoardInitialState {
     listOfBoards: IUsersBoard[] | null,
     cardList: ICardListItem[] | null,
-    cardsOfLeavedUser: string[] | null
+    cardsOfLeavedUser: string[] | null,
+    cardsOfRemovedUser: string[] | null,
+    membersOfBoard: IMemberOfBoard[] | null,
+    templatesOfBoard: ITemplateOfBoard[] | null
 }
 
 export interface IUsersBoard {
@@ -43,4 +46,29 @@ export interface ICardListItem {
 export interface IAddMemberRequest {
     boardId: string,
     memberEmail: string
+}
+
+export interface IMemberOfBoard {
+    userId: string,
+    email: string,
+    avatarName: string
+}
+
+export interface IRemoveMemberFromBoard {
+    boardId: string,
+    userId: string
+}
+
+export interface ITemplateOfBoard {
+    id: string,
+    name: string,
+    imagePath: string
+}
+
+export interface ICreateBoard {
+    userId: string,
+    name: string,
+    tag: string | null,
+    isTeamBoard: boolean,
+    boadrTemplateId: string
 }

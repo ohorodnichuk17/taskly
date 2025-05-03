@@ -49,5 +49,12 @@ export const NewCardShema = z.object({
 
 export type GenerateCardsWithAIType = z.infer<typeof GenerateCardsWithAIShema>;
 export const GenerateCardsWithAIShema = z.object({
-    description: z.string().min(5, "Description must contain at least 5 character(s)").max(300, "Maximum text size 300 letters")
+    description: z.string().min(5, "Description must contain at least 5 character(s)").max(300, "Maximum text size is 300 letters")
+});
+
+export type CreateBoardType = z.infer<typeof CreateBoardShema>;
+export const CreateBoardShema = z.object({
+    name: z.string().min(5, "Name must contain at least 5 character(s)").max(30, "Maximum name size is 30 letters"),
+    tag: z.string().max(30, "Maximum tag size is 30 letters").nullable().refine((val) => val === null || val === '' || val.length >= 5, "Tag must contain at least 5 character(s)"),
+    boadrTemplateId: z.string()
 })

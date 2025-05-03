@@ -124,7 +124,7 @@ export const BoardsPage = () => {
                     </div>
                 </>))
             }
-            <Link to="create-new-board" id="create-new-board">
+            <Link to="create" id="create-new-board">
                 <p>Create new board</p>
             </Link>
         </div>

@@ -1,17 +1,15 @@
 import {
     IAuthenticateInitialState,
     IAvatar,
-    ICustomJwtPayload, IEditAvatar,
-    IEditUserProfile,
-    IJwtInformation, ISolanaUserProfile,
+    IEditAvatar,
+    ISolanaUserProfile,
     IUserProfile,
-    StatusEnums
 } from "../../interfaces/authenticateInterfaces";
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import {
     changePasswordAsync,
     checkHasUserSentRequestToChangePasswordAsync, checkSolanaTokenAsync,
-    checkTokenAsync, editAvatarAsync, editUserProfileAsync,
+    checkTokenAsync, editAvatarAsync,
     getAllAvatarsAsync,
     loginAsync,
     logoutAsync,
@@ -20,8 +18,7 @@ import {
     sendVerificationCodeAsync, solanaWalletAuthAsync,
     verificateEmailAsync
 } from "../actions/authenticateAction.ts";
-import { jwtDecode } from "jwt-decode";
-import { IInformationAlert } from "../../interfaces/generalInterface.ts";
+/*import { jwtDecode } from "jwt-decode";
 
 
 const decodeJWT = (token: string) => {
@@ -34,7 +31,7 @@ const decodeJWT = (token: string) => {
         endTime: new Date(decode.exp! * 1000).toISOString()
     } as IJwtInformation
 
-}
+}*/
 const initialState: IAuthenticateInitialState = {
     authMethod: localStorage.getItem("authMethod") as "jwt" | "solana" | null,
     user: null,
@@ -103,54 +100,18 @@ const authenticateSlice = createSlice({
             .addCase(sendVerificationCodeAsync.fulfilled, (state, action: PayloadAction<string>) => {
                 state.verificationEmail = action.payload;
             })
-            .addCase(sendVerificationCodeAsync.rejected, (state, action) => {
-                /*if (action.payload) {
-                    state.error = action.payload.errors[0].code;
-                }
-                else {
-                    state.error = action.error.message || "Uncnown"
-                }*/
-            })
             .addCase(verificateEmailAsync.fulfilled, (state, action: PayloadAction<string>) => {
                 state.verificatedEmail = action.payload;
-            })
-            .addCase(verificateEmailAsync.rejected, (state, action) => {
-                /*if (action.payload) {
-                    state.error = action.payload.errors[0].code;
-                }
-                else {
-                    state.error = action.error.message || "Uncnown"
-                }*/
             })
             .addCase(getAllAvatarsAsync.fulfilled, (state, action: PayloadAction<IAvatar[]>) => {
                 state.avatars = action.payload;
             })
-            .addCase(getAllAvatarsAsync.rejected, (state, action) => {
-                /*if (action.payload) {
-                    state.error = action.payload.errors[0].code;
-                }
-                else {
-                    state.error = action.error.message || "Uncnown"
-                }*/
-            })
             .addCase(registerAsync.fulfilled, (state) => {
                 state.verificationEmail = null;
                 state.verificatedEmail = null;
-                /*state.jwtInformation = decodeJWT(action.payload);*/
                 state.isLogin = true;
             })
-            .addCase(registerAsync.rejected, (state, action) => {
-                /*if (action.payload) {
-                    state.error = action.payload.errors[0].code;
-
-                }
-                else {
-                    state.error = action.error.message || "Uncnown";
-                }*/
-            })
             .addCase(loginAsync.fulfilled, (state, action: PayloadAction<IUserProfile>) => {
-                //state.jwtInformation = decodeJWT(action.payload);
-                //document.cookie = `jwt_token=${action.payload}`
                 state.isLogin = true;
                 state.userProfile = action.payload;
                 state.authMethod = "jwt";
@@ -159,7 +120,7 @@ const authenticateSlice = createSlice({
                 localStorage.setItem("user_profile_email", action.payload.email);
                 localStorage.setItem("user_profile_avatar", action.payload.avatarName);
             })
-            .addCase(loginAsync.rejected, (state, action) => {
+            .addCase(loginAsync.rejected, () => {
                 /*if (action.payload) {
                     state.error = action.payload.errors[0].code;
                 }
@@ -198,37 +159,8 @@ const authenticateSlice = createSlice({
                 if (localStorage.getItem("user_profile_avatar") !== null)
                     localStorage.removeItem("user_profile_avatar");
             })
-            .addCase(sendRequestToChangePasswordAsync.fulfilled, (state, action: PayloadAction<string>) => {
-                //state.keyToChangePassword = action.payload;
-                //state.keyToChangePassword = document.cookie;
-            })
-            .addCase(sendRequestToChangePasswordAsync.rejected, (state) => {
-                /*if (action.payload) {
-                    state.error = action.payload.errors[0].code;
-                }
-                else {
-                    state.error = action.error.message || "Uncnown";
-                }*/
-            }).addCase(checkHasUserSentRequestToChangePasswordAsync.fulfilled, (state, action: PayloadAction<string | null>) => {
+            .addCase(checkHasUserSentRequestToChangePasswordAsync.fulfilled, (state, action: PayloadAction<string | null>) => {
                 state.emailOfUserWhoWantToChangePassword = action.payload === "" ? null : action.payload;
-            })
-            .addCase(checkHasUserSentRequestToChangePasswordAsync.rejected, (state) => {
-                /*if (action.payload) {
-                    state.error = action.payload.errors[0].code;
-                }
-                else {
-                    state.error = action.error.message || "Uncnown";
-                }*/
-            }).addCase(changePasswordAsync.fulfilled, (state, action: PayloadAction<string>) => {
-
-            })
-            .addCase(changePasswordAsync.rejected, (state) => {
-                /*if (action.payload) {
-                    state.error = action.payload.errors[0].code;
-                }
-                else {
-                    state.error = action.error.message || "Uncnown";
-                }*/
             })
             .addCase(logoutAsync.fulfilled, (state) => {
                 state.authMethod = null;
@@ -236,7 +168,7 @@ const authenticateSlice = createSlice({
                 state.isLogin = false;
                 state.userProfile = null;
             })
-            .addCase(logoutAsync.rejected, (state, action) => {
+            .addCase(logoutAsync.rejected, (_, action) => {
                 console.error("Logout failed:", action.payload);
             })
             .addCase(editAvatarAsync.fulfilled, (state, action) => {
@@ -247,7 +179,7 @@ const authenticateSlice = createSlice({
                 localStorage.setItem("user_profile_id", userId);
                 localStorage.setItem("avatar_id", avatarId);
             })
-            .addCase(editAvatarAsync.rejected, (state, action) => {
+            .addCase(editAvatarAsync.rejected, (_, action) => {
                 console.error("Edit avatar failed:", action.payload);
             })
             .addCase(solanaWalletAuthAsync.fulfilled, (state, action: PayloadAction<ISolanaUserProfile>) => {
@@ -261,7 +193,7 @@ const authenticateSlice = createSlice({
                 localStorage.setItem("user_profile_userName", action.payload.userName);
                 localStorage.setItem("user_profile_avatar", action.payload.avatarName);
             })
-            .addCase(solanaWalletAuthAsync.rejected, (state, action) => {
+            .addCase(solanaWalletAuthAsync.rejected, () => {
                 if (localStorage.getItem("user_profile_id") !== null)
                     localStorage.removeItem("user_profile_id");
                 if (localStorage.getItem("user_profile_publicKey") !== null)
