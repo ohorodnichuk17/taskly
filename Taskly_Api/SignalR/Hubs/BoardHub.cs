@@ -140,7 +140,9 @@ public class BoardHub(ISender sender) : Hub
             .Groups(model.BoardId.ToString())
             .SendAsync("UserHasBeenAddToBoard", new
             {
+                AddedUserId = model.AddedUserId,
                 AddedUserEmail = model.AddedUserEmail,
+                AddedUserAvatarName = model.AddedUserAvatarName,
                 UserEmailWhoAdd = model.UserEmailWhoAdd
             });
     }

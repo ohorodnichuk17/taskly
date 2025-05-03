@@ -13,6 +13,7 @@ using Taskly_Application.Requests.Board.Query.GetAllBoards;
 using Taskly_Application.Requests.Board.Query.GetBoardById;
 using Taskly_Application.Requests.Board.Query.GetBoardsByUser;
 using Taskly_Application.Requests.Board.Query.GetMembersOfBoard;
+using Taskly_Application.Requests.Board.Query.GetTemplatesOfBoard;
 
 namespace Taskly_Api.Controllers;
 
@@ -64,7 +65,8 @@ public class BoardController(ISender sender, IMapper mapper) : ApiController
     public async Task<IActionResult> AddMemberToBoard([FromBody] MemberToBoardRequest request)
     {
         var res = await sender.Send(mapper.Map<AddMemberToBoardCommand>(request));
-        return res.Match(result => Ok(result),
+        Console.WriteLine("AVATAR --------------- ",res.Value.Avatar!.ImagePath);
+        return res.Match(result => Ok(mapper.Map<MemberOfBoardResponse>(result)),
             errors => Problem(errors));
     }
 
@@ -109,5 +111,15 @@ public class BoardController(ISender sender, IMapper mapper) : ApiController
 
         return result.Match(result => Ok(result),
             errors => Problem(errors));
+    }
+
+
+    [Authorize]
+    [HttpGet("get-templates-of-board")]
+    public async Task<IActionResult> GetTemplatesOfBoard()
+    {
+        var result = await sender.Send(new GetTemplatesOfBoardQuery());
+
+        return Ok(result);
     }
 }

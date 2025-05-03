@@ -128,12 +128,7 @@ public class TableRepository(TasklyDbContext tasklyDbContext) : Repository<Table
         {
             UserId = m.Id,
             Email = m.Email,
-<<<<<<< HEAD
             AvatarName = m.Avatar.ImagePath
-=======
-            AvatarId = m.AvatarId,
-            UserName = m.UserName
->>>>>>> 9a5bb71974aff9265d08e183c80ff215dff752e2
         }) ?? Enumerable.Empty<BoardTableMemberDto>();
     }
 
