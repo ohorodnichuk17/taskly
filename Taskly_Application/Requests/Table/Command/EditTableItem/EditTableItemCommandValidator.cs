@@ -9,8 +9,8 @@ public class EditTableItemCommandValidator : AbstractValidator<EditTableItemComm
         RuleFor(x => x.Id)
             .NotEmpty().WithMessage("Table item id is required");
 
-        RuleFor(x => x.Text)
-            .MaximumLength(50).WithMessage("Text must not exceed 50 characters");
+        RuleFor(x => x.Task)
+            .MaximumLength(50).WithMessage("Task must not exceed 50 characters");
 
         RuleFor(x => x.Status)
             .NotEmpty().WithMessage("Status is required")

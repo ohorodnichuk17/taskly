@@ -7,7 +7,7 @@ namespace Taskly_Infrastructure.Repositories;
 
 public class TableItemsRepository(TasklyDbContext tasklyDbContext) : Repository<TableItemEntity>(tasklyDbContext), ITableItemsRepository
 {
-    public async Task<TableItemEntity> EditTableItemAsync(Guid id, string? text, 
+    public async Task<TableItemEntity> EditTableItemAsync(Guid id, string? task, 
         string status, DateTime endTime, string? label)
     {
         var tableItemToEdit = await tasklyDbContext.ToDoItems
@@ -17,7 +17,7 @@ public class TableItemsRepository(TasklyDbContext tasklyDbContext) : Repository<
         if (tableItemToEdit == null)
             throw new InvalidOperationException("Table item not found.");
 
-        tableItemToEdit.Text = text;
+        tableItemToEdit.Text = task;
         
         if (!new[] { "ToDo", "InProgress", "Done" }.Contains(status))
         {

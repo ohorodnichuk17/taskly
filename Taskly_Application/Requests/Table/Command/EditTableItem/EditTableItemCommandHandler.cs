@@ -12,7 +12,7 @@ public class EditTableItemCommandHandler(IUnitOfWork unitOfWork)
     {
         try
         {
-            var editedTableItem = await unitOfWork.TableItems.EditTableItemAsync(request.Id, request.Text, 
+            var editedTableItem = await unitOfWork.TableItems.EditTableItemAsync(request.Id, request.Task, 
                 request.Status, request.EndTime, request.Label);
             await unitOfWork.SaveChangesAsync("cancellationToken");
             return editedTableItem;

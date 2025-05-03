@@ -6,7 +6,7 @@ namespace Taskly_Application.Requests.Table.Command.EditTableItem;
 
 public record EditTableItemCommand(
     Guid Id,
-    string? Text,
+    string? Task,
     string Status,
     DateTime EndTime,
     string? Label) : IRequest<ErrorOr<TableItemEntity>>;
