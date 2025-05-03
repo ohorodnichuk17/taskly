@@ -127,14 +127,10 @@ public class TableRepository(TasklyDbContext tasklyDbContext) : Repository<Table
         return table.Members.Select(m => new TableMemberDto
         {
             Email = m.Email,
-<<<<<<< HEAD
-            AvatarName = m.Avatar.ImagePath
-        }) ?? Enumerable.Empty<BoardTableMemberDto>();
-=======
             AvatarId = m.AvatarId,
             UserName = m.UserName
         }) ?? Enumerable.Empty<TableMemberDto>();
->>>>>>> 500e19cd40af223cf669f4444416bc61471fd104
+
     }
 
     private void ValidateTableMembers(TableEntity tableEntity)

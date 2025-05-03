@@ -203,10 +203,6 @@ public class BoardRepository(TasklyDbContext context): Repository<BoardEntity>(c
             return null;
         }
     }
-<<<<<<< HEAD
-
-=======
->>>>>>> 500e19cd40af223cf669f4444416bc61471fd104
 
     private async Task<(BoardEntity board, UserEntity user)> GetBoardAndUserAsync(Guid boardId, Guid userId)
     {

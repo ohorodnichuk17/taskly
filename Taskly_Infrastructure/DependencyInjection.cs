@@ -24,7 +24,7 @@ public static class DependencyInjection
 
         services.AddDbContext<TasklyDbContext>(opt =>
         {
-            opt.UseNpgsql(connStr);
+            opt.UseSqlServer(connStr);
 
             opt.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
         });

@@ -10,8 +10,8 @@ public class CardEntity
     public Guid? TimeRangeEntityId { get; set; }
     public TimeRangeEntity? TimeRangeEntity { get; set; }
     public ICollection<CommentEntity>? Comments { get; set; } = new List<CommentEntity>();
-    public Guid CardListId { get; set; } 
-    public CardListEntity CardList { get; set; } 
+    public Guid? CardListId { get; set; } 
+    public CardListEntity? CardList { get; set; } 
     public Guid? UserId { get; set; }
     public UserEntity? User { get; set; }
 }
