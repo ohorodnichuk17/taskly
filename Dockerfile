@@ -24,7 +24,6 @@ EXPOSE 80
 ENTRYPOINT ["dotnet", "Taskly_Api.dll"]
 
 
-
 # HOW TO RUN
 
 #docker build -t taskly-backend .
