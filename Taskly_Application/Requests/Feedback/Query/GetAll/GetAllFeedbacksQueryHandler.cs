@@ -12,8 +12,8 @@ public class GetAllFeedbacksQueryHandler(IUnitOfWork unitOfWork)
     {
         try
         {
-            var feedbacks = await unitOfWork.Feedbacks.GetAllAsync();
-            return feedbacks.ToErrorOr();
+            var feedbacks = await unitOfWork.Feedbacks.GetAllFeedbacksAsync();
+            return feedbacks;
         }
         catch (Exception ex)
         {

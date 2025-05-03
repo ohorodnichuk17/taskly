@@ -20,6 +20,7 @@ public class FeedbackMapsterConfig : IRegister
             .Map(src => src.UserId, desp => desp.UserId)
             .Map(src => src.Rating, desp => desp.Rating)
             .Map(src => src.Review, desp => desp.Review)
+            .Map(src => src.User, desp => desp.User)
             .Map(src => src.CreatedAt, desp => desp.CreatedAt);
     }
 }

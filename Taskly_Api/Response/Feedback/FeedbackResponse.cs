@@ -7,4 +7,6 @@ public record FeedbackResponse
     public int Rating { get; init; }
     public string Review { get; init; }
     public DateTime CreatedAt { get; init; }
+    
+    public UserForFeedbackResponse User { get; init; }
 }
