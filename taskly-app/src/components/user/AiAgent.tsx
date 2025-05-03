@@ -28,8 +28,8 @@ const AIAgent = () => {
         try {
             const result = await api.post("/api/gemini/generate", { prompt: prompt }, { withCredentials: true });
             setResponse(result.data);
-        } catch (error) {
-            console.error("Error generating content:", error);
+        } catch {
+            setResponse("Error: Unable to fetch response. Please try again.");
         } finally {
             setLoading(false);
             setPrompt("");
@@ -64,7 +64,7 @@ const AIAgent = () => {
                                 <ReactMarkdown
                                     children={response}
                                     components={{
-                                        code({node, inline, className, children, ...props}) {
+                                        code({ inline, className, children, ...props}) {
                                             const match = /language-(\w+)/.exec(className || "");
                                             const codeText = String(children).replace(/\n$/, "");
 

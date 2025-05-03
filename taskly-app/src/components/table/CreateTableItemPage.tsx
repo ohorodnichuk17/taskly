@@ -1,18 +1,18 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
-import { IUserForTable } from "../../interfaces/tableInterface.ts";
 import { createTableItem } from "../../redux/actions/tablesAction.ts";
 import { useDispatch } from "react-redux";
 import "../../styles/table/main.scss";
+import {IUserListForTable} from "../../interfaces/tableInterface.ts";
 
 export function CreateTableItemPage() {
     const { tableId } = useParams();
     const [task, setTask] = useState("");
     const [status, setStatus] = useState("To Do");
     const [label, setLabel] = useState("");
-    const [members, setMembers] = useState<IUserForTable[]>([]);
+    const [members,] = useState<IUserListForTable[]>([]);
     const [endTime, setEndTime] = useState<string>("");
-    const [isCompleted, setIsCompleted] = useState(false);
+    const [isCompleted,] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const navigate = useNavigate();

@@ -7,7 +7,6 @@ import { HideMenuContainer } from './HideMenuContainer';
 import {useDispatch} from 'react-redux';
 import {logoutAsync, solanaLogoutAsync} from "../../redux/actions/authenticateAction.ts";
 import {baseUrl} from "../../axios/baseUrl.ts";
-import {logout} from "../../redux/slices/authenticateSlice.ts";
 import {useRootState} from "../../redux/hooks.ts";
 
 export interface IMenuContainer {

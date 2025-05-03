@@ -25,7 +25,7 @@ export default function ListOfMembersInTable() {
             setLoading(true);
             await dispatch(getAllMembersInTable(tableId));
             await dispatch(getAllAvatarsAsync());
-        } catch (err) {
+        } catch {
             setError("Failed to load members. Please try again.");
             setLoading(false);
         } finally {
@@ -38,16 +38,12 @@ export default function ListOfMembersInTable() {
             setLoading(true);
             await dispatch(removeUserFromTable({ tableId, memberEmail }));
             fetchMembers();
-        } catch (err) {
+        } catch {
             setError("Failed to remove member from table. Please try again.");
         } finally {
             setLoading(false);
         }
     }
-
-    useEffect(() => {
-        console.log("Members:", members);
-    }, [members]);
 
     useEffect(() => {
         fetchMembers();

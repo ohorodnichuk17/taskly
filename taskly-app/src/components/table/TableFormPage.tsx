@@ -43,7 +43,7 @@ export default function TableFormPage() {
                 }
             }
             navigate("/tables");
-        } catch (err) {
+        } catch {
             setError(`Failed to ${isEditMode ? "edit" : "create"} table. Please try again.`);
         } finally {
             setIsLoading(false);

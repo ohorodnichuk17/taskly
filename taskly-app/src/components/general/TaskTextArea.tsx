@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import '../../styles/general/task-text-area-style.scss';
-import { FieldValues, Path, UseFormRegister, UseFormRegisterReturn } from "react-hook-form";
 
 interface ITaskTextArea {
     defaultValue?: string | null,

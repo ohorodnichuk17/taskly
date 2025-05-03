@@ -31,10 +31,6 @@ export default function TablePage() {
         }
     }, [dispatch, tableId]);
 
-    useEffect(() => {
-        console.log("Table items:", tableItems);
-    }, []);
-
     return (
         <div className="table-page">
             <div className="table-header">

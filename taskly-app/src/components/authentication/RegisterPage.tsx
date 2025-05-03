@@ -1,4 +1,3 @@
-
 import '../../styles/authentication/register-style.scss';
 import { SendVerificationCodePage } from './SendVerificationCodePage';
 import { VerificateEmailPage } from './VerificateEmailPage';

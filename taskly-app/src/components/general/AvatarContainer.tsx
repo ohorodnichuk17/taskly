@@ -1,10 +1,7 @@
 import { baseUrl } from "../../axios/baseUrl"
-import { IAvatarForSelect } from "../../interfaces/generalInterface"
 import '../../styles/general/avatar-container-style.scss';
-import exit_icon from '../../../public/icon/exit_icon.png';
-import { useEffect, useRef, useState } from "react";
-import { useAppDispatch, useRootState } from "../../redux/hooks";
-import { getAllAvatarsAsync } from "../../redux/actions/authenticateAction";
+import { useRef } from "react";
+import { useRootState } from "../../redux/hooks";
 
 interface IAvatarContainer {
     selectAvatar: React.Dispatch<React.SetStateAction<string | null>>,
@@ -15,7 +12,6 @@ interface IAvatarContainer {
 export const AvatarConatiner = (props: IAvatarContainer) => {
 
     const avatars = useRootState(s => s.authenticate.avatars);
-    const dispatch = useAppDispatch();
     const refAvatarList = useRef<HTMLDivElement | null>(null);
     //const [avatarContainerIsOpened, setAvatarContainerIsOpened] = useState<boolean>(true);
 
@@ -26,7 +22,7 @@ export const AvatarConatiner = (props: IAvatarContainer) => {
         <div className="avatar-background-container" style={{ display: props.avatarContainerIsOpened ? "flex" : "none" }}>
             <div className="avatar-conteiner">
                 <div className="exit">
-                    <img src={exit_icon} alt="Exit button" onClick={props.close} />
+                    <img src="../../../public/icon/exit_icon.png" alt="Exit button" onClick={props.close} />
                 </div>
                 <div
                     ref={(ref) =>

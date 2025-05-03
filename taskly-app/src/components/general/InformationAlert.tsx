@@ -15,7 +15,7 @@ export const InformationAlert = (props: IInformationAlert) => {
     const [messageHight, setMessageHight] = useState<number>(INFORMATION_ALERT_DEFAULT_HEIGHT);
     const [isArrow, setIsArrow] = useState<boolean>(false);
     const closeAlert = async () => {
-        await new Promise((resolve) => {
+        await new Promise(() => {
             setTimeout(() => {
                 dispatch(clearInformation())
                 setInformationContainerHeight(INFORMATION_ALERT_DEFAULT_HEIGHT);
