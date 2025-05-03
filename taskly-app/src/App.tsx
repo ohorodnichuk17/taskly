@@ -24,13 +24,10 @@ import AddMemberToTablePage from "./components/table/AddMemberToTablePage.tsx";
 import ListOfMembersInTable from "./components/table/ListOfMembersInTable.tsx";
 import { WalletContextProvider } from "./providers/WalletContextProvider.tsx";
 import { UnifiedLoginPage } from "./components/authentication/UnifiedLoginPage.tsx";
-<<<<<<< HEAD
 import { CreateBoardPage } from './components/boards/CreateBoardPage.tsx'
-=======
 import SetUserNameForSolanaUser from "./components/authentication/SetUserNameForSolanaUser.tsx";
 import CreateFeedbackPage from "./components/feedback/CreateFeedbackPage.tsx";
 import FeedbacksPage from "./components/feedback/FeedbacksPage.tsx";
->>>>>>> 5fa76815fd6b07e061a2d2d83b3f1320dd8acc41
 
 
 function App() {
