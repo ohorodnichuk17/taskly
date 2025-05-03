@@ -11,15 +11,18 @@ RUN dotnet restore "Taskly_Api/Taskly_Api.csproj"
 COPY . .
 
 WORKDIR /src/Taskly_Api
-
 RUN dotnet publish "Taskly_Api.csproj" -c Release -o /app/publish
+
+COPY ./Taskly_Api/images /app/images
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
+
 COPY --from=build /app/publish .
 
 EXPOSE 80
 ENTRYPOINT ["dotnet", "Taskly_Api.dll"]
+
 
 # HOW TO RUN
 
