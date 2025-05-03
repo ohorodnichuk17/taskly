@@ -11,7 +11,7 @@ export default function TablePage() {
     const dispatch = useAppDispatch();
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [isMenuOpen, setIsMenuOpen] = useState(false); // Стан для відкриття/закриття меню
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -38,7 +38,6 @@ export default function TablePage() {
     return (
         <div className="table-page">
             <div className="table-header">
-                {/* Головна кнопка для відкриття меню */}
                 <button
                     className="menu-btn"
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -46,7 +45,6 @@ export default function TablePage() {
                     <span className="icon">≡</span> Menu
                 </button>
 
-                {/* Випадаюче меню */}
                 {isMenuOpen && (
                     <div className="dropdown-menu">
                         <button

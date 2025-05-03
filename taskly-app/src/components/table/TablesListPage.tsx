@@ -10,12 +10,14 @@ export default function TablesListPage() {
     const dispatch = useDispatch();
     const workspaceContainerRef = useRef<HTMLDivElement | null>(null);
     const [workSpaceOverflowY, setWorkspaceOverflowY] = useState<"auto" | "scroll">("auto");
-    const userId = useRootState(s => s.authenticate.userProfile?.id);
+    const jwtUserId = useRootState(s => s.authenticate.userProfile?.id);
+    const solanaUserId = useRootState(s => s.authenticate.solanaUserProfile?.id);
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
+    const authMethod = useRootState(s => s.authenticate.authMethod);
 
-    const fetchTables = async () => {
+    const fetchTables = async (userId: string | undefined) => {
         if (userId) {
             await dispatch(getTablesByUser(userId));
         }
@@ -25,7 +27,7 @@ export default function TablesListPage() {
         try {
             setIsLoading(true);
             await dispatch(deleteTable(tableId));
-            fetchTables();
+            checkAuthMethodFetchTables();
         } catch (err) {
             setError("Failed to delete table. Please try again.");
         } finally {
@@ -33,10 +35,20 @@ export default function TablesListPage() {
         }
     };
 
+    const checkAuthMethodFetchTables = () => {
+        if (authMethod === "jwt" && jwtUserId) {
+            fetchTables(jwtUserId);
+        } else if (authMethod === "solana" && solanaUserId) {
+            fetchTables(solanaUserId);
+        } else {
+            console.warn("Auth method not recognized or user ID is missing.");
+        }
+    };
+
     useEffect(() => {
-        fetchTables();
+        checkAuthMethodFetchTables();
         console.log("Tables from Redux:", tables);
-    }, []);
+    }, [authMethod, jwtUserId, solanaUserId]);
 
     const handleCreateTableClick = () => {
         navigate('/tables/create');

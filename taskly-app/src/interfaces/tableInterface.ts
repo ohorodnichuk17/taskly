@@ -54,5 +54,6 @@ export interface IUserToTable {
 export interface IUserListForTable {
     $id: string;
     email: string,
-    avatarId: string
+    avatarId: string,
+    userName?: string;
 }

@@ -4,11 +4,11 @@ import menu_icon from '../../../public/icon/menu_icon.png';
 import menu_icon_opened from '../../../public/icon/menu_icon_opened.png';
 import {Link, Navigate, useNavigate} from 'react-router-dom';
 import { HideMenuContainer } from './HideMenuContainer';
-import { RootState } from '../../redux/store.ts';
-import {useDispatch, useSelector} from 'react-redux';
-import {logoutAsync} from "../../redux/actions/authenticateAction.ts";
+import {useDispatch} from 'react-redux';
+import {logoutAsync, solanaLogoutAsync} from "../../redux/actions/authenticateAction.ts";
 import {baseUrl} from "../../axios/baseUrl.ts";
 import {logout} from "../../redux/slices/authenticateSlice.ts";
+import {useRootState} from "../../redux/hooks.ts";
 
 export interface IMenuContainer {
     icon: string;
@@ -36,7 +36,7 @@ function CalculateMenuItemsWidth(items: (HTMLAnchorElement | null)[]) {
 }
 
 export const MenuContainer = (props: IMenuContainer) => {
-    const { isLogin, userProfile, solanaUserProfile, authMethod } = useSelector((state: RootState) => state.authenticate);
+    const { isLogin, userProfile, solanaUserProfile, authMethod } = useRootState(state => state.authenticate);
     const widthToHide = useRef<number | null>(null);
     const containerRef = useRef<HTMLDivElement | null>();
     const containerItemsRef = useRef<HTMLElement | null>();
@@ -55,14 +55,14 @@ export const MenuContainer = (props: IMenuContainer) => {
 
         if (!authMethod || !validAuthMethods.includes(authMethod as AuthMethod)) {
             console.warn("Invalid or missing auth method detected. Defaulting to 'jwt'...");
-            await dispatch(logoutAsync()).unwrap();
+            await dispatch(logoutAsync());
             return;
         }
 
         if (authMethod === "jwt") {
-            await dispatch(logoutAsync()).unwrap();
+            await dispatch(logoutAsync());
         } else if (authMethod === "solana") {
-            await dispatch(logout()).unwrap();
+            dispatch(solanaLogoutAsync());
         }
     };
 
@@ -174,7 +174,7 @@ export const MenuContainer = (props: IMenuContainer) => {
                     </nav>
 
                     <div className='menu-authentication'>
-                        {isLogin ? (
+                        {isLogin === true ? (
                             <div ref={dropdownRef} className="user-info" style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
                                 {authMethod ==="jwt" && userProfile && (
                                     <>
@@ -314,6 +314,7 @@ export const MenuContainer = (props: IMenuContainer) => {
                                             }}
                                             onClick={(e) => {
                                                 e.preventDefault();
+                                                e.stopPropagation();
                                                 handleLogout();
                                             }}
                                         >
