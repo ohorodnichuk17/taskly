@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import '../../styles/general/menu-container-style.scss';
-import menu_icon from '../../../public/icon/menu_icon.png';
-import menu_icon_opened from '../../../public/icon/menu_icon_opened.png';
+import menu_icon from '../../assets/icon/menu_icon.png';
+import menu_icon_opened from '../../assets/icon/menu_icon_opened.png';
 import {Link, Navigate, useNavigate} from 'react-router-dom';
 import { HideMenuContainer } from './HideMenuContainer';
 import {logoutAsync, solanaLogoutAsync} from "../../redux/actions/authenticateAction.ts";

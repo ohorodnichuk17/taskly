@@ -4,7 +4,7 @@ import { getBoardsByUserAsync } from "../../redux/actions/boardsAction";
 import "../../styles/board/boards-page-style.scss";
 import { Link } from "react-router-dom";
 import { baseUrl } from "../../axios/baseUrl";
-import person_icon from '../../../public/icon/person_icon.png';
+import person_icon from '../../assets/icon/person_icon.png';
 import { IUsersBoard } from "../../interfaces/boardInterface";
 import { GeneralMode } from "../general/GeneralModal";
 
