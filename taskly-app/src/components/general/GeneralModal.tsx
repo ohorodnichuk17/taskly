@@ -1,5 +1,5 @@
 import '../../styles/general/general-modal-style.scss';
-import exit_icon from '../../../public/icon/exit_icon.png';
+import exit_icon from '../../assets/icon/exit_icon.png';
 
 interface IGeneralModal<T> {
     children: React.ReactNode,

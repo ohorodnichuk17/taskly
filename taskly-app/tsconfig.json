@@ -8,7 +8,18 @@
       "path": "./tsconfig.node.json"
     }
   ],
-  "compilerOptions": {},
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true
+  },
+  "exclude": [
+    "node_modules",
+    "node_modules/@types/web"
+  ],
   "include": [
     "src/**/*",
     "src/types/redux-persist.d.ts"

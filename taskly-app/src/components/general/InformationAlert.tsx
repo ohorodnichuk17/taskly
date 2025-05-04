@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { IInformationAlert, TypeOfInformation } from "../../interfaces/generalInterface";
 import '../../styles/general/information-alert-style.scss';
-import success_icon from '../../../public/icon/success_icon.png';
-import error_icon from '../../../public/icon/error_icon.png';
+import success_icon from '../../assets/icon/success_icon.png';
+import error_icon from '../../assets/icon/error_icon.png';
 import { useAppDispatch } from "../../redux/hooks";
 import { clearInformation } from "../../redux/slices/generalSlice";
-import arrow_bottom from '../../../public/icon/arrow_bottom_icon.png';
+import arrow_bottom from '../../assets/icon/arrow_bottom_icon.png';
 
 const INFORMATION_ALERT_DEFAULT_HEIGHT = 70;
 

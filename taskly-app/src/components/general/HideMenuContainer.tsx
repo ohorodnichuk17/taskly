@@ -1,4 +1,4 @@
-import exit_icon from '../../../public/icon/exit_icon.png';
+import exit_icon from '../../assets/icon/exit_icon.png';
 import '../../styles/general/hide-menu-container-style.scss';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';

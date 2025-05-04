@@ -1,15 +1,15 @@
 import '../../styles/authentication/final-register-style.scss';
-import password_hide from '../../../public/icon/password_hide.png';
-import password_view from '../../../public/icon/password_view.png';
+import password_hide from '../../assets/icon/password_hide.png';
+import password_view from '../../assets/icon/password_view.png';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { PasswordValidationShema, PasswordValidationType } from '../../validation_types/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { InputMessage, typeOfMessage } from '../general/InputMessage';
-import too_weak_password from '../../../public/icon/too_weak_icon.png';
-import weak_password from '../../../public/icon/weak_icon.png';
-import medium_password from '../../../public/icon/medium_icon.png';
-import strong_password from '../../../public/icon/strong_icon.png';
+import too_weak_password from '../../assets/icon/too_weak_icon.png';
+import weak_password from '../../assets/icon/weak_icon.png';
+import medium_password from '../../assets/icon/medium_icon.png';
+import strong_password from '../../assets/icon/strong_icon.png';
 import { passwordStrength } from 'check-password-strength'
 import { useAppDispatch, useRootState } from '../../redux/hooks';
 import { AvatarConatiner } from '../general/AvatarContainer';

@@ -40,7 +40,7 @@ export const createFeedbackAsync = createAsyncThunk<
     { rejectValue: string }
 >(
     "feedback/create",
-    async (feedback: IFeedback, {rejectWithValue}) => {
+    async (feedback: ICreateFeedback, {rejectWithValue}) => {
         try {
             var response = await api.post("api/feedback/create",
                 feedback,

@@ -7,7 +7,7 @@ import {useAppDispatch} from "../../redux/hooks.ts";
 
 export function CreateTableItemPage() {
     const { tableId } = useParams();
-    const [task, setTask] = useState("");
+    const [text, setText] = useState("");
     const [status, setStatus] = useState("To Do");
     const [label, setLabel] = useState("");
     const [members,] = useState<IUserListForTable[]>([]);
@@ -19,7 +19,7 @@ export function CreateTableItemPage() {
     const dispatch = useAppDispatch();
 
     const handleSubmit = async () => {
-        if (!task.trim() || !status.trim() || !label.trim() || !endTime.trim()) {
+        if (!text.trim() || !status.trim() || !label.trim() || !endTime.trim()) {
             setError("Please fill in all fields.");
             return;
         }
@@ -32,8 +32,8 @@ export function CreateTableItemPage() {
         setError(null);
 
         try {
-            const formattedEndTime = new Date(endTime).toISOString();
-            await dispatch(createTableItem({ task, status, label, members, endTime: formattedEndTime, isCompleted, tableId }));
+            const formattedEndTime = new Date(endTime);
+            await dispatch(createTableItem({ task: text, status, label, members, endTime: formattedEndTime, isCompleted, tableId }));
             navigate(`/tables/${tableId}`);
         } catch (err) {
             setError("Failed to create table item. Please try again.");
@@ -51,8 +51,8 @@ export function CreateTableItemPage() {
                 <input
                     type="text"
                     placeholder="Enter task"
-                    value={task}
-                    onChange={(e) => setTask(e.target.value)}
+                    value={text}
+                    onChange={(e) => setText(e.target.value)}
                     className="input-task"
                 />
                 <select
@@ -60,8 +60,8 @@ export function CreateTableItemPage() {
                     onChange={(e) => setStatus(e.target.value)}
                     className="select-status"
                 >
-                    <option value="To Do">To Do</option>
-                    <option value="In Progress">In Progress</option>
+                    <option value="ToDo">To Do</option>
+                    <option value="InProgress">In Progress</option>
                     <option value="Done">Done</option>
                 </select>
                 <select
@@ -84,7 +84,7 @@ export function CreateTableItemPage() {
                 <button
                     className="create-table-item-btn"
                     onClick={handleSubmit}
-                    disabled={isLoading || !task.trim() || !status.trim() || !label.trim() || !endTime.trim()}
+                    disabled={isLoading || !text.trim() || !status.trim() || !label.trim() || !endTime.trim()}
                 >
                     {isLoading ? "Creating..." : "Create"}
                 </button>

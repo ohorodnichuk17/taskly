@@ -2,7 +2,6 @@ import {createAsyncThunk} from "@reduxjs/toolkit";
 import {
     IUserToTable,
     ITable,
-    ITableCreate,
     ITableEdit,
     ITableItem,
     ITableItemCreate,
@@ -53,7 +52,7 @@ export const getTableById = createAsyncThunk<
 )
 
 export const getTableItems = createAsyncThunk<
-    ITableItem[],
+    { $values: ITableItem[] },
     string,
     { rejectValue: IValidationErrors }
 >(
@@ -74,7 +73,7 @@ export const getTableItems = createAsyncThunk<
 );
 
 export const createTable = createAsyncThunk<
-    ITableCreate,
+    ITable,
     { name: string, userId: string },
     { rejectValue: IValidationErrors }
 >(
@@ -186,7 +185,7 @@ export const markTableItemAsCompleted = createAsyncThunk<
 );
 
 export const createTableItem = createAsyncThunk<
-    ITableItemCreate,
+    ITableItem,
     ITableItemCreate,
     { rejectValue: IValidationErrors }
 >(
@@ -276,7 +275,7 @@ export const removeUserFromTable = createAsyncThunk<
 );
 
 export const getAllMembersInTable = createAsyncThunk<
-    IUserListForTable,
+    IUserListForTable[],
     string,
     { rejectValue: IValidationErrors }
 >(
@@ -287,7 +286,7 @@ export const getAllMembersInTable = createAsyncThunk<
                 `api/table/members/${tableId}`,
                 { withCredentials: true }
             );
-            return response.data.$values;
+            return response.data.$values as IUserListForTable[];
         } catch (err: any) {
             let error: AxiosError<IValidationErrors> = err;
             if (!error.response) throw err;

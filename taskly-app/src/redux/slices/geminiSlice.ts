@@ -1,5 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ICreatedCard } from "../../interfaces/cardsInterface";
+import { createSlice } from "@reduxjs/toolkit";
 import { generateCardsWithAIAsync } from "../actions/geminiActions";
 
 const geminiSlice = createSlice({
@@ -8,10 +7,10 @@ const geminiSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-            .addCase(generateCardsWithAIAsync.fulfilled, (state, action: PayloadAction<ICreatedCard[]>) => {
+            .addCase(generateCardsWithAIAsync.fulfilled, () => {
 
             })
-            .addCase(generateCardsWithAIAsync.rejected, (state) => {
+            .addCase(generateCardsWithAIAsync.rejected, () => {
 
             })
     }

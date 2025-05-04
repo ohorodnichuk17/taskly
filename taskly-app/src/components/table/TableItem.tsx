@@ -5,17 +5,17 @@ import {
     editTableItem,
     getTableItems
 } from "../../redux/actions/tablesAction.ts";
-import { useDispatch } from "react-redux";
-import { ITableItem } from "../../interfaces/tableInterface.ts";
+import {ITableItem, ITableItemEdit} from "../../interfaces/tableInterface.ts";
 import {useParams} from "react-router-dom";
 import "../../styles/table/main.scss";
+import {useAppDispatch} from "../../redux/hooks.ts";
 
 interface TableItemProps {
     item: ITableItem;
 }
 
 export default function TableItem({ item }: TableItemProps) {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const { tableId } = useParams();
     const normalizeStatus = (status: string): string =>
         status.trim().toLowerCase().replace(/\s+/g, "");
@@ -27,11 +27,20 @@ export default function TableItem({ item }: TableItemProps) {
     const handleDeleteTableItem = async (itemId: string) => {
         try {
             await dispatch(deleteTableItem(itemId));
-            window.location.reload();
+            fetchTableItems();
         } catch (err) {
             console.error("Failed to delete table item:", err);
         }
     };
+
+    const fetchTableItems = async () => {
+        if (!tableId) return;
+        try {
+            await dispatch(getTableItems(tableId));
+        } catch (err) {
+            console.error("Failed to fetch table items:", err);
+        }
+    }
 
     const handleIsCompletedTableItem = async (tableItemId: string, isCompleted: boolean) => {
         try {
@@ -39,9 +48,10 @@ export default function TableItem({ item }: TableItemProps) {
 
             await dispatch(editTableItem({
                 id: tableItemId,
-                text: editedItem.task,
+                tableIdItem: tableId as string,
+                task: editedItem.task,
                 status: newStatus,
-                endTime: new Date(editedItem.endTime).toISOString(),
+                endTime: new Date(editedItem.endTime),
                 label: editedItem.label,
             }));
 
@@ -58,20 +68,17 @@ export default function TableItem({ item }: TableItemProps) {
 
     const saveChanges = async () => {
         try {
-            const payload = {
-                Id: editedItem.id,
-                Text: editedItem.task,
-                Status: editedItem.status,
-                EndTime: new Date(editedItem.endTime).toISOString(),
-                Label: editedItem.label,
+            const payload: ITableItemEdit = {
+                id: editedItem.id,
+                tableIdItem: tableId as string,
+                task: editedItem.task,
+                status: editedItem.status,
+                endTime: new Date(editedItem.endTime),
+                label: editedItem.label,
             };
-
             await dispatch(editTableItem(payload));
-
             if (!tableId) return;
-
             await dispatch(getTableItems(tableId));
-
         } catch (err) {
             console.error("Failed to save item edits:", err);
         } finally {
@@ -141,7 +148,11 @@ export default function TableItem({ item }: TableItemProps) {
                                 autoFocus
                             />
                         ) : (
-                            <div onClick={() => setEditField("task")}>{item.task}</div>
+
+                            <>
+                                {console.log("Rendering div with text:", item.task)}
+                                <div onClick={() => setEditField("task")}>{item.task}</div>
+                            </>
                         )}
                     </div>
 

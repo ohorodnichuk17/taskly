@@ -192,9 +192,10 @@ export const checkHasUserSentRequestToChangePasswordAsync = createAsyncThunk<
 )
 
 export const editAvatarAsync = createAsyncThunk<
-    {avatarId: string},
+    IEditAvatar, // Updated return type to IEditAvatar
     IEditAvatar,
-    { rejectValue: IValidationErrors }>(
+    { rejectValue: IValidationErrors }
+>(
     "authentication/edit-user-profile",
     async (request: IEditAvatar, { rejectWithValue }) => {
         try {
@@ -205,16 +206,16 @@ export const editAvatarAsync = createAsyncThunk<
                 withCredentials: true
             });
 
-            console.log("RESPONSE DATA", response.data);
-
-            return response.data;
-        } catch (err: any) {
-            let error: AxiosError<IValidationErrors> = err;
+            return response.data as IEditAvatar;
+        } catch (err: unknown) {
+            const error = err as AxiosError<IValidationErrors>;
             console.log("Validation error:", error.response?.data);
             if (error.response) {
                 console.error("API Error:", error.response.status, error.response.data);
             }
-            return rejectWithValue(error.response?.data);
+            return rejectWithValue(
+                error.response?.data ?? ({ errors: { message: "Set username failed" } } as unknown as IValidationErrors)
+            );
         }
     }
 );
@@ -306,7 +307,9 @@ export const solanaWalletAuthAsync = createAsyncThunk<
             return response.data;
         } catch (err: unknown) {
             const error = err as AxiosError<IValidationErrors>;
-            return rejectWithValue(error.response?.data || 'Authentication failed');
+            return rejectWithValue(
+                error.response?.data ?? { errors: [{ code: "Authentication failed" }] }
+            );
         }
     }
 );
@@ -328,7 +331,9 @@ export const setUserNameForSolanaUserAsync = createAsyncThunk<
             return response.data;
         } catch (err: unknown) {
             const error = err as AxiosError<IValidationErrors>;
-            return rejectWithValue(error.response?.data || 'Set username failed');
+            return rejectWithValue(
+                error.response?.data ?? ({ errors: { message: "Set username failed" } } as unknown as IValidationErrors)
+            );
         }
     }
 );
