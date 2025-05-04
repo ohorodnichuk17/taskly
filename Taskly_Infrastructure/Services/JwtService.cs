@@ -40,10 +40,11 @@ public class JwtService(IOptions<AuthenticationSettings> options) : IJwtService
     /// <param name="publicKey">The Solana wallet public key.</param>
     /// <param name="rememberMe">Whether the token should have an extended expiration time.</param>
     /// <returns>A JWT token as a string.</returns>
-    public string GetJwtToken(string publicKey, bool rememberMe)
+    public string GetJwtToken(string publicKey, string userId, bool rememberMe)
     {
         var claims = new Claim[]
         {
+            new Claim(type:"id", value : userId),
             new Claim(type: "publicKey", value: publicKey),
             new Claim(type: "jti", value: Guid.NewGuid().ToString())
         };

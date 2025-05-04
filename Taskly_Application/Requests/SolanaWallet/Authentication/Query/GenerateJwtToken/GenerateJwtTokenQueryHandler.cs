@@ -11,7 +11,7 @@ public class GenerateJwtTokenQueryHandler(IJwtService jwtService)
     {
         try
         {
-            var result = jwtService.GetJwtToken(request.PublicKey, false).ToErrorOr();
+            var result = jwtService.GetJwtToken(request.PublicKey, request.UserId, false).ToErrorOr();
             return Task.FromResult(result);
         }
         catch (Exception ex)

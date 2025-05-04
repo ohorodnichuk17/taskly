@@ -132,7 +132,7 @@ namespace Taskly_Api.Controllers
             return result.Match(result => Ok(result),
                 errors => Problem(errors));
         }
-        
+
         [HttpPost("solana-auth")]
         public async Task<IActionResult> Authenticate([FromBody] AuthenticateSolanaWalletCommand request)
         {
@@ -143,7 +143,9 @@ namespace Taskly_Api.Controllers
                 if (authResult.IsError)
                     return BadRequest(new { Message = authResult.Errors.First().Description });
 
-                var tokenQuery = new GenerateJwtTokenQuery(authResult.Value.PublicKey);
+                var user = await sender.Send(new GetUserByPublicKeyQuery(request.PublicKey));
+
+                var tokenQuery = new GenerateJwtTokenQuery(authResult.Value.PublicKey, user.Value.Id.ToString());
                 var tokenResult = await sender.Send(tokenQuery);
 
                 if (tokenResult.IsError)
@@ -152,21 +154,21 @@ namespace Taskly_Api.Controllers
                 return await tokenResult.MatchAsync(async result => {
                     Response.Cookies.Append("X-JWT-Token", result, new CookieOptions()
                     {
-                        HttpOnly = true, 
-                        SameSite = SameSiteMode.Strict, 
+                        HttpOnly = true,
+                        SameSite = SameSiteMode.Strict,
                     });
-                    var user = await sender.Send(new GetUserByPublicKeyQuery(request.PublicKey));
-                
+                    
+
                     return user.Match(user => Ok(mapper.Map<InformationAboutSolanaUserResponse>(user)),
                         errors => Problem(errors));
-                },errors => Task.FromResult(Problem(errors)));
+                }, errors => Task.FromResult(Problem(errors)));
             }
             catch (Exception ex)
             {
                 return StatusCode(500, new { Message = "An unexpected error occurred.", Details = ex.Message });
             }
         }
-        
+
         [HttpGet("check-token-by-publickey")]
         [Authorize]
         public async Task<IActionResult> CheckTokenByPublicKey()
