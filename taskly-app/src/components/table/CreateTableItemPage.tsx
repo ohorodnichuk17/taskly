@@ -1,22 +1,22 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
-import { IUserForTable } from "../../interfaces/tableInterface.ts";
 import { createTableItem } from "../../redux/actions/tablesAction.ts";
-import { useDispatch } from "react-redux";
 import "../../styles/table/main.scss";
+import {IUserListForTable} from "../../interfaces/tableInterface.ts";
+import {useAppDispatch} from "../../redux/hooks.ts";
 
 export function CreateTableItemPage() {
     const { tableId } = useParams();
     const [task, setTask] = useState("");
     const [status, setStatus] = useState("To Do");
     const [label, setLabel] = useState("");
-    const [members, setMembers] = useState<IUserForTable[]>([]);
+    const [members,] = useState<IUserListForTable[]>([]);
     const [endTime, setEndTime] = useState<string>("");
-    const [isCompleted, setIsCompleted] = useState(false);
+    const [isCompleted,] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const navigate = useNavigate();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const handleSubmit = async () => {
         if (!task.trim() || !status.trim() || !label.trim() || !endTime.trim()) {
@@ -32,7 +32,8 @@ export function CreateTableItemPage() {
         setError(null);
 
         try {
-            await dispatch(createTableItem({ task, status, label, members, endTime, isCompleted, tableId }));
+            const formattedEndTime = new Date(endTime).toISOString();
+            await dispatch(createTableItem({ task, status, label, members, endTime: formattedEndTime, isCompleted, tableId }));
             navigate(`/tables/${tableId}`);
         } catch (err) {
             setError("Failed to create table item. Please try again.");
@@ -69,10 +70,10 @@ export function CreateTableItemPage() {
                     className="select-label"
                 >
                     <option value="">None</option>
-                    <option value="info" style={{ color: '#2196F3' }}>Info</option>
-                    <option value="warning" style={{ color: '#FFC107' }}>Warning</option>
-                    <option value="danger" style={{ color: '#F44336' }}>Danger</option>
-                    <option value="success" style={{ color: '#4CAF50' }}>Success</option>
+                    <option value="Info" style={{ color: '#2196F3' }}>Info</option>
+                    <option value="Warning" style={{ color: '#FFC107' }}>Warning</option>
+                    <option value="Danger" style={{ color: '#F44336' }}>Danger</option>
+                    <option value="Success" style={{ color: '#4CAF50' }}>Success</option>
                 </select>
                 <input
                     type="date"

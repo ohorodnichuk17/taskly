@@ -22,7 +22,7 @@ import { baseUrl } from "../../axios/baseUrl";
 import { done_card_list, todo_card_list } from "../../constants/constants";
 import { TemplateOfCard } from "../general/TemplateOfCard";
 import { TaskTextArea } from "../general/TaskTextArea";
-import { EmailValidationShema, EmailValidationType, EmailVerificationShema, GenerateCardsWithAIType, NewCardType } from "../../validation_types/types";
+import { EmailValidationShema, EmailValidationType, GenerateCardsWithAIType, NewCardType } from "../../validation_types/types";
 import { createCardAsync } from "../../redux/actions/cardsActions";
 import { GenerateCardsWithAI } from "../general/GenerateCardsWithAI";
 import { generateCardsWithAIAsync } from "../../redux/actions/geminiActions";
@@ -32,7 +32,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { InformationAlert } from "../general/InformationAlert";
 import { addInformation } from "../../redux/slices/generalSlice";
-import { typeOfMessage } from "../general/InputMessage";
 import { TypeOfInformation } from "../../interfaces/generalInterface";
 import { GeneralMode } from "../general/GeneralModal";
 

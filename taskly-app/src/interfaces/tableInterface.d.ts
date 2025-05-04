@@ -2,6 +2,15 @@ export interface ITableInitialState {
     listOfTables: ITable[] | null;
     tableItems: ITableItem[] | null;
     membersList: IUserListForTable[] | null;
+<<<<<<< HEAD
+=======
+    createTableError?: string | null;
+    createTableItemError?: string | null;
+    deleteTableError?: string | null;
+    deleteTableItemError?: string | null;
+    editTableError?: string | null;
+    editTableItemError?: string | null;
+>>>>>>> d03efc386315301a4c81be8b9cc25da9c7260788
 }
 export interface ITable {
     id: string;
@@ -14,6 +23,10 @@ export interface ITableCreate {
     name: string;
 }
 export interface ITableEdit {
+<<<<<<< HEAD
+=======
+    id: string;
+>>>>>>> d03efc386315301a4c81be8b9cc25da9c7260788
     userId: string;
     name: string;
 }
@@ -33,6 +46,10 @@ export interface ITableItemCreate {
     tableId: string;
 }
 export interface ITableItemEdit {
+<<<<<<< HEAD
+=======
+    id: string;
+>>>>>>> d03efc386315301a4c81be8b9cc25da9c7260788
     tableIdItem: string;
     task: string;
     status: string;

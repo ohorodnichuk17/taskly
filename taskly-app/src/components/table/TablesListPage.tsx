@@ -1,5 +1,4 @@
-import { useRootState } from "../../redux/hooks.ts";
-import { useDispatch } from "react-redux";
+import {useAppDispatch, useRootState} from "../../redux/hooks.ts";
 import { useEffect, useRef, useState } from "react";
 import { deleteTable, getTablesByUser } from "../../redux/actions/tablesAction.ts";
 import { Link, useNavigate } from "react-router-dom";
@@ -7,14 +6,14 @@ import "../../styles/table/main.scss";
 
 export default function TablesListPage() {
     const tables = useRootState((state) => state.table.listOfTables);
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const workspaceContainerRef = useRef<HTMLDivElement | null>(null);
     const [workSpaceOverflowY, setWorkspaceOverflowY] = useState<"auto" | "scroll">("auto");
     const jwtUserId = useRootState(s => s.authenticate.userProfile?.id);
     const solanaUserId = useRootState(s => s.authenticate.solanaUserProfile?.id);
     const navigate = useNavigate();
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [error, setError] = useState<string | null>(null);
+    const [, setIsLoading] = useState<boolean>(false);
+    const [, setError] = useState<string | null>(null);
     const authMethod = useRootState(s => s.authenticate.authMethod);
 
     const fetchTables = async (userId: string | undefined) => {
@@ -28,7 +27,7 @@ export default function TablesListPage() {
             setIsLoading(true);
             await dispatch(deleteTable(tableId));
             checkAuthMethodFetchTables();
-        } catch (err) {
+        } catch {
             setError("Failed to delete table. Please try again.");
         } finally {
             setIsLoading(false);
@@ -47,7 +46,6 @@ export default function TablesListPage() {
 
     useEffect(() => {
         checkAuthMethodFetchTables();
-        console.log("Tables from Redux:", tables);
     }, [authMethod, jwtUserId, solanaUserId]);
 
     const handleCreateTableClick = () => {

@@ -10,7 +10,7 @@ export default function SetUserNameForSolanaUser() {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
-    const { userName: currentUserName } = useRootState((state) => state.authenticate);
+    const currentUserName = useRootState((state) => state.authenticate.solanaUserProfile?.userName);
 
     useEffect(() => {
         if (currentUserName) {

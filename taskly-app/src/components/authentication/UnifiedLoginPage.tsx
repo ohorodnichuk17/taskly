@@ -9,7 +9,7 @@ import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useState, useEffect } from 'react';
 
-import {loginAsync, solanaLogoutAsync, solanaWalletAuthAsync} from '../../redux/actions/authenticateAction';
+import {loginAsync, solanaWalletAuthAsync} from '../../redux/actions/authenticateAction';
 
 import { LoginShema, LoginType } from '../../validation_types/types';
 import { InputMessage, typeOfMessage } from '../general/InputMessage';
@@ -26,7 +26,7 @@ export const UnifiedLoginPage = () => {
     const [mode, setMode] = useState<'email' | 'solana'>('email');
 
     const { isAuthenticated } = useRootState(state => state.authenticate);
-    const { publicKey, disconnect, wallet, connected } = useWallet();
+    const { publicKey, wallet, connected } = useWallet();
 
     const {
         register,
@@ -51,7 +51,6 @@ export const UnifiedLoginPage = () => {
             try {
                 const resultAction = await dispatch(solanaWalletAuthAsync(publicKey.toString()));
                 if (!solanaWalletAuthAsync.fulfilled.match(resultAction)) {
-                    console.error('Solana login failed:', resultAction.payload);
                 } else {
                     const userData = resultAction.payload;
                     if (userData.userName) {

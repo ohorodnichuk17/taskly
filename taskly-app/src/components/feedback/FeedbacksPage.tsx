@@ -1,6 +1,5 @@
-import {useRootState} from "../../redux/hooks.ts";
+import {useAppDispatch, useRootState} from "../../redux/hooks.ts";
 import {useState, useEffect} from "react";
-import {useDispatch} from "react-redux";
 import {deleteFeedbackAsync, getAllFeedbacksAsync} from "../../redux/actions/feedbackAction.ts";
 import {useNavigate} from "react-router-dom";
 import "../../styles/feedback/feedbacks-page-styles.scss"
@@ -14,7 +13,7 @@ export default function FeedbacksPage() {
     const authMethod = useRootState(s => s.authenticate.authMethod);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const fetchFeedbacks = async () => {
         setIsLoading(true);
@@ -88,7 +87,7 @@ export default function FeedbacksPage() {
                             {feedback.user && (
                                 <div className="feedback-user">
                                     {(() => {
-                                        const avatar = avatars?.find((a) => a.id === feedback.user.avatarId);
+                                        const avatar = avatars?.find((a) => a.id === feedback.user?.avatarId);
                                         return (
                                             <>
                                                 <img
@@ -97,13 +96,14 @@ export default function FeedbacksPage() {
                                                     className="feedback-avatar"
                                                 />
                                                 <span className="user-name">
-                                                    {authMethod === "solana" ? feedback.user.userName : formatUsername(feedback.user.email)}
-                                              </span>
+                        {authMethod === "solana" ? feedback.user?.userName : formatUsername(feedback.user?.email)}
+                    </span>
                                             </>
                                         );
                                     })()}
                                 </div>
                             )}
+
 
                             <p>{feedback.review}</p>
                             {renderStars(feedback.rating)}

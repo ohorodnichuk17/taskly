@@ -1,5 +1,5 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import { authenticateReducer } from "../redux/slices/authenticateSlice.ts";
+import { authenticateReducer } from "./slices/authenticateSlice.ts";
 import { generalReducer } from './slices/generalSlice.ts';
 import { boardReducer } from './slices/boardSlice.ts';
 import { tableReducer } from "./slices/tableSlice.ts";
@@ -20,6 +20,7 @@ const reducers = combineReducers({
 export const store = configureStore({
     reducer: reducers
 });
+
 /*const authenticateConfig = {
     key: "authenticate", // Під яким ключем буде зберігатися стан редюсера
     storage: storage, // localStorage, щоб був sessionStorage, трема - storageSession

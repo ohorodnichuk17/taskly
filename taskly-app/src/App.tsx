@@ -28,7 +28,10 @@ import { CreateBoardPage } from './components/boards/CreateBoardPage.tsx'
 import SetUserNameForSolanaUser from "./components/authentication/SetUserNameForSolanaUser.tsx";
 import CreateFeedbackPage from "./components/feedback/CreateFeedbackPage.tsx";
 import FeedbacksPage from "./components/feedback/FeedbacksPage.tsx";
+<<<<<<< HEAD
 
+=======
+>>>>>>> d03efc386315301a4c81be8b9cc25da9c7260788
 
 
 function App() {

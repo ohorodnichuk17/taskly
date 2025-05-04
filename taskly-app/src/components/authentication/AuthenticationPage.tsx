@@ -2,7 +2,6 @@ import { Outlet } from 'react-router-dom';
 import '../../styles/authentication/authentication-style.scss';
 import { useRootState } from '../../redux/hooks';
 import { InformationAlert } from '../general/InformationAlert';
-import Logo from '../../assets/white_logo.png';
 
 export const AuthenticationPage = () => {
     const information = useRootState((s) => s.general.information);
@@ -15,7 +14,7 @@ export const AuthenticationPage = () => {
                 )}
                 <div className="authentication-header">
                     <img
-                        src={Logo}
+                        src="../../assets/white_logo.png"
                         alt="Taskly Logo"
                         className="authentication-logo"
                     />

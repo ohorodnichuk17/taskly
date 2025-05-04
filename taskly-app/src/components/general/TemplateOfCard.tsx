@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect } from 'react';
 import '../../styles/general/template-of-card-style.scss';
 import { TaskTextArea } from './TaskTextArea';
 import { format } from 'date-fns';
@@ -20,7 +20,6 @@ export const TemplateOfCard = (props: ITemplateOfCard) => {
     const {
         register,
         handleSubmit,
-        setError,
         setValue,
         formState: {
             errors

@@ -1,7 +1,6 @@
-import {useRootState} from "../../redux/hooks.ts";
+import {useAppDispatch, useRootState} from "../../redux/hooks.ts";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {useDispatch} from "react-redux";
 import {createFeedbackAsync} from "../../redux/actions/feedbackAction.ts";
 import "../../styles/feedback/create-feedback-styles.scss";
 
@@ -11,7 +10,7 @@ export default function CreateFeedbackPage() {
     const authMethod = useRootState((state) => state.authenticate.authMethod);
 
     const navigate = useNavigate();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
@@ -37,7 +36,6 @@ export default function CreateFeedbackPage() {
                 await dispatch(createFeedbackAsync({userId: currentUserId, review, rating, createdAt: new Date()}));
                 navigate("/feedbacks");
             } else {
-                console.warn("User ID is missing for the current authentication method.");
                 setError("Could not create feedback: User ID not found.");
             }
         } catch (err) {

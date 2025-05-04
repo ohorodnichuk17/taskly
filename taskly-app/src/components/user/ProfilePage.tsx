@@ -1,5 +1,4 @@
-import { useDispatch, useSelector } from "react-redux";
-import { useRootState } from "../../redux/hooks.ts";
+import {useAppDispatch, useRootState} from "../../redux/hooks.ts";
 import { editAvatarAsync, getAllAvatarsAsync } from "../../redux/actions/authenticateAction.ts";
 import { useEffect } from "react";
 import { baseUrl } from "../../axios/baseUrl.ts";
@@ -7,12 +6,12 @@ import "../../styles/user/profile-style.scss";
 import React from "react";
 
 export const ProfilePage = () => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const editAvatar = useRootState((s) => s.authenticate.editAvatar);
     const avatars = useRootState((s) => s.authenticate.avatars);
     const authMethod = useRootState((s) => s.authenticate.authMethod);
-    const jwtUserProfile = useSelector((state: useRootState) => state.authenticate.userProfile);
-    const solanaUserProfile = useSelector((state: useRootState) => state.authenticate.solanaUserProfile);
+    const jwtUserProfile = useRootState((state) => state.authenticate.userProfile);
+    const solanaUserProfile = useRootState((state) => state.authenticate.solanaUserProfile);
 
     const getUserId = () => {
         if (authMethod === "jwt" && jwtUserProfile?.id) {

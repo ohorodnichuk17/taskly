@@ -1,4 +1,3 @@
-import { resolve } from 'path';
 import exit_icon from '../../../public/icon/exit_icon.png';
 import '../../styles/general/hide-menu-container-style.scss';
 import { useState } from 'react';
@@ -25,7 +24,7 @@ export const HideMenuContainer = (props: IHideMenuContainer) => {
 
             setHideMenuAnimation("close-hide-menu");
 
-            await new Promise((resolve) => {
+            await new Promise(() => {
                 setTimeout(() => {
                     props.closeHideMenu(false);
                 }, 600)

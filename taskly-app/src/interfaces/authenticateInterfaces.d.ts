@@ -7,6 +7,8 @@ export interface IAuthenticateInitialState {
     user: IUser | null;
     userProfile: IUserProfile | null;
     editUserProfile: IEditUserProfile | null;
+    solanaUserProfile: ISolanaUserProfile | null;
+    editAvatar: IEditAvatar | null;
     verificationEmail: string | null;
     verificatedEmail: string | null;
     isLogin: boolean;
@@ -14,6 +16,8 @@ export interface IAuthenticateInitialState {
     keyToChangePassword: string | null;
     emailOfUserWhoWantToChangePassword: string | null;
     authMethod: "jwt" | "solana" | null;
+    token: string | null;
+    isAuthenticated: boolean;
 }
 export interface IUserProfile {
     id: string;

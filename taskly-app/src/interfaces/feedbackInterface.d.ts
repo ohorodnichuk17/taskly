@@ -15,6 +15,17 @@ export interface IFeedback {
     review: string;
     rating: number;
     createdAt: Date;
+<<<<<<< HEAD
+=======
+    user?: IFeedbackUser;
+}
+export interface ICreateFeedback {
+    userId: string;
+    review: string;
+    rating: number;
+    createdAt: Date;
+    user?: IFeedbackUser;
+>>>>>>> d03efc386315301a4c81be8b9cc25da9c7260788
 }
 export interface IFeedbackUser {
     userName?: string;
