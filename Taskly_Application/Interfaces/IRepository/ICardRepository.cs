@@ -5,7 +5,7 @@ namespace Taskly_Application.Interfaces.IRepository;
 
 public interface ICardRepository : IRepository<CardEntity>
 {
-    Task<Guid?> TransferCardToAnotherCardListAsync(Guid CardListId, Guid CardId);
+    Task<CardEntity?> TransferCardToAnotherCardListAsync(Guid CardListId, Guid CardId);
     Task RemoveCardFromBoardAsync(Guid CardId);
     Task<Guid?> ChangeCardAsync(Guid CardId, ChangeCardProps ChangeCardProps);
     Task<Guid?> LeaveCardAsync(Guid CardId);

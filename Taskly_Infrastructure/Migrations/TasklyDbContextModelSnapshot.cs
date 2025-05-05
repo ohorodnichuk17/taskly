@@ -23,840 +23,897 @@ namespace Taskly_Infrastructure.Migrations
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("ConcurrencyStamp")
+                    .IsConcurrencyToken()
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                b.Property<string>("Name")
+                    .HasMaxLength(256)
+                    .HasColumnType("nvarchar(256)");
 
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                b.Property<string>("NormalizedName")
+                    .HasMaxLength(256)
+                    .HasColumnType("nvarchar(256)");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
+                b.HasIndex("NormalizedName")
+                    .IsUnique()
+                    .HasDatabaseName("RoleNameIndex")
+                    .HasFilter("[NormalizedName] IS NOT NULL");
 
-                    b.ToTable("AspNetRoles", (string)null);
-                });
+                b.ToTable("AspNetRoles", (string)null);
+            });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("ClaimType")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("ClaimValue")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("RoleId")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid>("RoleId")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("RoleId");
+                b.HasIndex("RoleId");
 
-                    b.ToTable("AspNetRoleClaims", (string)null);
-                });
+                b.ToTable("AspNetRoleClaims", (string)null);
+            });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("ClaimType")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("ClaimValue")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid>("UserId")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                b.HasIndex("UserId");
 
-                    b.ToTable("AspNetUserClaims", (string)null);
-                });
+                b.ToTable("AspNetUserClaims", (string)null);
+            });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
-                {
-                    b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+            {
+                b.Property<string>("LoginProvider")
+                    .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(450)");
+                b.Property<string>("ProviderKey")
+                    .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("ProviderDisplayName")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid>("UserId")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("LoginProvider", "ProviderKey");
+                b.HasKey("LoginProvider", "ProviderKey");
 
-                    b.HasIndex("UserId");
+                b.HasIndex("UserId");
 
-                    b.ToTable("AspNetUserLogins", (string)null);
-                });
+                b.ToTable("AspNetUserLogins", (string)null);
+            });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
-                {
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+            {
+                b.Property<Guid>("UserId")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("RoleId")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid>("RoleId")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("UserId", "RoleId");
+                b.HasKey("UserId", "RoleId");
 
-                    b.HasIndex("RoleId");
+                b.HasIndex("RoleId");
 
-                    b.ToTable("AspNetUserRoles", (string)null);
-                });
+                b.ToTable("AspNetUserRoles", (string)null);
+            });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
-                {
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+            {
+                b.Property<Guid>("UserId")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                b.Property<string>("LoginProvider")
+                    .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
+                b.Property<string>("Name")
+                    .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("Value")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("UserId", "LoginProvider", "Name");
+                b.HasKey("UserId", "LoginProvider", "Name");
 
-                    b.ToTable("AspNetUserTokens", (string)null);
-                });
+                b.ToTable("AspNetUserTokens", (string)null);
+            });
+
+            modelBuilder.Entity("Taskly_Domain.Entities.AchievementEntity", b =>
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uniqueidentifier");
+
+                b.Property<string>("Description")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
+
+                b.Property<string>("Icon")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
+
+                b.Property<string>("Name")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
+
+                b.Property<double>("PercentageOfCompletion")
+                    .HasColumnType("float");
+
+                b.Property<int>("Reward")
+                    .HasColumnType("int");
+
+                b.HasKey("Id");
+
+                b.ToTable("Achievements");
+            });
 
             modelBuilder.Entity("Taskly_Domain.Entities.AvatarEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ImagePath")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("ImagePath")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.ToTable("Avatars");
-                });
+                b.ToTable("Avatars");
+            });
 
             modelBuilder.Entity("Taskly_Domain.Entities.BadgeEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Icon")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                b.Property<string>("Icon")
+                    .IsRequired()
+                    .HasMaxLength(500)
+                    .HasColumnType("nvarchar(500)");
 
-                    b.Property<int>("Level")
-                        .HasColumnType("int");
+                b.Property<int>("Level")
+                    .HasColumnType("int");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                b.Property<string>("Name")
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .HasColumnType("nvarchar(20)");
 
-                    b.Property<int>("RequiredTasksToReceiveBadge")
-                        .HasColumnType("int");
+                b.Property<int>("RequiredTasksToReceiveBadge")
+                    .HasColumnType("int");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.ToTable("Badges");
-                });
+                b.ToTable("Badges");
+            });
 
             modelBuilder.Entity("Taskly_Domain.Entities.BoardEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("BoardTemplateId")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid?>("BoardTemplateId")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("IsTeamBoard")
-                        .HasColumnType("bit");
+                b.Property<bool>("IsTeamBoard")
+                    .HasColumnType("bit");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("Name")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Tag")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("Tag")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("BoardTemplateId");
+                b.HasIndex("BoardTemplateId");
 
-                    b.ToTable("Boards");
-                });
+                b.ToTable("Boards");
+            });
 
             modelBuilder.Entity("Taskly_Domain.Entities.BoardTemplateEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ImagePath")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("ImagePath")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("Name")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.ToTable("BoardTemplates");
-                });
+                b.ToTable("BoardTemplates");
+            });
 
             modelBuilder.Entity("Taskly_Domain.Entities.CardEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("AttachmentUrl")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("AttachmentUrl")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("CardListId")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid?>("CardListId")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("Description")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsCompleated")
-                        .HasColumnType("bit");
+                b.Property<bool>("IsCompleated")
+                    .HasColumnType("bit");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("Status")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("TimeRangeEntityId")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid?>("TimeRangeEntityId")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid?>("UserId")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("CardListId");
+                b.HasIndex("CardListId");
 
-                    b.HasIndex("TimeRangeEntityId")
-                        .IsUnique()
-                        .HasFilter("[TimeRangeEntityId] IS NOT NULL");
+                b.HasIndex("TimeRangeEntityId")
+                    .IsUnique()
+                    .HasFilter("[TimeRangeEntityId] IS NOT NULL");
 
-                    b.HasIndex("UserId");
+                b.HasIndex("UserId");
 
-                    b.ToTable("Cards");
-                });
+                b.ToTable("Cards");
+            });
 
             modelBuilder.Entity("Taskly_Domain.Entities.CardListEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("BoardId")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid>("BoardId")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("Title")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("BoardId");
+                b.HasIndex("BoardId");
 
-                    b.ToTable("CardLists");
-                });
+                b.ToTable("CardLists");
+            });
 
             modelBuilder.Entity("Taskly_Domain.Entities.ChallengeEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uniqueidentifier");
+            {
+                b.Property<Guid>("Id")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                b.Property<string>("Description")
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .HasColumnType("nvarchar(100)");
 
-                    b.Property<bool>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
+                b.Property<bool>("IsActive")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("bit")
+                    .HasDefaultValue(true);
 
-                    b.Property<bool>("IsBooked")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                b.Property<bool>("IsBooked")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("bit")
+                    .HasDefaultValue(false);
 
-                    b.Property<bool>("IsCompleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                b.Property<bool>("IsCompleted")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("bit")
+                    .HasDefaultValue(false);
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                b.Property<string>("Name")
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .HasColumnType("nvarchar(20)");
 
-                    b.Property<double>("Points")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("float(18)");
+                b.Property<double>("Points")
+                    .HasPrecision(18, 2)
+                    .HasColumnType("float(18)");
 
-                    b.Property<Guid?>("UserEntityId")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid?>("UserEntityId")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid?>("UserId")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("UserEntityId");
+                b.HasIndex("UserEntityId");
 
-                    b.HasIndex("UserId");
+                b.HasIndex("UserId");
 
-                    b.ToTable("Challenges");
-                });
+                b.ToTable("Challenges");
+            });
 
             modelBuilder.Entity("Taskly_Domain.Entities.ChangePasswordKeyEntity", b =>
-                {
-                    b.Property<Guid>("Key")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+            {
+                b.Property<Guid>("Key")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("Email")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("EndTime")
-                        .HasColumnType("datetime2");
+                b.Property<DateTime>("EndTime")
+                    .HasColumnType("datetime2");
 
-                    b.HasKey("Key");
+                b.HasKey("Key");
 
-                    b.ToTable("ChangePasswordKeys");
-                });
+                b.ToTable("ChangePasswordKeys");
+            });
 
             modelBuilder.Entity("Taskly_Domain.Entities.CommentEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("CardEntityId")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid?>("CardEntityId")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                b.Property<DateTime>("CreatedAt")
+                    .HasColumnType("datetime2");
 
-                    b.Property<string>("Text")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("Text")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("CardEntityId");
+                b.HasIndex("CardEntityId");
 
-                    b.ToTable("Comments");
-                });
+                b.ToTable("Comments");
+            });
 
             modelBuilder.Entity("Taskly_Domain.Entities.FeedbackEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                b.Property<DateTime>("CreatedAt")
+                    .HasColumnType("datetime2");
 
-                    b.Property<int>("Rating")
-                        .HasColumnType("int");
+                b.Property<int>("Rating")
+                    .HasColumnType("int");
 
-                    b.Property<string>("Review")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                b.Property<string>("Review")
+                    .IsRequired()
+                    .HasMaxLength(500)
+                    .HasColumnType("nvarchar(500)");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid>("UserId")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                b.HasIndex("UserId");
 
-                    b.ToTable("Feedbacks");
-                });
+                b.ToTable("Feedbacks");
+            });
 
             modelBuilder.Entity("Taskly_Domain.Entities.TableEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("Name")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.ToTable("ToDoTables");
-                });
+                b.ToTable("ToDoTables");
+            });
 
             modelBuilder.Entity("Taskly_Domain.Entities.TableItemEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uniqueidentifier");
+            {
+                b.Property<Guid>("Id")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("IsCompleted")
-                        .HasColumnType("bit");
+                b.Property<bool>("IsCompleted")
+                    .HasColumnType("bit");
 
-                    b.Property<string>("Label")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("Label")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("Status")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Text")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("Text")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("ToDoTableId")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid>("ToDoTableId")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("ToDoTableId");
+                b.HasIndex("ToDoTableId");
 
-                    b.ToTable("ToDoItems");
-                });
+                b.ToTable("ToDoItems");
+            });
 
             modelBuilder.Entity("Taskly_Domain.Entities.TimeRangeEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("EndTime")
-                        .HasColumnType("datetime2");
+                b.Property<DateTime>("EndTime")
+                    .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("StartTime")
-                        .HasColumnType("datetime2");
+                b.Property<DateTime>("StartTime")
+                    .HasColumnType("datetime2");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.ToTable("TimeRanges");
-                });
+                b.ToTable("TimeRanges");
+            });
 
             modelBuilder.Entity("Taskly_Domain.Entities.UserBadgeEntity", b =>
-                {
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+            {
+                b.Property<Guid>("UserId")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("BadgeId")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid>("BadgeId")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("DateAwarded")
-                        .HasColumnType("datetime2");
+                b.Property<DateTime>("DateAwarded")
+                    .HasColumnType("datetime2");
 
-                    b.HasKey("UserId", "BadgeId");
+                b.HasKey("UserId", "BadgeId");
 
-                    b.HasIndex("BadgeId");
+                b.HasIndex("BadgeId");
 
-                    b.ToTable("UserBadges");
-                });
+                b.ToTable("UserBadges");
+            });
 
             modelBuilder.Entity("Taskly_Domain.Entities.UserEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
+                b.Property<int>("AccessFailedCount")
+                    .HasColumnType("int");
 
-                    b.Property<Guid?>("AvatarId")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid?>("AvatarId")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("ConcurrencyStamp")
+                    .IsConcurrencyToken()
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                b.Property<string>("Email")
+                    .HasMaxLength(256)
+                    .HasColumnType("nvarchar(256)");
 
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
+                b.Property<bool>("EmailConfirmed")
+                    .HasColumnType("bit");
 
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
+                b.Property<bool>("LockoutEnabled")
+                    .HasColumnType("bit");
 
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
+                b.Property<DateTimeOffset?>("LockoutEnd")
+                    .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                b.Property<string>("NormalizedEmail")
+                    .HasMaxLength(256)
+                    .HasColumnType("nvarchar(256)");
 
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                b.Property<string>("NormalizedUserName")
+                    .HasMaxLength(256)
+                    .HasColumnType("nvarchar(256)");
 
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("PasswordHash")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("PhoneNumber")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
+                b.Property<bool>("PhoneNumberConfirmed")
+                    .HasColumnType("bit");
 
-                    b.Property<string>("PublicKey")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("PublicKey")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("SecurityStamp")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
+                b.Property<bool>("TwoFactorEnabled")
+                    .HasColumnType("bit");
 
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                b.Property<string>("UserName")
+                    .HasMaxLength(256)
+                    .HasColumnType("nvarchar(256)");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("AvatarId");
+                b.HasIndex("AvatarId");
 
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
+                b.HasIndex("NormalizedEmail")
+                    .HasDatabaseName("EmailIndex");
 
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+                b.HasIndex("NormalizedUserName")
+                    .IsUnique()
+                    .HasDatabaseName("UserNameIndex")
+                    .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.ToTable("AspNetUsers", (string)null);
-                });
+                b.ToTable("AspNetUsers", (string)null);
+            });
 
             modelBuilder.Entity("Taskly_Domain.Entities.UserLevelEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("CompletedTasks")
-                        .HasColumnType("int");
+                b.Property<int>("CompletedTasks")
+                    .HasColumnType("int");
 
-                    b.Property<DateTime>("DataAchieved")
-                        .HasColumnType("datetime2");
+                b.Property<DateTime>("DataAchieved")
+                    .HasColumnType("datetime2");
 
-                    b.Property<int>("Level")
-                        .HasColumnType("int");
+                b.Property<int>("Level")
+                    .HasColumnType("int");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid>("UserId")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("UserId")
-                        .IsUnique();
+                b.HasIndex("UserId")
+                    .IsUnique();
 
-                    b.ToTable("UserLevels");
-                });
+                b.ToTable("UserLevels");
+            });
 
             modelBuilder.Entity("Taskly_Domain.Entities.VerificationEmailEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("Code")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("Email")
+                    .IsRequired()
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("EndTime")
-                        .HasColumnType("datetime2");
+                b.Property<DateTime>("EndTime")
+                    .HasColumnType("datetime2");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.ToTable("EmailVerifications");
-                });
+                b.ToTable("EmailVerifications");
+            });
+
+            modelBuilder.Entity("UserAchievements", b =>
+            {
+                b.Property<Guid>("AchievementId")
+                    .HasColumnType("uniqueidentifier");
+
+                b.Property<Guid>("UserId")
+                    .HasColumnType("uniqueidentifier");
+
+                b.HasKey("AchievementId", "UserId");
+
+                b.HasIndex("UserId");
+
+                b.ToTable("UserAchievements");
+            });
 
             modelBuilder.Entity("UserBoard", b =>
-                {
-                    b.Property<Guid>("BoardId")
-                        .HasColumnType("uniqueidentifier");
+            {
+                b.Property<Guid>("BoardId")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid>("UserId")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("BoardId", "UserId");
+                b.HasKey("BoardId", "UserId");
 
-                    b.HasIndex("UserId");
+                b.HasIndex("UserId");
 
-                    b.ToTable("UserBoard");
-                });
+                b.ToTable("UserBoard");
+            });
 
             modelBuilder.Entity("UserTable", b =>
-                {
-                    b.Property<Guid>("TableId")
-                        .HasColumnType("uniqueidentifier");
+            {
+                b.Property<Guid>("TableId")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid>("UserId")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("TableId", "UserId");
+                b.HasKey("TableId", "UserId");
 
-                    b.HasIndex("UserId");
+                b.HasIndex("UserId");
 
-                    b.ToTable("UserTable");
-                });
+                b.ToTable("UserTable");
+            });
 
             modelBuilder.Entity("UserTableItem", b =>
-                {
-                    b.Property<Guid>("ItemId")
-                        .HasColumnType("uniqueidentifier");
+            {
+                b.Property<Guid>("ItemId")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid>("UserId")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("ItemId", "UserId");
+                b.HasKey("ItemId", "UserId");
 
-                    b.HasIndex("UserId");
+                b.HasIndex("UserId");
 
-                    b.ToTable("UserTableItem");
-                });
+                b.ToTable("UserTableItem");
+            });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
+            {
+                b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
+                    .WithMany()
+                    .HasForeignKey("RoleId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+            });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
-                {
-                    b.HasOne("Taskly_Domain.Entities.UserEntity", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
+            {
+                b.HasOne("Taskly_Domain.Entities.UserEntity", null)
+                    .WithMany()
+                    .HasForeignKey("UserId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+            });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
-                {
-                    b.HasOne("Taskly_Domain.Entities.UserEntity", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
+            {
+                b.HasOne("Taskly_Domain.Entities.UserEntity", null)
+                    .WithMany()
+                    .HasForeignKey("UserId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+            });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+            {
+                b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
+                    .WithMany()
+                    .HasForeignKey("RoleId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
 
-                    b.HasOne("Taskly_Domain.Entities.UserEntity", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
+                b.HasOne("Taskly_Domain.Entities.UserEntity", null)
+                    .WithMany()
+                    .HasForeignKey("UserId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+            });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
-                {
-                    b.HasOne("Taskly_Domain.Entities.UserEntity", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
+            {
+                b.HasOne("Taskly_Domain.Entities.UserEntity", null)
+                    .WithMany()
+                    .HasForeignKey("UserId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+            });
 
             modelBuilder.Entity("Taskly_Domain.Entities.BoardEntity", b =>
-                {
-                    b.HasOne("Taskly_Domain.Entities.BoardTemplateEntity", "BoardTemplate")
-                        .WithMany("Boards")
-                        .HasForeignKey("BoardTemplateId")
-                        .OnDelete(DeleteBehavior.Cascade);
+            {
+                b.HasOne("Taskly_Domain.Entities.BoardTemplateEntity", "BoardTemplate")
+                    .WithMany("Boards")
+                    .HasForeignKey("BoardTemplateId")
+                    .OnDelete(DeleteBehavior.Cascade);
 
-                    b.Navigation("BoardTemplate");
-                });
+                b.Navigation("BoardTemplate");
+            });
 
             modelBuilder.Entity("Taskly_Domain.Entities.CardEntity", b =>
-                {
-                    b.HasOne("Taskly_Domain.Entities.CardListEntity", "CardList")
-                        .WithMany("Cards")
-                        .HasForeignKey("CardListId")
-                        .OnDelete(DeleteBehavior.Cascade);
+            {
+                b.HasOne("Taskly_Domain.Entities.CardListEntity", "CardList")
+                    .WithMany("Cards")
+                    .HasForeignKey("CardListId")
+                    .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Taskly_Domain.Entities.TimeRangeEntity", "TimeRangeEntity")
-                        .WithOne()
-                        .HasForeignKey("Taskly_Domain.Entities.CardEntity", "TimeRangeEntityId");
+                b.HasOne("Taskly_Domain.Entities.TimeRangeEntity", "TimeRangeEntity")
+                    .WithOne()
+                    .HasForeignKey("Taskly_Domain.Entities.CardEntity", "TimeRangeEntityId");
 
-                    b.HasOne("Taskly_Domain.Entities.UserEntity", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
+                b.HasOne("Taskly_Domain.Entities.UserEntity", "User")
+                    .WithMany()
+                    .HasForeignKey("UserId");
 
-                    b.Navigation("CardList");
+                b.Navigation("CardList");
 
-                    b.Navigation("TimeRangeEntity");
+                b.Navigation("TimeRangeEntity");
 
-                    b.Navigation("User");
-                });
+                b.Navigation("User");
+            });
 
             modelBuilder.Entity("Taskly_Domain.Entities.CardListEntity", b =>
-                {
-                    b.HasOne("Taskly_Domain.Entities.BoardEntity", "Board")
-                        .WithMany("CardLists")
-                        .HasForeignKey("BoardId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+            {
+                b.HasOne("Taskly_Domain.Entities.BoardEntity", "Board")
+                    .WithMany("CardLists")
+                    .HasForeignKey("BoardId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
 
-                    b.Navigation("Board");
-                });
+                b.Navigation("Board");
+            });
 
             modelBuilder.Entity("Taskly_Domain.Entities.ChallengeEntity", b =>
+            {
+                b.HasOne("Taskly_Domain.Entities.TimeRangeEntity", "TimeRange")
+                    .WithOne()
+                    .HasForeignKey("Taskly_Domain.Entities.ChallengeEntity", "Id")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+
+                b.HasOne("Taskly_Domain.Entities.UserEntity", null)
+                    .WithMany("Challenges")
+                    .HasForeignKey("UserEntityId");
+
+                b.HasOne("Taskly_Domain.Entities.UserEntity", "User")
+                    .WithMany()
+                    .HasForeignKey("UserId")
+                    .OnDelete(DeleteBehavior.SetNull);
+
+                b.Navigation("TimeRange");
+
+                b.Navigation("User");
+            });
+
+            modelBuilder.Entity("Taskly_Domain.Entities.CommentEntity", b =>
+            {
+                b.HasOne("Taskly_Domain.Entities.CardEntity", null)
+                    .WithMany("Comments")
+                    .HasForeignKey("CardEntityId")
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            modelBuilder.Entity("Taskly_Domain.Entities.FeedbackEntity", b =>
+            {
+                b.HasOne("Taskly_Domain.Entities.UserEntity", "User")
+                    .WithMany("Feedbacks")
+                    .HasForeignKey("UserId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+
+                b.Navigation("User");
+            });
+
+            modelBuilder.Entity("Taskly_Domain.Entities.TableItemEntity", b =>
+            {
+                b.HasOne("Taskly_Domain.Entities.TimeRangeEntity", "TimeRange")
+                    .WithOne()
+                    .HasForeignKey("Taskly_Domain.Entities.TableItemEntity", "Id")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+
+                b.HasOne("Taskly_Domain.Entities.TableEntity", "Table")
+                    .WithMany("ToDoItems")
+                    .HasForeignKey("ToDoTableId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+
+                b.Navigation("Table");
+
+                b.Navigation("TimeRange");
+            });
+
+            modelBuilder.Entity("Taskly_Domain.Entities.UserBadgeEntity", b =>
+            {
+                b.HasOne("Taskly_Domain.Entities.BadgeEntity", "Badge")
+                    .WithMany()
+                    .HasForeignKey("BadgeId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+
+                b.HasOne("Taskly_Domain.Entities.UserEntity", "User")
+                    .WithMany("Badges")
+                    .HasForeignKey("UserId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+
+                b.Navigation("Badge");
+
+                b.Navigation("User");
+            });
+
+            modelBuilder.Entity("Taskly_Domain.Entities.UserEntity", b =>
+            {
+                b.HasOne("Taskly_Domain.Entities.AvatarEntity", "Avatar")
+                    .WithMany("Users")
+                    .HasForeignKey("AvatarId")
+                    .OnDelete(DeleteBehavior.SetNull);
+
+                b.Navigation("Avatar");
+            });
+
+            modelBuilder.Entity("Taskly_Domain.Entities.UserLevelEntity", b =>
+            {
+                b.HasOne("Taskly_Domain.Entities.UserEntity", "User")
+                    .WithOne("UserLevel")
+                    .HasForeignKey("Taskly_Domain.Entities.UserLevelEntity", "UserId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+
+                b.Navigation("User");
+                modelBuilder.Entity("UserAchievements", b =>
                 {
-                    b.HasOne("Taskly_Domain.Entities.TimeRangeEntity", "TimeRange")
-                        .WithOne()
-                        .HasForeignKey("Taskly_Domain.Entities.ChallengeEntity", "Id")
+                    b.HasOne("Taskly_Domain.Entities.AchievementEntity", null)
+                        .WithMany()
+                        .HasForeignKey("AchievementId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Taskly_Domain.Entities.UserEntity", null)
-                        .WithMany("Challenges")
-                        .HasForeignKey("UserEntityId");
-
-                    b.HasOne("Taskly_Domain.Entities.UserEntity", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.Navigation("TimeRange");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Taskly_Domain.Entities.CommentEntity", b =>
-                {
-                    b.HasOne("Taskly_Domain.Entities.CardEntity", null)
-                        .WithMany("Comments")
-                        .HasForeignKey("CardEntityId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Taskly_Domain.Entities.FeedbackEntity", b =>
-                {
-                    b.HasOne("Taskly_Domain.Entities.UserEntity", "User")
-                        .WithMany("Feedbacks")
-                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Taskly_Domain.Entities.TableItemEntity", b =>
-                {
-                    b.HasOne("Taskly_Domain.Entities.TimeRangeEntity", "TimeRange")
-                        .WithOne()
-                        .HasForeignKey("Taskly_Domain.Entities.TableItemEntity", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Taskly_Domain.Entities.TableEntity", "Table")
-                        .WithMany("ToDoItems")
-                        .HasForeignKey("ToDoTableId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Table");
-
-                    b.Navigation("TimeRange");
-                });
-
-            modelBuilder.Entity("Taskly_Domain.Entities.UserBadgeEntity", b =>
-                {
-                    b.HasOne("Taskly_Domain.Entities.BadgeEntity", "Badge")
-                        .WithMany()
-                        .HasForeignKey("BadgeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Taskly_Domain.Entities.UserEntity", "User")
-                        .WithMany("Badges")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Badge");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Taskly_Domain.Entities.UserEntity", b =>
-                {
-                    b.HasOne("Taskly_Domain.Entities.AvatarEntity", "Avatar")
-                        .WithMany("Users")
-                        .HasForeignKey("AvatarId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.Navigation("Avatar");
-                });
-
-            modelBuilder.Entity("Taskly_Domain.Entities.UserLevelEntity", b =>
-                {
-                    b.HasOne("Taskly_Domain.Entities.UserEntity", "User")
-                        .WithOne("UserLevel")
-                        .HasForeignKey("Taskly_Domain.Entities.UserLevelEntity", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("UserBoard", b =>
+                modelBuilder.Entity("UserBoard", b =>
                 {
                     b.HasOne("Taskly_Domain.Entities.BoardEntity", null)
                         .WithMany()
@@ -871,7 +928,7 @@ namespace Taskly_Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("UserTable", b =>
+                modelBuilder.Entity("UserTable", b =>
                 {
                     b.HasOne("Taskly_Domain.Entities.TableEntity", null)
                         .WithMany()
@@ -886,7 +943,7 @@ namespace Taskly_Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("UserTableItem", b =>
+                modelBuilder.Entity("UserTableItem", b =>
                 {
                     b.HasOne("Taskly_Domain.Entities.TableItemEntity", null)
                         .WithMany()
@@ -901,37 +958,19 @@ namespace Taskly_Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Taskly_Domain.Entities.AvatarEntity", b =>
-                {
-                    b.Navigation("Users");
-                });
+                modelBuilder.Entity("Taskly_Domain.Entities.AvatarEntity", b => { b.Navigation("Users"); });
 
-            modelBuilder.Entity("Taskly_Domain.Entities.BoardEntity", b =>
-                {
-                    b.Navigation("CardLists");
-                });
+                modelBuilder.Entity("Taskly_Domain.Entities.BoardEntity", b => { b.Navigation("CardLists"); });
 
-            modelBuilder.Entity("Taskly_Domain.Entities.BoardTemplateEntity", b =>
-                {
-                    b.Navigation("Boards");
-                });
+                modelBuilder.Entity("Taskly_Domain.Entities.BoardTemplateEntity", b => { b.Navigation("Boards"); });
 
-            modelBuilder.Entity("Taskly_Domain.Entities.CardEntity", b =>
-                {
-                    b.Navigation("Comments");
-                });
+                modelBuilder.Entity("Taskly_Domain.Entities.CardEntity", b => { b.Navigation("Comments"); });
 
-            modelBuilder.Entity("Taskly_Domain.Entities.CardListEntity", b =>
-                {
-                    b.Navigation("Cards");
-                });
+                modelBuilder.Entity("Taskly_Domain.Entities.CardListEntity", b => { b.Navigation("Cards"); });
 
-            modelBuilder.Entity("Taskly_Domain.Entities.TableEntity", b =>
-                {
-                    b.Navigation("ToDoItems");
-                });
+                modelBuilder.Entity("Taskly_Domain.Entities.TableEntity", b => { b.Navigation("ToDoItems"); });
 
-            modelBuilder.Entity("Taskly_Domain.Entities.UserEntity", b =>
+                modelBuilder.Entity("Taskly_Domain.Entities.UserEntity", b =>
                 {
                     b.Navigation("Badges");
 
@@ -942,6 +981,7 @@ namespace Taskly_Infrastructure.Migrations
                     b.Navigation("UserLevel");
                 });
 #pragma warning restore 612, 618
+            });
         }
     }
 }

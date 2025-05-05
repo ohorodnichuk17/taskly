@@ -17,6 +17,7 @@ public static class DataInitializer
       await InitializeBoardsAsync(dbContext);
       await InitializeDashboardTemplatesAsync(dbContext);
       await InitializeAvatarsAsync(dbContext);
+      await InitializeAchievementsAsync(dbContext);
       await dbContext.SaveChangesAsync();
    }
 
@@ -102,6 +103,44 @@ public static class DataInitializer
        }
    }
 
+    private async static Task InitializeAchievementsAsync(TasklyDbContext dbContext)
+    {
+        if (!dbContext.Achievements.Any())
+        {
+            AchievementEntity [] achievements = [
+                new AchievementEntity()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = Constants.Achievement_FirstHeights,
+                    Description = "Complete 10 tasks.",
+                    Reward = 1,
+                    Icon = "first_heights",
+                    PercentageOfCompletion = 0
+                },
+                new AchievementEntity()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = Constants.Achievement_TirelessWorker,
+                    Description = "Complete 30 tasks.",
+                    Reward = 2,
+                    Icon = "tireless",
+                    PercentageOfCompletion = 0
+                },
+                new AchievementEntity()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = Constants.Achievement_MasterOfCards,
+                    Description = "Complete 50 tasks.",
+                    Reward = 3,
+                    Icon = "mastery",
+                    PercentageOfCompletion = 0
+                }
+            ];
+
+            await dbContext.AddRangeAsync(achievements);
+            await dbContext.SaveChangesAsync();
+        }
+    }
    private static async Task<List<CardListEntity>> GetDefaultCardLists(TasklyDbContext dbContext, TimeRangeEntity timeRange1, Guid boardId)
    {
       var cardLists = new List<CardListEntity>

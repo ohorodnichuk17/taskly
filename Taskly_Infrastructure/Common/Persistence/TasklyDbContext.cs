@@ -25,6 +25,7 @@ public class TasklyDbContext : IdentityDbContext<UserEntity,IdentityRole<Guid>,G
     public DbSet<UserBadgeEntity> UserBadges { get; set; }
     public DbSet<ChallengeEntity> Challenges { get; set; }
     public DbSet<UserLevelEntity> UserLevels { get; set; }
+    public DbSet<AchievementEntity> Achievements { get; set; }
 
     public TasklyDbContext() : base()
     {

@@ -18,4 +18,8 @@ public static class Constants
     public static readonly string BegginerLevel = "Beginner";
     public static readonly string AdvancedLevel = "Advanced";
     public static readonly string MasteryLevel = "Mastery";
+
+    public static readonly string Achievement_FirstHeights = "First Heights.";
+    public static readonly string Achievement_TirelessWorker = "Tireless worker.";
+    public static readonly string Achievement_MasterOfCards = "Master of Cards.";
 }

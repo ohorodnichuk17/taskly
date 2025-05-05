@@ -11,6 +11,7 @@ public class UserEntity : IdentityUser<Guid>
     public ICollection<TableEntity> ToDoTables { get; set; } = new List<TableEntity>();
     public ICollection<TableItemEntity> ToDoTableItems { get; set; } = new List<TableItemEntity>();
     public ICollection<FeedbackEntity> Feedbacks { get; set; } = new List<FeedbackEntity>();
+    public ICollection<AchievementEntity> Achievements { get; set; } = new List<AchievementEntity>();
     public string? PublicKey { get; set; }
     public ICollection<ChallengeEntity> Challenges { get; set; } = new List<ChallengeEntity>();
     public ICollection<UserBadgeEntity> Badges { get; set; } = new List<UserBadgeEntity>();

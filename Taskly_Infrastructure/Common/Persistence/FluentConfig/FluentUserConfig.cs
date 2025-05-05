@@ -53,5 +53,13 @@ public class FluentUserConfig : IEntityTypeConfiguration<UserEntity>
             .WithOne(ul => ul.User)
             .HasForeignKey<UserLevelEntity>(ul => ul.UserId)
             .OnDelete(DeleteBehavior.Cascade);
+        
+        builder.HasMany(u => u.Achievements)
+            .WithMany(a => a.Users)
+            .UsingEntity<Dictionary<string, object>>(
+                "UserAchievements",
+                j => j.HasOne<AchievementEntity>().WithMany().HasForeignKey("AchievementId"),
+                j => j.HasOne<UserEntity>().WithMany().HasForeignKey("UserId")
+            );
     }
 }
