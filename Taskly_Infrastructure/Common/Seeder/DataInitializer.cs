@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using MediatR;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Taskly_Domain;
@@ -18,6 +20,7 @@ public static class DataInitializer
       await InitializeDashboardTemplatesAsync(dbContext);
       await InitializeAvatarsAsync(dbContext);
       await InitializeAchievementsAsync(dbContext);
+      await InitializeRolesAndAdminAsync(applicationBuilder, dbContext);
       await dbContext.SaveChangesAsync();
    }
 
@@ -203,6 +206,49 @@ public static class DataInitializer
     };
 
       return cardLists;
+   }
+   
+   private static async Task InitializeRolesAndAdminAsync(this IApplicationBuilder app, TasklyDbContext dbContext)
+   {
+       using var scope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
+       var service = scope.ServiceProvider;
+
+       var userManager = service.GetRequiredService<UserManager<UserEntity>>();
+       var roleManager = service.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
+
+       if (!await roleManager.RoleExistsAsync(Constants.AdminRole))
+       {
+           await roleManager.CreateAsync(new IdentityRole<Guid> { Name = Constants.AdminRole });
+       }
+       if (!await roleManager.RoleExistsAsync(Constants.UserRole))
+       {
+           await roleManager.CreateAsync(new IdentityRole<Guid> { Name = Constants.UserRole });
+       }
+
+       const string adminEmail = "tasklytodolist@gmail.com";
+       var existingAdmin = await userManager.FindByEmailAsync(adminEmail);
+
+       if (existingAdmin == null)
+       {
+           var adminUser = new UserEntity
+           {
+               Email = adminEmail,
+               EmailConfirmed = true,
+               UserName = adminEmail
+           };
+
+           var adminResult = await userManager.CreateAsync(adminUser, "gempLU419589");
+
+           if (adminResult.Succeeded)
+           {
+               await userManager.AddToRoleAsync(adminUser, Constants.AdminRole);
+           }
+           else
+           {
+               var errors = string.Join(", ", adminResult.Errors.Select(e => e.Description));
+               throw new Exception($"Failed to create admin user: {errors}");
+           }
+       }
    }
 
    // private static async Task<List<UserEntity>> GetDefaultUsers(TasklyDbContext dbContext)
