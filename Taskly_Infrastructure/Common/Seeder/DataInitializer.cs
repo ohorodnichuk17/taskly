@@ -1,7 +1,5 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Taskly_Domain;
 using Taskly_Domain.Entities;
@@ -21,6 +19,7 @@ public static class DataInitializer
       await InitializeAvatarsAsync(dbContext);
       await InitializeAchievementsAsync(dbContext);
       await InitializeRolesAndAdminAsync(applicationBuilder, dbContext);
+      await InitializeBadgesAsync(dbContext);
       await dbContext.SaveChangesAsync();
    }
 
@@ -106,7 +105,44 @@ public static class DataInitializer
        }
    }
 
-    private async static Task InitializeAchievementsAsync(TasklyDbContext dbContext)
+   private static async Task InitializeBadgesAsync(TasklyDbContext dbContext)
+   {
+       if (!dbContext.Badges.Any())
+       {
+           BadgeEntity[] badges =
+           [
+               new BadgeEntity()
+               {
+                   Id = Guid.NewGuid(),
+                     Name = Constants.BegginerLevel,
+                     Icon = "beginner",
+                     RequiredTasksToReceiveBadge = 10,
+                     Level = 1
+               },
+               new BadgeEntity()
+               {
+                   Id = Guid.NewGuid(),
+                   Name = Constants.AdvancedLevel,
+                   Icon = "advanced",
+                   RequiredTasksToReceiveBadge = 30,
+                   Level = 2
+               },
+               new BadgeEntity()
+               {
+                   Id = Guid.NewGuid(),
+                   Name = Constants.MasteryLevel,
+                   Icon = "mastery",
+                   RequiredTasksToReceiveBadge = 100,
+                   Level = 3
+               },
+           ];
+           
+           await dbContext.AddRangeAsync(badges);
+           await dbContext.SaveChangesAsync();
+       }
+   }
+
+    private static async Task InitializeAchievementsAsync(TasklyDbContext dbContext)
     {
         if (!dbContext.Achievements.Any())
         {
