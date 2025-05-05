@@ -39,6 +39,7 @@ public static class DependencyInjection
         services.AddSingleton<ProblemDetailsFactory, TasklyProblemDetailsFactory>();
         services.AddScoped<IJwtService, JwtService>();
         services.AddScoped<IEmailService, EmailService>();
+        services.AddScoped<IAchievementRepository, AchievementRepository>();
         services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
         services.AddScoped<IAvatarRepository, AvatarRepository>();
         services.AddScoped<IBoardRepository, BoardRepository>();

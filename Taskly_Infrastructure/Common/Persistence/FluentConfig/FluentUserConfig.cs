@@ -39,6 +39,14 @@ public class FluentUserConfig : IEntityTypeConfiguration<UserEntity>
         
         builder.HasMany(u => u.Feedbacks) 
             .WithOne(f => f.User)         
-            .HasForeignKey(f => f.UserId); 
+            .HasForeignKey(f => f.UserId);
+
+        builder.HasMany(u => u.Achievements)
+            .WithMany(a => a.Users)
+            .UsingEntity<Dictionary<string, object>>(
+                "UserAchievements",
+                j => j.HasOne<AchievementEntity>().WithMany().HasForeignKey("AchievementId"),
+                j => j.HasOne<UserEntity>().WithMany().HasForeignKey("UserId")
+            );
     }
 }

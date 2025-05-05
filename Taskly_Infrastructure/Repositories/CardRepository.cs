@@ -12,7 +12,7 @@ namespace Taskly_Infrastructure.Repositories;
 public class CardRepository(UserManager<UserEntity> userManager, TasklyDbContext context) : Repository<CardEntity>(context), ICardRepository
 {
     private readonly DbSet<CardEntity> _cards = context.Set<CardEntity>();
-    public async Task<Guid?> TransferCardToAnotherCardListAsync(Guid CardListId, Guid CardId)
+    public async Task<CardEntity?> TransferCardToAnotherCardListAsync(Guid CardListId, Guid CardId)
     {
         var card = await _cards.FirstOrDefaultAsync(card => card.Id == CardId);
 
@@ -32,7 +32,7 @@ public class CardRepository(UserManager<UserEntity> userManager, TasklyDbContext
         context.Update(card);
         await context.SaveChangesAsync();
 
-        return card.Id;
+        return card;
     }
     public async Task RemoveCardFromBoardAsync(Guid CardId)
     {

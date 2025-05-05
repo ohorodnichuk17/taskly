@@ -21,6 +21,7 @@ public class TasklyDbContext : IdentityDbContext<UserEntity,IdentityRole<Guid>,G
     public DbSet<TimeRangeEntity> TimeRanges { get; set; }
     public DbSet<ChangePasswordKeyEntity> ChangePasswordKeys { get; set; }
     public DbSet<FeedbackEntity> Feedbacks { get; set; }
+    public DbSet<AchievementEntity> Achievements { get; set; }
 
     public TasklyDbContext() : base()
     {

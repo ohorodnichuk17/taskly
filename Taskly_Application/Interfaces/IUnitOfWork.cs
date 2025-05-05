@@ -13,4 +13,5 @@ public interface IUnitOfWork
     IBoardTemplateRepository BoardTemplates { get; }
     ICardRepository Cards { get; }
     IFeedbackRepository Feedbacks { get; }
+    IAchievementRepository Achievements { get; }
 }

@@ -20,6 +20,12 @@
          </Content>
    </ItemGroup>
 
+      <ItemGroup>
+        <None Remove="images\achievements\first_heights.png" />
+        <None Remove="images\achievements\mastery.png" />
+        <None Remove="images\achievements\tireless.png" />
+      </ItemGroup>
+
     <ItemGroup>
         <PackageReference Include="Mapster" Version="7.4.0" />
         <PackageReference Include="Mapster.DependencyInjection" Version="1.0.1" />
