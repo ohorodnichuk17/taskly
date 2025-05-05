@@ -39,6 +39,19 @@ public class FluentUserConfig : IEntityTypeConfiguration<UserEntity>
         
         builder.HasMany(u => u.Feedbacks) 
             .WithOne(f => f.User)         
-            .HasForeignKey(f => f.UserId); 
+            .HasForeignKey(f => f.UserId);
+
+        builder.HasMany(u => u.Challenges)
+            .WithOne(u => u.User)
+            .HasForeignKey(u => u.UserId);
+
+        builder.HasMany(u => u.Badges)
+            .WithOne(ub => ub.User)
+            .HasForeignKey(u => u.UserId);
+        
+        builder.HasOne(u => u.UserLevel) 
+            .WithOne(ul => ul.User)
+            .HasForeignKey<UserLevelEntity>(ul => ul.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

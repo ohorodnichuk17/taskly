@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Collections;
+using Microsoft.AspNetCore.Identity;
 
 namespace Taskly_Domain.Entities;
 
@@ -11,4 +12,7 @@ public class UserEntity : IdentityUser<Guid>
     public ICollection<TableItemEntity> ToDoTableItems { get; set; } = new List<TableItemEntity>();
     public ICollection<FeedbackEntity> Feedbacks { get; set; } = new List<FeedbackEntity>();
     public string? PublicKey { get; set; }
+    public ICollection<ChallengeEntity> Challenges { get; set; } = new List<ChallengeEntity>();
+    public ICollection<UserBadgeEntity> Badges { get; set; } = new List<UserBadgeEntity>();
+    public UserLevelEntity? UserLevel { get; set; }
 }
