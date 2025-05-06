@@ -61,5 +61,8 @@ public class FluentUserConfig : IEntityTypeConfiguration<UserEntity>
                 j => j.HasOne<AchievementEntity>().WithMany().HasForeignKey("AchievementId"),
                 j => j.HasOne<UserEntity>().WithMany().HasForeignKey("UserId")
             );
+
+        builder.Property(u => u.SolBalance)
+            .HasDefaultValue(0.0);
     }
 }

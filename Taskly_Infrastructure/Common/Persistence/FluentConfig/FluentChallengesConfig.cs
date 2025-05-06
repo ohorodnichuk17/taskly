@@ -17,6 +17,10 @@ public class FluentChallengesConfig : IEntityTypeConfiguration<ChallengeEntity>
         builder.Property(c => c.Description)
             .IsRequired()
             .HasMaxLength(100);
+
+        builder.Property(c => c.RuleKey)
+            .IsRequired()
+            .HasMaxLength(70);
         
         builder.HasOne(td => td.TimeRange)
             .WithOne()

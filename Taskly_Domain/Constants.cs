@@ -11,8 +11,8 @@ public static class Constants
 
     public static readonly Guid DefaultAvatarId = Guid.Parse("B50E9545-44CE-4E9B-A056-5B8580AA9017");
     
-    public static readonly string AdminRole = "Admin";
-    public static readonly string UserRole = "User";
+    public const string AdminRole = "Admin";
+    public const string UserRole = "User";
     public static readonly string[] AllRoles = [AdminRole, UserRole];
     
     public static readonly string BegginerLevel = "Beginner";
@@ -22,4 +22,7 @@ public static class Constants
     public static readonly string Achievement_FirstHeights = "First Heights.";
     public static readonly string Achievement_TirelessWorker = "Tireless worker.";
     public static readonly string Achievement_MasterOfCards = "Master of Cards.";
+    
+    public const string RuleKey_CompletedTableItems = "Taskly:CompletedTableItems";
+    public const string RuleKey_CountUserFeedbacks = "Taskly:CountUserFeedbacks";
 }

@@ -12,7 +12,7 @@ public class GetFeedbackByIdsQueryHandler(IUnitOfWork unitOfWork)
     {
         try
         {
-            var feedback = await unitOfWork.Feedbacks.GetFeedbackById(request.FeedbackId);
+            var feedback = await unitOfWork.Feedbacks.GetFeedbackByIdAsync(request.FeedbackId);
             return feedback;
         }
         catch (Exception ex)

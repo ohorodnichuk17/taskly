@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Taskly_Infrastructure.Common.Persistence;
 
@@ -11,9 +12,11 @@ using Taskly_Infrastructure.Common.Persistence;
 namespace Taskly_Infrastructure.Migrations
 {
     [DbContext(typeof(TasklyDbContext))]
-    partial class TasklyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250506094432_AddRuleKeyPropertyToChallengeEntity")]
+    partial class AddRuleKeyPropertyToChallengeEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -369,9 +372,6 @@ namespace Taskly_Infrastructure.Migrations
                         .HasMaxLength(70)
                         .HasColumnType("nvarchar(70)");
 
-                    b.Property<int>("TargetAmount")
-                        .HasColumnType("int");
-
                     b.Property<Guid?>("UserEntityId")
                         .HasColumnType("uniqueidentifier");
 
@@ -583,9 +583,6 @@ namespace Taskly_Infrastructure.Migrations
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<double?>("SolBalance")
-                        .HasColumnType("float");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");

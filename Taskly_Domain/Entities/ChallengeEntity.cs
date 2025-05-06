@@ -10,6 +10,8 @@ public class ChallengeEntity
     public bool IsBooked { get; set; } // чи заброньована задача
     public bool IsCompleted { get; set; } 
     public bool IsActive { get; set; } // чи активна задача, якщо ні, виводиться дата коли буде активна
+    public required string RuleKey { get; set; }
+    public int TargetAmount { get; set; } // скільки потрібно виконати (feedbacks - 5, etc)
     public Guid? UserId { get; set; } 
     public UserEntity? User { get; set; } 
 }

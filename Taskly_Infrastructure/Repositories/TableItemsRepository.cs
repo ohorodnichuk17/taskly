@@ -58,4 +58,9 @@ public class TableItemsRepository(TasklyDbContext tasklyDbContext) : Repository<
         await SaveAsync(tableItem);
         return true;
     }
+
+    public async Task<int> CountCompletedTasksAsync(Guid userId) =>
+        await tasklyDbContext.ToDoItems
+            .Where(x => x.Members.Any(m => m.Id == userId) && x.IsCompleted)
+            .CountAsync();
 }
