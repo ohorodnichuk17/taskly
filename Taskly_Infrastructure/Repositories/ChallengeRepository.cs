@@ -66,7 +66,6 @@ public class ChallengeRepository(TasklyDbContext tasklyDbContext,
             throw new InvalidOperationException("Challenge already completed");
         if(challenge.UserId == null)
             throw new InvalidOperationException("Challenge is not booked by any user");
-        Console.WriteLine($"Evaluating Rule: RuleKey={challenge.RuleKey}, UserId={challenge.UserId}");
 
         int progress = await ruleEvaluatorService.EvaluateRuleAsync(
             challenge.RuleKey,
@@ -82,9 +81,7 @@ public class ChallengeRepository(TasklyDbContext tasklyDbContext,
         if (user == null)
             throw new InvalidOperationException("User not found");
         
-        Console.WriteLine($"User's current balance: {user.SolBalance}");
         user.SolBalance += challenge.Points;
-        Console.WriteLine($"User's new balance: {user.SolBalance}");
         tasklyDbContext.Users.Update(user);
         await tasklyDbContext.SaveChangesAsync();
 

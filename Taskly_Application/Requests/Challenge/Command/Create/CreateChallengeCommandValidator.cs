@@ -44,6 +44,7 @@ public class CreateChallengeCommandValidator : AbstractValidator<CreateChallenge
     private static readonly string[] AllowedRuleKeys =
     {
         "Taskly:CompletedTableItems",
-        "Taskly:CountUserFeedbacks"
+        "Taskly:CountUserFeedbacks",
+        "Taskly:CountUserReferrals"
     };
 }

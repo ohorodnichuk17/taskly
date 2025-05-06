@@ -26,6 +26,7 @@ public class TasklyDbContext : IdentityDbContext<UserEntity,IdentityRole<Guid>,G
     public DbSet<ChallengeEntity> Challenges { get; set; }
     public DbSet<UserLevelEntity> UserLevels { get; set; }
     public DbSet<AchievementEntity> Achievements { get; set; }
+    public DbSet<InviteEntity> Invites { get; set; }
 
     public TasklyDbContext() : base()
     {
@@ -38,7 +39,8 @@ public class TasklyDbContext : IdentityDbContext<UserEntity,IdentityRole<Guid>,G
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-
+        modelBuilder.Entity<InviteEntity>()
+            .Ignore(i => i.InvitedByUser);
         modelBuilder.ApplyConfiguration(new FluentUserConfig());
         modelBuilder.ApplyConfiguration(new FluentAvatarConfig());
         modelBuilder.ApplyConfiguration(new FluentBoardConfig());
@@ -54,5 +56,6 @@ public class TasklyDbContext : IdentityDbContext<UserEntity,IdentityRole<Guid>,G
         modelBuilder.ApplyConfiguration(new FluentBadgeConfig());
         modelBuilder.ApplyConfiguration(new FluentUserLevelConfig());
         modelBuilder.ApplyConfiguration(new FluentUserBadgeConfig());
+        modelBuilder.ApplyConfiguration(new FluentInviteConfig());
     }
 }

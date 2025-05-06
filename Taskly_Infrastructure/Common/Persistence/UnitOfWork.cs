@@ -25,15 +25,17 @@ public class UnitOfWork : IUnitOfWork
     public IFeedbackRepository Feedbacks { get; private set; }
     public IAchievementRepository Achievements { get; private set; }
     public IChallengeRepository Challenges { get; private set; }
+    public IInviteRepository Invites { get; private set; }
 
     public UnitOfWork(TasklyDbContext context,
         UserManager<UserEntity> userManager,
         ITableItemsRepository tableItemsRepository, 
-        IFeedbackRepository feedbackRepository)    
+        IFeedbackRepository feedbackRepository,
+        IInviteRepository inviteRepository)    
     {
         _context = context;
         _userManager = userManager;
-        _ruleEvaluatorService = new RuleEvaluatorService(tableItemsRepository, feedbackRepository); 
+        _ruleEvaluatorService = new RuleEvaluatorService(tableItemsRepository, feedbackRepository, inviteRepository); 
         Authentication = new AuthenticationRepository(_userManager, _context);
         Board = new BoardRepository(_context);
         Avatar = new AvatarRepository(_context);
@@ -44,6 +46,7 @@ public class UnitOfWork : IUnitOfWork
         Feedbacks = new FeedbackRepository(_context);
         Achievements = new AchievementRepository(_context);
         Challenges = new ChallengeRepository(_context, _ruleEvaluatorService);
+        Invites = new InviteRepository(_context);
     }
 
     public async Task SaveChangesAsync(string errorMessage)

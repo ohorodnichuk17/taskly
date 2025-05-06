@@ -15,4 +15,5 @@ public interface IUnitOfWork
     IFeedbackRepository Feedbacks { get; }
     IAchievementRepository Achievements { get; }
     IChallengeRepository Challenges { get; }
+    IInviteRepository Invites { get; }
 }

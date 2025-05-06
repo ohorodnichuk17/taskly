@@ -6,7 +6,7 @@ using Taskly_Domain;
 namespace Taskly_Infrastructure.Services;
 
 public class RuleEvaluatorService(ITableItemsRepository tableItemsRepository,
-    IFeedbackRepository feedbacksRepository) 
+    IFeedbackRepository feedbacksRepository, IInviteRepository inviteRepository) 
     : IRuleEvaluatorService
 {
     public async Task<int> EvaluateRuleAsync(string ruleKey, Guid userId)
@@ -20,6 +20,9 @@ public class RuleEvaluatorService(ITableItemsRepository tableItemsRepository,
             
                 Constants.RuleKey_CountUserFeedbacks =>
                     await feedbacksRepository.CountUserFeedbacksAsync(userId),
+                
+                Constants.RuleKey_CountUserReferrals =>
+                    await inviteRepository.CountSuccessfulInvitesAsync(userId),
             
                 _ => 0 
             };

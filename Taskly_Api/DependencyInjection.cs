@@ -48,6 +48,7 @@ public static class DependencyInjection
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IRuleEvaluatorService, RuleEvaluatorService>();
         services.AddScoped<ITableItemsRepository, TableItemsRepository>();
+        services.AddScoped<IInviteRepository, InviteRepository>();
         services.AddScoped<IFeedbackRepository, FeedbackRepository>();
         services.AddHostedService<CustomCleaner<VerificationEmailEntity>>();
         services.AddHostedService<CustomCleaner<ChangePasswordKeyEntity>>();

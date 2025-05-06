@@ -17,4 +17,9 @@ public class UserEntity : IdentityUser<Guid>
     public ICollection<ChallengeEntity> Challenges { get; set; } = new List<ChallengeEntity>();
     public ICollection<UserBadgeEntity> Badges { get; set; } = new List<UserBadgeEntity>();
     public UserLevelEntity? UserLevel { get; set; }
+    
+    public string ReferralCode { get; set; }
+    
+    public ICollection<InviteEntity> SentInvites { get; set; } = new List<InviteEntity>();
+    public ICollection<InviteEntity> ReceivedInvites { get; set; } = new List<InviteEntity>();
 }
