@@ -18,6 +18,8 @@ using Taskly_Application.Requests.SolanaWallet.Authentication.Command.Authentica
 using Taskly_Application.Requests.SolanaWallet.Authentication.Command.SetUserNameForSolanaUser;
 using Taskly_Application.Requests.SolanaWallet.Authentication.Query.GenerateJwtToken;
 using Taskly_Application.Requests.SolanaWallet.Authentication.Query.GetUserByPublicKey;
+using System.Reflection.Metadata;
+using Taskly_Domain;
 
 namespace Taskly_Api.Controllers
 {
@@ -200,5 +202,7 @@ namespace Taskly_Api.Controllers
             Response.Cookies.Delete("X-JWT-Token");
             return Ok();
         }
+
+        
     }
 }

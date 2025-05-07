@@ -1,5 +1,7 @@
+using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Security.Claims;
 using System.Text;
 using System.Text.Unicode;
 using Mapster;
@@ -18,6 +20,7 @@ using Taskly_Api.MapsterConfigs;
 using Taskly_Application.Interfaces;
 using Taskly_Application.Interfaces.IRepository;
 using Taskly_Application.Interfaces.IService;
+using Taskly_Domain;
 using Taskly_Domain.Entities;
 using Taskly_Domain.ValueObjects;
 using Taskly_Infrastructure;
@@ -63,6 +66,8 @@ public static class DependencyInjection
         services.AddGeminiClient();
         services.AddSignalR();
 
+       
+
         return services;
     }
 
@@ -91,15 +96,18 @@ public static class DependencyInjection
     }
     public static IServiceCollection AddJWT(this IServiceCollection services,IConfiguration configuration)
     {
+        JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            
         }).AddJwtBearer(options =>
         {
             options.RequireHttpsMetadata = true;
             options.SaveToken = true;
+
             options.TokenValidationParameters = new TokenValidationParameters()
             {
                 ValidateIssuerSigningKey = true,
@@ -108,7 +116,8 @@ public static class DependencyInjection
                     ),
                 ValidateIssuer = false,
                 ValidateAudience = false,
-                ClockSkew = TimeSpan.Zero
+                ClockSkew = TimeSpan.Zero,
+                RoleClaimType = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
             };
             options.Events = new JwtBearerEvents()
             {
@@ -121,7 +130,7 @@ public static class DependencyInjection
 
                     return Task.CompletedTask;
                 }
-        };
+            };
             
 
         });
@@ -132,6 +141,21 @@ public static class DependencyInjection
             .RequireAuthenticatedUser()
             .Build();
         });
+
+        /*services.ConfigureApplicationCookie(conf =>
+        {
+            conf.Events.OnRedirectToLogin = context =>
+            {
+                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                return Task.CompletedTask;
+            };
+
+            conf.Events.OnRedirectToAccessDenied = context =>
+            {
+                context.Response.StatusCode = StatusCodes.Status403Forbidden;
+                return Task.CompletedTask;
+            };
+        });*/
 
         return services;
     }

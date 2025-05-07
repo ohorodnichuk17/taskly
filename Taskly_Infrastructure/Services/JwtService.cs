@@ -4,6 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Taskly_Application.Interfaces.IService;
+using Taskly_Domain;
 using Taskly_Domain.Entities;
 using Taskly_Domain.ValueObjects;
 
@@ -16,9 +17,9 @@ public class JwtService(IOptions<AuthenticationSettings> options) : IJwtService
     {
         var claimes = new Claim[] {
         new Claim(type:"id",value:userEntity.Id.ToString()),
-        new Claim(type:"email",value:userEntity.Email!)
+        new Claim(type:"email",value:userEntity.Email!),
+        new Claim(type:ClaimTypes.Role, value: userEntity.Email == "tasklytodolist@gmail.com" ? Constants.AdminRole :Constants.UserRole)
         };
-
         var token = new JwtSecurityToken(
             claims: claimes,
             notBefore: DateTime.UtcNow,
@@ -29,6 +30,7 @@ public class JwtService(IOptions<AuthenticationSettings> options) : IJwtService
                 ),
             SecurityAlgorithms.HmacSha256Signature)
         );
+       
         var jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
 
         return jwtToken;

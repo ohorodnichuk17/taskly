@@ -1,11 +1,13 @@
 ﻿using ErrorOr;
 using MapsterMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Taskly_Api.Response.Achievement;
 using Taskly_Application.Requests.Achievements.Query.GetAllAchievementsByUser;
+using Taskly_Domain;
 
 namespace Taskly_Api.Controllers
 {
@@ -22,6 +24,13 @@ namespace Taskly_Api.Controllers
 
             return achievements.Match(achievements => Ok(achievements.Select(a => mapper.Map<AchievementResponse>((a,Guid.Parse(userId)))).ToArray()),
                 errors => Problem(errors.ToArray()[0].Description));
+        }
+
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = Constants.AdminRole)]
+        [HttpGet("test")]
+        public IActionResult TestMethod()
+        {
+            return Ok("ADMIN!");
         }
     }
 }

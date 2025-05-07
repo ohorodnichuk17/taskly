@@ -26,4 +26,5 @@ public static class Constants
     public const string RuleKey_CompletedTableItems = "Taskly:CompletedTableItems";
     public const string RuleKey_CountUserFeedbacks = "Taskly:CountUserFeedbacks";
     public const string RuleKey_CountUserReferrals = "Taskly:CountUserReferrals";
+
 }
