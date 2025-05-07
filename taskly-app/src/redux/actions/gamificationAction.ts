@@ -215,7 +215,7 @@ export const getBadgeByIdAsync = createAsyncThunk<
     string,
     { rejectValue: IValidationErrors }
 >(
-    "gamification/get-all-badges",
+    "gamification/get-badge-by-id",
     async (id, {rejectWithValue}) => {
         try {
             const response = await api.get(`api/gamification/get-badge-by-id/${id}`,
