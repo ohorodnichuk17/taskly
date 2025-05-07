@@ -2,12 +2,13 @@ using ErrorOr;
 using MediatR;
 using Taskly_Application.DTO;
 using Taskly_Application.Interfaces;
+using Taskly_Domain.Entities;
 
 namespace Taskly_Application.Requests.Board.Query.GetMembersOfBoard;
 
-public class GetMembersOfBoardQueryHandler(IUnitOfWork unitOfWork) : IRequestHandler<GetMembersOfBoardQuery, ErrorOr<IEnumerable<BoardMemberDto>>>
+public class GetMembersOfBoardQueryHandler(IUnitOfWork unitOfWork) : IRequestHandler<GetMembersOfBoardQuery, ErrorOr<IEnumerable<UserEntity>>>
 {
-    public async Task<ErrorOr<IEnumerable<BoardMemberDto>>> Handle(GetMembersOfBoardQuery request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<IEnumerable<UserEntity>>> Handle(GetMembersOfBoardQuery request, CancellationToken cancellationToken)
     {
         try
         {

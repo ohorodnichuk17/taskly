@@ -7,6 +7,7 @@ using Taskly_Application.Requests.Card.Command.LeaveCard;
 using Taskly_Application.Requests.Card.Command.RemoveCard;
 using Taskly_Application.Requests.Card.Command.TakeCard;
 using Taskly_Application.Requests.Card.Command.TransferCardToAnotherCardList;
+using Taskly_Domain.Entities;
 
 namespace Taskly_Api.SignalR.Hubs;
 
@@ -27,7 +28,7 @@ public class BoardHub(ISender sender) : Hub
             Group(model.BoardId.ToString()).
             SendAsync("DisconnectFromTeamBoard", $"User with ID: {model.UserId} has been disconnect from board with ID: {model.BoardId}");
     }
-    public async Task TransferCardToAnotherCardList(TransferCardToAnotherCardListModel model)
+    public async Task<AchievementEntity[]?> TransferCardToAnotherCardList(TransferCardToAnotherCardListModel model)
     {
         await Clients
             .Groups(model.BoardId.ToString())
@@ -39,10 +40,13 @@ public class BoardHub(ISender sender) : Hub
                     ToCardListId = model.ToCardListId,
                     IsCompleated = model.IsCompleated});
 
-        await sender.Send(new TransferCardToAnotherCardListCommand(
+       var response =  await sender.Send(new TransferCardToAnotherCardListCommand(
             ToCardListId: model.ToCardListId,
             CardId: model.CardId
             ));
+
+        return response.Match(response => response,
+            errors => []);
     }
     public async Task RemoveCardFromCardList(RemoveCardFromCardList model)
     {

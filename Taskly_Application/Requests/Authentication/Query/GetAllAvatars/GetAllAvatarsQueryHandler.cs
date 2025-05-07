@@ -5,9 +5,9 @@ using Taskly_Domain.Entities;
 
 namespace Taskly_Application.Requests.Authentication.Query.GetAllAvatars;
 
-public class GetAllAvatarsQueryHandler(IUnitOfWork unitOfWork) : IRequestHandler<GetAllAvatarsQuery, ErrorOr<List<AvatarEntity>>>
+public class GetAllAvatarsQueryHandler(IUnitOfWork unitOfWork) : IRequestHandler<GetAllAvatarsQuery, ErrorOr<ICollection<AvatarEntity>>>
 {
-    public async Task<ErrorOr<List<AvatarEntity>>> Handle(GetAllAvatarsQuery request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<ICollection<AvatarEntity>>> Handle(GetAllAvatarsQuery request, CancellationToken cancellationToken)
     {
         return (await unitOfWork.Avatar.GetAllAsync()).ToList();
     }

@@ -17,7 +17,7 @@ public class BoardMapsterConfig : IRegister
 
         config.NewConfig<UserEntity, MemberOfBoardResponse>()
             .Map(src => src.UserId, desp => desp.Id)
-            .Map(src => src.Email, desp => desp.Email)
+            .Map(src => src.Email, desp => !String.IsNullOrEmpty(desp.Email) ? desp.Email : desp.UserName)
             .Map(src => src.AvatarName, desp => desp.Avatar!.ImagePath);
     }
 }

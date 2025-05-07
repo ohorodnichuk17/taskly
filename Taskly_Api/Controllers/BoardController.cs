@@ -84,7 +84,7 @@ public class BoardController(ISender sender, IMapper mapper) : ApiController
     public async Task<IActionResult> GetMembersOfBoard(Guid boardId)
     {
         var result = await sender.Send(new GetMembersOfBoardQuery(boardId));
-        return result.Match(r => Ok(r.ToArray()),
+        return result.Match(r => Ok(mapper.Map<MemberOfBoardResponse[]>(r.ToArray())),
             errors => Problem(errors));
     }
 

@@ -23,6 +23,13 @@ public class AchievementRepository(TasklyDbContext context) : Repository<Achieve
 
         return compleatedAchievements;
     }
+    public async Task<ICollection<AchievementEntity>> GetAllAchievementsAsync()
+    {
+        return await _achievementEntitie
+            .Include(u => u.Users)
+            .OrderBy(a => a.Reward)
+            .ToListAsync();
+    }
     private async Task<AchievementEntity?> CompleateCardAchievement(UserEntity user)
     {
         var usersCards = await context.Cards.Where(c => c.UserId == user.Id).ToListAsync();
@@ -62,8 +69,17 @@ public class AchievementRepository(TasklyDbContext context) : Repository<Achieve
 
             if (countOfUsersWithPublicKey != 0)
             {
-                var countOfUserHwoCompleateAchievement = await _achievementsUsersEntitie.CountAsync(a => a["AchievementId"].ToString() == achievement.Id.ToString());
-                achievement.PercentageOfCompletion = Double.Round((countOfUserHwoCompleateAchievement * 100) / countOfUsersWithPublicKey, 1);
+                var countOfUserHwoCompleatedAchievement = await _achievementsUsersEntitie
+                    .CountAsync(a => a["AchievementId"].ToString() == achievement.Id.ToString());
+                if(countOfUserHwoCompleatedAchievement == 0)
+                {
+                    achievement.PercentageOfCompletion = 100;
+                }
+                else
+                {
+                    achievement.PercentageOfCompletion = Double.Round((countOfUserHwoCompleatedAchievement * 100) / countOfUsersWithPublicKey, 1);
+                }
+                
             }
             await SaveAsync(achievement);
 

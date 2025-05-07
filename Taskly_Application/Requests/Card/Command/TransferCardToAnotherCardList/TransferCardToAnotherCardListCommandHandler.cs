@@ -14,7 +14,7 @@ public class TransferCardToAnotherCardListCommandHandler(IUnitOfWork unitOfWork)
         if (transferedCard == null)
             return Error.Conflict("Something went wrong.");
 
-        var userOfCard = await unitOfWork.Authentication.GetByIdAsync(transferedCard.Id);
+        var userOfCard = await unitOfWork.Authentication.GetByIdAsync(transferedCard.UserId!.Value);
 
         if(userOfCard == null)
             return Error.NotFound("User is not found.");
