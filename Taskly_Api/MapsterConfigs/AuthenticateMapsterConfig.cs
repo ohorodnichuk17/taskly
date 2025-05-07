@@ -95,10 +95,11 @@ public class AuthenticateMapsterConfig : IRegister
             .Map(src => src.Password, desp => desp.Password)
             .Map(src => src.ConfirmPassword, desp => desp.ConfirmPassword);
 
-        config.NewConfig<UserEntity, InformationAboutUserResponse>()
-            .Map(src => src.Id, desp => desp.Id)
-            .Map(src => src.Email, desp => desp.Email)
-            .Map(src => src.AvatarName, desp => desp.Avatar != null ? desp.Avatar.ImagePath : "");
+        config.NewConfig<(UserEntity user, string token), InformationAboutUserResponse>()
+            .Map(src => src.Id, desp => desp.user.Id)
+            .Map(src => src.Email, desp => desp.user.Email)
+            .Map(src => src.AvatarName, desp => desp.user.Avatar != null ? desp.user.Avatar.ImagePath : "")
+            .Map(src => src.Token, desp => desp.token);
         
         config.NewConfig<UserEntity, InformationAboutSolanaUserResponse>()
             .Map(src => src.Id, desp => desp.Id)

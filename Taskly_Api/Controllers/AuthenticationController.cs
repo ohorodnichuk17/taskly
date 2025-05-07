@@ -72,7 +72,7 @@ namespace Taskly_Api.Controllers
                 var user = await sender.Send(new GetInformationAboutUserQuery(loginRequest.Email));
 
                 
-                return user.Match(user => Ok(mapper.Map<InformationAboutUserResponse>(user)),
+                return user.Match(user => Ok(mapper.Map<InformationAboutUserResponse>((user,result))),
                     errors => Problem(errors));
             },errors => Task.FromResult(Problem(errors)));
         }
