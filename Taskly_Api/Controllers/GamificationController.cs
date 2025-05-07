@@ -1,9 +1,11 @@
 using MapsterMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Taskly_Api.Request.Challenge;
 using Taskly_Api.Response.Badge;
 using Taskly_Api.Response.Challenge;
+using Taskly_Api.Response.UserBadge;
 using Taskly_Application.Requests.Badge.Query.GetAll;
 using Taskly_Application.Requests.Badge.Query.GetById;
 using Taskly_Application.Requests.Challenge.Command.Book;
@@ -14,7 +16,10 @@ using Taskly_Application.Requests.Challenge.Query.GetAll;
 using Taskly_Application.Requests.Challenge.Query.GetAllActive;
 using Taskly_Application.Requests.Challenge.Query.GetAllAvaliable;
 using Taskly_Application.Requests.Challenge.Query.GetById;
+using Taskly_Application.Requests.UserBadge.Query.GetAllUserBadgesByUserId;
+using Taskly_Application.Requests.UserBadge.Query.GetUserBadgeByUserIdAndBadgeId;
 using Taskly_Application.Requests.UserLevel.Query.GetByUserId;
+using Taskly_Domain;
 
 namespace Taskly_Api.Controllers;
 
@@ -24,6 +29,7 @@ public class GamificationController(ISender mediatr, IMapper mapper)
     : ApiController
 {
     [HttpGet("get-all-badges")]
+    [Authorize(Roles = $"{Constants.AdminRole},{Constants.UserRole}")]
     public async Task<IActionResult> GetAllBadges()
     {
         var result = await mediatr.Send(new GetAllBadgesQuery());
@@ -33,6 +39,7 @@ public class GamificationController(ISender mediatr, IMapper mapper)
     }
     
     [HttpGet("get-badge-by-id/{id:guid}")]
+    [Authorize(Roles = $"{Constants.AdminRole},{Constants.UserRole}")]
     public async Task<IActionResult> GetBadgeById(Guid id)
     {
         var result = await mediatr.Send(new GetBadgeByIdQuery(id));
@@ -42,6 +49,7 @@ public class GamificationController(ISender mediatr, IMapper mapper)
     }
     
     [HttpGet("get-user-level/{userId:guid}")]
+    [Authorize(Roles = $"{Constants.AdminRole},{Constants.UserRole}")]
     public async Task<IActionResult> GetUserLevel([FromRoute] Guid userId)
     {
         var result = await mediatr.Send(new GetUserLevelByUserIdQuery(userId));
@@ -51,7 +59,7 @@ public class GamificationController(ISender mediatr, IMapper mapper)
     }
     
     [HttpPost("create-challenge")]
-    // [Authorize(Roles = Constants.AdminRole)]
+    [Authorize(Roles = Constants.AdminRole)]
     public async Task<IActionResult> CreateChallenge([FromBody] CreateChallengeRequest request)
     {
         var command = mapper.Map<CreateChallengeCommand>(request);
@@ -62,7 +70,7 @@ public class GamificationController(ISender mediatr, IMapper mapper)
     }
     
     [HttpDelete("delete-challenge/{id:guid}")]
-    // [Authorize(Roles = Constants.AdminRole)]
+    [Authorize(Roles = Constants.AdminRole)]
     public async Task<IActionResult> DeleteChallenge([FromRoute] Guid id)
     {
         var command = new DeleteChallengedCommand(id);
@@ -73,6 +81,7 @@ public class GamificationController(ISender mediatr, IMapper mapper)
     }
     
     [HttpPut("mark-challenge-as-completed/{id:guid}")]
+    [Authorize(Roles = $"{Constants.AdminRole},{Constants.UserRole}")]
     public async Task<IActionResult> MarkAsCompleted([FromRoute] Guid id)
     {
         var command = new MarkChallengeAsCompletedCommand(id);
@@ -83,6 +92,7 @@ public class GamificationController(ISender mediatr, IMapper mapper)
     }
 
     [HttpPut("book-challenge/{id:guid}")]
+    [Authorize(Roles = $"{Constants.AdminRole},{Constants.UserRole}")]
     public async Task<IActionResult> BookChallenge([FromRoute] Guid id, [FromBody] Guid userId)
     {
         var command = new BookChallengeCommand(id, userId);
@@ -93,6 +103,7 @@ public class GamificationController(ISender mediatr, IMapper mapper)
     }
     
     [HttpGet("get-challenges")]
+    [Authorize(Roles = $"{Constants.AdminRole},{Constants.UserRole}")]
     public async Task<IActionResult> GetChallenges()
     {
         var result = await mediatr.Send(new GetAllChallengesQuery());
@@ -101,6 +112,7 @@ public class GamificationController(ISender mediatr, IMapper mapper)
     }
     
     [HttpGet("get-challenge-by-id/{id:guid}")]
+    [Authorize(Roles = $"{Constants.AdminRole},{Constants.UserRole}")]
     public async Task<IActionResult> GetChallengeById([FromRoute] Guid id)
     {
         var result = await mediatr.Send(new GetChallengeByIdQuery(id));
@@ -109,6 +121,7 @@ public class GamificationController(ISender mediatr, IMapper mapper)
     }
     
     [HttpGet("get-active-challenges")]
+    [Authorize(Roles = $"{Constants.AdminRole},{Constants.UserRole}")]
     public async Task<IActionResult> GetActiveChallenges()
     {
         var result = await mediatr.Send(new GetAllActiveChallengesQuery());
@@ -117,10 +130,29 @@ public class GamificationController(ISender mediatr, IMapper mapper)
     }
     
     [HttpGet("get-available-challenges")]
+    [Authorize(Roles = $"{Constants.AdminRole},{Constants.UserRole}")]
     public async Task<IActionResult> GetAvailableChallenges()
     {
         var result = await mediatr.Send(new GetAllAvaliableChallengesQuery());
         return result.Match(result => Ok(mapper.Map<ICollection<ChallengeResponse>>(result)),
+            errors => Problem(errors));
+    }
+    
+    [HttpGet("get-all-user-badges-by-user-id/{userId:guid}")]
+    [Authorize(Roles = $"{Constants.AdminRole},{Constants.UserRole}")]
+    public async Task<IActionResult> GetAllBadgesByUserId([FromRoute] Guid userId)
+    {
+        var result = await mediatr.Send(new GetAllUserBadgesByUserIdQuery(userId));
+        return result.Match(result => Ok(mapper.Map<ICollection<UserBadgeResponse>>(result)),
+            errors => Problem(errors));
+    }
+    
+    [HttpGet("get-user-badge-by-user-id-and-badge-id/{userId:guid}/{badgeId:guid}")]
+    [Authorize(Roles = $"{Constants.AdminRole},{Constants.UserRole}")]
+    public async Task<IActionResult> GetUserBadgeByUserIdAndBadgeId([FromRoute] Guid userId, [FromRoute] Guid badgeId)
+    {
+        var result = await mediatr.Send(new GetUserBadgeByUserIdAndBadgeIdQuery(userId, badgeId));
+        return result.Match(result => Ok(mapper.Map<UserBadgeResponse>(result)),
             errors => Problem(errors));
     }
 }

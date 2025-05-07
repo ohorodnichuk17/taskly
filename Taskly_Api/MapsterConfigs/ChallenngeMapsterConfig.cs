@@ -6,7 +6,7 @@ using Taskly_Domain.Entities;
 
 namespace Taskly_Api.MapsterConfigs;
 
-public class ChallenngeMapster : IRegister
+public class ChallenngeMapsterConfig : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {

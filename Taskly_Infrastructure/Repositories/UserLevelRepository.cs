@@ -8,7 +8,7 @@ namespace Taskly_Infrastructure.Repositories;
 public class UserLevelRepository(TasklyDbContext tasklyDbContext) 
     : Repository<UserLevelEntity>(tasklyDbContext), IUserLevelRepository
 {
-    public async Task<int> GetUserLevelByUserIdAsync(Guid userId)
+    public async Task<int> GetLevelPropertyByUserIdAsync(Guid userId)
     {
         var userLevel = await tasklyDbContext.UserLevels
             .FirstOrDefaultAsync(x => x.UserId == userId);
@@ -31,4 +31,13 @@ public class UserLevelRepository(TasklyDbContext tasklyDbContext)
 
         return userLevel.CompletedTasks;  
     }
+
+    public void Update(UserLevelEntity userLevel) =>
+        tasklyDbContext.UserLevels.Update(userLevel);
+
+    public async Task<UserLevelEntity> GetUserLevelByUserIdAsync(Guid userId) =>
+        await tasklyDbContext.UserLevels
+            .FirstOrDefaultAsync(x => x.UserId == userId)
+            ?? throw new Exception("User level not found");
+
 }

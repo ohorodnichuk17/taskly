@@ -47,6 +47,7 @@ public static class DependencyInjection
         services.AddScoped<ITableItemsRepository, TableItemsRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IRuleEvaluatorService, RuleEvaluatorService>();
+        services.AddScoped<IBadgeService, BadgeService>();
         services.AddScoped<ITableItemsRepository, TableItemsRepository>();
         services.AddScoped<IInviteRepository, InviteRepository>();
         services.AddScoped<IFeedbackRepository, FeedbackRepository>();

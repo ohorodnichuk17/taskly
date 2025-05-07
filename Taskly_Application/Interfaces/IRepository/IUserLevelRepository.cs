@@ -4,6 +4,8 @@ namespace Taskly_Application.Interfaces.IRepository;
 
 public interface IUserLevelRepository : IRepository<UserLevelEntity>
 {
-    Task<int> GetUserLevelByUserIdAsync(Guid userId);
-    public Task<int> IncreaseCompletedTasksAsync(Guid userId);
+    Task<int> GetLevelPropertyByUserIdAsync(Guid userId);
+    Task<int> IncreaseCompletedTasksAsync(Guid userId);
+    void Update(UserLevelEntity userLevel);
+    Task<UserLevelEntity> GetUserLevelByUserIdAsync(Guid userId);
 }
