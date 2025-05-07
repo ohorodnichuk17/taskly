@@ -116,7 +116,7 @@ public static class DataInitializer
                    Id = Guid.NewGuid(),
                      Name = Constants.BegginerLevel,
                      Icon = "beginner",
-                     RequiredTasksToReceiveBadge = 10,
+                     RequiredTasksToReceiveBadge = 5,
                      Level = 1
                },
                new BadgeEntity()
@@ -124,7 +124,7 @@ public static class DataInitializer
                    Id = Guid.NewGuid(),
                    Name = Constants.AdvancedLevel,
                    Icon = "advanced",
-                   RequiredTasksToReceiveBadge = 30,
+                   RequiredTasksToReceiveBadge = 15,
                    Level = 2
                },
                new BadgeEntity()
@@ -132,7 +132,7 @@ public static class DataInitializer
                    Id = Guid.NewGuid(),
                    Name = Constants.MasteryLevel,
                    Icon = "mastery",
-                   RequiredTasksToReceiveBadge = 100,
+                   RequiredTasksToReceiveBadge = 50,
                    Level = 3
                },
            ];

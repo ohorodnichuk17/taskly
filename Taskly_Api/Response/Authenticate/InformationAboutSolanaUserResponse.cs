@@ -6,4 +6,5 @@ public class InformationAboutSolanaUserResponse
     public required string PublicKey { get; set; }
     public required string AvatarName { get; set; }
     public required string UserName { get; set; }
+    public required string ReferralCode { get; set; }
 }

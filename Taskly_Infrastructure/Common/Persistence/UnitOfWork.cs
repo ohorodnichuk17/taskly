@@ -27,6 +27,7 @@ public class UnitOfWork : IUnitOfWork
     public IChallengeRepository Challenges { get; private set; }
     public IInviteRepository Invites { get; private set; }
     public IBadgeRepository Badges { get; private set; }
+    public IUserLevelRepository UserLevels { get; private set; }
 
     public UnitOfWork(TasklyDbContext context,
         UserManager<UserEntity> userManager,
@@ -49,6 +50,7 @@ public class UnitOfWork : IUnitOfWork
         Challenges = new ChallengeRepository(_context, _ruleEvaluatorService);
         Invites = new InviteRepository(_context);
         Badges = new BadgeRepository(_context);
+        UserLevels = new UserLevelRepository(_context);
     }
 
     public async Task SaveChangesAsync(string errorMessage)

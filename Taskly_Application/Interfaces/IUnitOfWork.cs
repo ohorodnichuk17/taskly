@@ -17,4 +17,5 @@ public interface IUnitOfWork
     IChallengeRepository Challenges { get; }
     IInviteRepository Invites { get; }
     IBadgeRepository Badges { get; }
+    IUserLevelRepository UserLevels { get; }
 }

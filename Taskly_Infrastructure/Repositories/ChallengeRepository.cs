@@ -82,6 +82,7 @@ public class ChallengeRepository(TasklyDbContext tasklyDbContext,
             throw new InvalidOperationException("User not found");
         
         user.SolBalance += challenge.Points;
+
         tasklyDbContext.Users.Update(user);
         await tasklyDbContext.SaveChangesAsync();
 

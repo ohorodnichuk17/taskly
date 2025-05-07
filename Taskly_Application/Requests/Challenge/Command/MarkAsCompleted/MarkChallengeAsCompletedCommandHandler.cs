@@ -11,19 +11,16 @@ public class MarkChallengeAsCompletedCommandHandler(IUnitOfWork unitOfWork)
     {
         try
         {
-            Console.WriteLine($"[MarkChallengeAsCompleted] Handling command for ChallengeId: {request.ChallengeId}");
-
             await unitOfWork.Challenges.CompleteChallengeAsync(request.ChallengeId);
-
-            Console.WriteLine($"[MarkChallengeAsCompleted] Challenge {request.ChallengeId} marked as completed successfully.");
-
+            var challenge = await unitOfWork.Challenges.GetChallengeByIdAsync(request.ChallengeId);
+            if (challenge?.UserId is null)
+                return Error.Failure("MarkChallengeAsCompletedError", "Challenge is not booked by any user");
+            await unitOfWork.UserLevels
+                .IncreaseCompletedTasksAsync(challenge.UserId.Value);
             return true;
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"[MarkChallengeAsCompleted] Error occurred while completing challenge {request.ChallengeId}: {ex.Message}");
-            Console.WriteLine($"[MarkChallengeAsCompleted] StackTrace: {ex.StackTrace}");
-
             return Error.Failure("MarkChallengeAsCompletedError", ex.Message);
         }
     }
