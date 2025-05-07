@@ -1,0 +1,203 @@
+/*#achievement {
+    display: grid;
+    grid-template-columns: 100px 200px;
+    grid-template-rows: 60px 110px 30px;
+    background-color: rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    padding: 10px;
+    box-sizing: border-box;
+    position: relative;
+
+    #achievement-is-not-compleated {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: rgba(128, 128, 128, 0.596);
+        border-radius: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        img {
+            width: 50px;
+            height: 50px;
+        }
+    }
+
+    #achievement-icon {
+        grid-row: 1 / span 2;
+        //width: 100px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-sizing: border-box;
+
+        img {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+        }
+    }
+
+    #achievement-name-and-reward {
+
+        grid-column: 2 / span 2;
+        display: flex;
+        align-items: center;
+        box-sizing: border-box;
+
+        p {
+            font-size: 17px;
+            color: white;
+            margin: 0;
+
+            &:last-of-type {
+                margin-left: auto;
+                margin-right: 10px;
+            }
+        }
+
+        img {
+            width: 30px;
+            height: 30px;
+        }
+    }
+
+    #achievement-description {
+        display: flex;
+        justify-content: flex-start;
+        background-color: rgba(255, 255, 255, 0.281);
+        border-radius: 10px;
+        padding: 10px;
+        box-sizing: border-box;
+
+        p {
+            margin: 0;
+            font-size: 13px;
+            color: white;
+        }
+    }
+
+    #achievement-percentage-of-completion {
+        display: flex;
+        justify-content: flex-start;
+        grid-column: 1 / span 2;
+        box-sizing: border-box;
+
+        p {
+            margin: 0;
+            font-size: 13px;
+            color: white;
+        }
+    }
+
+}*/
+
+@mixin achievement($grid_template_columns, $grid_template_rows, $defaultIconSize, $coinIconSize, $mainFontSize, $secondFontSize) {
+    #achievement {
+        display: grid;
+        grid-template-columns: $grid_template_columns;
+        grid-template-rows: $grid_template_rows;
+        background-color: rgba(255, 255, 255, 0.08);
+        border-radius: 10px;
+        padding: 10px;
+        box-sizing: border-box;
+        position: relative;
+
+        #achievement-is-not-compleated {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background-color: rgba(128, 128, 128, 0.596);
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            img {
+                width: $defaultIconSize;
+                height: $defaultIconSize;
+            }
+        }
+
+        #achievement-icon {
+            grid-row: 1 / span 2;
+            //width: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
+
+            img {
+                display: inline-block;
+                width: $defaultIconSize;
+                height: $defaultIconSize;
+            }
+        }
+
+        #achievement-name-and-reward {
+
+            grid-column: 2 / span 2;
+            display: flex;
+            align-items: center;
+            box-sizing: border-box;
+
+            p {
+                font-size: $mainFontSize;
+                color: white;
+                margin: 0;
+
+                &:last-of-type {
+                    margin-left: auto;
+                    margin-right: 10px;
+                }
+            }
+
+            img {
+                width: $coinIconSize;
+                height: $coinIconSize;
+            }
+        }
+
+        #achievement-description {
+            display: flex;
+            justify-content: flex-start;
+            background-color: rgba(255, 255, 255, 0.281);
+            border-radius: 10px;
+            padding: 10px;
+            box-sizing: border-box;
+
+            p {
+                margin: 0;
+                font-size: $secondFontSize;
+                color: white;
+            }
+        }
+
+        #achievement-percentage-of-completion {
+            display: flex;
+            justify-content: flex-start;
+            grid-column: 1 / span 2;
+            box-sizing: border-box;
+
+            p {
+                margin: 0;
+                font-size: $secondFontSize;
+                color: white;
+            }
+        }
+
+    }
+}
+
+@media screen and (max-width:470px) {
+    @include achievement(70px 200px, 30px 55px 15px, 40px, 15px, 15px, 12px);
+}
+
+@media screen and (min-width:470px) {
+    @include achievement(100px 200px, 50px 100px 20px, 50px, 30px, 17px, 13px);
+}

@@ -1,0 +1,30 @@
+.achievements-container {
+    width: 70%;
+    flex-grow: 1;
+    max-height: 90%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+
+    .achievements-scrollbar {
+        width: fit-content;
+        max-width: 100%;
+        min-width: 316px;
+        padding-right: 10px;
+        overflow-x: hidden;
+
+        .achievements-list {
+            width: fit-content;
+            max-width: 100%;
+            height: auto;
+            max-height: 80%;
+            display: flex;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            row-gap: 10px;
+            column-gap: 10px;
+
+        }
+    }
+
+}

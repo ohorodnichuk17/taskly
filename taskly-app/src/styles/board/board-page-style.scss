@@ -45,6 +45,7 @@
                 color: white;
                 transition: all 0.7s;
 
+
                 &:hover {
                     background-color: white;
                     border: 1px solid #6822ca;
@@ -127,6 +128,7 @@
             p {
                 color: #6822ca;
                 font-size: 17px;
+                text-wrap: nowrap;
             }
 
             img {

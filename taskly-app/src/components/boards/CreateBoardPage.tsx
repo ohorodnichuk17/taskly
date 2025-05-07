@@ -9,10 +9,17 @@ import { CreateBoardType, CreateBoardShema } from '../../validation_types/types'
 import { zodResolver } from '@hookform/resolvers/zod';
 import { InputMessage, typeOfMessage } from '../general/InputMessage';
 import { useNavigate } from 'react-router-dom';
+import { ISolanaUserProfile, IUserProfile } from '../../interfaces/authenticateInterfaces';
 
 export const CreateBoardPage = () => {
 
-    const user = useRootState((s) => s.authenticate.userProfile)
+    const user = useRef<IUserProfile | ISolanaUserProfile | null>(null);
+
+    const userJwt = useRootState((s) => s.authenticate.userProfile);
+    const userSolana = useRootState((s) => s.authenticate.solanaUserProfile);
+
+
+    const authMethod = useRootState((s) => s.authenticate.authMethod);
     const templatesOfBoard = useRootState((s) => s.board.templatesOfBoard);
 
     const dispatch = useAppDispatch();
@@ -43,8 +50,10 @@ export const CreateBoardPage = () => {
         await dispatch(getTemplatesOfBoardAsync());
     }
     const createBoard = async (request: CreateBoardType) => {
-        const response = await dispatch(createBoardAsync({
-            userId: user!.id,
+        if (user.current != null) {
+
+        } const response = await dispatch(createBoardAsync({
+            userId: user.current!.id,
             name: request.name,
             tag: request.tag === '' || request.tag === null ? null : request.tag,
             isTeamBoard: false,
@@ -54,7 +63,16 @@ export const CreateBoardPage = () => {
         if (createBoardAsync.fulfilled.match(response)) {
             navigate("/boards")
         }
+
     }
+    useEffect(() => {
+        if (authMethod) {
+            if (authMethod === "jwt")
+                user.current = userJwt;
+            else
+                user.current = userSolana;
+        }
+    }, [authMethod])
 
     useLayoutEffect(() => {
         getTemplates();
@@ -97,6 +115,7 @@ export const CreateBoardPage = () => {
                                 setValue("boadrTemplateId", template.id);
                             }}
                             style={{ border: selectedTemplate && selectedTemplate.id == template.id ? "2px solid #6822ca" : "none" }}
+                            key={template.id}
                         >
                             <img src={`${baseUrl}/images/dashboard_templates/${template.imagePath}.jpg`} alt="" />
                         </div>
@@ -131,7 +150,7 @@ export const CreateBoardPage = () => {
             </div>
             <div className='buttons'>
                 <button type='submit'>Create</button>
-                <button>Cancel</button>
+                <button type='button' onClick={() => navigate("/boards")}>Cancel</button>
             </div>
         </form>
     </div>)

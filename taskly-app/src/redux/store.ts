@@ -5,7 +5,8 @@ import { boardReducer } from './slices/boardSlice.ts';
 import { tableReducer } from "./slices/tableSlice.ts";
 import { cardReducer } from './slices/cardSlice.ts';
 import { geminiReducer } from './slices/geminiSlice.ts';
-import {feedbackReducer} from "./slices/feedbackSlice.ts";
+import { feedbackReducer } from "./slices/feedbackSlice.ts";
+import { achievementsReducer } from './slices/achievementsSlice.ts';
 
 const reducers = combineReducers({
     authenticate: authenticateReducer,
@@ -14,7 +15,8 @@ const reducers = combineReducers({
     table: tableReducer,
     card: cardReducer,
     gemini: geminiReducer,
-    feedback: feedbackReducer
+    feedback: feedbackReducer,
+    achievements: achievementsReducer
 });
 
 export const store = configureStore({

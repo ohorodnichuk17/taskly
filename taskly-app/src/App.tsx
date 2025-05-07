@@ -28,10 +28,7 @@ import { CreateBoardPage } from './components/boards/CreateBoardPage.tsx'
 import SetUserNameForSolanaUser from "./components/authentication/SetUserNameForSolanaUser.tsx";
 import CreateFeedbackPage from "./components/feedback/CreateFeedbackPage.tsx";
 import FeedbacksPage from "./components/feedback/FeedbacksPage.tsx";
-<<<<<<< HEAD
-
-=======
->>>>>>> d03efc386315301a4c81be8b9cc25da9c7260788
+import { AchievementsPage } from './components/achievements/AchievementsPage.tsx'
 
 
 function App() {
@@ -39,6 +36,7 @@ function App() {
   const dispatch = useAppDispatch();
 
   const isLogin = useRootState(s => s.authenticate.isLogin);
+  const isAuthenticated = useRootState(s => s.authenticate.isAuthenticated);
 
   const checkAuthToken = async () => {
     const authMethod = localStorage.getItem("authMethod") as "jwt" | "solana" | null;
@@ -85,6 +83,9 @@ function App() {
               <Route path="/tables/:tableId/add-member" element={<AddMemberToTablePage />} />
               <Route path="/tables/:tableId/members" element={<ListOfMembersInTable />} />
               <Route path="/feedbacks/create" element={<CreateFeedbackPage />} />
+            </>)}
+            {isLogin && isAuthenticated === true && (<>
+              <Route path='/achievements' element={<AchievementsPage />} />
             </>)}
             <Route path='/boards' element={<Navigate to="/authentication/login" />} />
 

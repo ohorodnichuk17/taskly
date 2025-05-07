@@ -1,9 +1,5 @@
 import { TypedUseSelectorHook } from "react-redux";
-<<<<<<< HEAD
-import type { RootState } from "../redux/store.ts";
-=======
 import type { RootState } from "./store.ts";
->>>>>>> d03efc386315301a4c81be8b9cc25da9c7260788
 export declare const useRootState: import("react-redux").UseSelector<{
     authenticate: import("../interfaces/authenticateInterfaces.ts").IAuthenticateInitialState;
     general: import("../interfaces/generalInterface.ts").IGeneralInitialState;

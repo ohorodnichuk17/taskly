@@ -1,4 +1,5 @@
 import exit_icon from '../../assets/icon/exit_icon.png';
+import { useRootState } from '../../redux/hooks';
 import '../../styles/general/hide-menu-container-style.scss';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -17,6 +18,7 @@ export interface IHideMenuContainer {
 
 export const HideMenuContainer = (props: IHideMenuContainer) => {
 
+    const isLogin = useRootState(s => s.authenticate.isLogin);
     const [hideMenuAnimation, setHideMenuAnimation] = useState<string>("open-hide-menu")
 
     return (<div className={`hide-menu-container ${hideMenuAnimation}`}>
@@ -41,5 +43,17 @@ export const HideMenuContainer = (props: IHideMenuContainer) => {
                 >{item.name}</Link>
             ))}
         </nav>
+        {isLogin == true ? <>
+
+        </> :
+            <div className='hide-menu-authentication-buttons'>
+                <button>
+                    <Link to="/authentication/login">Sign in</Link>
+                </button>
+                <button>
+                    <Link to="/authentication/register">Sign up</Link>
+                </button>
+            </div>
+        }
     </div>)
 }

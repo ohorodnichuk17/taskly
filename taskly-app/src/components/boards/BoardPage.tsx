@@ -34,6 +34,7 @@ import { InformationAlert } from "../general/InformationAlert";
 import { addInformation } from "../../redux/slices/generalSlice";
 import { TypeOfInformation } from "../../interfaces/generalInterface";
 import { GeneralMode } from "../general/GeneralModal";
+import { ISolanaUserProfile, IUserProfile } from "../../interfaces/authenticateInterfaces";
 
 
 
@@ -66,6 +67,10 @@ export const BoardPage = () => {
     const cardDescription = useRef<string | null>(null);
     const boardMembersRef = useRef<HTMLDivElement | null>(null);
     const membersRef = useRef<IMemberOfBoard[] | null>(null);
+    const user = useRef<IUserProfile | ISolanaUserProfile | null>(null);
+
+    const userJwt = useRootState((s) => s.authenticate.userProfile);
+    const userSolana = useRootState((s) => s.authenticate.solanaUserProfile);
 
 
     /*const conn = new HubConnectionBuilder()
@@ -76,10 +81,11 @@ export const BoardPage = () => {
     const { boardId } = useParams();
     const navigate = useNavigate();
 
+    const authMethod = useRootState((s) => s.authenticate.authMethod);
     const information = useRootState((s) => s.general.information);
     const cardList = useRootState(s => s.board.cardList);
-    const userId = useRootState(s => s.authenticate.userProfile?.id);
-    const user = useRootState(s => s.authenticate.userProfile);
+    //const userId = useRootState(s => s.authenticate.userProfile?.id);
+    //const user = useRootState(s => s.authenticate.userProfile);
     const cardsOfLeavedUser = useRootState(s => s.board.cardsOfLeavedUser);
     const cardsOfRemovedUser = useRootState(s => s.board.cardsOfRemovedUser);
     const membersOfBoardList = useRootState(s => s.board.membersOfBoard);
@@ -143,6 +149,15 @@ export const BoardPage = () => {
             membersRef.current = membersOfBoard;
         }
     }, [membersOfBoard])
+
+    useEffect(() => {
+        if (authMethod) {
+            if (authMethod === "jwt")
+                user.current = userJwt;
+            else
+                user.current = userSolana;
+        }
+    }, [authMethod])
 
     useEffect(() => {
         if (cardsOfLeavedUser !== null) {
@@ -273,7 +288,7 @@ export const BoardPage = () => {
             toCardListId: string,
             isCompleated: boolean
         }) => {
-            if (userId != model.userId) {
+            if (user.current && user.current.id !== model.userId) {
                 transferCardToAnotherCardList(model);
             }
 
@@ -283,7 +298,7 @@ export const BoardPage = () => {
             cardId: string,
             userId: string
         }) => {
-            if (userId != model.userId) {
+            if (user.current && user.current.id !== model.userId) {
                 removeCardFromCardList(model);
             }
         })
@@ -296,7 +311,7 @@ export const BoardPage = () => {
                 deadline: Date | null | undefined
             }
         }) => {
-            if (userId != model.userId) {
+            if (user.current && user.current.id !== model.userId) {
                 changeCard({
                     cardListId: model.cardListId,
                     cardId: model.cardId,
@@ -310,7 +325,7 @@ export const BoardPage = () => {
             cardId: string,
             userId: string
         }) => {
-            if (userId != model.userId) {
+            if (user.current && user.current.id !== model.userId) {
                 leaveCard({
                     cardListId: model.cardListId,
                     cardId: model.cardId
@@ -324,7 +339,7 @@ export const BoardPage = () => {
             userName: string,
             userAvatar: string
         }) => {
-            if (userId != model.userId) {
+            if (user.current && user.current.id !== model.userId) {
                 takeCard({
                     cardListId: model.cardListId,
                     cardId: model.cardId,
@@ -391,7 +406,7 @@ export const BoardPage = () => {
             removedUserEmail: string,
             userEmailWhoRemoved: string
         }) => {
-            if (userId !== model.removedUserId) {
+            if (user.current && user.current.id !== model.removedUserId) {
                 dispatch(addInformation({
                     message: `${model.removedUserEmail} has been removed from board by ${model.userEmailWhoRemoved}`,
                     type: TypeOfInformation.Success
@@ -415,13 +430,19 @@ export const BoardPage = () => {
 
 
         await conn.current.start();
-        await conn.current.invoke("ConnectToTeamBoard", { userId, boardId });
+        await conn.current.invoke("ConnectToTeamBoard", {
+            userId: user.current && user.current.id,
+            boardId: boardId
+        });
         //await conn.stop()
     }
 
     const endConnection = async () => {
         if (conn.current != null) {
-            await conn.current.invoke("DisconnectFromTeamBoard", { userId, boardId });
+            await conn.current.invoke("DisconnectFromTeamBoard", {
+                userId: user.current && user.current.id,
+                boardId: boardId
+            });
             await conn.current.stop();
         }
 
@@ -747,12 +768,12 @@ export const BoardPage = () => {
             cardListId: cardLists!.find(cardList => cardList.title === todo_card_list)!.id,
             task: request.task,
             deadline: request.deadline,
-            userId: request.isPublicCard === true ? null : userId!
+            userId: request.isPublicCard === true ? null : user.current ? user.current.id : null
         }
         const response = await dispatch(createCardAsync(model));
 
         if (createCardAsync.fulfilled.match(response)) {
-            if (conn.current) {
+            if (conn.current && user.current) {
                 await conn.current.send("AddNewCard", {
                     boardId: boardId,
                     cardModel: {
@@ -760,9 +781,9 @@ export const BoardPage = () => {
                         cardId: response.payload,
                         task: request.task,
                         deadline: request.deadline,
-                        userId: request.isPublicCard === true ? null : userId!,
-                        userAvatar: request.isPublicCard === true ? null : user?.avatarName,
-                        userName: request.isPublicCard === true ? null : user?.email
+                        userId: request.isPublicCard === true ? null : user.current.id,
+                        userAvatar: request.isPublicCard === true ? null : user.current.avatarName,
+                        userName: request.isPublicCard === true ? null : userJwt !== null ? (user.current as IUserProfile).email : (user.current as ISolanaUserProfile).userName
                     }
                 });
             }
@@ -800,13 +821,13 @@ export const BoardPage = () => {
                 message: `${response.payload} has been add to board.`,
                 type: TypeOfInformation.Success
             }));*/
-            if (conn.current) {
+            if (conn.current && user.current) {
                 conn.current.send("UserHasBeenAddToBoard", {
                     boardId: boardId!,
                     addedUserId: response.payload.userId,
                     addedUserEmail: response.payload.email,
                     addedUserAvatarName: response.payload.avatarName,
-                    userEmailWhoAdd: user!.email
+                    userEmailWhoAdd: userJwt !== null ? (user.current as IUserProfile).email : (user.current as ISolanaUserProfile).userName
                 })
             }
             setOpenedAddMember(false);
@@ -826,12 +847,12 @@ export const BoardPage = () => {
         }));
 
         if (removeMemberFromBoardAsync.fulfilled.match(response)) {
-            if (conn.current) {
+            if (conn.current && user.current) {
                 conn.current.send("UserHasBeenRemovedFromBoard", {
                     boardId: boardId,
                     removedUserId: removedUserId,
                     removedUserEmail: removedUserEmail,
-                    userEmailWhoRemoved: user!.email,
+                    userEmailWhoRemoved: userJwt !== null ? (user.current as IUserProfile).email : (user.current as ISolanaUserProfile).userName,
                     cardsId: response.payload
                 });
             }
@@ -866,7 +887,7 @@ export const BoardPage = () => {
                     <div className="board-member-item" key={element.userId}>
                         <img src={`${baseUrl}/images/avatars/${element.avatarName}.png`} alt={`Avatar of ${element.email}`} />
                         <p>{element.email}</p>
-                        {element.userId !== userId &&
+                        {user.current && element.userId !== user.current.id &&
                             <div className="buttons">
                                 <button
                                     onClick={() => handleRemoveMemberFromBoard(element.userId, element.email)}
@@ -956,15 +977,15 @@ export const BoardPage = () => {
                                     isCompleated: element.title === done_card_list
                                 })
 
-                                if (conn.current)
+                                if (conn.current && user.current)
                                     await conn.current.invoke("TransferCardToAnotherCardList", {
-                                        userId: userId,
+                                        userId: user.current.id,
                                         cardId: dragenCard.cardId,
                                         fromCardListId: dragenCard.fromCardListId,
                                         toCardListId: element.id,
                                         boardId: boardId,
                                         isCompleated: element.title === done_card_list
-                                    })
+                                    }).then(res => console.log("RESPONSE - ", res));
 
 
                                 setDragenCard(null);
@@ -977,8 +998,7 @@ export const BoardPage = () => {
                     >
                         {element.cards && element.cards.map((element_card) => (
                             <div className="card" key={element_card.id} onDragStart={() => {
-                                if (element_card.userId === null ||
-                                    (element_card.userId !== null && element_card.userId === userId)) {
+                                if (user.current !== null && element_card.userId !== null && element_card.userId === user.current.id) {
                                     setDragenCard({
                                         cardId: element_card.id,
                                         fromCardListId: element.id
@@ -987,8 +1007,7 @@ export const BoardPage = () => {
 
                             }}
                                 draggable={
-                                    (element_card.userId === null ||
-                                        (element_card.userId !== null && element_card.userId === userId)) &&
+                                    (user.current !== null && element_card.userId !== null && element_card.userId === user.current!.id) &&
                                     element_card.isCompleated !== true}
                             >
                                 <div className="card-task">
@@ -1006,7 +1025,7 @@ export const BoardPage = () => {
                                                     description: cardDescription.current,
                                                     deadline: null
                                                 });
-                                                if (conn.current)
+                                                if (conn.current && user.current)
                                                     await conn.current.send("ChangeCardInformation",
                                                         {
                                                             changeProps: {
@@ -1016,7 +1035,7 @@ export const BoardPage = () => {
                                                             boardId: boardId,
                                                             cardListId: element.id,
                                                             cardId: element_card.id,
-                                                            userId: userId
+                                                            userId: user.current.id
                                                         }
                                                     )
 
@@ -1034,10 +1053,10 @@ export const BoardPage = () => {
                                     <div className="card-deadline"
                                         style={{
                                             backgroundColor: element_card.isCompleated === true ? "deepskyblue" : (Date.parse(element_card.endTime.toString()) < Date.now()) ? "red" : "green",
-                                            cursor: element_card.userId === userId ? "pointer" : "default"
+                                            cursor: user.current && element_card.userId === user.current.id ? "pointer" : "default"
                                         }}
                                         onClick={() => {
-                                            if (element_card.userId === userId && element_card.isCompleated === false) {
+                                            if (user.current && element_card.userId === user.current.id && element_card.isCompleated === false) {
                                                 if (changeCardProps && changeCardProps.prop === "deadline" && changeCardProps.cardId === element_card.id) return;
                                                 setChangeCardProps({
                                                     prop: "deadline",
@@ -1068,7 +1087,7 @@ export const BoardPage = () => {
                                                         currentYear.setFullYear(currentYear.getFullYear() + 1);
                                                         return currentYear;
                                                     })(), "yyyy-MM-dd")) {
-                                                        if (conn.current)
+                                                        if (conn.current && user.current)
                                                             await conn.current.send("ChangeCardInformation", {
                                                                 changeProps: {
                                                                     description: null,
@@ -1077,7 +1096,7 @@ export const BoardPage = () => {
                                                                 boardId: boardId,
                                                                 cardListId: element.id,
                                                                 cardId: element_card.id,
-                                                                userId: userId
+                                                                userId: user.current.id
                                                             })
 
                                                         changeCard({
@@ -1095,7 +1114,7 @@ export const BoardPage = () => {
                                         }
 
                                     </div>
-                                    {element_card.userId !== null && element_card.userId === userId ?
+                                    {user.current && element_card.userId !== null && element_card.userId === user.current.id ?
                                         <div className="card-settings-buttons">
                                             <button
                                                 className={changeCardProps &&
@@ -1115,29 +1134,30 @@ export const BoardPage = () => {
                                             </button>
                                             <button
                                                 onClick={async () => {
-                                                    if (conn.current)
+                                                    if (conn.current && user.current) {
                                                         await conn.current.send("RemoveCardFromCardList", {
                                                             boardId: boardId,
                                                             cardListId: element.id,
                                                             cardId: element_card.id,
-                                                            userId: userId!
+                                                            userId: user.current.id
                                                         })
-                                                    removeCardFromCardList({
-                                                        cardListId: element.id,
-                                                        cardId: element_card.id,
-                                                        userId: userId!
-                                                    })
+                                                        removeCardFromCardList({
+                                                            cardListId: element.id,
+                                                            cardId: element_card.id,
+                                                            userId: user.current.id
+                                                        });
+                                                    }
                                                 }}>
                                                 <img src={trash_can_icon} alt="Remove card" />
                                             </button>
                                             <button
                                                 onClick={async () => {
-                                                    if (conn.current) {
+                                                    if (conn.current && user.current) {
                                                         await conn.current.send("LeaveCard", {
                                                             boardId: boardId,
                                                             cardListId: element.id,
                                                             cardId: element_card.id,
-                                                            userId: userId!
+                                                            userId: user.current.id
                                                         });
                                                         leaveCard({
                                                             cardListId: element.id,
@@ -1184,22 +1204,22 @@ export const BoardPage = () => {
                                                 }
                                             </div> : <div className="take-card">
                                                 <button onClick={async () => {
-                                                    if (conn.current !== null) {
+                                                    if (conn.current !== null && user.current) {
                                                         await conn.current.send("TakeCard", {
                                                             boardId: boardId,
                                                             cardListId: element.id,
                                                             cardId: element_card.id,
-                                                            userId: userId,
-                                                            userName: user!.email,
-                                                            userAvatar: user!.avatarName
+                                                            userId: user.current.id,
+                                                            userName: userJwt !== null ? (user.current as IUserProfile).email : (user.current as ISolanaUserProfile).userName,
+                                                            userAvatar: user.current.avatarName
                                                         });
 
                                                         takeCard({
                                                             cardListId: element.id,
                                                             cardId: element_card.id,
-                                                            userId: userId!,
-                                                            userName: user!.email,
-                                                            userAvatar: user!.avatarName
+                                                            userId: user.current.id,
+                                                            userName: userJwt !== null ? (user.current as IUserProfile).email : (user.current as ISolanaUserProfile).userName,
+                                                            userAvatar: user.current.avatarName
                                                         })
                                                     }
                                                 }}>

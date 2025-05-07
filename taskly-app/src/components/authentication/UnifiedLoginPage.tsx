@@ -53,6 +53,7 @@ export const UnifiedLoginPage = () => {
             if (!solanaWalletAuthAsync.fulfilled.match(resultAction)) {
             } else {
                const userData = resultAction.payload;
+
                if (userData.userName) {
                   navigate("/");
                } else {

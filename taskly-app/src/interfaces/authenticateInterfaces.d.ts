@@ -6,7 +6,6 @@ export declare enum StatusEnums {
 export interface IAuthenticateInitialState {
     user: IUser | null;
     userProfile: IUserProfile | null;
-    editUserProfile: IEditUserProfile | null;
     solanaUserProfile: ISolanaUserProfile | null;
     editAvatar: IEditAvatar | null;
     verificationEmail: string | null;

@@ -1,6 +1,10 @@
 import {
     IAuthenticateInitialState,
-    IAvatar, IEditAvatar, ISolanaUserProfile,
+    IAvatar,
+    IEditAvatar,
+    ISolanaUserProfile,
+    ICustomJwtPayload,
+    IJwtInformation, ISetUserNameForSolanaUser,
     IUserProfile,
 } from "../../interfaces/authenticateInterfaces";
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
@@ -13,25 +17,10 @@ import {
     logoutAsync,
     registerAsync,
     sendRequestToChangePasswordAsync,
-    sendVerificationCodeAsync, solanaLogoutAsync, solanaWalletAuthAsync,
+    sendVerificationCodeAsync, setUserNameForSolanaUserAsync, solanaLogoutAsync, solanaWalletAuthAsync,
     verificateEmailAsync
 } from "../actions/authenticateAction.ts";
 
-/*import { jwtDecode } from "jwt-decode";
-import { jwtDecode } from "jwt-decode";
-
-
-const decodeJWT = (token: string) => {
-    const decode = jwtDecode(token) as ICustomJwtPayload;
-
-    return {
-        id: decode.id,
-        email: decode.email,
-        startTime: new Date(decode.nbf! * 1000).toISOString(),
-        endTime: new Date(decode.exp! * 1000).toISOString()
-    } as IJwtInformation
-
-}*/
 const initialState: IAuthenticateInitialState = {
     authMethod: localStorage.getItem("authMethod") as "jwt" | "solana" | null,
     user: null,
@@ -69,7 +58,7 @@ const initialState: IAuthenticateInitialState = {
     keyToChangePassword: null,
     emailOfUserWhoWantToChangePassword: null,
     token: null,
-    isAuthenticated: false,
+    isAuthenticated: (!localStorage.getItem("isAuthenticated") ? false : true),
     //jwtInformation: null
 }
 
@@ -156,42 +145,18 @@ const authenticateSlice = createSlice({
                 }*/
                 localStorage.removeItem("isLogin");
                 state.isLogin = false;
+                state.isAuthenticated = false;
                 if (localStorage.getItem("user_profile_id") !== null)
                     localStorage.removeItem("user_profile_id");
                 if (localStorage.getItem("user_profile_email") !== null)
                     localStorage.removeItem("user_profile_email");
                 if (localStorage.getItem("user_profile_avatar") !== null)
                     localStorage.removeItem("user_profile_avatar");
+                if (localStorage.getItem("isAuthenticated") !== null)
+                    localStorage.removeItem("isAuthenticated");
             })
             .addCase(checkHasUserSentRequestToChangePasswordAsync.fulfilled, (state, action: PayloadAction<string | null>) => {
                 state.emailOfUserWhoWantToChangePassword = action.payload === "" ? null : action.payload;
-            })
-            .addCase(checkHasUserSentRequestToChangePasswordAsync.rejected, () => {
-                /*if (action.payload) {
-                    state.error = action.payload.errors[0].code;
-                }
-                else {
-                    state.error = action.error.message || "Uncnown";
-                }*/
-            })
-            .addCase(sendRequestToChangePasswordAsync.rejected, () => {
-                /*if (action.payload) {
-                    state.error = action.payload.errors[0].code;
-                }
-                else {
-                    state.error = action.error.message || "Uncnown";
-                }*/
-            })
-            .addCase(changePasswordAsync.fulfilled, () => {
-
-            })
-            .addCase(changePasswordAsync.rejected, () => {
-                /*if (action.payload) {
-                    state.error = action.payload.errors[0].code;
-                }
-                else {
-                    state.error = action.error.message || "Uncnown";
-                }*/
             })
             .addCase(logoutAsync.fulfilled, (state) => {
                 state.authMethod = null;
@@ -218,6 +183,7 @@ const authenticateSlice = createSlice({
                 localStorage.removeItem("user_profile_publicKey");
                 localStorage.removeItem("user_profile_avatar");
                 localStorage.removeItem("user_profile_userName");
+                localStorage.removeItem("isAuthenticated");
             })
             .addCase(solanaLogoutAsync.rejected, () => {
             })
@@ -244,6 +210,7 @@ const authenticateSlice = createSlice({
                 };
                 state.authMethod = "solana";
                 localStorage.setItem("authMethod", "solana");
+                localStorage.setItem("isAuthenticated", "true");
             })
             .addCase(solanaWalletAuthAsync.rejected, () => {
                 if (localStorage.getItem("user_profile_id") !== null)
@@ -274,6 +241,7 @@ const authenticateSlice = createSlice({
                 }*/
                 localStorage.removeItem("isLogin");
                 state.isLogin = false;
+                state.isAuthenticated = false;
                 if (localStorage.getItem("user_profile_id") !== null)
                     localStorage.removeItem("user_profile_id");
                 if (localStorage.getItem("user_profile_publicKey") !== null)
@@ -282,6 +250,8 @@ const authenticateSlice = createSlice({
                     localStorage.removeItem("user_profile_userName");
                 if (localStorage.getItem("user_profile_avatar") !== null)
                     localStorage.removeItem("user_profile_avatar");
+                if (localStorage.getItem("isAuthenticated") !== null)
+                    localStorage.removeItem("isAuthenticated");
             });
     }
 })
