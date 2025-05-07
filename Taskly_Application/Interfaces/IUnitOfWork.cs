@@ -16,4 +16,5 @@ public interface IUnitOfWork
     IAchievementRepository Achievements { get; }
     IChallengeRepository Challenges { get; }
     IInviteRepository Invites { get; }
+    IBadgeRepository Badges { get; }
 }
