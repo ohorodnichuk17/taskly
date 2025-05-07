@@ -112,6 +112,25 @@ public class AuthenticationRepository(UserManager<UserEntity> userManager, Taskl
         return user;
     }
 
+    public async Task<string> GenerateReferralCode()
+    {
+        string code;
+        bool exists;
+
+        do
+        {
+            code = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 6).ToUpper();
+            exists = await tasklyDbContext.Users.AnyAsync(u => u.ReferralCode == code);
+        } while (exists);
+
+        return code;
+    }
+
+    public async Task<UserEntity> GetUserByReferralCodeAsync(string referralCode) =>
+        await _userEntity
+            .Include(u => u.Avatar)
+            .FirstOrDefaultAsync(u => u.ReferralCode == referralCode);
+
     private async Task<UserEntity?> GetUserByConditionAsync(Expression<Func<UserEntity, bool>> predicate)
     {
         return await _userEntity

@@ -41,6 +41,19 @@ public class FluentUserConfig : IEntityTypeConfiguration<UserEntity>
             .WithOne(f => f.User)         
             .HasForeignKey(f => f.UserId);
 
+        builder.HasMany(u => u.Challenges)
+            .WithOne(u => u.User)
+            .HasForeignKey(u => u.UserId);
+
+        builder.HasMany(u => u.Badges)
+            .WithOne(ub => ub.User)
+            .HasForeignKey(u => u.UserId);
+        
+        builder.HasOne(u => u.UserLevel) 
+            .WithOne(ul => ul.User)
+            .HasForeignKey<UserLevelEntity>(ul => ul.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+        
         builder.HasMany(u => u.Achievements)
             .WithMany(a => a.Users)
             .UsingEntity<Dictionary<string, object>>(
@@ -48,5 +61,8 @@ public class FluentUserConfig : IEntityTypeConfiguration<UserEntity>
                 j => j.HasOne<AchievementEntity>().WithMany().HasForeignKey("AchievementId"),
                 j => j.HasOne<UserEntity>().WithMany().HasForeignKey("UserId")
             );
+
+        builder.Property(u => u.SolBalance)
+            .HasDefaultValue(0.0);
     }
 }

@@ -2,7 +2,7 @@ using Taskly_Application.Interfaces.IRepository;
 
 namespace Taskly_Application.Interfaces;
 
-public interface IUnitOfWork
+public interface IUnitOfWork 
 {
     Task SaveChangesAsync(string errorMessage);
     IAuthenticationRepository Authentication { get; }
@@ -14,4 +14,8 @@ public interface IUnitOfWork
     ICardRepository Cards { get; }
     IFeedbackRepository Feedbacks { get; }
     IAchievementRepository Achievements { get; }
+    IChallengeRepository Challenges { get; }
+    IInviteRepository Invites { get; }
+    IBadgeRepository Badges { get; }
+    IUserLevelRepository UserLevels { get; }
 }

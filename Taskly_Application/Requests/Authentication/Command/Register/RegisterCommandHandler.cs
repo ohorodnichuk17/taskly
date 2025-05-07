@@ -1,7 +1,6 @@
 ﻿using ErrorOr;
 using MediatR;
 using Taskly_Application.Interfaces;
-using Taskly_Application.Interfaces.IRepository;
 using Taskly_Application.Interfaces.IService;
 using Taskly_Domain.Entities;
 
@@ -17,13 +16,13 @@ public class RegisterCommandHandler(
 
         if (avatar == null)
             return Error.NotFound("Avatar not found");
-
+        
         var newUser = new UserEntity()
         {
             Id = Guid.NewGuid(),
             Email = request.Email,
             UserName = request.Email,
-            AvatarId = avatar.Id
+            AvatarId = avatar.Id,
         };
 
         var result = await unitOfWork.Authentication.CreateNewUser(newUser, request.Password);

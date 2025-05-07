@@ -197,6 +197,33 @@ namespace Taskly_Infrastructure.Migrations
                     b.ToTable("Avatars");
                 });
 
+            modelBuilder.Entity("Taskly_Domain.Entities.BadgeEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Icon")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int>("Level")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<int>("RequiredTasksToReceiveBadge")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Badges");
+                });
+
             modelBuilder.Entity("Taskly_Domain.Entities.BoardEntity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -303,6 +330,63 @@ namespace Taskly_Infrastructure.Migrations
                     b.ToTable("CardLists");
                 });
 
+            modelBuilder.Entity("Taskly_Domain.Entities.ChallengeEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<bool>("IsBooked")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<bool>("IsCompleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<double>("Points")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("float(18)");
+
+                    b.Property<string>("RuleKey")
+                        .IsRequired()
+                        .HasMaxLength(70)
+                        .HasColumnType("nvarchar(70)");
+
+                    b.Property<int>("TargetAmount")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("UserEntityId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserEntityId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Challenges");
+                });
+
             modelBuilder.Entity("Taskly_Domain.Entities.ChangePasswordKeyEntity", b =>
                 {
                     b.Property<Guid>("Key")
@@ -357,7 +441,8 @@ namespace Taskly_Infrastructure.Migrations
 
                     b.Property<string>("Review")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -367,6 +452,32 @@ namespace Taskly_Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Feedbacks");
+                });
+
+            modelBuilder.Entity("Taskly_Domain.Entities.InviteEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<Guid>("InvitedByUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("RegisteredUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InvitedByUserId");
+
+                    b.HasIndex("RegisteredUserId");
+
+                    b.ToTable("Invites");
                 });
 
             modelBuilder.Entity("Taskly_Domain.Entities.TableEntity", b =>
@@ -429,6 +540,24 @@ namespace Taskly_Infrastructure.Migrations
                     b.ToTable("TimeRanges");
                 });
 
+            modelBuilder.Entity("Taskly_Domain.Entities.UserBadgeEntity", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("BadgeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("DateAwarded")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("UserId", "BadgeId");
+
+                    b.HasIndex("BadgeId");
+
+                    b.ToTable("UserBadges");
+                });
+
             modelBuilder.Entity("Taskly_Domain.Entities.UserEntity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -478,8 +607,16 @@ namespace Taskly_Infrastructure.Migrations
                     b.Property<string>("PublicKey")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ReferralCode")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<double?>("SolBalance")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
@@ -501,6 +638,32 @@ namespace Taskly_Infrastructure.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("Taskly_Domain.Entities.UserLevelEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("CompletedTasks")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DataAchieved")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Level")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("UserLevels");
                 });
 
             modelBuilder.Entity("Taskly_Domain.Entities.VerificationEmailEntity", b =>
@@ -679,6 +842,28 @@ namespace Taskly_Infrastructure.Migrations
                     b.Navigation("Board");
                 });
 
+            modelBuilder.Entity("Taskly_Domain.Entities.ChallengeEntity", b =>
+                {
+                    b.HasOne("Taskly_Domain.Entities.TimeRangeEntity", "TimeRange")
+                        .WithOne()
+                        .HasForeignKey("Taskly_Domain.Entities.ChallengeEntity", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Taskly_Domain.Entities.UserEntity", null)
+                        .WithMany("Challenges")
+                        .HasForeignKey("UserEntityId");
+
+                    b.HasOne("Taskly_Domain.Entities.UserEntity", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("TimeRange");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Taskly_Domain.Entities.CommentEntity", b =>
                 {
                     b.HasOne("Taskly_Domain.Entities.CardEntity", null)
@@ -696,6 +881,25 @@ namespace Taskly_Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Taskly_Domain.Entities.InviteEntity", b =>
+                {
+                    b.HasOne("Taskly_Domain.Entities.UserEntity", "InvitedByUser")
+                        .WithMany("SentInvites")
+                        .HasForeignKey("InvitedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Taskly_Domain.Entities.UserEntity", "RegisteredUser")
+                        .WithMany("ReceivedInvites")
+                        .HasForeignKey("RegisteredUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("InvitedByUser");
+
+                    b.Navigation("RegisteredUser");
                 });
 
             modelBuilder.Entity("Taskly_Domain.Entities.TableItemEntity", b =>
@@ -717,6 +921,25 @@ namespace Taskly_Infrastructure.Migrations
                     b.Navigation("TimeRange");
                 });
 
+            modelBuilder.Entity("Taskly_Domain.Entities.UserBadgeEntity", b =>
+                {
+                    b.HasOne("Taskly_Domain.Entities.BadgeEntity", "Badge")
+                        .WithMany()
+                        .HasForeignKey("BadgeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Taskly_Domain.Entities.UserEntity", "User")
+                        .WithMany("Badges")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Badge");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Taskly_Domain.Entities.UserEntity", b =>
                 {
                     b.HasOne("Taskly_Domain.Entities.AvatarEntity", "Avatar")
@@ -725,6 +948,17 @@ namespace Taskly_Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Avatar");
+                });
+
+            modelBuilder.Entity("Taskly_Domain.Entities.UserLevelEntity", b =>
+                {
+                    b.HasOne("Taskly_Domain.Entities.UserEntity", "User")
+                        .WithOne("UserLevel")
+                        .HasForeignKey("Taskly_Domain.Entities.UserLevelEntity", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("UserAchievements", b =>
@@ -819,7 +1053,17 @@ namespace Taskly_Infrastructure.Migrations
 
             modelBuilder.Entity("Taskly_Domain.Entities.UserEntity", b =>
                 {
+                    b.Navigation("Badges");
+
+                    b.Navigation("Challenges");
+
                     b.Navigation("Feedbacks");
+
+                    b.Navigation("ReceivedInvites");
+
+                    b.Navigation("SentInvites");
+
+                    b.Navigation("UserLevel");
                 });
 #pragma warning restore 612, 618
         }

@@ -8,4 +8,6 @@ public interface ITableItemsRepository : IRepository<TableItemEntity>
         DateTime endTime, string? label);
     
     Task<bool> MarkAsCompletedAsync(Guid id, bool isCompleted);
+    
+    Task<int> CountCompletedTasksAsync(Guid userId);
 }
