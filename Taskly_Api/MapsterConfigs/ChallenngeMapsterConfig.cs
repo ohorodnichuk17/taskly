@@ -30,6 +30,7 @@ public class ChallenngeMapsterConfig : IRegister
             .Map(src => src.IsActive, desp => desp.IsActive)
             .Map(src => src.RuleKey, desp => desp.RuleKey)
             .Map(src => src.TargetAmount, desp => desp.TargetAmount)
+            .Map(src => src.Points, desp => desp.Points)
             .Map(src => src.UserId, desp => desp.UserId)
             .Map(src => src.User, desp => desp.User.Adapt<UserForChallengeResponse>());
     }
