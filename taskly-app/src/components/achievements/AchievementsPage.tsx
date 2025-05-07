@@ -1,5 +1,5 @@
 import "../../styles/achievements/achievements-style.scss";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getAllAchievementsAsync } from "../../redux/actions/achievementsActions";
 import { useAppDispatch, useRootState } from "../../redux/hooks"
 import { IAchievement } from "../../interfaces/achievementsInterface";
