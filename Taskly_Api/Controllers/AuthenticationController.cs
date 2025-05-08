@@ -19,7 +19,7 @@ using Taskly_Application.Requests.SolanaWallet.Authentication.Command.SetUserNam
 using Taskly_Application.Requests.SolanaWallet.Authentication.Query.GenerateJwtToken;
 using Taskly_Application.Requests.SolanaWallet.Authentication.Query.GetUserByPublicKey;
 using System.Reflection.Metadata;
-using Taskly_Application.Requests.SolanaWallet.Authentication.Query.GetUserPublicKey;
+using Taskly_Application.Requests.SolanaWallet.Authentication.Query.GetUserReferralCode;
 using Taskly_Domain;
 
 namespace Taskly_Api.Controllers
@@ -195,6 +195,17 @@ namespace Taskly_Api.Controllers
             return result.Match(result => Ok(mapper.Map<SetUserNameForSolanaUserResponse>(result)),
                 errors => Problem(errors));
         }
+        
+        [HttpGet("get-solana-user-referral-code/{userId:guid}")]
+        [Authorize]
+        public async Task<IActionResult> GetSolanaUserReferralCode([FromRoute] Guid userId)
+        {
+            var user = await sender.Send(new GetUserReferralCodeQuery(userId));
+            return user.Match(
+                referralCode => Ok(referralCode),
+                errors => Problem(errors)
+            );
+        }
 
         [HttpGet("exit")]
         [Authorize]
@@ -202,17 +213,6 @@ namespace Taskly_Api.Controllers
         {
             Response.Cookies.Delete("X-JWT-Token");
             return Ok();
-        }
-
-        [HttpGet("get-solana-user-public-key/{userId:guid}")]
-        [Authorize]
-        public async Task<IActionResult> GetSolanaUserPublicKey([FromRoute] Guid userId)
-        {
-            var user = await sender.Send(new GetUserPublicKeyQuery(userId));
-            return user.Match(
-                publicKey => Ok(publicKey),
-                errors => Problem(errors)
-            );
         }
     }
 }
