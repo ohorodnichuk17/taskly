@@ -24,4 +24,5 @@ public interface IAuthenticationRepository : IRepository<UserEntity>
     Task<string> GenerateReferralCode();
     Task<UserEntity> GetUserByReferralCodeAsync(string referralCode);
     Task<string?> GetUserReferralCodeAsync(Guid userId);
+    Task<string> GetUserRoleByIdAsync(Guid UserId);
 }

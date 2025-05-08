@@ -21,6 +21,7 @@ using Taskly_Application.Requests.SolanaWallet.Authentication.Query.GetUserByPub
 using System.Reflection.Metadata;
 using Taskly_Application.Requests.SolanaWallet.Authentication.Query.GetUserReferralCode;
 using Taskly_Domain;
+using Taskly_Application.Requests.SolanaWallet.Authentication.Query.GetRoleByUserId;
 
 namespace Taskly_Api.Controllers
 {
@@ -73,9 +74,10 @@ namespace Taskly_Api.Controllers
                 });
 
                 var user = await sender.Send(new GetInformationAboutUserQuery(loginRequest.Email));
+                var role = await sender.Send(new GetRoleByUserIdQuery(user.Value.Id));
 
                 
-                return user.Match(user => Ok(mapper.Map<InformationAboutUserResponse>((user,result))),
+                return user.Match(user => Ok(mapper.Map<InformationAboutUserResponse>((user,result,role))),
                     errors => Problem(errors));
             },errors => Task.FromResult(Problem(errors)));
         }
@@ -105,8 +107,10 @@ namespace Taskly_Api.Controllers
             var userEmail = User.Claims.First((c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")).Value;
 
             var user = await sender.Send(new GetInformationAboutUserQuery(userEmail));
+            var role = await sender.Send(new GetRoleByUserIdQuery(user.Value.Id));
+            string token = Request.Cookies["X-JWT-Token"]!;
 
-            return user.Match(user => Ok(mapper.Map<InformationAboutUserResponse>(user)),
+            return user.Match(user => Ok(mapper.Map<InformationAboutUserResponse>((user, token,role))),
                 errors=>Problem(errors));
         }
 

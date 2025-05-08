@@ -3,6 +3,7 @@ using ErrorOr;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Taskly_Application.Interfaces.IRepository;
+using Taskly_Domain;
 using Taskly_Domain.Entities;
 using Taskly_Infrastructure.Common.Persistence;
 
@@ -52,8 +53,14 @@ public class AuthenticationRepository(UserManager<UserEntity> userManager, Taskl
         if(!result.Succeeded && result.Errors.Any())
             return Error.Conflict(result.Errors.FirstOrDefault()!.Description);
 
+        result = await userManager.AddToRoleAsync(newUser, Constants.UserRole);
+
+        if (!result.Succeeded && result.Errors.Any())
+            return Error.Conflict(result.Errors.FirstOrDefault()!.Description);
+
         return newUser;
     }
+
     public async Task<UserEntity?> GetUserByEmail(string email) => 
         await GetUserByConditionAsync(u => u.Email == email);
     public async Task<UserEntity?> GetUserByPublicKey(string publicKey) => 
@@ -135,6 +142,17 @@ public class AuthenticationRepository(UserManager<UserEntity> userManager, Taskl
     {
         var user = await _userEntity.FirstOrDefaultAsync(u => u.Id == userId);
         return user?.ReferralCode;
+    }
+    public async Task<string> GetUserRoleByIdAsync(Guid UserId)
+    {
+        var user = await GetByIdAsync(UserId);
+
+        if (user == null)
+            return "";
+
+        var roles = await userManager.GetRolesAsync(user);
+
+        return !roles.Any() ? "User" : roles[0];
     }
 
     private async Task<UserEntity?> GetUserByConditionAsync(Expression<Func<UserEntity, bool>> predicate)
