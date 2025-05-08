@@ -97,7 +97,9 @@
     .user-referral-container {
         width: 100%;
 
-
+        p {
+            font-size: 30px;
+        }
 
         .referral-code {
             background-color: white;
@@ -119,15 +121,25 @@
                 column-gap: 10px;
                 border-radius: 10px;
                 border: none;
+                border: 1px solid white;
+                padding: 10px;
+                box-sizing: border-box;
                 outline: none;
-                background-color: white;
-                color: #6822ca;
-                font-size: 21px;
+                background-color: #6822ca;
+                color: white;
+                font-size: 19px;
                 margin-left: auto;
+                transition: all 0.7s;
 
                 img {
                     width: 30px;
                     height: 30px;
+                }
+
+                &:hover {
+                    background-color: white;
+                    color: #6822ca;
+                    border: 1px solid #6822ca;
                 }
             }
         }

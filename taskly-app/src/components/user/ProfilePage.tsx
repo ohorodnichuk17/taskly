@@ -1,10 +1,12 @@
 import { useAppDispatch, useRootState } from "../../redux/hooks.ts";
 import { editAvatarAsync, getAllAvatarsAsync, getSolanaUserReferralCodeAsync } from "../../redux/actions/authenticateAction.ts";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { baseUrl } from "../../axios/baseUrl.ts";
 import "../../styles/user/profile-style.scss";
 import React from "react";
-import copy_icon from "../../assets/icon/copy_icon.png";
+import copy_white_icon from "../../assets/icon/copy_white_icon.png";
+import copy_purple_icon from "../../assets/icon/copy_purple_icon.png";
+import { buffer } from "stream/consumers";
 
 export const ProfilePage = () => {
     const dispatch = useAppDispatch();
@@ -14,6 +16,7 @@ export const ProfilePage = () => {
     const jwtUserProfile = useRootState((state) => state.authenticate.userProfile);
     const solanaUserProfile = useRootState((state) => state.authenticate.solanaUserProfile);
     const solanaUserReferralCode = useRootState((state) => state.authenticate.solanaUserReferralCode);
+    const [copyButtonIsHovered, setCopyCuttonIsHovered] = useState<boolean>(false);
 
     const getUserId = () => {
         if (authMethod === "jwt" && jwtUserProfile?.id) {
@@ -79,9 +82,18 @@ export const ProfilePage = () => {
                 <p>YOUR REFERRAL CODE</p>
                 <div className="referral-code">
                     <p>{solanaUserReferralCode}</p>
-                    <button>
-                        <img src={copy_icon} alt="Copy icon" />
-
+                    <button
+                        onMouseEnter={async () => {
+                            setCopyCuttonIsHovered(true);
+                        }}
+                        onMouseLeave={() => {
+                            setCopyCuttonIsHovered(false);
+                        }}
+                        onClick={() => {
+                            navigator.clipboard.writeText(solanaUserReferralCode || "");
+                        }}
+                    >
+                        <img src={copyButtonIsHovered === false ? copy_white_icon : copy_purple_icon} alt="Copy icon" />
                         Copy
                     </button>
                 </div>
