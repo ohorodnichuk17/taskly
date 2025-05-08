@@ -131,6 +131,12 @@ public class AuthenticationRepository(UserManager<UserEntity> userManager, Taskl
             .Include(u => u.Avatar)
             .FirstOrDefaultAsync(u => u.ReferralCode == referralCode);
 
+    public async Task<string?> GetUserPublicKeyAsync(Guid userId)
+    {
+        var user = await _userEntity.FirstOrDefaultAsync(u => u.Id == userId);
+        return user?.PublicKey;
+    }
+
     private async Task<UserEntity?> GetUserByConditionAsync(Expression<Func<UserEntity, bool>> predicate)
     {
         return await _userEntity

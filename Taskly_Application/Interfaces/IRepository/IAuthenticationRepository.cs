@@ -23,4 +23,5 @@ public interface IAuthenticationRepository : IRepository<UserEntity>
     Task<ErrorOr<UserEntity>> SetUserNameForSolanaUserAsync(string publicKey, string userName);
     Task<string> GenerateReferralCode();
     Task<UserEntity> GetUserByReferralCodeAsync(string referralCode);
+    Task<string?> GetUserPublicKeyAsync(Guid userId);
 }

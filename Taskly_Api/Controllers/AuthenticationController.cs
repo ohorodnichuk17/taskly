@@ -19,6 +19,7 @@ using Taskly_Application.Requests.SolanaWallet.Authentication.Command.SetUserNam
 using Taskly_Application.Requests.SolanaWallet.Authentication.Query.GenerateJwtToken;
 using Taskly_Application.Requests.SolanaWallet.Authentication.Query.GetUserByPublicKey;
 using System.Reflection.Metadata;
+using Taskly_Application.Requests.SolanaWallet.Authentication.Query.GetUserPublicKey;
 using Taskly_Domain;
 
 namespace Taskly_Api.Controllers
@@ -203,6 +204,15 @@ namespace Taskly_Api.Controllers
             return Ok();
         }
 
-        
+        [HttpGet("get-solana-user-public-key/{userId:guid}")]
+        [Authorize]
+        public async Task<IActionResult> GetSolanaUserPublicKey([FromRoute] Guid userId)
+        {
+            var user = await sender.Send(new GetUserPublicKeyQuery(userId));
+            return user.Match(
+                publicKey => Ok(publicKey),
+                errors => Problem(errors)
+            );
+        }
     }
 }
