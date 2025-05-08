@@ -10,6 +10,7 @@ import {
     checkHasUserSentRequestToChangePasswordAsync, checkSolanaTokenAsync,
     checkTokenAsync, editAvatarAsync,
     getAllAvatarsAsync,
+    getSolanaUserReferralCodeAsync,
     loginAsync,
     logoutAsync,
     registerAsync,
@@ -55,6 +56,7 @@ const initialState: IAuthenticateInitialState = {
     emailOfUserWhoWantToChangePassword: null,
     token: null,
     isAuthenticated: (!localStorage.getItem("isAuthenticated") ? false : true),
+    solanaUserReferralCode: null
     //jwtInformation: null
 }
 
@@ -124,6 +126,8 @@ const authenticateSlice = createSlice({
                     localStorage.removeItem("user_profile_avatar");
             })
             .addCase(checkTokenAsync.fulfilled, (state, action: PayloadAction<IUserProfile>) => {
+
+                console.log("CHECK TOKEN - ", action.payload);
                 localStorage.setItem("isLogin", "true");
                 state.isLogin = true;
 
@@ -249,6 +253,9 @@ const authenticateSlice = createSlice({
                     localStorage.removeItem("user_profile_avatar");
                 if (localStorage.getItem("isAuthenticated") !== null)
                     localStorage.removeItem("isAuthenticated");
+            })
+            .addCase(getSolanaUserReferralCodeAsync.fulfilled, (state, action: PayloadAction<string>) => {
+                state.solanaUserReferralCode = action.payload;
             });
     }
 })

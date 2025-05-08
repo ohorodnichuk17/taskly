@@ -1,9 +1,10 @@
-import {useAppDispatch, useRootState} from "../../redux/hooks.ts";
-import { editAvatarAsync, getAllAvatarsAsync } from "../../redux/actions/authenticateAction.ts";
+import { useAppDispatch, useRootState } from "../../redux/hooks.ts";
+import { editAvatarAsync, getAllAvatarsAsync, getSolanaUserReferralCodeAsync } from "../../redux/actions/authenticateAction.ts";
 import { useEffect } from "react";
 import { baseUrl } from "../../axios/baseUrl.ts";
 import "../../styles/user/profile-style.scss";
 import React from "react";
+import copy_icon from "../../assets/icon/copy_icon.png";
 
 export const ProfilePage = () => {
     const dispatch = useAppDispatch();
@@ -12,6 +13,7 @@ export const ProfilePage = () => {
     const authMethod = useRootState((s) => s.authenticate.authMethod);
     const jwtUserProfile = useRootState((state) => state.authenticate.userProfile);
     const solanaUserProfile = useRootState((state) => state.authenticate.solanaUserProfile);
+    const solanaUserReferralCode = useRootState((state) => state.authenticate.solanaUserReferralCode);
 
     const getUserId = () => {
         if (authMethod === "jwt" && jwtUserProfile?.id) {
@@ -23,6 +25,10 @@ export const ProfilePage = () => {
         return localStorage.getItem("user_profile_id") || '';
     };
 
+    const getSolanaUserReferralCode = async () => {
+        await dispatch(getSolanaUserReferralCodeAsync(getUserId()))
+    }
+
     const [formData, setFormData] = React.useState({
         userId: getUserId(),
         avatarId: '',
@@ -30,6 +36,7 @@ export const ProfilePage = () => {
 
     useEffect(() => {
         dispatch(getAllAvatarsAsync());
+        getSolanaUserReferralCode();
     }, [dispatch]);
 
     useEffect(() => {
@@ -68,6 +75,17 @@ export const ProfilePage = () => {
 
     return (
         <div className="profile-container">
+            <div className="user-referral-container">
+                <p>YOUR REFERRAL CODE</p>
+                <div className="referral-code">
+                    <p>{solanaUserReferralCode}</p>
+                    <button>
+                        <img src={copy_icon} alt="Copy icon" />
+
+                        Copy
+                    </button>
+                </div>
+            </div>
             <form onSubmit={handleSubmit} className="profile-edit-form">
                 <div className="avatar-selection">
                     <p>Choose your avatar:</p>

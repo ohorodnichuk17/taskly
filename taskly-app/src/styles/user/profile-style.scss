@@ -93,4 +93,44 @@
             }
         }
     }
+
+    .user-referral-container {
+        width: 100%;
+
+
+
+        .referral-code {
+            background-color: white;
+            padding: 10px;
+            box-sizing: border-box;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            p {
+                color: #6822ca;
+                font-size: 21px;
+            }
+
+            button {
+                display: flex;
+                align-items: center;
+                column-gap: 10px;
+                border-radius: 10px;
+                border: none;
+                outline: none;
+                background-color: white;
+                color: #6822ca;
+                font-size: 21px;
+                margin-left: auto;
+
+                img {
+                    width: 30px;
+                    height: 30px;
+                }
+            }
+        }
+
+    }
 }

@@ -16,64 +16,64 @@ export const sendVerificationCodeAsync = createAsyncThunk<
     string,
     string,
     { rejectValue: IValidationErrors }>
-(
-    "authentication/send-verification-code",
-    async (email: string, { rejectWithValue }) => {
-        try {
-            const response = await api.post("/api/Authentication/send-verification-code", {
-                email: email
-            })
-            return response.data;
-        } catch (err: any) {
-            let error: AxiosError<IValidationErrors> = err;
-            if (!error.response)
-                throw err;
-            return rejectWithValue(error.response.data);
+    (
+        "authentication/send-verification-code",
+        async (email: string, { rejectWithValue }) => {
+            try {
+                const response = await api.post("/api/Authentication/send-verification-code", {
+                    email: email
+                })
+                return response.data;
+            } catch (err: any) {
+                let error: AxiosError<IValidationErrors> = err;
+                if (!error.response)
+                    throw err;
+                return rejectWithValue(error.response.data);
+            }
         }
-    }
-);
+    );
 
 export const verificateEmailAsync = createAsyncThunk<
     string,
     IVerificateEmailRequest,
     { rejectValue: IValidationErrors }>
-(
-    "authentication/verificate-email",
-    async (request: IVerificateEmailRequest, { rejectWithValue }) => {
-        try {
-            const response = await api.post("/api/Authentication/verificate-email", {
-                email: request.email,
-                code: request.code
-            })
-            return response.data;
-        } catch (err: any) {
-            let error: AxiosError<IValidationErrors> = err;
-            if (!error.response)
-                throw err;
+    (
+        "authentication/verificate-email",
+        async (request: IVerificateEmailRequest, { rejectWithValue }) => {
+            try {
+                const response = await api.post("/api/Authentication/verificate-email", {
+                    email: request.email,
+                    code: request.code
+                })
+                return response.data;
+            } catch (err: any) {
+                let error: AxiosError<IValidationErrors> = err;
+                if (!error.response)
+                    throw err;
 
-            return rejectWithValue(error.response.data);
+                return rejectWithValue(error.response.data);
+            }
         }
-    }
-);
+    );
 export const getAllAvatarsAsync = createAsyncThunk<
     IAvatar[],
     void,
     { rejectValue: IValidationErrors }>
-(
-    "authentication/get-all-avatars",
-    async (_, { rejectWithValue }) => {
-        try {
-            const response = await api.get("/api/Authentication/get-all-avatars");
-            return response.data;
-        } catch (err: any) {
-            let error: AxiosError<IValidationErrors> = err;
-            if (!error.response)
-                throw err;
+    (
+        "authentication/get-all-avatars",
+        async (_, { rejectWithValue }) => {
+            try {
+                const response = await api.get("/api/Authentication/get-all-avatars");
+                return response.data;
+            } catch (err: any) {
+                let error: AxiosError<IValidationErrors> = err;
+                if (!error.response)
+                    throw err;
 
-            return rejectWithValue(error.response.data);
+                return rejectWithValue(error.response.data);
+            }
         }
-    }
-);
+    );
 export const registerAsync = createAsyncThunk<
     void,
     IRegisterRequest,
@@ -108,10 +108,10 @@ export const loginAsync = createAsyncThunk<
     async (request: ILoginRequest, { rejectWithValue }) => {
         try {
             var response = await api.post("/api/Authentication/login", {
-                    email: request.email,
-                    password: request.password,
-                    rememberMe: request.rememberMe,
-                },
+                email: request.email,
+                password: request.password,
+                rememberMe: request.rememberMe,
+            },
                 {
                     withCredentials: true
                 });
@@ -132,21 +132,21 @@ export const checkTokenAsync = createAsyncThunk<
     IUserProfile,
     void,
     { rejectValue: IValidationErrors }>(
-    "authentication/check-token",
-    async (_, { rejectWithValue }) => {
-        try {
-            var result = await api.get("api/authentication/check-token", {
-                withCredentials: true // Дозволяє надсилати кукі разом з запитом
-            });
-            return result.data;
-        } catch (err: any) {
-            let error: AxiosError<IValidationErrors> = err;
-            if (!error.response)
-                throw err;
-            return rejectWithValue(error.response.data);
+        "authentication/check-token",
+        async (_, { rejectWithValue }) => {
+            try {
+                var result = await api.get("api/authentication/check-token", {
+                    withCredentials: true // Дозволяє надсилати кукі разом з запитом
+                });
+                return result.data;
+            } catch (err: any) {
+                let error: AxiosError<IValidationErrors> = err;
+                if (!error.response)
+                    throw err;
+                return rejectWithValue(error.response.data);
+            }
         }
-    }
-);
+    );
 
 export const sendRequestToChangePasswordAsync = createAsyncThunk<
     string,
@@ -175,21 +175,21 @@ export const checkHasUserSentRequestToChangePasswordAsync = createAsyncThunk<
     string | null,
     ICheckHasUserSentRequestToChangePassword,
     { rejectValue: IValidationErrors }>(
-    "authentication/check-has-user-sent-request-to-change-password",
-    async (request: ICheckHasUserSentRequestToChangePassword, { rejectWithValue }) => {
-        try {
-            const response = await api.get(`api/authentication/check-has-user-sent-request-to-change-password?Key=${request.key}`);
-            console.log("response - ", response.data)
-            return response.data;
-        } catch (err: any) {
-            let error: AxiosError<IValidationErrors> = err;
-            if (!error.response)
-                throw err;
+        "authentication/check-has-user-sent-request-to-change-password",
+        async (request: ICheckHasUserSentRequestToChangePassword, { rejectWithValue }) => {
+            try {
+                const response = await api.get(`api/authentication/check-has-user-sent-request-to-change-password?Key=${request.key}`);
+                console.log("response - ", response.data)
+                return response.data;
+            } catch (err: any) {
+                let error: AxiosError<IValidationErrors> = err;
+                if (!error.response)
+                    throw err;
 
-            return rejectWithValue(error.response.data);
+                return rejectWithValue(error.response.data);
+            }
         }
-    }
-)
+    )
 
 export const editAvatarAsync = createAsyncThunk<
     IEditAvatar, // Updated return type to IEditAvatar
@@ -224,24 +224,24 @@ export const changePasswordAsync = createAsyncThunk<
     string,
     IChangePasswordRequest,
     { rejectValue: IValidationErrors }>(
-    "authentication/change-password",
-    async (request: IChangePasswordRequest, { rejectWithValue }) => {
-        try {
-            var response = await api.put("api/authentication/change-password", {
-                email: request.email,
-                password: request.password,
-                confirmPassword: request.confirmPassword
-            });
+        "authentication/change-password",
+        async (request: IChangePasswordRequest, { rejectWithValue }) => {
+            try {
+                var response = await api.put("api/authentication/change-password", {
+                    email: request.email,
+                    password: request.password,
+                    confirmPassword: request.confirmPassword
+                });
 
-            return response.data;
-        } catch (err: any) {
-            let error: AxiosError<IValidationErrors> = err;
-            if (!error.response)
-                throw err;
-            return rejectWithValue(error.response.data);
+                return response.data;
+            } catch (err: any) {
+                let error: AxiosError<IValidationErrors> = err;
+                if (!error.response)
+                    throw err;
+                return rejectWithValue(error.response.data);
+            }
         }
-    }
-)
+    )
 
 export const logoutAsync = createAsyncThunk<
     void,
@@ -297,12 +297,12 @@ export const solanaWalletAuthAsync = createAsyncThunk<
     { rejectValue: IValidationErrors }
 >(
     "api/authentication/solana-auth",
-    async (publicKey, {rejectWithValue}) => {
+    async (publicKey, { rejectWithValue }) => {
         try {
             const response = await api.post("/api/authentication/solana-auth", {
-                    PublicKey: publicKey
-                },
-                {withCredentials: true}
+                PublicKey: publicKey
+            },
+                { withCredentials: true }
             );
             return response.data;
         } catch (err: unknown) {
@@ -320,13 +320,13 @@ export const setUserNameForSolanaUserAsync = createAsyncThunk<
     { rejectValue: IValidationErrors }
 >(
     "api/authentication/set-user-name-for-solana-user",
-    async (request: ISetUserNameForSolanaUser, {rejectWithValue}) => {
+    async (request: ISetUserNameForSolanaUser, { rejectWithValue }) => {
         try {
             const response = await api.post("/api/authentication/set-user-name-for-solana-user", {
-                    PublicKey: request.publicKey,
-                    UserName: request.userName
-                },
-                {withCredentials: true}
+                PublicKey: request.publicKey,
+                UserName: request.userName
+            },
+                { withCredentials: true }
             );
             return response.data;
         } catch (err: unknown) {
@@ -342,18 +342,38 @@ export const checkSolanaTokenAsync = createAsyncThunk<
     ISolanaUserProfile,
     void,
     { rejectValue: IValidationErrors }>(
-    "authentication/check-token-by-publickey",
-    async (_, { rejectWithValue }) => {
-        try {
-            var result = await api.get("api/authentication/check-token-by-publickey", {
-                withCredentials: true
-            });
-            return result.data;
-        } catch (err: any) {
-            let error: AxiosError<IValidationErrors> = err;
-            if (!error.response)
-                throw err;
-            return rejectWithValue(error.response.data);
+        "authentication/check-token-by-publickey",
+        async (_, { rejectWithValue }) => {
+            try {
+                var result = await api.get("api/authentication/check-token-by-publickey", {
+                    withCredentials: true
+                });
+                return result.data;
+            } catch (err: any) {
+                let error: AxiosError<IValidationErrors> = err;
+                if (!error.response)
+                    throw err;
+                return rejectWithValue(error.response.data);
+            }
         }
-    }
-);
+    );
+
+export const getSolanaUserReferralCodeAsync = createAsyncThunk<
+    string,
+    string,
+    { rejectValue: IValidationErrors }>(
+        "authentication/get-solana-user-referral-code",
+        async (userId: string, { rejectWithValue }) => {
+            try {
+                var result = await api.get(`api/authentication/get-solana-user-referral-code/${userId}`, {
+                    withCredentials: true
+                });
+                return result.data;
+            } catch (err: any) {
+                let error: AxiosError<IValidationErrors> = err;
+                if (!error.response)
+                    throw err;
+                return rejectWithValue(error.response.data);
+            }
+        }
+    );
