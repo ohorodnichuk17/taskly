@@ -11,7 +11,7 @@ export interface IBoardInitialState {
 export interface IUsersBoard {
     id: string,
     name: string,
-    countOfMemebers: number,
+    countOfMembers: number,
     boardTemplateName: string,
     boardTemplateColor: string
 }

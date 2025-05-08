@@ -78,8 +78,8 @@ export const BoardsPage = () => {
                         <p>{element.name}</p>
 
                         <div className="additional-information">
-                            <span>{element.countOfMemebers}</span>
-                            <img src={person_icon} alt={`Count of members ${element.countOfMemebers}`} />
+                            <span>{element.countOfMembers}</span>
+                            <img src={person_icon} alt={`Count of members ${element.countOfMembers}`} />
                         </div>
                     </Link>))}
             </div>
@@ -102,8 +102,8 @@ export const BoardsPage = () => {
                         <p>{element.name}</p>
 
                         <div className="additional-information">
-                            <span>{element.countOfMemebers}</span>
-                            <img src={person_icon} alt={`Count of members ${element.countOfMemebers}`} />
+                            <span>{String(element.countOfMembers)}</span>
+                            <img src={person_icon} alt={`Count of members ${element.countOfMembers}`} />
                         </div>
                     </Link>
                 )) : (<>{TakeCetrainCount<IUsersBoard>(boards, 7).map((element) => (
@@ -114,8 +114,8 @@ export const BoardsPage = () => {
                         <p>{element.name}</p>
 
                         <div className="additional-information">
-                            <span>{element.countOfMemebers}</span>
-                            <img src={person_icon} alt={`Count of members ${element.countOfMemebers}`} />
+                            <span>{element.countOfMembers}</span>
+                            <img src={person_icon} alt={`Count of members ${element.countOfMembers}`} />
                         </div>
                     </Link>
                 ))}
