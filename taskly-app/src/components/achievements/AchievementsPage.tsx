@@ -1,5 +1,5 @@
 import "../../styles/achievements/achievements-style.scss";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getAllAchievementsAsync } from "../../redux/actions/achievementsActions";
 import { useAppDispatch, useRootState } from "../../redux/hooks"
 import { IAchievement } from "../../interfaces/achievementsInterface";
@@ -48,7 +48,7 @@ export const AchievementsPage = () => {
             <div className="achievements-list">
                 {achievementsList && achievementsList.map((achievement) => (
                     <Achievement
-                        //key={achievement.id}
+                        key={achievement.id}
                         id={achievement.id}
                         name={achievement.name}
                         reward={achievement.reward}

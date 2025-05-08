@@ -35,6 +35,9 @@ import { addInformation } from "../../redux/slices/generalSlice";
 import { TypeOfInformation } from "../../interfaces/generalInterface";
 import { GeneralMode } from "../general/GeneralModal";
 import { ISolanaUserProfile, IUserProfile } from "../../interfaces/authenticateInterfaces";
+import { setNewAchievement } from "../../redux/slices/achievementsSlice";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 
 
 
@@ -55,6 +58,9 @@ const findAndRemoveItemFromArray = (condition: (c: any) => boolean, array: any[]
 }
 
 export const BoardPage = () => {
+
+    const { publicKey, connected } = useWallet();
+    const { connection } = useConnection();
 
     const conn = useRef<HubConnection | null>(null);
     const boardPageRef = useRef<HTMLDivElement | null>(null);
@@ -265,8 +271,9 @@ export const BoardPage = () => {
     }, [boardMembersRef.current, boardMembersRef.current?.scrollHeight])
 
     useEffect(() => {
-        console.log(errors)
-    }, [errors])
+        console.log("IS CONNECTED - ", connected);
+        console.log("PUBLIC KEY - ", publicKey);
+    }, [publicKey])
 
     const startConnection = async () => {
 
@@ -985,7 +992,36 @@ export const BoardPage = () => {
                                         toCardListId: element.id,
                                         boardId: boardId,
                                         isCompleated: element.title === done_card_list
-                                    }).then(res => console.log("RESPONSE - ", res));
+                                    }).then(async res => {
+                                        console.log("RES - ", res)
+                                        if (res && Array.isArray(res) && connected === true && publicKey) {
+                                            dispatch(setNewAchievement({
+                                                id: res[0].id,
+                                                name: res[0].name,
+                                                icon: res[0].icon
+                                            }));
+                                            try {
+
+                                                const latestBlockHash = await connection.getLatestBlockhash();
+                                                const signature = await connection.requestAirdrop(
+                                                    publicKey,
+                                                    res[0].reward * LAMPORTS_PER_SOL
+                                                );
+
+                                                await connection.confirmTransaction(
+                                                    {
+                                                        signature,
+                                                        blockhash: latestBlockHash.blockhash,
+                                                        lastValidBlockHeight: latestBlockHash.lastValidBlockHeight
+                                                    },
+                                                    "confirmed"
+                                                );
+
+                                            } catch (error) {
+                                                console.log("Error - ", error);
+                                            }
+                                        }
+                                    });
 
 
                                 setDragenCard(null);

@@ -184,6 +184,7 @@ const authenticateSlice = createSlice({
                 localStorage.removeItem("user_profile_avatar");
                 localStorage.removeItem("user_profile_userName");
                 localStorage.removeItem("isAuthenticated");
+                localStorage.removeItem("isLogin");
             })
             .addCase(solanaLogoutAsync.rejected, () => {
             })

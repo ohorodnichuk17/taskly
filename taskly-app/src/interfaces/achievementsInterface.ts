@@ -1,5 +1,6 @@
 export interface IAchievementsInitialState {
-    achievements: IAchievement[] | null
+    achievements: IAchievement[] | null,
+    newAchievement: INewAchievement | null
 }
 
 export interface IAchievement {
@@ -10,4 +11,10 @@ export interface IAchievement {
     percentageOfCompletion: number,
     icon: string,
     isCompleated: boolean
+}
+
+export interface INewAchievement {
+    id: string,
+    name: string,
+    icon: string
 }

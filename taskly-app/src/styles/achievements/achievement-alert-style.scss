@@ -1,0 +1,66 @@
+#achievement-alert {
+    width: 300px;
+    height: 70px;
+    display: grid;
+    grid-template-columns: 20% 80%;
+    grid-template-rows: 30% 70%;
+    padding: 10px;
+    border-radius: 10px;
+    box-sizing: border-box;
+    background-color: #7728e3;
+    box-shadow: rgba(255, 255, 255, 0.411) 0px 7px 29px 0px;
+    position: fixed;
+    top: 100px;
+    right: -300px;
+    z-index: 1;
+    animation: achievementAlertOpening 1s ease-in-out 0s forwards, achievementAlertClosing 1s ease-in-out 3s forwards;
+
+
+    .achievement-alert-icon {
+        width: 100%;
+        height: 100%;
+        grid-row: 1 / span 2;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 10px;
+        box-sizing: border-box;
+
+        img {
+            width: 50px;
+            height: 50px;
+        }
+    }
+
+    p {
+        &:first-of-type {
+            font-size: 12px;
+        }
+
+        &:last-of-type {
+            font-size: 15px;
+            margin: auto;
+        }
+    }
+
+}
+
+@keyframes achievementAlertOpening {
+    0% {
+        right: -300px;
+    }
+
+    100% {
+        right: 10px
+    }
+}
+
+@keyframes achievementAlertClosing {
+    0% {
+        right: 10px;
+    }
+
+    100% {
+        right: -300px
+    }
+}
