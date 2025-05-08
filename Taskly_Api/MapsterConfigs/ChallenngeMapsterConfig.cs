@@ -6,7 +6,7 @@ using Taskly_Domain.Entities;
 
 namespace Taskly_Api.MapsterConfigs;
 
-public class ChallenngeMapster : IRegister
+public class ChallenngeMapsterConfig : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {
@@ -30,6 +30,7 @@ public class ChallenngeMapster : IRegister
             .Map(src => src.IsActive, desp => desp.IsActive)
             .Map(src => src.RuleKey, desp => desp.RuleKey)
             .Map(src => src.TargetAmount, desp => desp.TargetAmount)
+            .Map(src => src.Points, desp => desp.Points)
             .Map(src => src.UserId, desp => desp.UserId)
             .Map(src => src.User, desp => desp.User.Adapt<UserForChallengeResponse>());
     }

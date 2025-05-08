@@ -12,7 +12,7 @@ public class GetUserLevelByUserIdQueryHandler(IUnitOfWork unitOfWork)
         try
         {
             var userLevel = await unitOfWork.UserLevels
-                .GetUserLevelByUserIdAsync(request.UserId);
+                .GetLevelPropertyByUserIdAsync(request.UserId);
 
             return userLevel;
         }

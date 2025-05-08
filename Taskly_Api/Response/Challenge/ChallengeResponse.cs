@@ -11,6 +11,7 @@ public record ChallengeResponse
     public bool IsBooked { get; init; }
     public bool IsActive { get; init; }
     public string RuleKey { get; set; }
+    public double Points { get; set; }
     public int TargetAmount { get; set; }
     public Guid? UserId { get; set; }
     public UserForChallengeResponse? User { get; init; }

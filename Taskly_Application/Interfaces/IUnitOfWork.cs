@@ -18,4 +18,5 @@ public interface IUnitOfWork
     IInviteRepository Invites { get; }
     IBadgeRepository Badges { get; }
     IUserLevelRepository UserLevels { get; }
+    IUserBadgeRepository UserBadges { get; }
 }
