@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.SignalR;
 using Taskly_Api.Request.Card;
 using Taskly_Api.SignalR.Models;
+using Taskly_Application.Requests.Achievements.Command.CheckIfUserHasEarnedAchievement;
 using Taskly_Application.Requests.Card.Command.ChangeCard;
 using Taskly_Application.Requests.Card.Command.LeaveCard;
 using Taskly_Application.Requests.Card.Command.RemoveCard;
@@ -40,13 +41,14 @@ public class BoardHub(ISender sender) : Hub
                     ToCardListId = model.ToCardListId,
                     IsCompleated = model.IsCompleated});
 
-       var response =  await sender.Send(new TransferCardToAnotherCardListCommand(
+       await sender.Send(new TransferCardToAnotherCardListCommand(
             ToCardListId: model.ToCardListId,
             CardId: model.CardId
             ));
 
-        return response.Match(response => response,
-            errors => []);
+        var response = await sender.Send(new CheckIfUserHasEarnedAchievementCommand(UserId: model.UserId));
+
+        return response;
     }
     public async Task RemoveCardFromCardList(RemoveCardFromCardList model)
     {

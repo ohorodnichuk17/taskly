@@ -6,4 +6,5 @@ public interface IAchievementRepository : IRepository<AchievementEntity>
 {
     Task<ICollection<AchievementEntity>> CompleateAchievementAsync(UserEntity user);
     Task<ICollection<AchievementEntity>> GetAllAchievementsAsync();
+    Task ChangePercentageOfCompletionOfAllAchievements();
 }

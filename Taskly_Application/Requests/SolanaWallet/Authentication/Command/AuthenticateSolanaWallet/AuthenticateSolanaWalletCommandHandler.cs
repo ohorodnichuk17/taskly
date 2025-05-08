@@ -28,6 +28,7 @@ public class AuthenticateSolanaWalletCommandHandler(IUnitOfWork unitOfWork)
                     ReferralCode = referralCode,
                 };
                 await unitOfWork.Authentication.CreateAsync(user);
+                await unitOfWork.Achievements.ChangePercentageOfCompletionOfAllAchievements();
                 var userLevel = new UserLevelEntity
                 {
                     Id = Guid.NewGuid(),
@@ -37,6 +38,7 @@ public class AuthenticateSolanaWalletCommandHandler(IUnitOfWork unitOfWork)
                     CompletedTasks = 0
                 };
                 await unitOfWork.UserLevels.CreateAsync(userLevel);
+                
                 if (!string.IsNullOrEmpty(request.ReferralCode))
                 {
                     var inviter = await unitOfWork.Authentication.GetUserByReferralCodeAsync(request.ReferralCode);
