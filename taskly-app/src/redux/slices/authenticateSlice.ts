@@ -3,21 +3,17 @@ import {
     IAvatar,
     IEditAvatar,
     ISolanaUserProfile,
-    ICustomJwtPayload,
-    IJwtInformation, ISetUserNameForSolanaUser,
     IUserProfile,
 } from "../../interfaces/authenticateInterfaces";
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import {
-    changePasswordAsync,
     checkHasUserSentRequestToChangePasswordAsync, checkSolanaTokenAsync,
     checkTokenAsync, editAvatarAsync,
     getAllAvatarsAsync,
     loginAsync,
     logoutAsync,
     registerAsync,
-    sendRequestToChangePasswordAsync,
-    sendVerificationCodeAsync, setUserNameForSolanaUserAsync, solanaLogoutAsync, solanaWalletAuthAsync,
+    sendVerificationCodeAsync, solanaLogoutAsync, solanaWalletAuthAsync,
     verificateEmailAsync
 } from "../actions/authenticateAction.ts";
 
