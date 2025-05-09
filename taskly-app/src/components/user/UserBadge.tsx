@@ -25,11 +25,16 @@ const UserBadge: React.FC<UserBadgeProps> = ({ userId }) => {
 
     useEffect(() => {
         if (userId) {
-            if (!allBadges) {
+            if (!allBadges || allBadges.length === 0) {
                 dispatch(getAllBadgesAsync());
             }
+
+            if (!userBadges || userBadges.length === 0) {
+                dispatch(getAllBadgesByUserIdAsync(userId));
+            }
         }
-    }, [dispatch, userId, userBadges, allBadges]);
+    }, [dispatch, userId]);
+
 
 
     const handleBadgeHover = (badge: IBadgeResponse) => {
