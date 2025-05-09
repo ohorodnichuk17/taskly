@@ -3,7 +3,7 @@ import { useState } from "react";
 import { createTableItem } from "../../redux/actions/tablesAction.ts";
 import "../../styles/table/main.scss";
 import {IUserListForTable} from "../../interfaces/tableInterface.ts";
-import {useAppDispatch} from "../../redux/hooks.ts";
+import {useAppDispatch, useRootState} from "../../redux/hooks.ts";
 
 export function CreateTableItemPage() {
     const { tableId } = useParams();
@@ -17,6 +17,7 @@ export function CreateTableItemPage() {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
+    const userId = useRootState((state) => state.authenticate.userProfile?.id || state.authenticate.solanaUserProfile?.id);
 
     const handleSubmit = async () => {
         if (!text.trim() || !status.trim() || !label.trim() || !endTime.trim()) {
@@ -33,7 +34,7 @@ export function CreateTableItemPage() {
 
         try {
             const formattedEndTime = new Date(endTime);
-            await dispatch(createTableItem({ task: text, status, label, members, endTime: formattedEndTime, isCompleted, tableId }));
+            await dispatch(createTableItem({ task: text, status, label, members: [userId], endTime: formattedEndTime, isCompleted, tableId }));
             navigate(`/tables/${tableId}`);
         } catch (err) {
             setError("Failed to create table item. Please try again.");
