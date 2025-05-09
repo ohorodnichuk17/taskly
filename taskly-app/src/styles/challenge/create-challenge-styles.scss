@@ -1,0 +1,139 @@
+.challenge-create-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px;
+  height: 70vh;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  overflow-x: auto;
+
+  .challenge-create-header {
+    margin-bottom: 30px;
+
+    h1 {
+      font-size: 36px;
+      font-weight: 800;
+      color: #ffffff;
+      text-align: center;
+    }
+  }
+
+  .challenge-form {
+    width: 100%;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    label {
+      font-weight: 600;
+      color: #fff;
+      font-size: 15px;
+    }
+  }
+
+  .form-row {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+    }
+  }
+
+  .challenge-input,
+  .challenge-select,
+  .challenge-textarea {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 500;
+    backdrop-filter: blur(6px);
+    transition: all 0.3s ease;
+
+    &::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    &:focus {
+      outline: none;
+      border-color: #ffffff;
+      background: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+    }
+  }
+
+  .challenge-textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+
+  .checkbox-group {
+    margin-top: 8px;
+  }
+
+  .challenge-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #fff;
+    font-weight: 500;
+    cursor: pointer;
+
+    input[type="checkbox"] {
+      transform: scale(1.2);
+    }
+  }
+
+  .challenge-create-btn {
+    padding: 12px 20px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+    }
+
+    &:disabled {
+      background: rgba(255, 255, 255, 0.2);
+      cursor: not-allowed;
+    }
+  }
+
+  .challenge-error {
+    color: #ff4d4f;
+    font-size: 14px;
+    margin-top: 10px;
+    font-weight: 500;
+    text-align: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .challenge-create-page {
+    padding: 16px;
+
+    .challenge-create-header h1 {
+      font-size: 28px;
+    }
+  }
+}

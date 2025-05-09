@@ -6,7 +6,6 @@ import "../../styles/user/profile-style.scss";
 import React from "react";
 import copy_white_icon from "../../assets/icon/copy_white_icon.png";
 import copy_purple_icon from "../../assets/icon/copy_purple_icon.png";
-import { buffer } from "stream/consumers";
 
 export const ProfilePage = () => {
     const dispatch = useAppDispatch();

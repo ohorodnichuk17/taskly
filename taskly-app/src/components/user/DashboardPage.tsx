@@ -9,6 +9,7 @@ import { AchievementAlert } from '../achievements/AchievementAlert';
 export const DashboardPage = () => {
     const isAuthenticated = useRootState(s => s.authenticate.isAuthenticated);
     const newAchievement = useRootState(s => s.achievements.newAchievement);
+    const userProfile = useRootState(s => s.authenticate.userProfile);
 
     const [items, setItems] = useState<{
         name: string;
@@ -41,20 +42,34 @@ export const DashboardPage = () => {
     },
     ]);
     useLayoutEffect(() => {
-        if (isAuthenticated === true && !items.find(i => i.name === "Achievements")) {
-            setItems(prev => [...prev, {
-                name: "Achievements",
-                path: "/achievements",
-                sub_items: []
-            }]);
-        }
-        else {
+        const showChallenges = isAuthenticated === true || userProfile?.email === "tasklytodolist@gmail.com";
+
+        if (showChallenges) {
+            if (!items.find(i => i.name === "Challenges")) {
+                setItems(prev => [...prev, {
+                    name: "Challenges",
+                    path: "/challenges",
+                    sub_items: []
+                }]);
+            }
+            if (!items.find(i => i.name === "Achievements") && isAuthenticated === true) {
+                setItems(prev => [...prev, {
+                    name: "Achievements",
+                    path: "/achievements",
+                    sub_items: []
+                }]);
+            }
+        } else {
+            const challengesIndex = items.findIndex(a => a.name === "Challenges");
+            if (challengesIndex !== -1) {
+                setItems(prev => prev.filter(item => item.name !== "Challenges"));
+            }
             const achievementsIndex = items.findIndex(a => a.name === "Achievements");
             if (achievementsIndex !== -1) {
-                setItems([...items.slice(0, achievementsIndex), ...items.slice(achievementsIndex + 1, items.length)]);
+                setItems(prev => prev.filter(item => item.name !== "Achievements"));
             }
         }
-    }, [isAuthenticated])
+    }, [isAuthenticated, userProfile?.email, items]);
     return (<div className="dashboard-container">
         {newAchievement !== null &&
             <AchievementAlert

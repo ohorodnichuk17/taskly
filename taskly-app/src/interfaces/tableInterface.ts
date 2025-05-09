@@ -44,7 +44,7 @@ export interface ITableItemCreate {
     status: string,
     label: string,
     endTime: Date,
-    tableId: string
+    tableId: string,
     isCompleted?: boolean,
     members?: IUserListForTable[];
 }
@@ -65,6 +65,7 @@ export interface IUserToTable {
 
 export interface IUserListForTable {
     $id: string;
+    id: string,
     email: string,
     avatarId: string,
     userName?: string;
