@@ -85,3 +85,4 @@ export declare const CreateBoardShema: z.ZodObject<{
     tag: string | null;
     boadrTemplateId: string;
 }>;
+

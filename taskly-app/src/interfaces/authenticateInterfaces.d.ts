@@ -22,6 +22,8 @@ export interface IUserProfile {
     id: string;
     email: string;
     avatarName: string;
+    token: string;
+    role: string;
 }
 export interface ISolanaUserProfile {
     id: string;

@@ -1,8 +1,8 @@
-import {useEffect, useState} from "react";
-import {useAppDispatch, useRootState} from "../../redux/hooks.ts";
-import {setUserNameForSolanaUserAsync} from "../../redux/actions/authenticateAction.ts";
+import { useEffect, useState } from "react";
+import { useAppDispatch, useRootState } from "../../redux/hooks.ts";
+import { setUserNameForSolanaUserAsync } from "../../redux/actions/authenticateAction.ts";
 import "../../styles/authentication/set-username-for-solana-user.scss";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function SetUserNameForSolanaUser() {
     const [userName, setUserName] = useState('');

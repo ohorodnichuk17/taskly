@@ -72,11 +72,15 @@
   }
 }
 
+
+
+
 @media (max-width: 768px) {
   .solana-auth-page {
     padding: 16px;
 
     .form-container {
+
       .wallet-info,
       .auth-button,
       .logout-button {
@@ -93,6 +97,7 @@
     padding: 12px;
 
     .form-container {
+
       .wallet-info,
       .auth-button,
       .logout-button {

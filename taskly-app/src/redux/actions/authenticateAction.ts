@@ -7,7 +7,7 @@ import {
     IChangePasswordRequest,
     ICheckHasUserSentRequestToChangePassword, IEditAvatar,
     ILoginRequest,
-    IRegisterRequest, ISetUserNameForSolanaUser, ISolanaUserProfile,
+    IRegisterRequest, ISetUserNameForSolanaUser, ISolanaAuthRequest, ISolanaUserProfile,
     IUserProfile,
     IVerificateEmailRequest
 } from '../../interfaces/authenticateInterfaces';
@@ -293,14 +293,15 @@ export const solanaLogoutAsync = createAsyncThunk<
 
 export const solanaWalletAuthAsync = createAsyncThunk<
     ISolanaUserProfile,
-    string,
+    ISolanaAuthRequest,
     { rejectValue: IValidationErrors }
 >(
     "api/authentication/solana-auth",
-    async (publicKey, { rejectWithValue }) => {
+    async (request: ISolanaAuthRequest, { rejectWithValue }) => {
         try {
             const response = await api.post("/api/authentication/solana-auth", {
-                PublicKey: publicKey
+                PublicKey: request.publicKey,
+                ReferralCode: request.referralCode
             },
                 { withCredentials: true }
             );

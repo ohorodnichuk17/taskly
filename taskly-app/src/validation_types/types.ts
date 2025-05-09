@@ -57,4 +57,10 @@ export const CreateBoardShema = z.object({
     name: z.string().min(5, "Name must contain at least 5 character(s)").max(30, "Maximum name size is 30 letters"),
     tag: z.string().max(30, "Maximum tag size is 30 letters").nullable().refine((val) => val === null || val === '' || val.length >= 5, "Tag must contain at least 5 character(s)"),
     boadrTemplateId: z.string()
-})
+});
+
+export type UseRefferalCodeType = z.infer<typeof UseReferralCodeShema>;
+export const UseReferralCodeShema = z.object({
+    //referralCode: z.string().regex(new RegExp("^[A-Z0-9]{6}"), "Invalid format").length(6, "Code must contain 6 symbols").nullable().refine((val) => val === null || val === '' || val.length === 6 , "Code must contain 6 symbols")
+    referralCode: z.string().regex(new RegExp("^[A-Z0-9]{6}"), "Invalid format").length(6, "Code must contain 6 symbols").nullable().or(z.literal('')).or(z.null())
+});

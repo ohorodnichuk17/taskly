@@ -17,6 +17,7 @@ export interface IAuthenticateInitialState {
     token: string | null;
     isAuthenticated: boolean;
     solanaUserReferralCode: string | null;
+    referralCode: string | null;
 }
 export interface IUserProfile {
     id: string
@@ -84,4 +85,8 @@ export interface IChangePasswordRequest {
     email: string,
     password: string,
     confirmPassword: string
+}
+export interface ISolanaAuthRequest {
+    publicKey: string,
+    referralCode: string | null
 }

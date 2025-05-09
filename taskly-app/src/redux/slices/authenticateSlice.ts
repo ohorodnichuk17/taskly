@@ -56,7 +56,11 @@ const initialState: IAuthenticateInitialState = {
     emailOfUserWhoWantToChangePassword: null,
     token: null,
     isAuthenticated: (!localStorage.getItem("isAuthenticated") ? false : true),
-    solanaUserReferralCode: null
+    solanaUserReferralCode: null,
+    referralCode: !localStorage.getItem("referralCode") ||
+        localStorage.getItem("referralCode") === "" ?
+        null :
+        localStorage.getItem("referralCode")
     //jwtInformation: null
 }
 
@@ -67,6 +71,20 @@ const authenticateSlice = createSlice({
         setEmailOfUserWhoWantToChangePassword(state, payload: PayloadAction<string | null>) {
             state.emailOfUserWhoWantToChangePassword = payload.payload;
         },
+        setRefferalCode(state, action: PayloadAction<string | null>) {
+            if (action.payload === '')
+                state.referralCode = null;
+            else {
+                if (action.payload === null) {
+                    localStorage.removeItem("referralCode");
+                }
+                else {
+                    localStorage.setItem("referralCode", action.payload);
+                }
+                state.referralCode = action.payload;
+            }
+
+        }
         // logout: (state) => {
         //     state.authMethod = null;
         //     state.token = null;
@@ -261,4 +279,4 @@ const authenticateSlice = createSlice({
 })
 
 export const authenticateReducer = authenticateSlice.reducer;
-export const { /*setErrorAuthenticate,*/ /*clearJwtToken*/ setEmailOfUserWhoWantToChangePassword } = authenticateSlice.actions;
+export const { /*setErrorAuthenticate,*/ /*clearJwtToken*/ setEmailOfUserWhoWantToChangePassword, setRefferalCode } = authenticateSlice.actions;

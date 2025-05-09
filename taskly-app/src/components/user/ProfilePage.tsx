@@ -78,26 +78,29 @@ export const ProfilePage = () => {
 
     return (
         <div className="profile-container">
-            <div className="user-referral-container">
-                <p>YOUR REFERRAL CODE</p>
-                <div className="referral-code">
-                    <p>{solanaUserReferralCode}</p>
-                    <button
-                        onMouseEnter={async () => {
-                            setCopyCuttonIsHovered(true);
-                        }}
-                        onMouseLeave={() => {
-                            setCopyCuttonIsHovered(false);
-                        }}
-                        onClick={() => {
-                            navigator.clipboard.writeText(solanaUserReferralCode || "");
-                        }}
-                    >
-                        <img src={copyButtonIsHovered === false ? copy_white_icon : copy_purple_icon} alt="Copy icon" />
-                        Copy
-                    </button>
+            {
+                authMethod && authMethod === "solana" &&
+                <div className="user-referral-container">
+                    <p>YOUR REFERRAL CODE</p>
+                    <div className="referral-code">
+                        <p>{solanaUserReferralCode}</p>
+                        <button
+                            onMouseEnter={async () => {
+                                setCopyCuttonIsHovered(true);
+                            }}
+                            onMouseLeave={() => {
+                                setCopyCuttonIsHovered(false);
+                            }}
+                            onClick={() => {
+                                navigator.clipboard.writeText(solanaUserReferralCode || "");
+                            }}
+                        >
+                            <img src={copyButtonIsHovered === false ? copy_white_icon : copy_purple_icon} alt="Copy icon" />
+                            Copy
+                        </button>
+                    </div>
                 </div>
-            </div>
+            }
             <form onSubmit={handleSubmit} className="profile-edit-form">
                 <div className="avatar-selection">
                     <p>Choose your avatar:</p>

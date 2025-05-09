@@ -11,12 +11,13 @@ import { useState, useEffect } from 'react';
 
 import { loginAsync, solanaWalletAuthAsync } from '../../redux/actions/authenticateAction';
 
-import { LoginShema, LoginType } from '../../validation_types/types';
+import { LoginShema, LoginType, UseReferralCodeShema, UseRefferalCodeType } from '../../validation_types/types';
 import { InputMessage, typeOfMessage } from '../general/InputMessage';
 import { Loading } from '../general/Loading';
 
 import password_hide from '../../assets/icon/password_hide.png';
 import password_view from '../../assets/icon/password_view.png';
+import { setRefferalCode } from '../../redux/slices/authenticateSlice';
 
 export const UnifiedLoginPage = () => {
    const dispatch = useAppDispatch();
@@ -25,16 +26,25 @@ export const UnifiedLoginPage = () => {
    const [passwordIsView, setPasswordIsView] = useState(false);
    const [mode, setMode] = useState<'email' | 'solana'>('email');
 
-   const { isAuthenticated } = useRootState(state => state.authenticate);
+   const { isAuthenticated, referralCode } = useRootState(state => state.authenticate);
    const { publicKey, wallet, connected } = useWallet();
 
    const {
-      register,
-      handleSubmit,
+      register: registerLogin,
+      handleSubmit: handleSubmitLogin,
       setError,
-      formState: { errors }
+      formState: { errors: errorsLogin }
    } = useForm<LoginType>({
       resolver: zodResolver(LoginShema),
+      mode: 'onChange'
+   });
+
+   const {
+      register: registerReferral,
+      handleSubmit: handleSubmitReferral,
+      formState: { errors: errorsReferral }
+   } = useForm<UseRefferalCodeType>({
+      resolver: zodResolver(UseReferralCodeShema),
       mode: 'onChange'
    });
 
@@ -49,9 +59,13 @@ export const UnifiedLoginPage = () => {
          if (!wallet || !publicKey) return;
 
          try {
-            const resultAction = await dispatch(solanaWalletAuthAsync(publicKey.toString()));
+            const resultAction = await dispatch(solanaWalletAuthAsync({
+               publicKey: publicKey.toString(),
+               referralCode: referralCode
+            }));
             if (!solanaWalletAuthAsync.fulfilled.match(resultAction)) {
             } else {
+               dispatch(setRefferalCode(null));
                const userData = resultAction.payload;
 
                if (userData.userName) {
@@ -71,6 +85,9 @@ export const UnifiedLoginPage = () => {
       }
    }, [dispatch, connected, publicKey, wallet, navigate]);
 
+   const useReferralCodeSubmit = (obj: UseRefferalCodeType) => {
+      dispatch(setRefferalCode(obj.referralCode));
+   }
 
 
    const login = async (obj: LoginType) => {
@@ -108,17 +125,17 @@ export const UnifiedLoginPage = () => {
                </div>
 
                {mode === 'email' ? (
-                  <form onSubmit={handleSubmit(login)} className="email-form">
-                     <input type="text" placeholder="Email" autoComplete="email" {...register("email")} />
-                     {errors.email?.message &&
-                        <InputMessage message={errors.email.message} typeOfMessage={typeOfMessage.error} />}
+                  <form onSubmit={handleSubmitLogin(login)} className="email-form">
+                     <input type="text" placeholder="Email" autoComplete="email" {...registerLogin("email")} />
+                     {errorsLogin.email?.message &&
+                        <InputMessage message={errorsLogin.email.message} typeOfMessage={typeOfMessage.error} />}
 
                      <div className="password-container">
                         <input
                            type={passwordIsView ? "text" : "password"}
                            placeholder="Password"
                            autoComplete="current-password"
-                           {...register("password")}
+                           {...registerLogin("password")}
                         />
                         <button className="password-button" onClick={(e) => {
                            e.preventDefault();
@@ -127,11 +144,11 @@ export const UnifiedLoginPage = () => {
                            <img src={passwordIsView ? password_view : password_hide} alt="Toggle visibility" />
                         </button>
                      </div>
-                     {errors.password?.message &&
-                        <InputMessage message={errors.password.message} typeOfMessage={typeOfMessage.error} />}
+                     {errorsLogin.password?.message &&
+                        <InputMessage message={errorsLogin.password.message} typeOfMessage={typeOfMessage.error} />}
 
                      <div className="remember-me-conteiner">
-                        <input id="remember-me" type="checkbox" {...register("rememberMe")} />
+                        <input id="remember-me" type="checkbox" {...registerLogin("rememberMe")} />
                         <label htmlFor="remember-me">Remember me</label>
                      </div>
 
@@ -153,8 +170,17 @@ export const UnifiedLoginPage = () => {
                         <div className="auto-login-loader">
                            <Loading />
                         </div>
-                     ) : (
+                     ) : (<>
+                        <form
+                           className='use-referral-code'
+                           onSubmit={handleSubmitReferral(useReferralCodeSubmit)}>
+                           <input className='use-referral-input' maxLength={6} type="text" {...registerReferral("referralCode")} />
+                           <button className='use-referral-button'>Use Refferal</button>
+                        </form>
+                        {errorsReferral.referralCode?.message &&
+                           <InputMessage message={errorsReferral.referralCode.message} typeOfMessage={typeOfMessage.error} />}
                         <WalletMultiButton />
+                     </>
                      )}
                   </div>
                )}
