@@ -150,3 +150,13 @@ export declare const checkSolanaTokenAsync: import("@reduxjs/toolkit").AsyncThun
     fulfilledMeta?: unknown;
     rejectedMeta?: unknown;
 }>;
+export declare const getSolanaUserReferralCodeAsync: import("@reduxjs/toolkit").AsyncThunk<string, string, {
+    rejectValue: IValidationErrors;
+    state?: unknown;
+    dispatch?: import("redux-thunk").ThunkDispatch<unknown, unknown, import("redux").UnknownAction> | undefined;
+    extra?: unknown;
+    serializedErrorType?: unknown;
+    pendingMeta?: unknown;
+    fulfilledMeta?: unknown;
+    rejectedMeta?: unknown;
+}>;

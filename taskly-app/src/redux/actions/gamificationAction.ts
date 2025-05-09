@@ -65,7 +65,7 @@ export const getAllChallengesAsync = createAsyncThunk<
             const response = await api.get("api/gamification/get-challenges",
                 {withCredentials: true}
             );
-            return response.data as IChallengeResponse[];
+            return response.data.$values as IChallengeResponse[];
         } catch (err: any) {
             const error: AxiosError<IValidationErrors> = err;
             if (!error.response)
@@ -150,8 +150,7 @@ export const bookChallengeAsCompletedAsync = createAsyncThunk<
     "gamification/book-challenge",
     async ({challengeId, userId}, {rejectWithValue}) => {
         try {
-            const response = await api.put(`api/gamification/book-challenge/${challengeId}`,
-                {userId},
+            const response = await api.put(`api/gamification/book-challenge/${challengeId}/${userId}`,
                 {withCredentials: true}
             );
             return response.data as boolean;

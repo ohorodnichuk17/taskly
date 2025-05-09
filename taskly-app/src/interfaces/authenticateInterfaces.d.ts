@@ -17,11 +17,14 @@ export interface IAuthenticateInitialState {
     authMethod: "jwt" | "solana" | null;
     token: string | null;
     isAuthenticated: boolean;
+    solanaUserReferralCode: string | null;
 }
 export interface IUserProfile {
     id: string;
     email: string;
     avatarName: string;
+    token: string;
+    role: string;
 }
 export interface ISolanaUserProfile {
     id: string;

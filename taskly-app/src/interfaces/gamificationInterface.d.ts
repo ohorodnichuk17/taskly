@@ -14,8 +14,8 @@ export interface IGamificationInitialState {
 export interface ICreateChallengeRequest {
     name: string;
     description: string;
-    startDate: string;
-    endDate: string;
+    startTime: string;
+    endTime: string;
     points: number;
     isActive: boolean;
     ruleKey: string;
@@ -28,8 +28,8 @@ export interface IChallengeResponse {
     id: string;
     name: string;
     description: string;
-    startDate: string;
-    endDate: string;
+    startTime: string;
+    endTime: string;
     isCompleted: boolean;
     isBooked: boolean;
     isActive: boolean;

@@ -29,6 +29,9 @@ import SetUserNameForSolanaUser from "./components/authentication/SetUserNameFor
 import CreateFeedbackPage from "./components/feedback/CreateFeedbackPage.tsx";
 import FeedbacksPage from "./components/feedback/FeedbacksPage.tsx";
 import { AchievementsPage } from './components/achievements/AchievementsPage.tsx'
+import CreateChallengePage from "./components/gamification/CreateChallengePage.tsx";
+import ChallengesPage from "./components/gamification/ChallengesPage.tsx";
+import ChallengePage from "./components/gamification/ChallengePage.tsx";
 
 
 
@@ -38,6 +41,7 @@ function App() {
 
   const isLogin = useRootState(s => s.authenticate.isLogin);
   const isAuthenticated = useRootState(s => s.authenticate.isAuthenticated);
+  const userProfile = useRootState(s => s.authenticate.userProfile);
 
   const checkAuthToken = async () => {
     const authMethod = localStorage.getItem("authMethod") as "jwt" | "solana" | null;
@@ -84,6 +88,11 @@ function App() {
               <Route path="/tables/:tableId/add-member" element={<AddMemberToTablePage />} />
               <Route path="/tables/:tableId/members" element={<ListOfMembersInTable />} />
               <Route path="/feedbacks/create" element={<CreateFeedbackPage />} />
+              <Route path="/challenges" element={<ChallengesPage />} />
+              <Route path="/challenges/:challengeId" element={<ChallengePage />} />
+              {userProfile?.email === 'tasklytodolist@gmail.com' && (
+                  <Route path="/challenges/create" element={<CreateChallengePage />} />
+              )}
             </>)}
             {isLogin && isAuthenticated === true && (<>
               <Route path='/achievements' element={<AchievementsPage />} />
