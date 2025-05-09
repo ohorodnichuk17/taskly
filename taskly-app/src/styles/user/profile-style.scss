@@ -1,15 +1,15 @@
 .profile-container {
-    position: absolute; // Use absolute positioning
-    top: 50%; // Move the container to 50% from the top
-    left: 50%; // Move the container to 50% from the left
-    transform: translate(-50%, -50%); // Center it precisely
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     width: 40%;
     min-width: 400px;
-    height: auto; // Adjust height dynamically based on content
+    height: auto;
     display: flex;
     flex-direction: column;
-    align-items: center; // Center items horizontally
-    justify-content: center; // Center items vertically
+    align-items: center;
+    justify-content: center;
     row-gap: 20px;
     box-sizing: border-box;
     background-color: rgba(255, 255, 255, 0.05);
@@ -23,7 +23,7 @@
         display: flex;
         flex-direction: column;
         gap: 20px;
-        width: 100%; // Ensure the form takes full width of the container
+        width: 100%;
 
         label {
             color: white;
@@ -43,9 +43,12 @@
         }
 
         .avatar-selection {
-            p {
-                margin-bottom: 8px;
+            > p {
+                font-size: 16px;
                 font-weight: 500;
+                margin-bottom: 4px;
+                color: rgba(255, 255, 255, 0.8);
+                text-align: left;
             }
 
             .avatar-list {
@@ -96,53 +99,70 @@
 
     .user-referral-container {
         width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
 
-        p {
-            font-size: 30px;
+        > p {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 4px;
+            color: rgba(255, 255, 255, 0.8);
+            text-align: left;
         }
 
         .referral-code {
-            background-color: white;
-            padding: 10px;
-            box-sizing: border-box;
-            border-radius: 10px;
             display: flex;
-            justify-content: center;
             align-items: center;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(6px);
 
             p {
-                color: #6822ca;
-                font-size: 21px;
+                color: white;
+                font-size: 14px;
+                font-weight: 600;
+                margin: 0;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 70%;
             }
 
             button {
+                margin-left: auto;
+                background: none;
+                border: none;
                 display: flex;
                 align-items: center;
-                column-gap: 10px;
-                border-radius: 10px;
-                border: none;
-                border: 1px solid white;
-                padding: 10px;
-                box-sizing: border-box;
-                outline: none;
-                background-color: #6822ca;
-                color: white;
-                font-size: 19px;
-                margin-left: auto;
-                transition: all 0.7s;
+                gap: 6px;
+                cursor: pointer;
+                padding: 4px 8px;
+                border-radius: 6px;
+                transition: background-color 0.2s ease;
 
                 img {
-                    width: 30px;
-                    height: 30px;
+                    width: 18px;
+                    height: 18px;
                 }
 
+                color: white;
+                font-size: 14px;
+                font-weight: 500;
+
                 &:hover {
-                    background-color: white;
-                    color: #6822ca;
-                    border: 1px solid #6822ca;
+                    background-color: rgba(255, 255, 255, 0.15);
                 }
             }
         }
-
     }
+}
+
+.crypto-level-container {
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
 }

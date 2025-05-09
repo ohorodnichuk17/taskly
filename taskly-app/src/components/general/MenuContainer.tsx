@@ -289,7 +289,7 @@ export const MenuContainer = (props: IMenuContainer) => {
                                                 e.currentTarget.style.color = '#333333';
                                             }}
                                         >
-                                            Edit avatar
+                                            Profile
                                         </Link>
                                         <Link
                                             to=""
