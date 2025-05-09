@@ -1,13 +1,13 @@
+import React, { useEffect, useState } from "react";
 import { useAppDispatch, useRootState } from "../../redux/hooks.ts";
 import { editAvatarAsync, getAllAvatarsAsync, getSolanaUserReferralCodeAsync } from "../../redux/actions/authenticateAction.ts";
-import { useEffect, useState } from "react";
 import { baseUrl } from "../../axios/baseUrl.ts";
 import "../../styles/user/profile-style.scss";
-import React from "react";
 import copy_white_icon from "../../assets/icon/copy_white_icon.png";
 import copy_purple_icon from "../../assets/icon/copy_purple_icon.png";
 import {getUserLevelAsync} from "../../redux/actions/gamificationAction.ts";
 import {CryptoLevel} from "./CryptoLevel.tsx";
+import UserBadge from "./UserBadge";
 
 export const ProfilePage = () => {
     const dispatch = useAppDispatch();
@@ -96,6 +96,7 @@ export const ProfilePage = () => {
                         {cryptoLevel !== null && <CryptoLevel level={cryptoLevel} />}
                         {cryptoLevel === null && <p>Fetching Crypto Level...</p>}
                     </div>
+                    <UserBadge userId={getUserId()} /> {/* Використовуємо компонент UserBadge */}
                     <div className="user-referral-container">
                         <p className="section-title">Your referral code</p>
                         <div className="referral-code">

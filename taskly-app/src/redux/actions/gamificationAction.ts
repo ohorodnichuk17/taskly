@@ -198,7 +198,7 @@ export const getAllBadgesAsync = createAsyncThunk<
             const response = await api.get("api/gamification/get-all-badges",
                 {withCredentials: true}
             );
-            return response.data as IBadgeResponse[];
+            return response.data.$values as IBadgeResponse[];
         } catch (err: any) {
             const error: AxiosError<IValidationErrors> = err;
             if (!error.response)
@@ -261,10 +261,10 @@ export const getAllBadgesByUserIdAsync = createAsyncThunk<
     "gamification/get-all-badges-by-user-id",
     async (userId, {rejectWithValue}) => {
         try {
-            const response = await api.get(`api/gamification/get-all-badges-by-user-id/${userId}`,
+            const response = await api.get(`api/gamification/get-all-user-badges-by-user-id/${userId}`,
                 {withCredentials: true}
             );
-            return response.data as IUserBadgeResponse[];
+            return response.data.$values as IUserBadgeResponse[];
         } catch (err: any) {
             const error: AxiosError<IValidationErrors> = err;
             if (!error.response)
