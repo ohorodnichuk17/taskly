@@ -19,11 +19,6 @@ export interface ITable {
     members: IUserToTable[]
 }
 
-export interface ITableCreate {
-    userId: string,
-    name: string
-}
-
 export interface ITableEdit {
     id: string,
     userId: string,
@@ -46,7 +41,7 @@ export interface ITableItemCreate {
     endTime: Date,
     tableId: string,
     isCompleted?: boolean,
-    members?: IUserListForTable[];
+    members?: string[];
 }
 
 export interface ITableItemEdit {

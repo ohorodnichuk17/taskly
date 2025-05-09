@@ -2,7 +2,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
 import { createTableItem } from "../../redux/actions/tablesAction.ts";
 import "../../styles/table/main.scss";
-import {IUserListForTable} from "../../interfaces/tableInterface.ts";
 import {useAppDispatch, useRootState} from "../../redux/hooks.ts";
 
 export function CreateTableItemPage() {
@@ -10,7 +9,6 @@ export function CreateTableItemPage() {
     const [text, setText] = useState("");
     const [status, setStatus] = useState("To Do");
     const [label, setLabel] = useState("");
-    const [members,] = useState<IUserListForTable[]>([]);
     const [endTime, setEndTime] = useState<string>("");
     const [isCompleted,] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -34,7 +32,7 @@ export function CreateTableItemPage() {
 
         try {
             const formattedEndTime = new Date(endTime);
-            await dispatch(createTableItem({ task: text, status, label, members: [userId], endTime: formattedEndTime, isCompleted, tableId }));
+            await dispatch(createTableItem({ task: text, status, label, members: userId ? [userId] : [], endTime: formattedEndTime, isCompleted, tableId }));
             navigate(`/tables/${tableId}`);
         } catch (err) {
             setError("Failed to create table item. Please try again.");
