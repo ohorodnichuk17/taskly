@@ -9,11 +9,14 @@ import '../../styles/authentication/verificate-email-style.scss';
 import { useState } from 'react';
 import { sendVerificationCodeAsync, verificateEmailAsync } from '../../redux/actions/authenticateAction';
 import { Loading } from '../general/Loading';
+import { addInformation } from '../../redux/slices/generalSlice';
+import { TypeOfInformation } from '../../interfaces/generalInterface';
 
 
 export const VerificateEmailPage = () => {
     const emailVerification = useRootState(s => s.authenticate.verificationEmail);
     const [lastInput, setLastInput] = useState<HTMLInputElement | null>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const dispatch = useAppDispatch();
     const { register,
         handleSubmit,
@@ -57,7 +60,7 @@ export const VerificateEmailPage = () => {
 
     return (
         <div className='verificate-email-conatainer'>
-            {isSubmitting == true && <Loading />}
+            {(isSubmitting == true || isLoading) && <Loading />}
             <p>Verification code has been receive to {emailVerification}</p>
             <form onSubmit={handleSubmit(verificateEmail)}>
                 <InputForCode register={register} lastInput={setLastInput} />
@@ -66,20 +69,30 @@ export const VerificateEmailPage = () => {
                 <div className='buttons'>
                     <button type="submit">Verificate Email</button>
                     <button type="button" onClick={async () => {
+                        setIsLoading(true);
                         var response = await dispatch(sendVerificationCodeAsync(emailVerification || ""));
+
                         if (!sendVerificationCodeAsync.fulfilled.match(response)) {
+                            setIsLoading(false);
                             if (response.payload) {
-                                setError("email", {
-                                    type: "custom",
-                                    message: response.payload.errors[0].code
-                                });
+                                dispatch(addInformation({
+                                    message: response.payload.errors[0].code,
+                                    type: TypeOfInformation.Error
+                                }))
                             }
                             else {
-                                setError("email", {
-                                    type: "custom",
-                                    message: response.error.message
-                                });
+                                dispatch(addInformation({
+                                    message: response.error.message || "",
+                                    type: TypeOfInformation.Error
+                                }))
                             }
+                        }
+                        else {
+                            setIsLoading(false);
+                            dispatch(addInformation({
+                                message: `The confirmation code has been successfully forwarded to ${response.payload}`,
+                                type: TypeOfInformation.Success
+                            }))
                         }
                     }}>Resend the code</button>
                 </div>

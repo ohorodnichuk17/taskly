@@ -9,10 +9,10 @@ export const AuthenticationPage = () => {
 
     return (
         <div className="authentication-page">
+            {information && (
+                <InformationAlert message={information.message} type={information.type} />
+            )}
             <div className="authentication-container">
-                {information && (
-                    <InformationAlert message={information.message} type={information.type} />
-                )}
                 <div className="authentication-header">
                     <img
                         src={logo}
@@ -26,3 +26,6 @@ export const AuthenticationPage = () => {
         </div>
     );
 };
+/*
+
+*/ 

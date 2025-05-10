@@ -9,10 +9,12 @@ import arrow_bottom from '../../assets/icon/arrow_bottom_icon.png';
 
 const INFORMATION_ALERT_DEFAULT_HEIGHT = 70;
 
+const MESSAGE_DEFAULT_HEIGHT = 30;
+
 export const InformationAlert = (props: IInformationAlert) => {
     const dispatch = useAppDispatch();
     const [informationContainerHeight, setInformationContainerHeight] = useState<number>(INFORMATION_ALERT_DEFAULT_HEIGHT);
-    const [messageHight, setMessageHight] = useState<number>(INFORMATION_ALERT_DEFAULT_HEIGHT);
+    const [messageHight, setMessageHight] = useState<number>(MESSAGE_DEFAULT_HEIGHT);
     const [isArrow, setIsArrow] = useState<boolean>(false);
     const closeAlert = async () => {
         await new Promise(() => {
@@ -24,7 +26,7 @@ export const InformationAlert = (props: IInformationAlert) => {
     }
     useEffect(() => {
         closeAlert();
-    })
+    }, [])
     const messageRef = useRef<HTMLDivElement | null>(null);
     useEffect(() => {
         if (messageRef.current !== null) {
@@ -32,7 +34,7 @@ export const InformationAlert = (props: IInformationAlert) => {
         }
     }, [messageRef.current])
     useEffect(() => {
-        if (messageHight > INFORMATION_ALERT_DEFAULT_HEIGHT - 40) {
+        if (messageHight > MESSAGE_DEFAULT_HEIGHT) {
             setIsArrow(true);
         }
     }, [messageHight])
@@ -45,11 +47,11 @@ export const InformationAlert = (props: IInformationAlert) => {
             }}
             onMouseEnter={() => {
                 setInformationContainerHeight(messageRef.current!.scrollHeight + 40);
-                if (messageHight > INFORMATION_ALERT_DEFAULT_HEIGHT - 40) setIsArrow(false);
+                if (messageHight > MESSAGE_DEFAULT_HEIGHT) setIsArrow(false);
             }}
             onMouseLeave={() => {
                 setInformationContainerHeight(INFORMATION_ALERT_DEFAULT_HEIGHT);
-                if (messageHight > INFORMATION_ALERT_DEFAULT_HEIGHT - 40) setIsArrow(true);
+                if (messageHight > MESSAGE_DEFAULT_HEIGHT) setIsArrow(true);
             }}
         >
 
@@ -67,6 +69,3 @@ export const InformationAlert = (props: IInformationAlert) => {
             {isArrow === true && <img src={arrow_bottom} />}
         </div>)
 }
-/*{informationContainerHeight === INFORMATION_ALERT_DEFAULT_HEIGHT &&
-    (messageRef.current?.scrollHeight || 30) <= INFORMATION_ALERT_DEFAULT_HEIGHT - 40 &&
-    <img src={arrow_bottom} />}*/

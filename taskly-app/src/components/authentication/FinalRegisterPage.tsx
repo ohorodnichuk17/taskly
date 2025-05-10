@@ -1,7 +1,7 @@
 import '../../styles/authentication/final-register-style.scss';
 import password_hide from '../../assets/icon/password_hide.png';
 import password_view from '../../assets/icon/password_view.png';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { PasswordValidationShema, PasswordValidationType } from '../../validation_types/types';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -12,13 +12,20 @@ import medium_password from '../../assets/icon/medium_icon.png';
 import strong_password from '../../assets/icon/strong_icon.png';
 import { passwordStrength } from 'check-password-strength'
 import { useAppDispatch, useRootState } from '../../redux/hooks';
-import { AvatarConatiner } from '../general/AvatarContainer';
 import { getAllAvatarsAsync, registerAsync } from '../../redux/actions/authenticateAction';
 import { baseUrl } from '../../axios/baseUrl';
 import { IRegisterRequest } from '../../interfaces/authenticateInterfaces';
 import { Loading } from '../general/Loading';
+import { GeneralMode } from '../general/GeneralModal';
+import { useNavigate } from 'react-router-dom';
+import { addInformation } from '../../redux/slices/generalSlice';
+import { TypeOfInformation } from '../../interfaces/generalInterface';
 
 export const FinalRegisterPage = () => {
+
+    const navigate = useNavigate();
+
+    const avatarsRef = useRef<HTMLDivElement | null>(null);
 
     const verificatedEmail = useRootState(s => s.authenticate.verificatedEmail);
     const avatars = useRootState(s => s.authenticate.avatars);
@@ -28,6 +35,7 @@ export const FinalRegisterPage = () => {
     const [selectedAvatar, selectAvatar] = useState<string | null>(null);
     const [avatar, setAvatar] = useState<string>("");
     const [openAvatarContainer, setOpenAvatarContainer] = useState<boolean>(false);
+    const [avatarsOverflowY, setAvatarsOverflowY] = useState<"auto" | "scroll">("auto")
 
     const dispatch = useAppDispatch();
 
@@ -82,6 +90,16 @@ export const FinalRegisterPage = () => {
         }
 
     }, [selectedAvatar])
+    useEffect(() => {
+        if (avatarsRef.current) {
+            setAvatarsOverflowY(avatarsRef.current.offsetHeight < avatarsRef.current.scrollHeight ?
+                "scroll" :
+                "auto")
+        }
+
+    }, [avatarsRef.current])
+
+
     const registerSubmit = async (obj: PasswordValidationType) => {
         if (!selectedAvatar) return;
         const request: IRegisterRequest = {
@@ -90,7 +108,26 @@ export const FinalRegisterPage = () => {
             confirmPassword: obj.confirmPassword,
             avatarId: selectedAvatar
         }
-        await dispatch(registerAsync(request));
+        var response = await dispatch(registerAsync(request));
+
+        if (!registerAsync.fulfilled.match(response)) {
+            if (response.payload) {
+                dispatch(addInformation({
+                    message: response.payload.errors[0].code,
+                    type: TypeOfInformation.Error
+                }))
+            }
+            else {
+                dispatch(addInformation({
+                    message: response.error.message || "",
+                    type: TypeOfInformation.Error
+                }))
+            }
+        }
+        else {
+            navigate("/authentication/login");
+        }
+
     }
 
 
@@ -151,11 +188,29 @@ export const FinalRegisterPage = () => {
                         }}
                     >Change avatar</button>
                 </div>
-                <AvatarConatiner
-                    selectAvatar={selectAvatar}
-                    avatarContainerIsOpened={openAvatarContainer}
-                    close={() => setOpenAvatarContainer(false)}
-                />
+                <GeneralMode
+                    isOpened={openAvatarContainer}
+                    selectedItem={selectAvatar}
+                    onClose={() => setOpenAvatarContainer(false)}
+                >
+                    <div
+                        ref={(ref) =>
+                            avatarsRef.current = ref}
+                        className="avatar-list"
+                        style={{ overflowY: avatarsOverflowY }}
+
+                    >
+                        {avatars && avatars.map((element) => (
+                            <img key={`${element.id}`} src={baseUrl + "/images/avatars/" + element.name + ".png"} onClick={(e) => {
+                                e.preventDefault();
+                                selectAvatar(element.id)
+                                setOpenAvatarContainer(false);
+                            }} />
+                        ))}
+                    </div>
+                </GeneralMode>
+
+
             </div>
 
             <button type='submit'>Register</button>
@@ -163,3 +218,10 @@ export const FinalRegisterPage = () => {
         </form>
     </div>)
 }
+/*
+<AvatarConatiner
+                    selectAvatar={selectAvatar}
+                    avatarContainerIsOpened={openAvatarContainer}
+                    close={() => setOpenAvatarContainer(false)}
+                />
+*/

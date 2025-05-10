@@ -2,12 +2,12 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import '../../styles/general/menu-container-style.scss';
 import menu_icon from '../../assets/icon/menu_icon.png';
 import menu_icon_opened from '../../assets/icon/menu_icon_opened.png';
-import {Link, Navigate, useNavigate} from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { HideMenuContainer } from './HideMenuContainer';
-import {logoutAsync, solanaLogoutAsync} from "../../redux/actions/authenticateAction.ts";
-import {baseUrl} from "../../axios/baseUrl.ts";
-import {useAppDispatch, useRootState} from "../../redux/hooks.ts";
-import {getAllBadgesByUserIdAsync} from "../../redux/actions/gamificationAction.ts";
+import { logoutAsync, solanaLogoutAsync } from "../../redux/actions/authenticateAction.ts";
+import { baseUrl } from "../../axios/baseUrl.ts";
+import { useAppDispatch, useRootState } from "../../redux/hooks.ts";
+import { getAllBadgesByUserIdAsync } from "../../redux/actions/gamificationAction.ts";
 
 export interface IMenuContainer {
     icon: string;
@@ -84,6 +84,9 @@ export const MenuContainer = (props: IMenuContainer) => {
     useEffect(() => {
         checkMenuWidth();
     }, [props.items]);
+    useEffect(() => {
+        console.log("isDropdownOpen - ", isDropdownOpen);
+    }, [isDropdownOpen]);
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -168,7 +171,7 @@ export const MenuContainer = (props: IMenuContainer) => {
             className="menu-container"
         >
             <div className="menu-container-icon">
-                <img src={props.icon} onClick={() => <Navigate to={"/"}/>}/>
+                <img src={props.icon} onClick={() => <Navigate to={"/"} />} />
                 <p>askly</p>
             </div>
 
@@ -196,8 +199,8 @@ export const MenuContainer = (props: IMenuContainer) => {
 
                     <div className='menu-authentication'>
                         {isLogin === true ? (
-                            <div ref={dropdownRef} className="user-info" style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
-                                {authMethod ==="jwt" && userProfile && (
+                            <div ref={dropdownRef} className="user-info" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                {authMethod === "jwt" && userProfile && (
                                     <>
                                         <img
                                             src={`${baseUrl}/images/avatars/${userProfile.avatarName}.png`}
@@ -250,7 +253,7 @@ export const MenuContainer = (props: IMenuContainer) => {
                                                 border: '2px solid #ffffff',
                                                 boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
                                                 transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
-                                                cursor: 'pointer',
+                                                cursor: 'pointer'
                                             }}
                                             onMouseEnter={(e) => {
                                                 e.currentTarget.style.transform = 'scale(1.1)';
@@ -273,8 +276,8 @@ export const MenuContainer = (props: IMenuContainer) => {
                                                 fontWeight: '500',
                                             }}
                                         >
-            {solanaUserProfile.userName}
-        </span>
+                                            {solanaUserProfile.userName}
+                                        </span>
                                         {currentBadge && (
                                             <div className="user-badge">
                                                 <img
@@ -286,7 +289,7 @@ export const MenuContainer = (props: IMenuContainer) => {
                                         )}
                                     </div>
                                 )}
-                                {isDropdownOpen && (
+                                {isDropdownOpen === true && (
                                     <div
                                         className="dropdown-menu"
                                         style={{
@@ -376,7 +379,7 @@ export const MenuContainer = (props: IMenuContainer) => {
                     />
                 </div>
             )}
-            {isMenuOpened === true && <HideMenuContainer items={props.items} closeHideMenu={setIsMenuOpened}/>}
+            {isMenuOpened === true && <HideMenuContainer items={props.items} closeHideMenu={setIsMenuOpened} />}
         </div>
     );
 };
