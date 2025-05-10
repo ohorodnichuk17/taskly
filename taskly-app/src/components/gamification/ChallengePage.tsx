@@ -7,6 +7,14 @@ import solana_icon from "../../assets/icon/solana_icon.png";
 import { Link } from "react-router-dom";
 import { toast } from 'react-toastify';
 import "../../styles/challenge/challenge-styles.scss"
+import {useConnection, useWallet} from "@solana/wallet-adapter-react";
+import {Connection, PublicKey, SystemProgram, Transaction, LAMPORTS_PER_SOL} from "@solana/web3.js";
+
+interface SolanaSigner {
+    publicKey: PublicKey;
+    signTransaction: (transaction: Transaction) => Promise<Transaction>;
+    signAllTransactions?: (transactions: Transaction[]) => Promise<Transaction[]>;
+}
 
 export default function ChallengePage() {
     const { challengeId } = useParams<{ challengeId: string }>();
@@ -18,6 +26,34 @@ export default function ChallengePage() {
     const [showModal, setShowModal] = useState(false);
     const [showErrorModal, setShowErrorModal] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const { publicKey } = useWallet();
+    const { connection } = useConnection();
+
+    const sendSolReward = async (
+        connection: Connection,
+        sender: SolanaSigner,
+        recipient: string,
+        amount: number
+    ) => {
+        if (!sender || !recipient) {
+            throw new Error("Wallet not connected.");
+        }
+        const recipientPubKey = new PublicKey(recipient);
+        const transaction = new Transaction().add(
+            SystemProgram.transfer({
+                fromPubkey: sender.publicKey,
+                toPubkey: recipientPubKey,
+                lamports: amount * LAMPORTS_PER_SOL,
+            })
+        );
+        transaction.feePayer = sender.publicKey;
+        const { blockhash } = await connection.getLatestBlockhash();
+        transaction.recentBlockhash = blockhash;
+        const signed = await sender.signTransaction(transaction);
+        const signature = await connection.sendRawTransaction(signed.serialize());
+        await connection.confirmTransaction(signature, 'confirmed');
+        return signature;
+    };
 
     useEffect(() => {
         if (challengeId) {
@@ -56,12 +92,31 @@ export default function ChallengePage() {
             if (markChallengeAsCompletedAsync.fulfilled.match(result)) {
                 setIsCompletedByUser(true);
                 toast.success("Challenge marked as completed!");
+                try {
+                    if (!publicKey) {
+                        throw new Error("Wallet not connected.");
+                    }
+                    const rewardAmount = challenge?.points;
+                    const recipient = publicKey.toString();
+                    const signature = await sendSolReward(
+                        connection!, // Non-null assertion, assuming connection is initialized
+                        { publicKey, signTransaction: window.solana.signTransaction } as SolanaSigner,
+                        recipient,
+                        rewardAmount! // Non-null assertion, assuming challenge and points exist
+                    );
+                    toast.success(`Reward sent! Signature: ${signature}`);
+                } catch (e) {
+                    toast.error(`Reward error: ${(e as Error).message}`);
+                }
                 dispatch(getChallengeByIdAsync(challengeId));
             } else if (markChallengeAsCompletedAsync.rejected.match(result)) {
-                setErrorMessage("You have not yet completed the challenge.");
-                setShowErrorModal(true);
-            } else {
-                setErrorMessage("An unexpected error occurred.");
+                const errorPayload = result.payload as { message?: string };
+                const error = errorPayload?.message || "";
+                if (error.includes("not completed")) {
+                    setErrorMessage("You have not yet completed the challenge.");
+                } else {
+                    setErrorMessage("An unexpected error occurred.");
+                }
                 setShowErrorModal(true);
             }
         } catch (error: any) {
@@ -69,7 +124,6 @@ export default function ChallengePage() {
             setShowErrorModal(true);
         }
     };
-
 
     if (!challenge) {
         return (
@@ -106,14 +160,11 @@ export default function ChallengePage() {
                     </div>
                 </div>
             )}
-
-
             <Link to="/challenges" className="back-button">
                 <ArrowLeft size={20}/> Back to Challenges
             </Link>
             <h1 className="gradient-text">{challenge.name}</h1>
             <p className="challenge-description">{challenge.description}</p>
-
             <div className="challenge-details">
                 <div className="detail-item">
                     <span className="detail-label">Starts:</span>
@@ -126,34 +177,33 @@ export default function ChallengePage() {
                 <div className="detail-item">
                     <span className="detail-label">Target amount to complete challenge:</span>
                     <span className="detail-value">
-                        <Target size={16} className="detail-icon"/> {challenge.targetAmount}
-                    </span>
+          <Target size={16} className="detail-icon"/> {challenge.targetAmount}
+        </span>
                 </div>
                 <div className="detail-item reward">
                     <span className="detail-label">Reward:</span>
                     <span className="detail-value">
-                        <img src={solana_icon} alt="Solana" className="coin-icon"/> +{challenge.points} SOL
-                    </span>
+          <img src={solana_icon} alt="Solana" className="coin-icon"/> +{challenge.points} SOL
+        </span>
                 </div>
                 {challenge.isBooked && (
                     <div className="detail-item status">
                         <span className="detail-label">Status:</span>
                         <span className="detail-value">
-                            {challenge.isCompleted ? <><CheckCircle size={16}
-                                                                    className="status-icon completed"/> Completed</> : "Booked"}
-                        </span>
+            {challenge.isCompleted ? <><CheckCircle size={16}
+                                                    className="status-icon completed"/> Completed</> : "Booked"}
+          </span>
                     </div>
                 )}
                 {!challenge.isActive && (
                     <div className="detail-item inactive">
                         <span className="detail-label">Status:</span>
                         <span className="detail-value">
-                            <Lock size={16} className="status-icon locked"/> Inactive
-                        </span>
+            <Lock size={16} className="status-icon locked"/> Inactive
+          </span>
                     </div>
                 )}
             </div>
-
             <div className="challenge-actions">
                 {!challenge?.isBooked && !challenge?.isCompleted && challenge.isActive && (
                     <button onClick={handleBookChallenge} className="book-button">
