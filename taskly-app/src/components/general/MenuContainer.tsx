@@ -54,6 +54,7 @@ export const MenuContainer = (props: IMenuContainer) => {
         type AuthMethod = typeof validAuthMethods[number];
 
         if (!authMethod || !validAuthMethods.includes(authMethod as AuthMethod)) {
+            console.warn("Invalid or missing auth method detected. Defaulting to 'jwt'...");
             await dispatch(logoutAsync());
             return;
         }
@@ -143,6 +144,7 @@ export const MenuContainer = (props: IMenuContainer) => {
             dispatch(getAllBadgesByUserIdAsync(solanaUserProfile.id))
                 .unwrap()
                 .then((badges) => {
+                    console.log("Badges:", badges);
                     if (badges.length > 0) {
                         const highestBadge = badges.reduce((prev, current) => {
                             return current.badge.requiredTasksToReceiveBadge > prev.badge.requiredTasksToReceiveBadge
