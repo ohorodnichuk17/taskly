@@ -24,7 +24,6 @@ export const AchievementsPage = () => {
     useEffect(() => {
         if (achievements) {
             setAchievementsList(achievements);
-            console.log(achievements)
         }
     }, [achievements])
 

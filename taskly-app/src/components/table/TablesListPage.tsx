@@ -39,8 +39,6 @@ export default function TablesListPage() {
             fetchTables(jwtUserId);
         } else if (authMethod === "solana" && solanaUserId) {
             fetchTables(solanaUserId);
-        } else {
-            console.warn("Auth method not recognized or user ID is missing.");
         }
     };
 

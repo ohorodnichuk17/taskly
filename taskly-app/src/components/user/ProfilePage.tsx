@@ -36,7 +36,6 @@ export const ProfilePage = () => {
             if (typeof level.payload === 'number') {
                 setCryptoLevel(level.payload);
             } else {
-                console.error('Expected a number but got:', level.payload);
                 setCryptoLevel(null);
             }
 
@@ -89,8 +88,6 @@ export const ProfilePage = () => {
         await dispatch(editAvatarAsync({ ...formData, userId: currentUserId }));
         window.location.reload();
     };
-
-    console.log("USER ID", getUserId());
 
     return (
         <div className="profile-container">

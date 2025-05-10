@@ -50,18 +50,12 @@ function App() {
       await dispatch(checkTokenAsync());
     } else if (authMethod === "solana") {
       await dispatch(checkSolanaTokenAsync());
-    } else {
-      console.error("No auth method found");
     }
   };
 
   useEffect(() => {
     checkAuthToken();
   }, [])
-
-  useEffect(() => {
-    console.log(isLogin)
-  }, [isLogin])
 
   return (
     <WalletContextProvider>

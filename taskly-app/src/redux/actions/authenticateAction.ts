@@ -115,7 +115,6 @@ export const loginAsync = createAsyncThunk<
                 {
                     withCredentials: true
                 });
-            console.log('cookies -> ', document.cookie);
             return response.data;
 
         } catch (err: any) {
@@ -179,7 +178,6 @@ export const checkHasUserSentRequestToChangePasswordAsync = createAsyncThunk<
         async (request: ICheckHasUserSentRequestToChangePassword, { rejectWithValue }) => {
             try {
                 const response = await api.get(`api/authentication/check-has-user-sent-request-to-change-password?Key=${request.key}`);
-                console.log("response - ", response.data)
                 return response.data;
             } catch (err: any) {
                 let error: AxiosError<IValidationErrors> = err;
@@ -192,7 +190,7 @@ export const checkHasUserSentRequestToChangePasswordAsync = createAsyncThunk<
     )
 
 export const editAvatarAsync = createAsyncThunk<
-    IEditAvatar, // Updated return type to IEditAvatar
+    IEditAvatar,
     IEditAvatar,
     { rejectValue: IValidationErrors }
 >(
@@ -209,10 +207,6 @@ export const editAvatarAsync = createAsyncThunk<
             return response.data as IEditAvatar;
         } catch (err: unknown) {
             const error = err as AxiosError<IValidationErrors>;
-            console.log("Validation error:", error.response?.data);
-            if (error.response) {
-                console.error("API Error:", error.response.status, error.response.data);
-            }
             return rejectWithValue(
                 error.response?.data ?? ({ errors: { message: "Set username failed" } } as unknown as IValidationErrors)
             );

@@ -28,12 +28,8 @@ export default function SetUserNameForSolanaUser() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!publicKey || !userName) return;
-        try {
-            await dispatch(setUserNameForSolanaUserAsync({ publicKey, userName })).unwrap();
-            navigate("/");
-        } catch (error) {
-            console.error("Failed to set username:", error);
-        }
+        await dispatch(setUserNameForSolanaUserAsync({ publicKey, userName })).unwrap();
+        navigate("/");
     };
     return (
         <div className="set-username-page">

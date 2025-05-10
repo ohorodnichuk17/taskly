@@ -270,11 +270,6 @@ export const BoardPage = () => {
         }
     }, [boardMembersRef.current, boardMembersRef.current?.scrollHeight])
 
-    useEffect(() => {
-        console.log("IS CONNECTED - ", connected);
-        console.log("PUBLIC KEY - ", publicKey);
-    }, [publicKey])
-
     const startConnection = async () => {
 
         conn.current = new HubConnectionBuilder()
@@ -707,8 +702,6 @@ export const BoardPage = () => {
         email: string
     }) => {
         if (membersRef.current) {
-            console.log(model);
-            console.log(membersRef.current);
             const removedUserIndex = membersRef.current.findIndex((member) => member.email === model.email);
             if (removedUserIndex !== -1) {
                 const updated = [...membersRef.current.slice(0, removedUserIndex), ...membersRef.current.slice(removedUserIndex + 1, membersRef.current.length)];

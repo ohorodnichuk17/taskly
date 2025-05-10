@@ -35,35 +35,27 @@ export default function TableItem({ item }: TableItemProps) {
 
     const fetchTableItems = async () => {
         if (!tableId) return;
-        try {
-            await dispatch(getTableItems(tableId));
-        } catch (err) {
-            console.error("Failed to fetch table items:", err);
-        }
+        await dispatch(getTableItems(tableId));
     }
 
     const handleIsCompletedTableItem = async (tableItemId: string, isCompleted: boolean) => {
-        try {
-            const newStatus = isCompleted ? "Done" : editedItem.status;
+        const newStatus = isCompleted ? "Done" : editedItem.status;
 
-            await dispatch(editTableItem({
-                id: tableItemId,
-                tableIdItem: tableId as string,
-                task: editedItem.task,
-                status: newStatus,
-                endTime: new Date(editedItem.endTime),
-                label: editedItem.label,
-            }));
+        await dispatch(editTableItem({
+            id: tableItemId,
+            tableIdItem: tableId as string,
+            task: editedItem.task,
+            status: newStatus,
+            endTime: new Date(editedItem.endTime),
+            label: editedItem.label,
+        }));
 
-            await dispatch(markTableItemAsCompleted({ tableItemId, isCompleted }));
+        await dispatch(markTableItemAsCompleted({ tableItemId, isCompleted }));
 
-            dispatch({
-                type: "tableSlice/markTableItemAsCompleted",
-                payload: { tableItemId, isCompleted },
-            });
-        } catch (err) {
-            console.error("Failed to mark table item as completed:", err);
-        }
+        dispatch({
+            type: "tableSlice/markTableItemAsCompleted",
+            payload: { tableItemId, isCompleted },
+        });
     };
 
     const saveChanges = async () => {
@@ -79,8 +71,6 @@ export default function TableItem({ item }: TableItemProps) {
             await dispatch(editTableItem(payload));
             if (!tableId) return;
             await dispatch(getTableItems(tableId));
-        } catch (err) {
-            console.error("Failed to save item edits:", err);
         } finally {
             setEditField(null);
         }

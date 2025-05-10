@@ -16,7 +16,6 @@ import { AvatarConatiner } from '../general/AvatarContainer';
 import { getAllAvatarsAsync, registerAsync } from '../../redux/actions/authenticateAction';
 import { baseUrl } from '../../axios/baseUrl';
 import { IRegisterRequest } from '../../interfaces/authenticateInterfaces';
-import { useNavigate } from 'react-router-dom';
 import { Loading } from '../general/Loading';
 
 export const FinalRegisterPage = () => {
@@ -31,7 +30,6 @@ export const FinalRegisterPage = () => {
     const [openAvatarContainer, setOpenAvatarContainer] = useState<boolean>(false);
 
     const dispatch = useAppDispatch();
-    const navigate = useNavigate();
 
     const passwordStrengthColors = [
         "red",
@@ -92,18 +90,7 @@ export const FinalRegisterPage = () => {
             confirmPassword: obj.confirmPassword,
             avatarId: selectedAvatar
         }
-        const response = await dispatch(registerAsync(request));
-
-        if (!registerAsync.fulfilled.match(response)) {
-            if (response.payload) {
-                console.log(response.payload.errors[0].code);
-            }
-            else {
-                console.log(response.error.message);
-            }
-        }
-        else
-            navigate("/");
+        await dispatch(registerAsync(request));
     }
 
 

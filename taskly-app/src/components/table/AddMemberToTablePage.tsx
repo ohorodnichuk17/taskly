@@ -27,7 +27,6 @@ export default function AddMemberToTablePage() {
             await dispatch(addUserToTable({tableId, memberEmail}));
             navigate(`/tables/${tableId}`);
         } catch (err) {
-            console.error("Error while adding member:", err);
             setError("Failed to add member to table. Please try again.");
         } finally {
             setIsLoading(false);

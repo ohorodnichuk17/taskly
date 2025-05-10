@@ -58,12 +58,8 @@ export default function ChallengesPage() {
     }
 
     const handleDeleteChallenge = async (challengeId: string) => {
-        try {
-            await dispatch(deleteChallengeAsync(challengeId));
-            dispatch(getAllChallengesAsync());
-        } catch (error) {
-            console.error("Failed to delete challenge:", error);
-        }
+        await dispatch(deleteChallengeAsync(challengeId));
+        dispatch(getAllChallengesAsync());
     }
 
     return (

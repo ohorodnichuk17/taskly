@@ -4,8 +4,6 @@ import solana_icon from "../../assets/icon/solana_icon.png";
 import { IAchievement } from "../../interfaces/achievementsInterface";
 import lock_icon from "../../assets/icon/lock_icon.png";
 
-
-
 export const Achievement = (props: IAchievement) => {
 
     return (<div id="achievement">

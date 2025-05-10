@@ -37,7 +37,6 @@ export default function TableFormPage() {
                 if (currentUserId) {
                     await dispatch(createTable({ name, userId: currentUserId }));
                 } else {
-                    console.warn("User ID is missing for the current authentication method.");
                     setError("Could not create table: User ID not found.");
                 }
             }
