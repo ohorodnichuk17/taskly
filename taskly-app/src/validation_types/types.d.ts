@@ -85,4 +85,11 @@ export declare const CreateBoardShema: z.ZodObject<{
     tag: string | null;
     boadrTemplateId: string;
 }>;
-
+export type UseRefferalCodeType = z.infer<typeof UseReferralCodeShema>;
+export declare const UseReferralCodeShema: z.ZodObject<{
+    referralCode: z.ZodUnion<[z.ZodUnion<[z.ZodNullable<z.ZodString>, z.ZodLiteral<"">]>, z.ZodNull]>;
+}, "strip", z.ZodTypeAny, {
+    referralCode: string | null;
+}, {
+    referralCode: string | null;
+}>;

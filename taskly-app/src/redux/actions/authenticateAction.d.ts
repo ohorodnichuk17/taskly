@@ -1,5 +1,5 @@
 import { IValidationErrors } from '../../interfaces/generalInterface';
-import { IAvatar, IChangePasswordRequest, ICheckHasUserSentRequestToChangePassword, IEditAvatar, ILoginRequest, IRegisterRequest, ISetUserNameForSolanaUser, ISolanaUserProfile, IUserProfile, IVerificateEmailRequest } from '../../interfaces/authenticateInterfaces';
+import { IAvatar, IChangePasswordRequest, ICheckHasUserSentRequestToChangePassword, IEditAvatar, ILoginRequest, IRegisterRequest, ISetUserNameForSolanaUser, ISolanaAuthRequest, ISolanaUserProfile, IUserProfile, IVerificateEmailRequest } from '../../interfaces/authenticateInterfaces';
 export declare const sendVerificationCodeAsync: import("@reduxjs/toolkit").AsyncThunk<string, string, {
     rejectValue: IValidationErrors;
     state?: unknown;
@@ -120,7 +120,7 @@ export declare const solanaLogoutAsync: import("@reduxjs/toolkit").AsyncThunk<vo
     fulfilledMeta?: unknown;
     rejectedMeta?: unknown;
 }>;
-export declare const solanaWalletAuthAsync: import("@reduxjs/toolkit").AsyncThunk<ISolanaUserProfile, string, {
+export declare const solanaWalletAuthAsync: import("@reduxjs/toolkit").AsyncThunk<ISolanaUserProfile, ISolanaAuthRequest, {
     rejectValue: IValidationErrors;
     state?: unknown;
     dispatch?: import("redux-thunk").ThunkDispatch<unknown, unknown, import("redux").UnknownAction> | undefined;

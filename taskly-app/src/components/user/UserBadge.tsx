@@ -13,15 +13,8 @@ const UserBadge: React.FC<UserBadgeProps> = ({ userId }) => {
     const dispatch = useAppDispatch();
     const userBadges = useRootState((state) => state.gamification.userBadges);
     const allBadges = useRootState((state) => state.gamification.badges);
-    const isLoadingUserBadges = useRootState((state) => state.gamification.isLoadingUserBadges);
     const isLoadingAllBadges = useRootState((state) => state.gamification.isLoadingBadges);
     const [hoveredBadgeInfo, setHoveredBadgeInfo] = useState<{ name: string; requiredTasks: number } | null>(null);
-
-    console.log("UserBadge rendered with userId:", userId);
-    console.log("isLoadingUserBadges:", isLoadingUserBadges);
-    console.log("isLoadingAllBadges:", isLoadingAllBadges);
-    console.log("userBadges from Redux:", userBadges);
-    console.log("allBadges from Redux:", allBadges);
 
     useEffect(() => {
         if (userId) {

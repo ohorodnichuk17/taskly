@@ -33,9 +33,13 @@ export const ProfilePage = () => {
     const fetchUserLevel = async () => {
         if (authMethod === "solana" && solanaUserProfile?.id) {
             const level = await dispatch(getUserLevelAsync(solanaUserProfile.id));
-            if (level.payload !== undefined) {
+            if (typeof level.payload === 'number') {
                 setCryptoLevel(level.payload);
+            } else {
+                console.error('Expected a number but got:', level.payload);
+                setCryptoLevel(null);
             }
+
         }
     };
 
@@ -96,7 +100,7 @@ export const ProfilePage = () => {
                         {cryptoLevel !== null && <CryptoLevel level={cryptoLevel} />}
                         {cryptoLevel === null && <p>Fetching Crypto Level...</p>}
                     </div>
-                    <UserBadge userId={getUserId()} /> {/* Використовуємо компонент UserBadge */}
+                    <UserBadge userId={getUserId()} />
                     <div className="user-referral-container">
                         <p className="section-title">Your referral code</p>
                         <div className="referral-code">

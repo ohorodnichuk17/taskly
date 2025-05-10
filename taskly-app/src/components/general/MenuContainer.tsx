@@ -7,6 +7,7 @@ import { HideMenuContainer } from './HideMenuContainer';
 import {logoutAsync, solanaLogoutAsync} from "../../redux/actions/authenticateAction.ts";
 import {baseUrl} from "../../axios/baseUrl.ts";
 import {useAppDispatch, useRootState} from "../../redux/hooks.ts";
+import {getAllBadgesByUserIdAsync} from "../../redux/actions/gamificationAction.ts";
 
 export interface IMenuContainer {
     icon: string;
@@ -43,6 +44,7 @@ export const MenuContainer = (props: IMenuContainer) => {
     const dropdownRef = useRef<HTMLDivElement | null>(null);
     const [hideMenu, setHideMenu] = useState<boolean>(false);
     const [isMenuOpened, setIsMenuOpened] = useState<boolean>(false);
+    const [currentBadge, setCurrentBadge] = useState<string | null>(null);
 
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
@@ -137,6 +139,32 @@ export const MenuContainer = (props: IMenuContainer) => {
         return atIndex !== -1 ? username.slice(0, atIndex) : username;
     };
 
+    useEffect(() => {
+        if (solanaUserProfile?.id) {
+            dispatch(getAllBadgesByUserIdAsync(solanaUserProfile.id))
+                .unwrap()
+                .then((badges) => {
+                    console.log("Badges:", badges);
+                    if (badges.length > 0) {
+                        // Find the badge with the highest requiredTasksToReceiveBadge
+                        const highestBadge = badges.reduce((prev, current) => {
+                            return current.badge.requiredTasksToReceiveBadge > prev.badge.requiredTasksToReceiveBadge
+                                ? current
+                                : prev;
+                        });
+                        setCurrentBadge(highestBadge.badge.icon);
+                    } else {
+                        setCurrentBadge(null);
+                    }
+                })
+                .catch((error) => console.error("Failed to fetch badges:", error));
+        }
+    }, [solanaUserProfile, dispatch]);
+
+    useEffect(() => {
+        console.log("Current Badge:", currentBadge);
+    }, [currentBadge]);
+
     return (
         <div
             ref={(ref) => {
@@ -215,7 +243,7 @@ export const MenuContainer = (props: IMenuContainer) => {
                                     </>
                                 )}
                                 {authMethod === "solana" && solanaUserProfile && (
-                                    <>
+                                    <div className="user-info">
                                         <img
                                             src={`${baseUrl}/images/avatars/${solanaUserProfile.avatarName}.png`}
                                             alt="Avatar"
@@ -250,9 +278,18 @@ export const MenuContainer = (props: IMenuContainer) => {
                                                 fontWeight: '500',
                                             }}
                                         >
-                                            {solanaUserProfile.userName}
-                                        </span>
-                                    </>
+            {solanaUserProfile.userName}
+        </span>
+                                        {currentBadge && (
+                                            <div className="user-badge">
+                                                <img
+                                                    src={`${baseUrl}/images/badges/${currentBadge}.png`}
+                                                    alt={`${currentBadge} badge`}
+                                                    style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                                                />
+                                            </div>
+                                        )}
+                                    </div>
                                 )}
                                 {isDropdownOpen && (
                                     <div
