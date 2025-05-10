@@ -32,6 +32,15 @@ public class AuthenticationRepository(UserManager<UserEntity> userManager, Taskl
 
         return email;
     }
+    public async Task RemovePreviousCodeIfExist(string email)
+    {
+        var verificationEmail = await _verificationEmailEntities.FirstOrDefaultAsync(ev => ev.Email == email);
+        if(verificationEmail != null)
+        {
+            _verificationEmailEntities.Remove(verificationEmail);
+            await tasklyDbContext.SaveChangesAsync();
+        }
+    }
 
     public async Task<bool> IsVerificationEmailExistAndCodeValid(string email, string code) =>
         await _verificationEmailEntities.AnyAsync(e => e.Email == email && e.Code == code);

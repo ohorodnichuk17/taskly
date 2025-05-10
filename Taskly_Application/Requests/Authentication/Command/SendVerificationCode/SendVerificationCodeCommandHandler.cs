@@ -18,6 +18,8 @@ public class SendVerificationCodeCommandHandler(
 
         if (isUserExist) return Error.Conflict("User with this email already exist");
 
+        await unitOfWork.Authentication.RemovePreviousCodeIfExist(request.Email);
+
         var code = CodeGenerator.GenerateCode();
 
         var verificationEmail = await unitOfWork.Authentication.AddVerificationEmail(request.Email, code);

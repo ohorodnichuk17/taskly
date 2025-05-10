@@ -8,6 +8,7 @@ public interface IAuthenticationRepository : IRepository<UserEntity>
     Task<bool> IsUserExist(string email);
     Task<bool> IsUserExist(Guid id);
     Task<string> AddVerificationEmail(string email, string code);
+    Task RemovePreviousCodeIfExist(string email);
     Task<bool> IsVerificationEmailExistAndCodeValid(string email, string code);
     Task VerificateEmail(string email);
     //Task CreateNewUser(UserEntity NewUser, string Password);
