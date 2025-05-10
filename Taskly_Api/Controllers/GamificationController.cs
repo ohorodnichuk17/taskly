@@ -92,9 +92,9 @@ public class GamificationController(ISender mediatr, IMapper mapper)
             errors => Problem(errors));
     }
 
-    [HttpPut("book-challenge/{id:guid}")]
+    [HttpPut("book-challenge/{id:guid}/{userId:guid}")]
     [Authorize]
-    public async Task<IActionResult> BookChallenge([FromRoute] Guid id, [FromBody] Guid userId)
+    public async Task<IActionResult> BookChallenge([FromRoute] Guid id, [FromRoute] Guid userId)
     {
         var command = new BookChallengeCommand(id, userId);
         var result = await mediatr.Send(command);
