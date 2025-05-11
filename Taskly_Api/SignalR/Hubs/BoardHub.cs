@@ -47,7 +47,6 @@ public class BoardHub(ISender sender) : Hub
             ));
 
         var response = await sender.Send(new CheckIfUserHasEarnedAchievementCommand(UserId: model.UserId));
-
         return response;
     }
     public async Task RemoveCardFromCardList(RemoveCardFromCardList model)

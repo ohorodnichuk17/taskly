@@ -238,7 +238,7 @@ public static class DependencyInjection
             options.AddPolicy("AllowPolicy", policy =>
             {
 
-                policy.WithOrigins("http://localhost:5173")
+                policy.WithOrigins("https://taskly-backend-0int.onrender.com")
                     .AllowCredentials() // ����� �� ����-�� ������ ���
                     .AllowAnyMethod() // ����� �� ����-�� ������
                     .AllowAnyHeader(); //����� �� ����-�� �������� ���
