@@ -86,39 +86,30 @@ public class AchievementRepository(TasklyDbContext context) : Repository<Achieve
     }
     private async Task<AchievementEntity?> SaveAchievement(AchievementEntity? achievement, UserEntity user)
     {
-        if (achievement != null && !achievement.Users.Any(u => u.Id == user.Id))
+        
+        if (achievement != null)
         {
-            var newAchievement = new Dictionary<string, object>();
-            newAchievement.Add("AchievementId", achievement.Id);
-            newAchievement.Add("UserId", user.Id);
-            await _achievementsUsersEntitie.AddAsync(newAchievement);
-
-            var countOfUsersWithPublicKey = await context.Users.CountAsync(u => u.PublicKey != null);
-
-            /*if (countOfUsersWithPublicKey != 0)
+            bool alreadyExist = await _achievementsUsersEntitie.AnyAsync((au => 
+            au["AchievementId"].ToString() == achievement.Id.ToString() && 
+            au["UserId"].ToString() == user.Id.ToString()));
+            if (!alreadyExist)
             {
-                var countOfUserHwoCompleatedAchievement = await _achievementsUsersEntitie
-                    .CountAsync(a => a["AchievementId"].ToString() == achievement.Id.ToString());
-                if(countOfUserHwoCompleatedAchievement == 0)
-                {
-                    achievement.PercentageOfCompletion = 100;
-                }
-                else
-                {
-                    achievement.PercentageOfCompletion = Double.Round((countOfUserHwoCompleatedAchievement * 100) / countOfUsersWithPublicKey, 1);
-                }
-                await SaveAsync(achievement);
-            }*/
-            await ChangePercentageOfCompletionOfAchievement(achievement);
+                var newAchievement = new Dictionary<string, object>();
+                newAchievement.Add("AchievementId", achievement.Id);
+                newAchievement.Add("UserId", user.Id);
+                await _achievementsUsersEntitie.AddAsync(newAchievement);
 
-            return achievement;
+                var countOfUsersWithPublicKey = await context.Users.CountAsync(u => u.PublicKey != null);
+                await ChangePercentageOfCompletionOfAchievement(achievement);
+
+                return achievement;
+            }
         }
         return null;
     }
     private async Task<AchievementEntity?> GetAchievementByNameAsync(string name)
     {
        return await _achievementEntitie
-            .Include(u => u.Users)
             .FirstOrDefaultAsync(a => a.Name == name);
     }
 }
