@@ -128,6 +128,7 @@ const authenticateSlice = createSlice({
                 localStorage.setItem("user_profile_id", action.payload.id);
                 localStorage.setItem("user_profile_email", action.payload.email);
                 localStorage.setItem("user_profile_avatar", action.payload.avatarName);
+                localStorage.setItem("jwt_token", action.payload.token);
             })
             .addCase(loginAsync.rejected, () => {
                 /*if (action.payload) {
@@ -153,6 +154,7 @@ const authenticateSlice = createSlice({
                 localStorage.setItem("user_profile_id", action.payload.id);
                 localStorage.setItem("user_profile_email", action.payload.email);
                 localStorage.setItem("user_profile_avatar", action.payload.avatarName);
+                localStorage.setItem("jwt_token", action.payload.token);
             })
             .addCase(checkTokenAsync.rejected, (state) => {
                 /*if (action.payload) {
@@ -172,6 +174,8 @@ const authenticateSlice = createSlice({
                     localStorage.removeItem("user_profile_avatar");
                 if (localStorage.getItem("isAuthenticated") !== null)
                     localStorage.removeItem("isAuthenticated");
+                if (localStorage.getItem("jwt_token") !== null)
+                    localStorage.removeItem("jwt_token");
             })
             .addCase(checkHasUserSentRequestToChangePasswordAsync.fulfilled, (state, action: PayloadAction<string | null>) => {
                 state.emailOfUserWhoWantToChangePassword = action.payload === "" ? null : action.payload;
@@ -186,6 +190,8 @@ const authenticateSlice = createSlice({
                 localStorage.removeItem("user_profile_avatar");
                 state.isLogin = false;
                 state.userProfile = null;
+                if (localStorage.getItem("jwt_token") !== null)
+                    localStorage.removeItem("jwt_token");
             })
             .addCase(logoutAsync.rejected, (_, action) => {
                 console.error("Logout failed:", action.payload);
@@ -203,6 +209,8 @@ const authenticateSlice = createSlice({
                 localStorage.removeItem("user_profile_userName");
                 localStorage.removeItem("isAuthenticated");
                 localStorage.removeItem("isLogin");
+                if (localStorage.getItem("jwt_token") !== null)
+                    localStorage.removeItem("jwt_token");
             })
             .addCase(solanaLogoutAsync.rejected, () => {
             })
@@ -225,11 +233,13 @@ const authenticateSlice = createSlice({
                     id: payload.id || localStorage.getItem("user_profile_id") || "",
                     publicKey: payload.publicKey || localStorage.getItem("user_profile_publicKey") || "",
                     userName: payload.userName || localStorage.getItem("user_profile_userName") || "",
-                    avatarName: payload.avatarName || localStorage.getItem("user_profile_avatar") || ""
+                    avatarName: payload.avatarName || localStorage.getItem("user_profile_avatar") || "",
+                    token: payload.token || localStorage.getItem("jwt_token") || ""
                 };
                 state.authMethod = "solana";
                 localStorage.setItem("authMethod", "solana");
                 localStorage.setItem("isAuthenticated", "true");
+                payload.token && localStorage.setItem("jwt_token", payload.token);
             })
             .addCase(solanaWalletAuthAsync.rejected, () => {
                 if (localStorage.getItem("user_profile_id") !== null)
@@ -250,6 +260,7 @@ const authenticateSlice = createSlice({
                 localStorage.setItem("user_profile_publicKey", action.payload.publicKey);
                 localStorage.setItem("user_profile_userName", action.payload.publicKey);
                 localStorage.setItem("user_profile_avatar", action.payload.avatarName);
+                action.payload.token && localStorage.setItem("jwt_token", action.payload.token);
             })
             .addCase(checkSolanaTokenAsync.rejected, (state) => {
                 /*if (action.payload) {
@@ -271,6 +282,8 @@ const authenticateSlice = createSlice({
                     localStorage.removeItem("user_profile_avatar");
                 if (localStorage.getItem("isAuthenticated") !== null)
                     localStorage.removeItem("isAuthenticated");
+                if (localStorage.getItem("jwt_token") !== null)
+                    localStorage.removeItem("jwt_token");
             })
             .addCase(getSolanaUserReferralCodeAsync.fulfilled, (state, action: PayloadAction<string>) => {
                 state.solanaUserReferralCode = action.payload;

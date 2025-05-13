@@ -31,7 +31,8 @@ export interface ISolanaUserProfile {
     id: string
     publicKey: string,
     avatarName: string
-    userName: string
+    userName: string,
+    token: string
 }
 
 export interface ISetUserNameForSolanaUser {
