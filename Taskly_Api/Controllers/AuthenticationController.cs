@@ -53,8 +53,11 @@ namespace Taskly_Api.Controllers
             return result.Match(result => {
                 Response.Cookies.Append("X-JWT-Token", result, new CookieOptions()
                 {
+                    /*HttpOnly = true,
+                    SameSite = SameSiteMode.Strict*/
                     HttpOnly = true,
-                    SameSite = SameSiteMode.Strict
+                    Secure = true, 
+                    SameSite = SameSiteMode.None
                 });
                 return Ok();
             },
@@ -69,8 +72,11 @@ namespace Taskly_Api.Controllers
             return await result.MatchAsync(async result => {
                 Response.Cookies.Append("X-JWT-Token", result, new CookieOptions()
                 {
-                    HttpOnly = true, 
-                    SameSite = SameSiteMode.Strict, 
+                    /*HttpOnly = true, 
+                    SameSite = SameSiteMode.Strict, */
+                    HttpOnly = true,
+                    Secure = true,
+                    SameSite = SameSiteMode.None
                 });
 
                 var user = await sender.Send(new GetInformationAboutUserQuery(loginRequest.Email));
@@ -161,8 +167,11 @@ namespace Taskly_Api.Controllers
                 return await tokenResult.MatchAsync(async result => {
                     Response.Cookies.Append("X-JWT-Token", result, new CookieOptions()
                     {
+                        /*HttpOnly = true,
+                        SameSite = SameSiteMode.Strict,*/
                         HttpOnly = true,
-                        SameSite = SameSiteMode.Strict,
+                        Secure = true,
+                        SameSite = SameSiteMode.None
                     });
                     
 
