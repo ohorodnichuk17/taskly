@@ -102,10 +102,11 @@ public class AuthenticateMapsterConfig : IRegister
             .Map(src => src.Token, desp => desp.token)
             .Map(src => src.Role, desp => desp.role);
         
-        config.NewConfig<UserEntity, InformationAboutSolanaUserResponse>()
-            .Map(src => src.Id, desp => desp.Id)
-            .Map(src => src.PublicKey, desp => desp.PublicKey)
-            .Map(src => src.UserName, desp => desp.UserName)
-            .Map(src => src.AvatarName, desp => desp.Avatar != null ? desp.Avatar.ImagePath : "");
+        config.NewConfig<(UserEntity user, string token) , InformationAboutSolanaUserResponse>()
+            .Map(src => src.Id, desp => desp.user.Id)
+            .Map(src => src.PublicKey, desp => desp.user.PublicKey)
+            .Map(src => src.UserName, desp => desp.user.UserName)
+            .Map(src => src.AvatarName, desp => desp.user.Avatar != null ? desp.user.Avatar.ImagePath : "")
+            .Map(src => src.Token, desp => desp.token);
     }
 }

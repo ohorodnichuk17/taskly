@@ -166,7 +166,7 @@ namespace Taskly_Api.Controllers
                     });
                     
 
-                    return user.Match(user => Ok(mapper.Map<InformationAboutSolanaUserResponse>(user)),
+                    return user.Match(user => Ok(mapper.Map<InformationAboutSolanaUserResponse>((user,result))),
                         errors => Problem(errors));
                 }, errors => Task.FromResult(Problem(errors)));
             }
