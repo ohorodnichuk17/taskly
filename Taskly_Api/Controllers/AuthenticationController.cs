@@ -183,9 +183,10 @@ namespace Taskly_Api.Controllers
             var publicKey = User.Claims.FirstOrDefault(c => c.Type == "publicKey")?.Value;
     
             var user = await sender.Send(new GetUserByPublicKeyQuery(publicKey));
-    
+            string token = Request.Cookies["X-JWT-Token"]!;
+
             return user.Match(
-                user => Ok(mapper.Map<InformationAboutSolanaUserResponse>(user)),
+                user => Ok(mapper.Map<InformationAboutSolanaUserResponse>((user,token))),
                 errors => Problem(errors)
             );
         }
