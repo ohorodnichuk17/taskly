@@ -1,5 +1,5 @@
 FROM node:18 AS build
-WORKDIR /app
+WORKDIR frontend/app
 
 COPY package*.json ./
 RUN npm install
@@ -9,11 +9,11 @@ COPY . .
 RUN npm run build
 
 FROM node:18 AS production
-WORKDIR /app
+WORKDIR frontend/app
 
 RUN npm install -g serve
 
-COPY --from=build /app/dist .
+COPY --from=build frontend/app/dist .
 
 EXPOSE 3000
 CMD ["serve", "-s", ".", "-l", "3000"]
