@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>Taskly_Domain</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="ErrorOr" Version="2.0.1" />
+      <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.11" />
+      <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="8.0.11" />
+      <PackageReference Include="Solnet.Wallet" Version="6.1.0" />
+    </ItemGroup>
+
+</Project>
