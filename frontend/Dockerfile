@@ -1,10 +1,10 @@
 FROM node:18 AS build
 WORKDIR /app
 
-COPY package*.json ./
+COPY frontend/package*.json ./
 RUN npm install
 
-COPY . .
+COPY frontend .
 
 RUN npm run build
 
