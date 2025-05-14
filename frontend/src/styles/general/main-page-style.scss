@@ -165,3 +165,18 @@
     }
   }
 }
+
+@media (max-width: 768px) {
+  .primary-button {
+    width: 100% !important;
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    display: flex;
+    justify-content: center;
+
+    a {
+      width: 100%;
+      text-align: center;
+    }
+  }
+}
