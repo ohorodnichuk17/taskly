@@ -1,16 +1,18 @@
 FROM node:18 AS build
 WORKDIR /app
 
-COPY src/package*.json ./
+COPY package*.json ./
 RUN npm install
 
-COPY src ./
+COPY . .
+
 RUN npm run build
 
 FROM node:18 AS production
 WORKDIR /app
 
 RUN npm install -g serve
+
 COPY --from=build /app/dist .
 
 EXPOSE 3000
