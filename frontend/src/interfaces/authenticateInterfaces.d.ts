@@ -32,6 +32,7 @@ export interface ISolanaUserProfile {
     publicKey: string;
     avatarName: string;
     userName: string;
+    token: string;
 }
 export interface ISetUserNameForSolanaUser {
     publicKey: string;
