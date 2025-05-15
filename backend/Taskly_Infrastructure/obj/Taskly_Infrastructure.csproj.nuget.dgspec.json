@@ -1,35 +1,33 @@
 {
   "format": 1,
   "restore": {
-    "D:\\PetProject\\taskly\\backend\\Taskly_Infrastructure\\Taskly_Infrastructure.csproj": {}
+    "/Users/PC10/taskly/taskly-mono/backend/Taskly_Infrastructure/Taskly_Infrastructure.csproj": {}
   },
   "projects": {
-    "D:\\PetProject\\taskly\\backend\\Taskly_Application\\Taskly_Application.csproj": {
+    "/Users/PC10/taskly/taskly-mono/backend/Taskly_Application/Taskly_Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\PetProject\\taskly\\backend\\Taskly_Application\\Taskly_Application.csproj",
+        "projectUniqueName": "/Users/PC10/taskly/taskly-mono/backend/Taskly_Application/Taskly_Application.csproj",
         "projectName": "Taskly_Application",
-        "projectPath": "D:\\PetProject\\taskly\\backend\\Taskly_Application\\Taskly_Application.csproj",
-        "packagesPath": "C:\\Users\\Назар\\.nuget\\packages\\",
-        "outputPath": "D:\\PetProject\\taskly\\backend\\Taskly_Application\\obj\\",
+        "projectPath": "/Users/PC10/taskly/taskly-mono/backend/Taskly_Application/Taskly_Application.csproj",
+        "packagesPath": "/Users/PC10/.nuget/packages/",
+        "outputPath": "/Users/PC10/taskly/taskly-mono/backend/Taskly_Application/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Назар\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/Users/PC10/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "D:\\PetProject\\taskly\\backend\\Taskly_Domain\\Taskly_Domain.csproj": {
-                "projectPath": "D:\\PetProject\\taskly\\backend\\Taskly_Domain\\Taskly_Domain.csproj"
+              "/Users/PC10/taskly/taskly-mono/backend/Taskly_Domain/Taskly_Domain.csproj": {
+                "projectPath": "/Users/PC10/taskly/taskly-mono/backend/Taskly_Domain/Taskly_Domain.csproj"
               }
             }
           }
@@ -72,9 +70,9 @@
               "target": "Package",
               "version": "[9.0.0, )"
             },
-            "Serilog.AspNetCore": {
+            "Serilog": {
               "target": "Package",
-              "version": "[9.0.0, )"
+              "version": "[4.2.0, )"
             }
           },
           "imports": [
@@ -93,28 +91,26 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.203/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\PetProject\\taskly\\backend\\Taskly_Domain\\Taskly_Domain.csproj": {
+    "/Users/PC10/taskly/taskly-mono/backend/Taskly_Domain/Taskly_Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\PetProject\\taskly\\backend\\Taskly_Domain\\Taskly_Domain.csproj",
+        "projectUniqueName": "/Users/PC10/taskly/taskly-mono/backend/Taskly_Domain/Taskly_Domain.csproj",
         "projectName": "Taskly_Domain",
-        "projectPath": "D:\\PetProject\\taskly\\backend\\Taskly_Domain\\Taskly_Domain.csproj",
-        "packagesPath": "C:\\Users\\Назар\\.nuget\\packages\\",
-        "outputPath": "D:\\PetProject\\taskly\\backend\\Taskly_Domain\\obj\\",
+        "projectPath": "/Users/PC10/taskly/taskly-mono/backend/Taskly_Domain/Taskly_Domain.csproj",
+        "packagesPath": "/Users/PC10/.nuget/packages/",
+        "outputPath": "/Users/PC10/taskly/taskly-mono/backend/Taskly_Domain/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Назар\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/Users/PC10/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -145,10 +141,6 @@
               "target": "Package",
               "version": "[8.0.11, )"
             },
-            "Serilog.AspNetCore": {
-              "target": "Package",
-              "version": "[9.0.0, )"
-            },
             "Solnet.Wallet": {
               "target": "Package",
               "version": "[6.1.0, )"
@@ -170,39 +162,37 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.203/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\PetProject\\taskly\\backend\\Taskly_Infrastructure\\Taskly_Infrastructure.csproj": {
+    "/Users/PC10/taskly/taskly-mono/backend/Taskly_Infrastructure/Taskly_Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\PetProject\\taskly\\backend\\Taskly_Infrastructure\\Taskly_Infrastructure.csproj",
+        "projectUniqueName": "/Users/PC10/taskly/taskly-mono/backend/Taskly_Infrastructure/Taskly_Infrastructure.csproj",
         "projectName": "Taskly_Infrastructure",
-        "projectPath": "D:\\PetProject\\taskly\\backend\\Taskly_Infrastructure\\Taskly_Infrastructure.csproj",
-        "packagesPath": "C:\\Users\\Назар\\.nuget\\packages\\",
-        "outputPath": "D:\\PetProject\\taskly\\backend\\Taskly_Infrastructure\\obj\\",
+        "projectPath": "/Users/PC10/taskly/taskly-mono/backend/Taskly_Infrastructure/Taskly_Infrastructure.csproj",
+        "packagesPath": "/Users/PC10/.nuget/packages/",
+        "outputPath": "/Users/PC10/taskly/taskly-mono/backend/Taskly_Infrastructure/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Назар\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/Users/PC10/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "D:\\PetProject\\taskly\\backend\\Taskly_Application\\Taskly_Application.csproj": {
-                "projectPath": "D:\\PetProject\\taskly\\backend\\Taskly_Application\\Taskly_Application.csproj"
+              "/Users/PC10/taskly/taskly-mono/backend/Taskly_Application/Taskly_Application.csproj": {
+                "projectPath": "/Users/PC10/taskly/taskly-mono/backend/Taskly_Application/Taskly_Application.csproj"
               },
-              "D:\\PetProject\\taskly\\backend\\Taskly_Domain\\Taskly_Domain.csproj": {
-                "projectPath": "D:\\PetProject\\taskly\\backend\\Taskly_Domain\\Taskly_Domain.csproj"
+              "/Users/PC10/taskly/taskly-mono/backend/Taskly_Domain/Taskly_Domain.csproj": {
+                "projectPath": "/Users/PC10/taskly/taskly-mono/backend/Taskly_Domain/Taskly_Domain.csproj"
               }
             }
           }
@@ -237,10 +227,6 @@
               "target": "Package",
               "version": "[9.0.2, )"
             },
-            "Serilog.AspNetCore": {
-              "target": "Package",
-              "version": "[9.0.0, )"
-            },
             "Solnet.Wallet": {
               "target": "Package",
               "version": "[6.1.0, )"
@@ -266,7 +252,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.203/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
