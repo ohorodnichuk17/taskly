@@ -1223,32 +1223,34 @@
     ]
   },
   "packageFolders": {
-    "/Users/PC10/.nuget/packages/": {}
+    "C:\\Users\\Назар\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/PC10/taskly/taskly-mono/backend/Taskly_Application/Taskly_Application.csproj",
+      "projectUniqueName": "D:\\PetProject\\taskly\\backend\\Taskly_Application\\Taskly_Application.csproj",
       "projectName": "Taskly_Application",
-      "projectPath": "/Users/PC10/taskly/taskly-mono/backend/Taskly_Application/Taskly_Application.csproj",
-      "packagesPath": "/Users/PC10/.nuget/packages/",
-      "outputPath": "/Users/PC10/taskly/taskly-mono/backend/Taskly_Application/obj/",
+      "projectPath": "D:\\PetProject\\taskly\\backend\\Taskly_Application\\Taskly_Application.csproj",
+      "packagesPath": "C:\\Users\\Назар\\.nuget\\packages\\",
+      "outputPath": "D:\\PetProject\\taskly\\backend\\Taskly_Application\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/PC10/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\Назар\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "/Users/PC10/taskly/taskly-mono/backend/Taskly_Domain/Taskly_Domain.csproj": {
-              "projectPath": "/Users/PC10/taskly/taskly-mono/backend/Taskly_Domain/Taskly_Domain.csproj"
+            "D:\\PetProject\\taskly\\backend\\Taskly_Domain\\Taskly_Domain.csproj": {
+              "projectPath": "D:\\PetProject\\taskly\\backend\\Taskly_Domain\\Taskly_Domain.csproj"
             }
           }
         }
@@ -1308,7 +1310,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.203/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
       }
     }
   },
