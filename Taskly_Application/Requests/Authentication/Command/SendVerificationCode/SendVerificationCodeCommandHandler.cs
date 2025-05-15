@@ -36,7 +36,8 @@ public class SendVerificationCodeCommandHandler(
         catch (Exception ex)
         {
             Log.Error(ex, "Send verification code error");
-            return Error.Unexpected(description: "Unexpected error occurred while sending verification code.");
+            return Error.Conflict(ex.Message);
         }
+              
     }
 }

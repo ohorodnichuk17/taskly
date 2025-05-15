@@ -35,6 +35,9 @@ using Taskly_Infrastructure.Common.Seeder;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Host.SerilogConfiguration();
+
+
 // Add services to the container.
 builder.Services
     .AddPresentation(builder.Configuration)
