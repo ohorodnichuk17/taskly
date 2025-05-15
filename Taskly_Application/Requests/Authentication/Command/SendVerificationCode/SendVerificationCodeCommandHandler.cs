@@ -1,5 +1,6 @@
 ﻿using ErrorOr;
 using MediatR;
+using Serilog;
 using Taskly_Application.Common.Helpers;
 using Taskly_Application.Interfaces;
 using Taskly_Application.Interfaces.IRepository;
@@ -14,20 +15,29 @@ public class SendVerificationCodeCommandHandler(
 {
     public async Task<ErrorOr<string>> Handle(SendVerificationCodeCommand request, CancellationToken cancellationToken)
     {
-        var isUserExist = await unitOfWork.Authentication.IsUserExist(request.Email);
+        try
+        {
+            var isUserExist = await unitOfWork.Authentication.IsUserExist(request.Email);
 
-        if (isUserExist) return Error.Conflict("User with this email already exist");
+            if (isUserExist) return Error.Conflict("User with this email already exist");
 
-        await unitOfWork.Authentication.RemovePreviousCodeIfExist(request.Email);
+            await unitOfWork.Authentication.RemovePreviousCodeIfExist(request.Email);
 
-        var code = CodeGenerator.GenerateCode();
+            var code = CodeGenerator.GenerateCode();
 
-        var verificationEmail = await unitOfWork.Authentication.AddVerificationEmail(request.Email, code);
-        var props = new Dictionary<string, string>();
-        props.Add("[VERIFICATION_CODE]", code);
+            var verificationEmail = await unitOfWork.Authentication.AddVerificationEmail(request.Email, code);
+            var props = new Dictionary<string, string>();
+            props.Add("[VERIFICATION_CODE]", code);
 
-        await emailService.SendHTMLPage(verificationEmail, Constants.VerificateEmail, props);
+            await emailService.SendHTMLPage(verificationEmail, Constants.VerificateEmail, props);
 
-        return verificationEmail;
+            return verificationEmail;
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "Send verification code error");
+            return Error.Conflict(ex.Message);
+        }
+              
     }
 }

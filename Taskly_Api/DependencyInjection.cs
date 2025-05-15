@@ -235,26 +235,12 @@ public static class DependencyInjection
     {
         services.AddCors(options =>
         {
-            options.AddPolicy("AllowPolicy", policy =>
-            {
-<<<<<<< HEAD
-                /*policy.WithOrigins("http://localhost:5173")
-                    .AllowCredentials() // ����� �� ����-�� ������ ���
-                    .AllowAnyMethod() // ����� �� ����-�� ������
-                    .AllowAnyHeader();*/
-                policy.WithOrigins("https://taskly-frontend-5bz1.onrender.com")
-                    .AllowCredentials() // ����� �� ����-�� ������ ���
-                    .AllowAnyMethod() // ����� �� ����-�� ������
-                    .AllowAnyHeader(); //����� �� ����-�� �������� ���
-                //policy.AllowAnyOrigin() // ����� �� ����-�� ������
-=======
-
-                // policy.WithOrigins("https://taskly-frontend-5bz1.onrender.com", "http://localhost:5173")
-                //     .AllowCredentials() // ����� �� ����-�� ������ ���
-                //     .AllowAnyMethod() // ����� �� ����-�� ������
-                //     .AllowAnyHeader();//����� �� ����-�� �������� ���
-                policy.AllowAnyOrigin(); // ����� �� ����-�� ������
->>>>>>> 5242f178150e41d2c5a1892c3e3edea6c41810bf
+            options.AddPolicy("AllowPolicy", policy => { 
+                 policy.WithOrigins("https://taskly-frontend-5bz1.onrender.com", "http://localhost:5173")
+                     .AllowCredentials() // ����� �� ����-�� ������ ���
+                     .AllowAnyMethod() // ����� �� ����-�� ������
+                     .AllowAnyHeader();//����� �� ����-�� �������� ���
+                //policy.AllowAnyOrigin(); // ����� �� ����-�� ������
             });
         });
         return services;

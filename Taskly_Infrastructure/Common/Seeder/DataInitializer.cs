@@ -152,7 +152,7 @@ public static class DataInitializer
                     Id = Guid.NewGuid(),
                     Name = Constants.Achievement_FirstHeights,
                     Description = "Complete 10 tasks.",
-                    Reward = 1,
+                    Reward = 0.3F,
                     Icon = "first_heights",
                     PercentageOfCompletion = 0
                 },
@@ -161,7 +161,7 @@ public static class DataInitializer
                     Id = Guid.NewGuid(),
                     Name = Constants.Achievement_TirelessWorker,
                     Description = "Complete 30 tasks.",
-                    Reward = 2,
+                    Reward = 0.6F,
                     Icon = "tireless",
                     PercentageOfCompletion = 0
                 },
@@ -170,7 +170,7 @@ public static class DataInitializer
                     Id = Guid.NewGuid(),
                     Name = Constants.Achievement_MasterOfCards,
                     Description = "Complete 50 tasks.",
-                    Reward = 3,
+                    Reward = 0.9F,
                     Icon = "mastery",
                     PercentageOfCompletion = 0
                 }
