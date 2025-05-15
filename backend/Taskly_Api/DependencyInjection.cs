@@ -235,7 +235,6 @@ public static class DependencyInjection
     {
         services.AddCors(options =>
         {
-
             options.AddPolicy("AllowPolicy", policy =>
             {
                 // policy.WithOrigins("http://localhost:5173")
@@ -247,7 +246,6 @@ public static class DependencyInjection
                         .AllowAnyMethod() 
                         .AllowAnyHeader();
                 // policy.AllowAnyOrigin(); // ����� �� ����-�� ������
-
             });
         });
         return services;

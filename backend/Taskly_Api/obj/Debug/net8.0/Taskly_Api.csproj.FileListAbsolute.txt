@@ -230,6 +230,7 @@
 /Users/PC10/taskly/taskly-mono/backend/Taskly_Api/obj/Debug/net8.0/Taskly_Api.pdb
 /Users/PC10/taskly/taskly-mono/backend/Taskly_Api/obj/Debug/net8.0/Taskly_Api.genruntimeconfig.cache
 /Users/PC10/taskly/taskly-mono/backend/Taskly_Api/obj/Debug/net8.0/ref/Taskly_Api.dll
+<<<<<<< HEAD
 D:\PetProject\taskly\backend\Taskly_Api\obj\Debug\net8.0\Taskly_Api.csproj.AssemblyReference.cache
 D:\PetProject\taskly\backend\Taskly_Api\obj\Debug\net8.0\Taskly_Api.GeneratedMSBuildEditorConfig.editorconfig
 D:\PetProject\taskly\backend\Taskly_Api\obj\Debug\net8.0\Taskly_Api.AssemblyInfoInputs.cache
@@ -475,3 +476,18 @@ D:\PetProject\taskly\backend\Taskly_Api\obj\Debug\net8.0\scopedcss\bundle\Taskly
 D:\PetProject\taskly\backend\Taskly_Api\obj\Debug\net8.0\Taskly_Api.csproj.CopyComplete
 D:\PetProject\taskly\backend\Taskly_Api\obj\Debug\net8.0\Taskly_Api.genruntimeconfig.cache
 D:\PetProject\taskly\backend\Taskly_Api\obj\Debug\net8.0\ref\Taskly_Api.dll
+=======
+/Users/PC10/taskly/taskly-mono/backend/Taskly_Api/bin/Debug/net8.0/Microsoft.Extensions.Configuration.Binder.dll
+/Users/PC10/taskly/taskly-mono/backend/Taskly_Api/bin/Debug/net8.0/Microsoft.Extensions.Diagnostics.Abstractions.dll
+/Users/PC10/taskly/taskly-mono/backend/Taskly_Api/bin/Debug/net8.0/Microsoft.Extensions.FileProviders.Abstractions.dll
+/Users/PC10/taskly/taskly-mono/backend/Taskly_Api/bin/Debug/net8.0/Microsoft.Extensions.Hosting.Abstractions.dll
+/Users/PC10/taskly/taskly-mono/backend/Taskly_Api/bin/Debug/net8.0/Serilog.dll
+/Users/PC10/taskly/taskly-mono/backend/Taskly_Api/bin/Debug/net8.0/Serilog.AspNetCore.dll
+/Users/PC10/taskly/taskly-mono/backend/Taskly_Api/bin/Debug/net8.0/Serilog.Extensions.Hosting.dll
+/Users/PC10/taskly/taskly-mono/backend/Taskly_Api/bin/Debug/net8.0/Serilog.Extensions.Logging.dll
+/Users/PC10/taskly/taskly-mono/backend/Taskly_Api/bin/Debug/net8.0/Serilog.Formatting.Compact.dll
+/Users/PC10/taskly/taskly-mono/backend/Taskly_Api/bin/Debug/net8.0/Serilog.Settings.Configuration.dll
+/Users/PC10/taskly/taskly-mono/backend/Taskly_Api/bin/Debug/net8.0/Serilog.Sinks.Console.dll
+/Users/PC10/taskly/taskly-mono/backend/Taskly_Api/bin/Debug/net8.0/Serilog.Sinks.Debug.dll
+/Users/PC10/taskly/taskly-mono/backend/Taskly_Api/bin/Debug/net8.0/Serilog.Sinks.File.dll
+>>>>>>> 3d7268aa6722d3742a9ed83bc2826f0711e16b0f
