@@ -240,12 +240,12 @@ public static class DependencyInjection
                 // policy.WithOrigins("http://localhost:5173")
                 //     .AllowCredentials() // ����� �� ����-�� ������ ���
                 //     .AllowAnyMethod() // ����� �� ����-�� ������
-                //     .AllowAnyHeader();
-                policy.WithOrigins("https://taskly-frontend-5bz1.onrender.com")
-                    .AllowCredentials() // ����� �� ����-�� ������ ���
-                    .AllowAnyMethod() // ����� �� ����-�� ������
-                    .AllowAnyHeader(); //����� �� ����-�� �������� ���
-                //policy.AllowAnyOrigin() // ����� �� ����-�� ������
+                    // .AllowAnyHeader();
+                    policy.WithOrigins("https://taskly-frontend-5bz1.onrender.com", "http://localhost:5173")
+                        .AllowCredentials() 
+                        .AllowAnyMethod() 
+                        .AllowAnyHeader();
+                // policy.AllowAnyOrigin(); // ����� �� ����-�� ������
             });
         });
         return services;
