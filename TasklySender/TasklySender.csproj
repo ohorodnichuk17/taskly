@@ -23,4 +23,13 @@
     <ProjectReference Include="..\TasklySender_Infrastructure\TasklySender_Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="wwwroot\HTMLPages\ChangePassword\ChangePassword.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\HTMLPages\VerificateEmail\VerificateEmail.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
