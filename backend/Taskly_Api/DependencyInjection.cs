@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -66,6 +67,7 @@ public static class DependencyInjection
         services.AddCustomCors();
         services.AddGeminiClient();
         services.AddSignalR();
+        services.AddHttpClient<IHttpSenderService, HttpSenderService>();
 
        
 
@@ -227,6 +229,7 @@ public static class DependencyInjection
         services.Configure<AuthenticationSettings>(configuration.GetSection("AuthenticationSettings"));
         services.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
         services.Configure<GeminiSettings>(configuration.GetSection("Gemini"));
+        services.Configure<SenderOptions>(configuration.GetSection("SenderOptions"));
 
         return services;
     }

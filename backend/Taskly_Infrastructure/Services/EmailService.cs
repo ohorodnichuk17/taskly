@@ -10,9 +10,10 @@ using Taskly_Domain.ValueObjects;
 
 namespace Taskly_Infrastructure.Services;
 
-public class EmailService(IOptions<EmailSettings> options) : IEmailService
+public class EmailService(IOptions<EmailSettings> options, IOptions<ResendOptions> resendOptions) : IEmailService
 {
     private readonly EmailSettings settings = options.Value;
+    private readonly ResendOptions resendOptions = resendOptions.Value;
     public Task SendEmail(string email, string subject, string message)
     {
         var client = new SmtpClient("smtp.gmail.com", 587) //(host, port)
@@ -73,4 +74,5 @@ public class EmailService(IOptions<EmailSettings> options) : IEmailService
         }
         return subject;
     }
+
 }

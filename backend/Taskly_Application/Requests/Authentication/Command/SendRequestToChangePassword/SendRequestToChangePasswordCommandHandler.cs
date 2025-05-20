@@ -7,7 +7,7 @@ using Taskly_Domain.Entities;
 
 namespace Taskly_Application.Requests.Authentication.Command.SendRequestToChangePassword;
 
-public class SendRequestToChangePasswordCommandHandler(IUnitOfWork unitOfWork, IEmailService emailService) : IRequestHandler<SendRequestToChangePasswordCommand, ErrorOr<Guid>>
+public class SendRequestToChangePasswordCommandHandler(IUnitOfWork unitOfWork, IHttpSenderService httpSenderService) : IRequestHandler<SendRequestToChangePasswordCommand, ErrorOr<Guid>>
 {
     public async Task<ErrorOr<Guid>> Handle(SendRequestToChangePasswordCommand request, CancellationToken cancellationToken)
     {
@@ -23,7 +23,13 @@ public class SendRequestToChangePasswordCommandHandler(IUnitOfWork unitOfWork, I
        var props = new Dictionary<string, string>();
        props.Add("[CHANGE_PASSWORD_KEY]", changePasswordKey.ToString());
 
-       await emailService.SendHTMLPage(request.Email,Constants.ChangePassword, props);
+        
+        var result = await httpSenderService.SendRequestAsync(Constants.ChangePassword, request.Email, props);
+
+        if (result.IsError)
+        {
+            return Error.Conflict(result.FirstError.Code);
+        }
 
         return changePasswordKey;
     }
