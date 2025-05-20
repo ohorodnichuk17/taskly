@@ -10,9 +10,6 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.5" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.5" />
-	  <Content Include="HTMLPages\**\*.html">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </Content>
   </ItemGroup>
 
   <ItemGroup>
