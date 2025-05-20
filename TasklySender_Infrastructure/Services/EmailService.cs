@@ -14,8 +14,6 @@ public class EmailService(IOptions<EmailSettings> options) : IEmailService
     public async Task SendHTMLPage(string email, string typeOfHTMLPage, Dictionary<string, string> props)
     {
         var path = Path.Combine("..",
-                                    "TasklySender",
-                                    "wwwroot",
                                     "HTMLPages",
                                     typeOfHTMLPage,
                                     $"{typeOfHTMLPage}.html");
