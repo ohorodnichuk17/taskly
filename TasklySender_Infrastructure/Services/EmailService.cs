@@ -13,7 +13,8 @@ public class EmailService(IOptions<EmailSettings> options) : IEmailService
     private readonly EmailSettings settings = options.Value;
     public async Task SendHTMLPage(string email, string typeOfHTMLPage, Dictionary<string, string> props)
     {
-        var path = Path.Combine("..",
+        var path = Path.Combine(Directory.GetCurrentDirectory(),
+                                    "wwwroot",
                                     "HTMLPages",
                                     typeOfHTMLPage,
                                     $"{typeOfHTMLPage}.html");
