@@ -1,23 +1,18 @@
-# Ігнорування тимчасових файлів збірки .NET
 **/obj/
 **/bin/
 
-# Rider IDE files (якщо використовуєш Rider)
 .idea/
 *.sln.iml
 *.iws
 *.ipr
 
-# Visual Studio files
 .vs/
 *.user
 *.suo
 
-# NuGet пакети
 *.nupkg
 *.snupkg
 
-# Кеші і тимчасові файли NuGet
 *.nuget.dgspec.json
 *.nuget.g.props
 *.nuget.g.targets
@@ -25,6 +20,7 @@ project.assets.json
 project.nuget.cache
 project.packagespec.json
 
-# Rider project files (якщо хочеш)
 rider.project.model.nuget.info
 rider.project.restore.info
+
+.DS_Store
