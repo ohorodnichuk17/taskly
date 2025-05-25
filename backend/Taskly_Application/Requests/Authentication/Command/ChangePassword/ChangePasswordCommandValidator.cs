@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
 
-namespace Taskly_Application.Requests.Authentication.Command.Register;
+namespace Taskly_Application.Requests.Authentication.Command.ChangePassword;
 
-public class RegisterCommandValidation : AbstractValidator<RegisterCommand>
+public class ChangePasswordCommandValidator : AbstractValidator<ChangePasswordCommand>
 {
-    public RegisterCommandValidation()
+    public ChangePasswordCommandValidator()
     {
         RuleFor(i => i.Email)
             .NotEmpty().WithMessage("{PropertyName} must be not empty")
@@ -13,8 +13,5 @@ public class RegisterCommandValidation : AbstractValidator<RegisterCommand>
         RuleFor(i => i.Password)
             .NotEmpty().WithMessage("{PropertyName} must be not empty")
             .Equal(i => i.ConfirmPassword).WithMessage("{PropertyName} and Confirm Password must be equal");
-
-        RuleFor(i => i.AvatarId)
-            .NotEmpty().WithMessage("{PropertyName} must be not empty");
     }
 }

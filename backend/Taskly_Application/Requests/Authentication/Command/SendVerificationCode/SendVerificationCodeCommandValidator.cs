@@ -2,9 +2,9 @@
 
 namespace Taskly_Application.Requests.Authentication.Command.SendVerificationCode;
 
-public class SendVerificationCodeCommandValidation : AbstractValidator<SendVerificationCodeCommand>
+public class SendVerificationCodeCommandValidator : AbstractValidator<SendVerificationCodeCommand>
 {
-    public SendVerificationCodeCommandValidation()
+    public SendVerificationCodeCommandValidator()
     {
         RuleFor(i => i.Email)
             .NotEmpty().WithMessage("{PropertyName} must be not empty")

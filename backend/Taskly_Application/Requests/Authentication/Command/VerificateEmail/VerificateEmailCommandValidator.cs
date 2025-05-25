@@ -2,9 +2,9 @@
 
 namespace Taskly_Application.Requests.Authentication.Command.VerificateEmail;
 
-public class VerificateEmailCommandValidation : AbstractValidator<VerificateEmailCommand>
+public class VerificateEmailCommandValidator : AbstractValidator<VerificateEmailCommand>
 {
-    public VerificateEmailCommandValidation()
+    public VerificateEmailCommandValidator()
     {
         RuleFor(i => i.Email)
            .NotEmpty().WithMessage("{PropertyName} must be not empty")
