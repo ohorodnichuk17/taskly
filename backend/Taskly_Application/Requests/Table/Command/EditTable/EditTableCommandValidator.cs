@@ -2,9 +2,9 @@ using FluentValidation;
 
 namespace Taskly_Application.Requests.Table.Command.EditTable;
 
-public class EditTableCommandValidation : AbstractValidator<EditTableCommand>
+public class EditTableCommandValidator : AbstractValidator<EditTableCommand>
 {
-    public EditTableCommandValidation()
+    public EditTableCommandValidator()
     {
         RuleFor(x => x.TableId)
             .NotEmpty().WithMessage("Table id is required");
