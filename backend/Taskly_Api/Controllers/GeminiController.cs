@@ -3,7 +3,6 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Taskly_Api.Request.Gemini;
-using Taskly_Api.Response.Card;
 using Taskly_Api.SignalR.Models;
 using Taskly_Application.Gemini.PromptRequest;
 using Taskly_Application.Requests.Gemini.Command.CreateCardsForTask;
@@ -11,7 +10,6 @@ using Taskly_Application.Requests.Gemini.Command.GenerateBase;
 using Taskly_Application.Requests.Gemini.Command.GenerateDeadlineSuggestions;
 using Taskly_Application.Requests.Gemini.Command.GenerateTaskImprovementSuggestions;
 using Taskly_Application.Requests.Gemini.Command.TranslateText;
-using Taskly_Domain.Entities;
 
 namespace Taskly_Api.Controllers;
 

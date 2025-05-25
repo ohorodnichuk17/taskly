@@ -1,5 +1,4 @@
-﻿
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace Taskly_Application.Requests.Authentication.Command.SendVerificationCode;
 
