@@ -22,4 +22,5 @@ public class UserEntity : IdentityUser<Guid>
     
     public ICollection<InviteEntity> SentInvites { get; set; } = new List<InviteEntity>();
     public ICollection<InviteEntity> ReceivedInvites { get; set; } = new List<InviteEntity>();
+    public ICollection<CardCommentEntity>? Comments { get; set; } = new List<CardCommentEntity>();
 }

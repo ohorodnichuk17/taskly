@@ -10,9 +10,9 @@ public class FluentCardConfig : IEntityTypeConfiguration<CardEntity>
     {
         builder.HasKey(c => c.Id);
 
-        builder.HasMany(c => c.Comments)
+        /*builder.HasMany(c => c.Comments)
             .WithOne()
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.Cascade);*/
 
         builder.HasOne(c => c.TimeRangeEntity)
             .WithOne()

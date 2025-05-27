@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Taskly_Api.Request.Card;
 using Taskly_Api.Response.Card;
-using Taskly_Api.SignalR.Models;
+using Taskly_Api.SignalR.Models.BoardHub;
 using Taskly_Application.Requests.Card.Command.CreateCard;
 using Taskly_Application.Requests.Card.Command.TransferCardToAnotherCardList;
 using Taskly_Domain.Entities;

@@ -9,7 +9,7 @@ public class CardEntity
     public bool IsCompleated { get; set; }
     public Guid? TimeRangeEntityId { get; set; }
     public TimeRangeEntity? TimeRangeEntity { get; set; }
-    public ICollection<CommentEntity>? Comments { get; set; } = new List<CommentEntity>();
+    public ICollection<CardCommentEntity>? Comments { get; set; } = new List<CardCommentEntity>();
     public Guid? CardListId { get; set; } 
     public CardListEntity? CardList { get; set; } 
     public Guid? UserId { get; set; }

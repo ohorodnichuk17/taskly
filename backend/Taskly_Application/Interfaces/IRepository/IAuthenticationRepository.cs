@@ -12,6 +12,7 @@ public interface IAuthenticationRepository : IRepository<UserEntity>
     Task<bool> IsVerificationEmailExistAndCodeValid(string email, string code);
     Task VerificateEmail(string email);
     //Task CreateNewUser(UserEntity NewUser, string Password);
+    Task<UserEntity?> GetUserById(Guid id);
     Task<UserEntity?> GetUserByEmail(string email);
     Task<UserEntity?> GetUserByPublicKey(string publicKey);
     Task<bool> IsPasswordValid(UserEntity user, string password);

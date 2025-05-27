@@ -16,6 +16,7 @@ import leave_board_white_icon from '../../assets/icon/levae_board_white_icon.png
 import leave_board_purple_icon from '../../assets/icon/levae_board_purple_icon.png';
 import add_member_white_icon from '../../assets/icon/add_member_white_icon.png';
 import add_member_purple_icon from '../../assets/icon/add_member_purple_icon.png';
+import card_comments_icon from '../../assets/icon/card_comments_icon.png';
 import { ICard, ICardListItem, IMemberOfBoard } from "../../interfaces/boardInterface";
 import { HubConnection, HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
 import { baseUrl } from "../../axios/baseUrl";
@@ -1145,6 +1146,17 @@ export const BoardPage = () => {
                                     </div>
                                     {user.current && element_card.userId !== null && element_card.userId === user.current.id ?
                                         <div className="card-settings-buttons">
+                                            <button
+                                                onClick={() => {
+                                                    /*setChangeCardProps({
+                                                        prop: "description",
+                                                        cardId: element_card.id
+                                                    })*/
+                                                    editDescriptionButtonRef.current?.focus();
+                                                }}
+                                            >
+                                                <img src={card_comments_icon} alt="Card comments" />
+                                            </button>
                                             <button
                                                 className={changeCardProps &&
                                                     changeCardProps.prop === "description" &&

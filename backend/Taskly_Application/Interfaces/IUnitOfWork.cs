@@ -19,4 +19,5 @@ public interface IUnitOfWork
     IBadgeRepository Badges { get; }
     IUserLevelRepository UserLevels { get; }
     IUserBadgeRepository UserBadges { get; }
+    ICardCommentRepository CardComments { get; }
 }

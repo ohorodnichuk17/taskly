@@ -27,6 +27,7 @@ public class TasklyDbContext : IdentityDbContext<UserEntity,IdentityRole<Guid>,G
     public DbSet<UserLevelEntity> UserLevels { get; set; }
     public DbSet<AchievementEntity> Achievements { get; set; }
     public DbSet<InviteEntity> Invites { get; set; }
+    public DbSet<CardCommentEntity> CardComments { get; set; }
 
     public TasklyDbContext() : base()
     {
@@ -57,5 +58,6 @@ public class TasklyDbContext : IdentityDbContext<UserEntity,IdentityRole<Guid>,G
         modelBuilder.ApplyConfiguration(new FluentUserLevelConfig());
         modelBuilder.ApplyConfiguration(new FluentUserBadgeConfig());
         modelBuilder.ApplyConfiguration(new FluentInviteConfig());
+        modelBuilder.ApplyConfiguration(new FluentCardCommentConfig());
     }
 }

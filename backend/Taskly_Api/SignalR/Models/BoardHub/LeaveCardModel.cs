@@ -1,3 +1,3 @@
-﻿namespace Taskly_Api.SignalR.Models;
+﻿namespace Taskly_Api.SignalR.Models.BoardHub;
 
 public record LeaveCardModel(Guid BoardId, Guid CardListId, Guid CardId, Guid UserId, string UserName, string UserAvatar);

@@ -70,6 +70,8 @@ public class AuthenticationRepository(UserManager<UserEntity> userManager, Taskl
         return newUser;
     }
 
+    public async Task<UserEntity?> GetUserById(Guid id) =>
+        await GetUserByConditionAsync(u => u.Id == id);
     public async Task<UserEntity?> GetUserByEmail(string email) => 
         await GetUserByConditionAsync(u => u.Email == email);
     public async Task<UserEntity?> GetUserByPublicKey(string publicKey) => 

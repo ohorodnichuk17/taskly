@@ -55,6 +55,7 @@ public static class DependencyInjection
         services.AddScoped<ITableItemsRepository, TableItemsRepository>();
         services.AddScoped<IInviteRepository, InviteRepository>();
         services.AddScoped<IFeedbackRepository, FeedbackRepository>();
+        services.AddScoped<ICardCommentRepository, CardCommentRepository>();
         services.AddHostedService<CustomCleaner<VerificationEmailEntity>>();
         services.AddHostedService<CustomCleaner<ChangePasswordKeyEntity>>();
         services.AddSwagger();

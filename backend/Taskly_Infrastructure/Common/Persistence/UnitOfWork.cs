@@ -29,8 +29,9 @@ public class UnitOfWork : IUnitOfWork
     public IBadgeRepository Badges { get; private set; }
     public IUserLevelRepository UserLevels { get; private set; }
     public IUserBadgeRepository UserBadges { get; private set; }
+    public ICardCommentRepository CardComments { get; private set; }
 
-    public UnitOfWork(TasklyDbContext context,
+public UnitOfWork(TasklyDbContext context,
         UserManager<UserEntity> userManager,
         ITableItemsRepository tableItemsRepository, 
         IFeedbackRepository feedbackRepository,
@@ -53,6 +54,7 @@ public class UnitOfWork : IUnitOfWork
         Badges = new BadgeRepository(_context);
         UserLevels = new UserLevelRepository(_context);
         UserBadges = new UserBadgeRepository(_context);
+        CardComments = new CardCommentRepository(_context);
     }
 
     public async Task SaveChangesAsync(string errorMessage)

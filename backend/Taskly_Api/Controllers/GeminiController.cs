@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Taskly_Api.Request.Gemini;
 using Taskly_Api.Response.Card;
-using Taskly_Api.SignalR.Models;
+using Taskly_Api.SignalR.Models.BoardHub;
 using Taskly_Application.Gemini.PromptRequest;
 using Taskly_Application.Requests.Gemini.Command.CreateCardsForTask;
 using Taskly_Application.Requests.Gemini.Command.GenerateBase;

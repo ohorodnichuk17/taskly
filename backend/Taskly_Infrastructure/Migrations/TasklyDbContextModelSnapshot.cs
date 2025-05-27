@@ -269,6 +269,33 @@ namespace Taskly_Infrastructure.Migrations
                     b.ToTable("BoardTemplates");
                 });
 
+            modelBuilder.Entity("Taskly_Domain.Entities.CardCommentEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CardId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CardId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("CardComments");
+                });
+
             modelBuilder.Entity("Taskly_Domain.Entities.CardEntity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -411,9 +438,6 @@ namespace Taskly_Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("CardEntityId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -421,8 +445,6 @@ namespace Taskly_Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CardEntityId");
 
                     b.ToTable("Comments");
                 });
@@ -809,6 +831,25 @@ namespace Taskly_Infrastructure.Migrations
                     b.Navigation("BoardTemplate");
                 });
 
+            modelBuilder.Entity("Taskly_Domain.Entities.CardCommentEntity", b =>
+                {
+                    b.HasOne("Taskly_Domain.Entities.CardEntity", "Card")
+                        .WithMany("Comments")
+                        .HasForeignKey("CardId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Taskly_Domain.Entities.UserEntity", "User")
+                        .WithMany("Comments")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Card");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Taskly_Domain.Entities.CardEntity", b =>
                 {
                     b.HasOne("Taskly_Domain.Entities.CardListEntity", "CardList")
@@ -862,14 +903,6 @@ namespace Taskly_Infrastructure.Migrations
                     b.Navigation("TimeRange");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Taskly_Domain.Entities.CommentEntity", b =>
-                {
-                    b.HasOne("Taskly_Domain.Entities.CardEntity", null)
-                        .WithMany("Comments")
-                        .HasForeignKey("CardEntityId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Taskly_Domain.Entities.FeedbackEntity", b =>
@@ -1056,6 +1089,8 @@ namespace Taskly_Infrastructure.Migrations
                     b.Navigation("Badges");
 
                     b.Navigation("Challenges");
+
+                    b.Navigation("Comments");
 
                     b.Navigation("Feedbacks");
 

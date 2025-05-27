@@ -4,9 +4,9 @@ using Taskly_Domain.Entities;
 
 namespace Taskly_Infrastructure.Common.Persistence.FluentConfig;
 
-public class FluentCommentConfig : IEntityTypeConfiguration<CommentEntity>
+public class FluentCommentConfig : IEntityTypeConfiguration<CardCommentEntity>
 {
-    public void Configure(EntityTypeBuilder<CommentEntity> builder)
+    public void Configure(EntityTypeBuilder<CardCommentEntity> builder)
     {
         builder.HasKey(c => c.Id);
     }
