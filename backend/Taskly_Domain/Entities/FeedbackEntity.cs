@@ -6,7 +6,7 @@ public class FeedbackEntity
     public Guid UserId { get; set; }
     public UserEntity User { get; set; }
     public string Review { get; set; }  
-    public int Rating { get; set; }  // Rating given by the user (e.g., 1 to 5 stars)
+    public int Rating { get; set; }  
     
     private DateTime _createdAt;
     public DateTime CreatedAt

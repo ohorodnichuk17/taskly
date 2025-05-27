@@ -1,9 +1,7 @@
-﻿using ErrorOr;
-using MapsterMapper;
+﻿using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Taskly_Api.Response.Achievement;
 using Taskly_Application.Requests.Achievements.Query.GetAllAchievementsByUser;

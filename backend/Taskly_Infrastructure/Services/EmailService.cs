@@ -1,9 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
-using System.Linq;
 using System.Net;
 using System.Net.Mail;
-using System.Text;
-using Taskly_Application.Interfaces;
 using Taskly_Application.Interfaces.IService;
 using Taskly_Domain;
 using Taskly_Domain.ValueObjects;

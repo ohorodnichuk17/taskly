@@ -1,14 +1,9 @@
 ﻿using ErrorOr;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using Serilog;
-using System.Text.Json;
 using Taskly_Application.Common.Helpers;
 using Taskly_Application.Interfaces;
-using Taskly_Application.Interfaces.IRepository;
 using Taskly_Application.Interfaces.IService;
 using Taskly_Domain;
-using Taskly_Domain.ValueObjects;
 
 namespace Taskly_Application.Requests.Authentication.Command.SendVerificationCode;
 

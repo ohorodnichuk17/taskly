@@ -1,7 +1,6 @@
 using MediatR;
 using ErrorOr;
 using Taskly_Application.Interfaces;
-using Taskly_Application.Interfaces.IService;
 using Taskly_Domain.Entities;
 
 namespace Taskly_Application.Requests.Board.Command.AddMemberToBoard;

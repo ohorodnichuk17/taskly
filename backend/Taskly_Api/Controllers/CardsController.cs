@@ -1,7 +1,6 @@
 ﻿using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Taskly_Api.Request.Card;
 using Taskly_Api.Response.Card;

@@ -18,9 +18,7 @@ using Taskly_Application.Requests.SolanaWallet.Authentication.Command.Authentica
 using Taskly_Application.Requests.SolanaWallet.Authentication.Command.SetUserNameForSolanaUser;
 using Taskly_Application.Requests.SolanaWallet.Authentication.Query.GenerateJwtToken;
 using Taskly_Application.Requests.SolanaWallet.Authentication.Query.GetUserByPublicKey;
-using System.Reflection.Metadata;
 using Taskly_Application.Requests.SolanaWallet.Authentication.Query.GetUserReferralCode;
-using Taskly_Domain;
 using Taskly_Application.Requests.SolanaWallet.Authentication.Query.GetRoleByUserId;
 
 namespace Taskly_Api.Controllers

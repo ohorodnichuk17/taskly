@@ -85,7 +85,8 @@ This is a mono-repo with multiple parts:
 
 ```bash
 /taskly-frontend    # React + Vite frontend  
-/taskly-backend     # ASP.NET Core backend  
+/taskly-backend     # ASP.NET Core backend
+/taskly-sender      # ASP.NET Core Microservice for sending emails to the mail using the SMTP protocol
 ```
 
 ## 🚀 Getting Started

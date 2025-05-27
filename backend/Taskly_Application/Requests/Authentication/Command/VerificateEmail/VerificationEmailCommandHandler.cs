@@ -1,7 +1,6 @@
 ﻿using ErrorOr;
 using MediatR;
 using Taskly_Application.Interfaces;
-using Taskly_Application.Interfaces.IRepository;
 
 namespace Taskly_Application.Requests.Authentication.Command.VerificateEmail;
 

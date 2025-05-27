@@ -1,30 +1,22 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Security.Claims;
 using System.Text;
-using System.Text.Unicode;
 using Mapster;
 using MapsterMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Taskly_Api.Common;
 using Taskly_Api.Common.Errors;
-using Taskly_Api.MapsterConfigs;
 using Taskly_Application.Interfaces;
 using Taskly_Application.Interfaces.IRepository;
 using Taskly_Application.Interfaces.IService;
-using Taskly_Domain;
 using Taskly_Domain.Entities;
 using Taskly_Domain.ValueObjects;
-using Taskly_Infrastructure;
 using Taskly_Infrastructure.Common.Persistence;
 using Taskly_Infrastructure.Repositories;
 using Taskly_Infrastructure.Services;
@@ -242,14 +234,14 @@ public static class DependencyInjection
             options.AddPolicy("AllowPolicy", policy =>
             {
                 // policy.WithOrigins("http://localhost:5173")
-                //     .AllowCredentials() // ����� �� ����-�� ������ ���
-                //     .AllowAnyMethod() // ����� �� ����-�� ������
+                //     .AllowCredentials()
+                //     .AllowAnyMethod() 
                     // .AllowAnyHeader();
                     policy.WithOrigins("https://taskly-frontend-5bz1.onrender.com", "http://localhost:5173")
                         .AllowCredentials() 
                         .AllowAnyMethod() 
                         .AllowAnyHeader();
-                // policy.AllowAnyOrigin(); // ����� �� ����-�� ������
+                // policy.AllowAnyOrigin(); 
             });
         });
         return services;

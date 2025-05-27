@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.SignalR;
 using Taskly_Api.Request.Card;
 using Taskly_Api.SignalR.Models.BoardHub;
+using Taskly_Api.SignalR.Models;
 using Taskly_Application.Requests.Achievements.Command.CheckIfUserHasEarnedAchievement;
 using Taskly_Application.Requests.Card.Command.ChangeCard;
 using Taskly_Application.Requests.Card.Command.LeaveCard;

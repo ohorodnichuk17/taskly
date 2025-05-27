@@ -1,8 +1,6 @@
 ﻿using ErrorOr;
 using MediatR;
-using System;
 using Taskly_Application.Interfaces;
-using Taskly_Domain.Entities;
 
 namespace Taskly_Application.Requests.Card.Command.TransferCardToAnotherCardList;
 
