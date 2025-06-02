@@ -6,6 +6,7 @@
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   padding-bottom: 60px;
+  height: 80vh;
 
   .challenges-header {
     position: relative;
@@ -274,7 +275,7 @@
     align-items: center;
     gap: 16px;
     margin-top: 30px;
-
+    
     button {
       padding: 10px 20px;
       border-radius: 12px;
