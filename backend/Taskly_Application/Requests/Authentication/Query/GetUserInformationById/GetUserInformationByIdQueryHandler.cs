@@ -11,7 +11,7 @@ public class GetUserInformationByIdQueryHandler(IUnitOfWork unitOfWork) : IReque
     {
         var user = await unitOfWork.Authentication.GetUserById(request.UserId);
         if(user == null)
-            return Error.NotFound("User i not found");
+            return Error.NotFound("User is not found");
 
         return user;
 

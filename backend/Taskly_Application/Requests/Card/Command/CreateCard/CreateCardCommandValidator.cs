@@ -13,7 +13,7 @@ public class CreateCardCommandValidator : AbstractValidator<CreateCardCommand>
             .NotEmpty().WithMessage("{PropertyName} must be not empty")
             .MaximumLength(100).WithMessage("{PropertyName} must be less than 100 characters");
 
-        RuleFor(i => i.Deadline)
-            .GreaterThan(DateTime.UtcNow).WithMessage("{PropertyName} must be in the future");
+        RuleFor(i => i.Deadline.Date)
+            .GreaterThanOrEqualTo(DateTime.UtcNow.Date).WithMessage("{PropertyName} must be in the future");
     }
 }

@@ -3,7 +3,7 @@
 public record AchievementResponse(Guid Id, 
     string Name, 
     string Description, 
-    int Reward, 
+    float Reward, 
     double PercentageOfCompletion, 
     string Icon, 
     bool IsCompleated);

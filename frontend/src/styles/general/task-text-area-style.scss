@@ -11,6 +11,10 @@ textarea {
     outline: none;
     resize: none;
     padding: 0px 5px;
+
+    &::placeholder {
+        color: rgba(255, 255, 255, 0.671);
+    }
 }
 
 .length-of-task {

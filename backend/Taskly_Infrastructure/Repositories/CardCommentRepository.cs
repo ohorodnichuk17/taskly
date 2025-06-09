@@ -40,6 +40,7 @@ public class CardCommentRepository(TasklyDbContext context) : Repository<CardCom
             .Where(u => u.CardId == CardId)
             .Include(c => c.User)
             .ThenInclude(u => u!.Avatar)
+            .OrderBy(c => c.CreatedAt)
             .ToArrayAsync();
     }
 }

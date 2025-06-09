@@ -12,7 +12,8 @@ interface ITaskTextArea {
         onBlur: (event: React.FocusEvent<any>) => void;
         ref: (instance: HTMLTextAreaElement | null) => void;
     };
-    //register?: UseFormRegisterReturn
+    placeholder?: string,
+    currentLength?: React.Dispatch<React.SetStateAction<number>>
 }
 export const TaskTextArea = (prop: ITaskTextArea) => {
     const descriptionTextAreaRef = useRef<HTMLTextAreaElement | null>(null);
@@ -39,19 +40,30 @@ export const TaskTextArea = (prop: ITaskTextArea) => {
             descriptionTextAreaRef.current.style.height = `${descriptionTextAreaRef.current.scrollHeight}px`;
         }
     }, [descriptionTextAreaRef.current?.value])
+    useEffect(() => {
+        if (!descriptionTextAreaRef.current) return;
+        var observer = new ResizeObserver(() => {
+            if (descriptionTextAreaRef.current) {
+                descriptionTextAreaRef.current.style.height = '0px';
+                descriptionTextAreaRef.current.style.height = `${descriptionTextAreaRef.current.scrollHeight}px`;
+            }
+        })
+        observer.observe(descriptionTextAreaRef.current);
 
+        return () => {
+            observer.disconnect();
+        };
+    }, [])
     return (
         <>
             <textarea
-
-
                 name="card_description"
                 id=""
+                placeholder={prop.placeholder ? prop.placeholder : ""}
                 defaultValue={prop.defaultValue ? prop.defaultValue : ""}
                 maxLength={prop.maxLength}
                 ref={(_ref) => {
                     descriptionTextAreaRef.current = _ref;
-                    //prop.register?.ref(_ref);
                     if (prop.register) {
                         const { ref } = prop.register;
                         ref(descriptionTextAreaRef.current);
@@ -66,12 +78,17 @@ export const TaskTextArea = (prop: ITaskTextArea) => {
                         descriptionTextAreaRef.current.style.height = '0px';
                         descriptionTextAreaRef.current.style.height = `${descriptionTextAreaRef.current.scrollHeight}px`;
                         setLengtOfText(descriptionTextAreaRef.current.value.length);
+                        if (prop.currentLength) {
+                            prop.currentLength(descriptionTextAreaRef.current.value.length)
+                        }
                     }
                     if (prop.register) {
                         prop.register.onChange?.(e);
                     }
 
+
                 }}
+
 
             ></textarea>
             <div className="length-of-task">
@@ -81,6 +98,3 @@ export const TaskTextArea = (prop: ITaskTextArea) => {
 
     )
 }
-/*
-
-*/

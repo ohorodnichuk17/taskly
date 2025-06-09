@@ -231,15 +231,13 @@
                             }
                         }
 
-                        .card-settings-buttons {
-
-                            margin-left: auto;
+                        .card-buttons {
+                            flex-grow: 1;
                             display: flex;
+                            justify-content: flex-end;
                             align-items: center;
-                            box-sizing: content-box;
-                            column-gap: 5px;
 
-                            button {
+                            button.card-comments-button {
                                 display: inline-block;
                                 width: 30px;
                                 height: 30px;
@@ -249,6 +247,8 @@
                                 outline: none;
                                 border: none;
                                 background-color: azure;
+                                //margin-left: auto;
+                                margin-right: 5px;
 
                                 &:hover {
                                     background-color: rgb(205, 223, 223);
@@ -262,74 +262,108 @@
                                 }
                             }
 
-                            button.inactive {
-                                background-color: azure;
+                            .card-settings-buttons {
 
-                                &:hover {
+                                //margin-left: auto;
+                                display: flex;
+                                align-items: center;
+                                box-sizing: content-box;
+                                column-gap: 5px;
+
+                                button {
+                                    display: inline-block;
+                                    width: 30px;
+                                    height: 30px;
+                                    padding: 5px;
+                                    border-radius: 10px;
+                                    box-sizing: border-box;
+                                    outline: none;
+                                    border: none;
+                                    background-color: azure;
+
+                                    &:hover {
+                                        background-color: rgb(205, 223, 223);
+                                    }
+
+
+                                    img {
+                                        width: 100%;
+                                        height: 100%;
+                                        align-self: center;
+                                    }
+                                }
+
+                                button.inactive {
+                                    background-color: azure;
+
+                                    &:hover {
+                                        background-color: rgb(205, 223, 223);
+                                    }
+                                }
+
+                                button.active {
                                     background-color: rgb(205, 223, 223);
                                 }
                             }
 
-                            button.active {
-                                background-color: rgb(205, 223, 223);
-                            }
-                        }
 
 
-
-                        .creator-of-card {
-                            margin-left: auto;
-                            //position: relative;
-
-                            img {
-                                width: 40px;
-                                height: 40px;
-
-                                padding: 5px;
-                                border-radius: 30px;
-                                box-sizing: border-box;
-                                border: 1px solid gray;
-                                cursor: pointer;
-
-                                &:hover {
-                                    border-style: dashed;
-                                }
-                            }
-
-                            .dropdown-user-name {
-                                background-color: white;
-                                border-radius: 10px;
-                                padding: 5px 10px;
-                                box-sizing: border-box;
-                                //position: fixed;
-
-                            }
-                        }
-
-                        .take-card {
-                            margin-left: auto;
-
-                            button {
-                                width: 30px;
-                                height: 30px;
-                                outline: none;
-                                border-radius: 30px;
-                                padding: 5px;
-                                border: 1px solid gray;
-                                background-color: white;
-                                box-sizing: border-box;
-
-                                &:hover {
-                                    border-style: dashed;
-                                }
+                            .creator-of-card {
+                                //margin-left: auto;
+                                //position: relative;
+                                align-self: center;
 
                                 img {
-                                    width: 100%;
-                                    height: 100%;
+                                    width: 40px;
+                                    height: 40px;
+
+                                    padding: 5px;
                                     border-radius: 30px;
+                                    box-sizing: border-box;
+                                    border: 1px solid gray;
+                                    cursor: pointer;
+
+                                    &:hover {
+                                        border-style: dashed;
+                                    }
+                                }
+
+                                .dropdown-user-name {
+                                    background-color: white;
+                                    border-radius: 10px;
+                                    padding: 5px 10px;
+                                    box-sizing: border-box;
+                                    //position: fixed;
+
+                                }
+                            }
+
+                            .take-card {
+                                //margin-left: auto;
+
+                                button {
+                                    width: 30px;
+                                    height: 30px;
+                                    outline: none;
+                                    border-radius: 30px;
+                                    padding: 5px;
+                                    border: 1px solid gray;
+                                    background-color: white;
+                                    box-sizing: border-box;
+
+                                    &:hover {
+                                        border-style: dashed;
+                                    }
+
+                                    img {
+                                        width: 100%;
+                                        height: 100%;
+                                        border-radius: 30px;
+                                    }
                                 }
                             }
                         }
+
 
 
                     }

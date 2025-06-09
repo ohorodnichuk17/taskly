@@ -151,7 +151,7 @@ export const ChangePasswordPage = () => {
                         </button>
                     </div>
                     {errors.confirmPassword?.message && <InputMessage message={errors.confirmPassword.message} typeOfMessage={typeOfMessage.error} />}
-                    <button type='submit'>Register</button>
+                    <button type='submit'>Change</button>
                 </form>
             </div>
 

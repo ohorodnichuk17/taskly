@@ -1,0 +1,45 @@
+.leave-comment-component {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+    margin-top: auto;
+
+    textarea {
+        width: 400px;
+        height: fit-content;
+        background-color: #782ce4;
+        color: white;
+        padding: 10px;
+        box-sizing: border-box;
+        min-height: 43px;
+        overflow: auto;
+    }
+
+    button {
+        width: fit-content;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        margin-left: auto;
+        column-gap: 10px;
+        outline: none;
+        border: none;
+        border-radius: 10px;
+        padding: 5px 10px;
+        font-size: 17px;
+        background-color: #782ce4;
+        color: white;
+        box-sizing: border-box;
+
+        img {
+            width: 20px;
+            height: 20px;
+        }
+
+        &:disabled {
+            background-color: #792ce498;
+            cursor: default;
+        }
+    }
+}

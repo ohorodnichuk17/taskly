@@ -11,18 +11,23 @@ interface IGeneralModal<T> {
 
 export const GeneralMode = <T,>(props: IGeneralModal<T>) => {
     return (
-        <div className="general-modal-background" style={{ display: props.isOpened == true ? "flex" : "none" }}>
-            <div className='general-modal-container'>
-                <div className="exit">
-                    <img src={exit_icon} alt="Exit button"
-                        onClick={() => {
-                            props.onClose();
-                        }} />
-                </div>
-                {props.children}
-            </div>
+        <>
+            {props.isOpened == true &&
+                <div className="general-modal-background" style={{ display: props.isOpened == true ? "flex" : "none" }}>
+                    <div className='general-modal-container'>
+                        <div className="exit">
+                            <img src={exit_icon} alt="Exit button"
+                                onClick={() => {
+                                    props.onClose();
+                                }} />
+                        </div>
+                        {props.children}
+                    </div>
 
-        </div>
+                </div>
+            }
+        </>
+
     )
 }
 

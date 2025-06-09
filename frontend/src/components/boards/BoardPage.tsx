@@ -39,6 +39,7 @@ import { ISolanaUserProfile, IUserProfile } from "../../interfaces/authenticateI
 import { setNewAchievement } from "../../redux/slices/achievementsSlice";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
+import { CardCommentsPage } from "../comments/CardCommentsPage";
 
 
 
@@ -115,6 +116,13 @@ export const BoardPage = () => {
     const [openedAICardCreate, setOpenedAICardCreate] = useState<boolean>(false);
     const [openedAddMember, setOpenedAddMember] = useState<boolean>(false);
     const [openedGeneralModal, setOpenedGeneralModal] = useState<boolean>(false);
+    const [openedCardComments, setOpenedCardComments] = useState<{
+        isOpened: boolean,
+        cardId: string | null
+    }>({
+        isOpened: false,
+        cardId: null
+    });
     const [buttonHovered, setButtonHovered] = useState<"members" | "leave" | "add_member" | null>(null);
     const [membersOfBoard, setMembersOfBoard] = useState<IMemberOfBoard[] | null>(null);
     const [boardMembersOverflowY, setBoardMembersOverflowY] = useState<"auto" | "scroll">("auto");
@@ -765,6 +773,7 @@ export const BoardPage = () => {
 
 
     const handleSubmitCreateCustomCard = async (request: NewCardType) => {
+        console.log("REQUEST - ", request);
         const model = {
             cardListId: cardLists!.find(cardList => cardList.title === todo_card_list)!.id,
             task: request.task,
@@ -897,6 +906,14 @@ export const BoardPage = () => {
                     </div>
                 ))}
             </div>
+        </GeneralMode>
+        <GeneralMode isOpened={openedCardComments.isOpened && openedCardComments.cardId !== null} selectedItem={null} onClose={() => {
+            setOpenedCardComments({
+                isOpened: false,
+                cardId: null
+            });
+        }}>
+            <CardCommentsPage cardId={openedCardComments.cardId!} />
         </GeneralMode>
         {information && (
             <InformationAlert message={information.message} type={information.type} />
@@ -1144,130 +1161,135 @@ export const BoardPage = () => {
                                         }
 
                                     </div>
-                                    {user.current && element_card.userId !== null && element_card.userId === user.current.id ?
-                                        <div className="card-settings-buttons">
-                                            <button
-                                                onClick={() => {
-                                                    /*setChangeCardProps({
-                                                        prop: "description",
-                                                        cardId: element_card.id
-                                                    })*/
-                                                    editDescriptionButtonRef.current?.focus();
-                                                }}
-                                            >
-                                                <img src={card_comments_icon} alt="Card comments" />
-                                            </button>
-                                            <button
-                                                className={changeCardProps &&
-                                                    changeCardProps.prop === "description" &&
-                                                    changeCardProps.cardId === element_card.id ?
-                                                    "active" :
-                                                    "inactive"}
-                                                onClick={() => {
-                                                    setChangeCardProps({
-                                                        prop: "description",
-                                                        cardId: element_card.id
-                                                    })
-                                                    editDescriptionButtonRef.current?.focus();
-                                                }}
-                                            >
-                                                <img src={edit_icon} alt="Edit card" />
-                                            </button>
-                                            <button
-                                                onClick={async () => {
-                                                    if (conn.current && user.current) {
-                                                        await conn.current.send("RemoveCardFromCardList", {
-                                                            boardId: boardId,
-                                                            cardListId: element.id,
-                                                            cardId: element_card.id,
-                                                            userId: user.current.id
-                                                        })
-                                                        removeCardFromCardList({
-                                                            cardListId: element.id,
-                                                            cardId: element_card.id,
-                                                            userId: user.current.id
-                                                        });
-                                                    }
-                                                }}>
-                                                <img src={trash_can_icon} alt="Remove card" />
-                                            </button>
-                                            <button
-                                                onClick={async () => {
-                                                    if (conn.current && user.current) {
-                                                        await conn.current.send("LeaveCard", {
-                                                            boardId: boardId,
-                                                            cardListId: element.id,
-                                                            cardId: element_card.id,
-                                                            userId: user.current.id
-                                                        });
-                                                        leaveCard({
-                                                            cardListId: element.id,
+                                    <div className="card-buttons">
+                                        <button
+                                            className="card-comments-button"
+                                            onClick={() => {
+                                                setOpenedCardComments({
+                                                    isOpened: true,
+                                                    cardId: element_card.id
+                                                })
+                                            }}
+                                        >
+                                            <img src={card_comments_icon} alt="Card comments" />
+                                        </button>
+                                        {user.current && element_card.userId !== null && element_card.userId === user.current.id ?
+                                            <div className="card-settings-buttons">
+
+                                                <button
+                                                    className={changeCardProps &&
+                                                        changeCardProps.prop === "description" &&
+                                                        changeCardProps.cardId === element_card.id ?
+                                                        "active" :
+                                                        "inactive"}
+                                                    onClick={() => {
+                                                        setChangeCardProps({
+                                                            prop: "description",
                                                             cardId: element_card.id
                                                         })
-                                                    }
-                                                }}
-                                            >
-                                                <img src={leave_card_icon} alt="Leave card" />
-                                            </button>
-
-                                        </div>
-                                        : (element_card.userId !== null ?
-                                            <div className="creator-of-card">
-                                                <img
-                                                    className="creator-of-card"
-                                                    src={`${baseUrl}/images/avatars/${element_card.userAvatar}.png`}
-                                                    alt=""
-
-                                                    onMouseEnter={(e) => {
-                                                        setDropDownCardId(element_card.id);
-                                                        setCreatorOfCardPosition(e.currentTarget.getBoundingClientRect()); // Дістає позицію елемента відносно вікна
+                                                        editDescriptionButtonRef.current?.focus();
                                                     }}
-                                                    onMouseLeave={() => {
-                                                        setDropDownCardId(null);
-                                                        setCreatorOfCardPosition(null);
+                                                >
+                                                    <img src={edit_icon} alt="Edit card" />
+                                                </button>
+                                                <button
+                                                    onClick={async () => {
+                                                        if (conn.current && user.current) {
+                                                            await conn.current.send("RemoveCardFromCardList", {
+                                                                boardId: boardId,
+                                                                cardListId: element.id,
+                                                                cardId: element_card.id,
+                                                                userId: user.current.id
+                                                            })
+                                                            removeCardFromCardList({
+                                                                cardListId: element.id,
+                                                                cardId: element_card.id,
+                                                                userId: user.current.id
+                                                            });
+                                                        }
+                                                    }}>
+                                                    <img src={trash_can_icon} alt="Remove card" />
+                                                </button>
+                                                <button
+                                                    onClick={async () => {
+                                                        if (conn.current && user.current) {
+                                                            await conn.current.send("LeaveCard", {
+                                                                boardId: boardId,
+                                                                cardListId: element.id,
+                                                                cardId: element_card.id,
+                                                                userId: user.current.id
+                                                            });
+                                                            leaveCard({
+                                                                cardListId: element.id,
+                                                                cardId: element_card.id
+                                                            })
+                                                        }
                                                     }}
+                                                >
+                                                    <img src={leave_card_icon} alt="Leave card" />
+                                                </button>
 
-                                                />
-                                                {dropDownCardId !== null &&
-                                                    dropDownCardId === element_card.id &&
-                                                    creatorOfCardPosition !== null &&
-                                                    <div
-                                                        className="dropdown-user-name"
-                                                        style={{
-                                                            position: "fixed",
-                                                            top: `${creatorOfCardPosition.top + 50}px`,
-                                                            left: `${creatorOfCardPosition.left}px`,
+                                            </div>
+                                            : (element_card.userId !== null ?
+                                                <div className="creator-of-card">
+                                                    <img
+                                                        className="creator-of-card"
+                                                        src={`${baseUrl}/images/avatars/${element_card.userAvatar}.png`}
+                                                        alt=""
+
+                                                        onMouseEnter={(e) => {
+                                                            setDropDownCardId(element_card.id);
+                                                            setCreatorOfCardPosition(e.currentTarget.getBoundingClientRect()); // Дістає позицію елемента відносно вікна
+                                                        }}
+                                                        onMouseLeave={() => {
+                                                            setDropDownCardId(null);
+                                                            setCreatorOfCardPosition(null);
                                                         }}
 
-                                                    >
-                                                        {element_card.userName}
-                                                    </div>
-                                                }
-                                            </div> : <div className="take-card">
-                                                <button onClick={async () => {
-                                                    if (conn.current !== null && user.current) {
-                                                        await conn.current.send("TakeCard", {
-                                                            boardId: boardId,
-                                                            cardListId: element.id,
-                                                            cardId: element_card.id,
-                                                            userId: user.current.id,
-                                                            userName: userJwt !== null ? (user.current as IUserProfile).email : (user.current as ISolanaUserProfile).userName,
-                                                            userAvatar: user.current.avatarName
-                                                        });
+                                                    />
+                                                    {dropDownCardId !== null &&
+                                                        dropDownCardId === element_card.id &&
+                                                        creatorOfCardPosition !== null &&
+                                                        <div
+                                                            className="dropdown-user-name"
+                                                            style={{
+                                                                position: "fixed",
+                                                                top: `${creatorOfCardPosition.top + 50}px`,
+                                                                left: `${creatorOfCardPosition.left}px`,
+                                                            }}
 
-                                                        takeCard({
-                                                            cardListId: element.id,
-                                                            cardId: element_card.id,
-                                                            userId: user.current.id,
-                                                            userName: userJwt !== null ? (user.current as IUserProfile).email : (user.current as ISolanaUserProfile).userName,
-                                                            userAvatar: user.current.avatarName
-                                                        })
+                                                        >
+                                                            {element_card.userName}
+                                                        </div>
                                                     }
-                                                }}>
-                                                    <img src={take_card_icon} alt="Take card" />
-                                                </button>
-                                            </div>)
-                                    }
+                                                </div> : <div className="take-card">
+
+                                                    <button onClick={async () => {
+                                                        if (conn.current !== null && user.current) {
+                                                            await conn.current.send("TakeCard", {
+                                                                boardId: boardId,
+                                                                cardListId: element.id,
+                                                                cardId: element_card.id,
+                                                                userId: user.current.id,
+                                                                userName: userJwt !== null ? (user.current as IUserProfile).email : (user.current as ISolanaUserProfile).userName,
+                                                                userAvatar: user.current.avatarName
+                                                            });
+
+                                                            takeCard({
+                                                                cardListId: element.id,
+                                                                cardId: element_card.id,
+                                                                userId: user.current.id,
+                                                                userName: userJwt !== null ? (user.current as IUserProfile).email : (user.current as ISolanaUserProfile).userName,
+                                                                userAvatar: user.current.avatarName
+                                                            })
+                                                        }
+                                                    }}>
+                                                        <img src={take_card_icon} alt="Take card" />
+                                                    </button>
+                                                </div>)
+                                        }
+                                    </div>
+
 
                                 </div>
                             </div>

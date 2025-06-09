@@ -54,5 +54,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.MapHub<BoardHub>("/board");
+app.MapHub<CardCommentsHub>("/card-comments");
 
 app.Run();

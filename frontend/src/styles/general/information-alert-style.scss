@@ -10,12 +10,11 @@
     column-gap: 10px;
     padding: 20px;
     box-sizing: border-box;
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: #610edd;
     color: white;
     z-index: 100;
     align-self: center;
     animation: showInformationAlert 0.3s linear 0s forwards, closeInformationAlert 0.3s linear 4s forwards;
-    //animation: showInformationAlert 0.3s linear 0s forwards, closeInformationAlert 0.3s linear 300s forwards;
     transition: all 0.7s;
 
     img {

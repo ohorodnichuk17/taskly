@@ -64,3 +64,8 @@ export const UseReferralCodeShema = z.object({
     //referralCode: z.string().regex(new RegExp("^[A-Z0-9]{6}"), "Invalid format").length(6, "Code must contain 6 symbols").nullable().refine((val) => val === null || val === '' || val.length === 6 , "Code must contain 6 symbols")
     referralCode: z.string().regex(new RegExp("^[A-Z0-9]{6}"), "Invalid format").length(6, "Code must contain 6 symbols").nullable().or(z.literal('')).or(z.null())
 });
+
+export type LeaveCommentType = z.infer<typeof LeaveCommentShema>;
+export const LeaveCommentShema = z.object({
+    comment: z.string().max(300)
+});

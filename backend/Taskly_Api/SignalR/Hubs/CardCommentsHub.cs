@@ -34,13 +34,13 @@ public class CardCommentsHub(ISender sender) : Hub
         {
             await Clients
            .Group(model.CardId.ToString())
-           .SendAsync("DisconnectFromCardComments", new
+           .SendAsync("LeaveComment", new
            {
                CardId = model.CardId,
                UserId = model.UserId,
                Text = model.Text,
                UserName = user.Value.UserName,
-               Avatar = user.Value.Avatar!.ImagePath
+               UserAvatar = user.Value.Avatar!.ImagePath
            });
 
             await sender.Send(new LeaveCardCommentCommand(
