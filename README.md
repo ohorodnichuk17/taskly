@@ -98,7 +98,7 @@ This is a mono-repo with multiple parts:
 
 ## 👥 Authors
 
-- [Yulia]([https://www.linkedin.com/in/...](https://www.linkedin.com/in/julia-ohorodnichuk/)) —  Fullstack Engineer. Expert in frontend and backend technologies driving seamless user experiences and design.
+- [Yuliia]([https://www.linkedin.com/in/...](https://www.linkedin.com/in/julia-ohorodnichuk/)) —  Fullstack Engineer. Expert in frontend and backend technologies driving seamless user experiences and design.
 - [Nazar]([https://www.linkedin.com/in/...](https://github.com/zubnaz)) — Fullstack Engineer. Specialized in both frontend and backend, ensuring scalability and robust architecture for Taskly’s platform.
 
 Made with ❤️ during the [Breakout Hackathon](https://www.colosseum.org/breakout)
