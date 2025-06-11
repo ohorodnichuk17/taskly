@@ -10,6 +10,8 @@ interface ITaskTextArea {
         onBlur: (event: React.FocusEvent<any>) => void;
         ref: (instance: HTMLTextAreaElement | null) => void;
     };
+    placeholder?: string;
+    currentLength?: React.Dispatch<React.SetStateAction<number>>;
 }
 export declare const TaskTextArea: (prop: ITaskTextArea) => import("react/jsx-runtime").JSX.Element;
 export {};

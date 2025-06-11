@@ -1,5 +1,3 @@
-import { TypedUseSelectorHook } from "react-redux";
-import type { RootState } from "./store.ts";
 export declare const useRootState: import("react-redux").UseSelector<{
     authenticate: import("../interfaces/authenticateInterfaces.ts").IAuthenticateInitialState;
     general: import("../interfaces/generalInterface.ts").IGeneralInitialState;
@@ -10,6 +8,7 @@ export declare const useRootState: import("react-redux").UseSelector<{
     feedback: import("../interfaces/feedbackInterface.ts").IFeedbackInitialState;
     achievements: import("../interfaces/achievementsInterface.ts").IAchievementsInitialState;
     gamification: import("../interfaces/gamificationInterface.ts").IGamificationInitialState;
+    cardComments: import("../interfaces/cardCommentsInterface.ts").ICardCommentsInitialState;
 }>;
 export declare const useAppDispatch: import("react-redux").UseDispatch<import("redux-thunk").ThunkDispatch<{
     authenticate: import("../interfaces/authenticateInterfaces.ts").IAuthenticateInitialState;
@@ -21,5 +20,5 @@ export declare const useAppDispatch: import("react-redux").UseDispatch<import("r
     feedback: import("../interfaces/feedbackInterface.ts").IFeedbackInitialState;
     achievements: import("../interfaces/achievementsInterface.ts").IAchievementsInitialState;
     gamification: import("../interfaces/gamificationInterface.ts").IGamificationInitialState;
+    cardComments: import("../interfaces/cardCommentsInterface.ts").ICardCommentsInitialState;
 }, undefined, import("redux").UnknownAction> & import("redux").Dispatch<import("redux").UnknownAction>>;
-export declare const useAppSelector: TypedUseSelectorHook<RootState>;

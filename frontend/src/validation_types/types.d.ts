@@ -93,3 +93,11 @@ export declare const UseReferralCodeShema: z.ZodObject<{
 }, {
     referralCode: string | null;
 }>;
+export type LeaveCommentType = z.infer<typeof LeaveCommentShema>;
+export declare const LeaveCommentShema: z.ZodObject<{
+    comment: z.ZodString;
+}, "strip", z.ZodTypeAny, {
+    comment: string;
+}, {
+    comment: string;
+}>;
