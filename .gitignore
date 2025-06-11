@@ -1,5 +1,10 @@
-**/obj/
 **/bin/
+**/obj/
+*.pdb
+*.cache
+*.dll
+*.AssemblyReference.cache
+*.sourcelink.json
 
 .idea/
 *.sln.iml
